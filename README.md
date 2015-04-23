@@ -8,6 +8,6 @@ Our group consists of:
 * Thomas Smith
 * Martijn Steenbergen
 
-## Quick Links
+### Quick Links
 
 [Travis Build Page](https://travis-ci.org/newnottakename/ComputerGames)
