@@ -1,4 +1,6 @@
-# ComputerGames ![Travis CI](https://travis-ci.org/newnottakenname/ComputerGames.svg?branch=master) [![Stories in Ready](https://badge.waffle.io/newnottakenname/computergames.png?label=ready&title=Ready)](https://waffle.io/newnottakenname/computergames)
+# ComputerGames 
+master status: ![Travis CI](https://travis-ci.org/newnottakenname/ComputerGames.svg?branch=master) 
+develop status: ![Travis CI](https://travis-ci.org/newnottakenname/ComputerGames.svg?branch=develop)
 
 Welcome to the github page of Computer Games, group 3!
 Our group consists of:
