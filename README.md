@@ -1,6 +1,6 @@
 # ComputerGames 
-master status: ![Travis CI](https://travis-ci.org/newnottakenname/ComputerGames.svg?branch=master) 
-develop status: ![Travis CI](https://travis-ci.org/newnottakenname/ComputerGames.svg?branch=develop)
+master status: ![Master build status](https://travis-ci.org/newnottakenname/ComputerGames.svg?branch=master)(https://travis-ci.org/newnottakenname/ComputerGames) 
+develop status: ![Develop build status](https://travis-ci.org/newnottakenname/ComputerGames.svg?branch=develop)(https://travis-ci.org/newnottakenname/ComputerGames) 
 
 Welcome to the github page of Computer Games, group 3!
 Our group consists of:
