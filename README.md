@@ -13,4 +13,4 @@ Our group consists of:
 
 ### Quick Links
 
-[Travis Build Page](https://travis-ci.org/newnottakename/ComputerGames)
+[Travis Build Page](https://travis-ci.org/newnottakenname/ComputerGames)
