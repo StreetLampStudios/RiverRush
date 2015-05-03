@@ -9,6 +9,7 @@ build/
 .classpath
 .project
 .settings/
+bin/
 
 # for intellij users
 .idea/

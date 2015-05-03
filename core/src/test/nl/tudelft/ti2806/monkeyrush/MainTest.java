@@ -14,7 +14,6 @@ public class MainTest {
      */
     @Test
     public void testMain() {
-	System.out.println("Test console output: SUCCESS");
-        assertTrue(true);
+	    assertTrue(true);
     }
 }
