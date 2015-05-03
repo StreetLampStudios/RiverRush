@@ -36,16 +36,6 @@ allprojects {
 
     // Print test std output to console, including test results.
     apply plugin: 'java'
-    test {
-        testLogging {
-            showStandardStreams = true
-            afterSuite { desc, result ->
-                if (!desc.parent) {
-                    println "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
-                }
-            }
-        }
-    }
 
     dependencies {
         testCompile group: 'junit', 
@@ -67,6 +57,19 @@ subprojects {
     apply from: "${rootProject.rootDir}/config/pmd.gradle"        // PMD
     apply from: "${rootProject.rootDir}/config/findbugs.gradle"   // Findbugs
     apply from: "${rootProject.rootDir}/config/cobertura.gradle"  // Cobertura
+
+    // Print test std output to console, including test results.
+    apply plugin: 'java'
+    test {
+        testLogging {
+            showStandardStreams = true
+            afterSuite { desc, result ->
+                if (!desc.parent) {
+                    println "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
+                }
+            }
+        }
+    }
 }
 
 project(":core") {
