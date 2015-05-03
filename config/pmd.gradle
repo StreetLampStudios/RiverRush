@@ -12,6 +12,3 @@ pmdTest {
     ruleSetFiles = files("${rootProject.rootDir}/config/pmd-test.xml")
     ruleSets = [ ]
 }
-
-
-report.dependsOn pmdMain, pmdTest

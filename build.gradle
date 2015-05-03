@@ -60,9 +60,9 @@ allprojects {
                     name:  'hamcrest-all',
                     version: '1.3'
     }
-
+}
+subprojects {
     // Reporting plugins, executed with 'gradle report'
-    task('report') << { }
     apply from: "${rootProject.rootDir}/config/checkstyle.gradle" // Checkstyle
     apply from: "${rootProject.rootDir}/config/pmd.gradle"        // PMD
     apply from: "${rootProject.rootDir}/config/findbugs.gradle"   // Findbugs
@@ -75,6 +75,12 @@ project(":core") {
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     }
+
+    // Reporting plugins, executed with 'gradle report'
+    apply from: "${rootProject.rootDir}/config/checkstyle.gradle" // Checkstyle
+    apply from: "${rootProject.rootDir}/config/pmd.gradle"        // PMD
+    apply from: "${rootProject.rootDir}/config/findbugs.gradle"   // Findbugs
+    apply from: "${rootProject.rootDir}/config/cobertura.gradle"  // Cobertura
 }
 
 project(":desktop") {

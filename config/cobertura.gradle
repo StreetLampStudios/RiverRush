@@ -7,4 +7,4 @@ cobertura {
     coverageReportDir = file("${buildDir}/reports/cobertura")
 }
 
-report.finalizedBy(project.tasks.cobertura)
+check.finalizedBy(project.tasks.cobertura)

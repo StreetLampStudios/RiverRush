@@ -5,7 +5,7 @@ checkstyleMain {
     reports {
         include ( '**/*.java')
         xml {
-           destination "${buildDir}/reports/checkstyle/report.xml" 
+           destination "${buildDir}/reports/checkstyle/main.xml" 
         }
     }
     configFile = new File("${rootProject.rootDir}/config/checkstyle-test.xml")
@@ -16,29 +16,22 @@ checkstyleTest {
     reports {
         include ( '**/*.java')
         xml {
-           destination "${buildDir}/reports/checkstyle/report-test.xml" 
+           destination "${buildDir}/reports/checkstyle/test.xml" 
         }
     }
     configFile = new File("${rootProject.rootDir}/config/checkstyle.xml")
 } 
  
-report << {
-    if (file("$buildDir/reports/checkstyle/report.xml").exists()) {
-        println "Generating Checkstyle report for ${project} in directory:"
-        println "\t$buildDir/reports/checkstyle/checkstyle.html"
-        ant.xslt(in: "$buildDir/reports/checkstyle/report.xml",
+check << {
+    genReport("main")
+    genReport("test")
+}
+
+def genReport(type) {
+    if (file("$buildDir/reports/checkstyle/${type}.xml").exists()) {
+        ant.xslt(in: "$buildDir/reports/checkstyle/${type}.xml",
             style:"${rootProject.rootDir}/config/checkstyle.xsl",
-            out:"$buildDir/reports/checkstyle/checkstyle.html"
-        )
-    }
-    if (file("$buildDir/reports/checkstyle/report-test.xml").exists()) {
-        println "Generating Checkstyle test report for ${project} in directory:"
-        println "\t$buildDir/reports/checkstyle/checkstyle-test.html"
-        ant.xslt(in: "$buildDir/reports/checkstyle/report-test.xml",
-            style:"${rootProject.rootDir}/config/checkstyle.xsl",
-            out:"$buildDir/reports/checkstyle/checkstyle-test.html"
+            out:"$buildDir/reports/checkstyle/${type}.html"
         )
     }
 }
- 
-report.dependsOn checkstyleMain, checkstyleTest

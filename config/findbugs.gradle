@@ -3,7 +3,7 @@ apply plugin: 'findbugs'
 findbugs {
     ignoreFailures = true
     toolVersion = "3.0.1"
-    sourceSets = [sourceSets.main]
+    sourceSets = [ project.sourceSets.main ]
     reportsDir = file("${project.buildDir}/reports/findbugs")
     effort = "max"
 }
@@ -14,5 +14,3 @@ findbugsMain {
         html.enabled = true
     }
 }
-
-report.dependsOn findbugsMain
