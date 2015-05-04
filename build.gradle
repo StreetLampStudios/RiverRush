@@ -15,6 +15,10 @@ plugins {
   id 'net.saliman.cobertura' version '2.2.8'
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2'
+}
+
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
