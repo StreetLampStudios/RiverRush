@@ -1,12 +1,16 @@
 apply plugin: "java"
 apply plugin: "jetty"
 
+sourceCompatibility = 1.8
+sourceSets.main.java.srcDirs = [ "src/main" ]
+sourceSets.test.java.srcDirs = [ "src/test" ]
+
 gwt {
     gwtVersion='2.6.0' // Should match the gwt version used for building the gwt backend
     maxHeapSize="1G" // Default 256m is not enough for gwt compiler. GWT is HUNGRY
     minHeapSize="1G"
 
-    src = files(file("src/main")) // Needs to be in front of "modules" below.
+    src = files(file("${projectDir}/src/main")) // Needs to be in front of "modules" below.
     modules 'nl.tudelft.ti2806.monkeyrush.GdxDefinition'
     devModules 'nl.tudelft.ti2806.monkeyrush.GdxDefinitionSuperdev'
     project.webAppDirName = 'webapp'
@@ -60,10 +64,6 @@ task addSource << {
 
 tasks.compileGwt.dependsOn(addSource)
 tasks.draftCompileGwt.dependsOn(addSource)
-
-sourceCompatibility = 1.8
-sourceSets.main.java.srcDirs = [ "src/main" ]
-sourceSets.test.java.srcDirs = [ "src/test" ]
 
 
 eclipse.project {
