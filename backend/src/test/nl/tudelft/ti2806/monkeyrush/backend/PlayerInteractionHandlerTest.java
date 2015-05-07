@@ -1,5 +1,7 @@
 package nl.tudelft.ti2806.monkeyrush.backend;
 
+import nl.tudelft.ti2806.monkeyrush.backend.network.PlayerInteractionHandler;
+import nl.tudelft.ti2806.monkeyrush.entities.Command;
 import nl.tudelft.ti2806.monkeyrush.failfast.NullException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,21 +10,16 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 /**
- * Tests for the PlayerCommandPublisher.
+ * Tests for the PlayerInteractionHandler.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class PlayerCommandHandlerTest {
+public class PlayerInteractionHandlerTest {
 
     /**
      * To test handler interactions.
      * This mock is not configured to do anything.
      */
-    @Mock private PlayerCommand command;
-
-    /**
-     * To test calls from handler to the game.
-     */
-    @Mock private PlayerCommandObserver game;
+    @Mock private Command command;
 
     /**
      * Test whether a simple byte-sized message is recognized
@@ -30,10 +27,12 @@ public class PlayerCommandHandlerTest {
      */
     @Test
     public void isRegistered_yes_returnsTrue() {
-        PlayerCommandPublisher handler = new PlayerCommandPublisher();
+        PlayerInteractionHandler handler = new PlayerInteractionHandler();
 
-        byte message = 0;
-        handler.registerCommand(message, command);
+        String message = "jump";
+        handler.onReceive(message, command);
+
+
         Assert.assertTrue(handler.isRegistered(message));
     }
 
@@ -43,9 +42,9 @@ public class PlayerCommandHandlerTest {
      */
     @Test
     public void isRegistered_no_returnsFalse() {
-        PlayerCommandPublisher handler = new PlayerCommandPublisher();
+        PlayerInteractionHandler handler = new PlayerInteractionHandler();
 
-        byte message = 0;
+        String message = "jump";
         Assert.assertFalse(handler.isRegistered(message));
     }
 
@@ -54,9 +53,9 @@ public class PlayerCommandHandlerTest {
      */
     @Test(expected = NullException.class)
     public void registerCommand_failsOnNull_1() {
-        PlayerCommandPublisher handler = new PlayerCommandPublisher();
+        PlayerInteractionHandler handler = new PlayerInteractionHandler();
 
-        handler.registerCommand(null, command);
+        handler.onReceive(null, command);
     }
 
     /**
@@ -64,10 +63,10 @@ public class PlayerCommandHandlerTest {
      */
     @Test(expected = NullException.class)
     public void registerCommand_failsOnNull_2() {
-        PlayerCommandPublisher handler = new PlayerCommandPublisher();
+        PlayerInteractionHandler handler = new PlayerInteractionHandler();
 
-        byte message = 0;
-        handler.registerCommand(message, null);
+        String message = "jump";
+        handler.onReceive(message, null);
     }
 
     /**
@@ -75,7 +74,7 @@ public class PlayerCommandHandlerTest {
      */
     @Test(expected = NullException.class)
     public void isRegistered_failsOnNull() {
-        PlayerCommandPublisher handler = new PlayerCommandPublisher();
+        PlayerInteractionHandler handler = new PlayerInteractionHandler();
         handler.isRegistered(null);
     }
 }
