@@ -3,6 +3,7 @@ package nl.tudelft.ti2806.riverrush.network.protocol;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Network message to hold the invariants of the message.
@@ -12,8 +13,13 @@ public class NetworkMessage {
     private final String action;
     private final Map<String, String> keyValueStore;
 
-    public NetworkMessage(String action, final Map<String, String> keyValuePairs) {
+    public NetworkMessage(String action, final Map<String, String> keyValuePairs) throws InvalidActionException {
         FailIf.isNull(action, keyValuePairs);
+
+        if (!Protocol.getActions().contains(action)) {
+            throw new InvalidActionException();
+        }
+
         this.action = action;
         this.keyValueStore = keyValuePairs;
     }
@@ -32,6 +38,15 @@ public class NetworkMessage {
         }
 
         throw new NonExistingKeyException();
+    }
+
+    /**
+     * Return all keys
+     *
+     * @return Set<String> set of all the keys
+     */
+    public Set<String> getKeys() {
+        return keyValueStore.keySet();
     }
 
     /**

@@ -13,38 +13,44 @@ import static org.junit.Assert.assertEquals;
  */
 public class NetworkMessageTest {
 
-    @Test
-    public void testGetValue() throws NonExistingKeyException {
-        Map<String, String> map = new HashMap<>();
-        map.put("key", "value");
-        NetworkMessage networkMessage = new NetworkMessage("join", map);
-        assertEquals("value", networkMessage.getValue("key"));
-    }
-
-    @Test(expected = NonExistingKeyException.class)
-    public void testGetValueNonExistent() throws NonExistingKeyException {
-        Map<String, String> map = new HashMap<>();
-        map.put("key", "value");
-        NetworkMessage networkMessage = new NetworkMessage("join", map);
-        assertEquals("", networkMessage.getValue("key2"));
-    }
-
     @Test(expected = NullException.class)
-    public void testCreateNetworkMessageNullAction() {
+    public void testCreateNetworkMessageNullAction() throws InvalidActionException {
         Map<String, String> map = new HashMap<>();
         NetworkMessage networkMessage = new NetworkMessage(null, map);
     }
 
     @Test(expected = NullException.class)
-    public void testCreateNetworkMessageNullMap() {
-        NetworkMessage networkMessage = new NetworkMessage("join", null);
+    public void testCreateNetworkMessageNullMap() throws InvalidActionException {
+        NetworkMessage networkMessage = new NetworkMessage(Protocol.JOIN_ACTION, null);
+    }
+
+    @Test(expected = InvalidActionException.class)
+    public void testInvalidAction() throws InvalidActionException {
+        Map<String, String> map = new HashMap<>();
+        NetworkMessage networkMessage = new NetworkMessage("test", map);
     }
 
     @Test
-    public void testGetAction() {
+    public void testGetAction() throws InvalidActionException {
         Map<String, String> map = new HashMap<>();
         map.put("key", "value");
-        NetworkMessage networkMessage = new NetworkMessage("join", map);
+        NetworkMessage networkMessage = new NetworkMessage(Protocol.JOIN_ACTION, map);
         assertEquals("join", networkMessage.getAction());
+    }
+
+    @Test
+    public void testGetValue() throws NonExistingKeyException, InvalidActionException {
+        Map<String, String> map = new HashMap<>();
+        map.put("key", "value");
+        NetworkMessage networkMessage = new NetworkMessage(Protocol.JOIN_ACTION, map);
+        assertEquals("value", networkMessage.getValue("key"));
+    }
+
+    @Test(expected = NonExistingKeyException.class)
+    public void testGetValueNonExistent() throws NonExistingKeyException, InvalidActionException {
+        Map<String, String> map = new HashMap<>();
+        map.put("key", "value");
+        NetworkMessage networkMessage = new NetworkMessage(Protocol.JOIN_ACTION, map);
+        assertEquals("", networkMessage.getValue("key2"));
     }
 }
