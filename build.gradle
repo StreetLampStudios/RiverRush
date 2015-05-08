@@ -12,7 +12,6 @@ buildscript {
 }
 
 plugins {
-    id 'net.saliman.cobertura' version '2.2.8'
     id 'wrapper'
 }
 
@@ -44,7 +43,7 @@ subprojects {
     apply from: "${rootProject.rootDir}/config/checkstyle.gradle" // Checkstyle
     apply from: "${rootProject.rootDir}/config/pmd.gradle"        // PMD
     apply from: "${rootProject.rootDir}/config/findbugs.gradle"   // Findbugs
-    apply from: "${rootProject.rootDir}/config/cobertura.gradle"  // Cobertura
+    apply from: "${rootProject.rootDir}/config/jacoco.gradle"     // JaCoCO coverage
 
     // Print test std output to console, including test results.
 
