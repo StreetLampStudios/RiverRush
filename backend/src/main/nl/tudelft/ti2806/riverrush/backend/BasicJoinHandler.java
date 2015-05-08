@@ -1,6 +1,6 @@
 package nl.tudelft.ti2806.riverrush.backend;
 
-import nl.tudelft.ti2806.riverrush.backend.network.PlayerInteractionHandler;
+import nl.tudelft.ti2806.riverrush.network.PlayerInteractionHandler;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Monkey;
 import org.java_websocket.WebSocket;

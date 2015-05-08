@@ -1,7 +1,7 @@
-package nl.tudelft.ti2806.riverrush.backend.network;
+package nl.tudelft.ti2806.riverrush.network;
 
 import nl.tudelft.ti2806.riverrush.backend.JoinHandler;
-import nl.tudelft.ti2806.riverrush.backend.network.protocol.NetworkMessage;
+import nl.tudelft.ti2806.riverrush.network.protocol.NetworkMessage;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;

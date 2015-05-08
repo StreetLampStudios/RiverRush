@@ -1,6 +1,7 @@
-package nl.tudelft.ti2806.riverrush.backend.network;
+package nl.tudelft.ti2806.riverrush.network;
 
-import nl.tudelft.ti2806.riverrush.backend.network.protocol.NetworkMessage;
+import nl.tudelft.ti2806.riverrush.network.Server;
+import nl.tudelft.ti2806.riverrush.network.protocol.NetworkMessage;
 import nl.tudelft.ti2806.riverrush.domain.entity.Command;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 

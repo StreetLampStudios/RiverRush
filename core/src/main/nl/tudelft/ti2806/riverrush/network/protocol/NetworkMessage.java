@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.riverrush.backend.network.protocol;
+package nl.tudelft.ti2806.riverrush.network.protocol;
 
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 

@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.riverrush.backend.network.protocol;
+package nl.tudelft.ti2806.riverrush.network.protocol;
 
 /**
  * Created by thomas on 7-5-15.
