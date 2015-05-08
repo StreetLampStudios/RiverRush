@@ -39,7 +39,7 @@ public class BasicProtocolSerializerTest {
     public void testDeserialize() throws Exception, InvalidProtocolException, InvalidActionException, NonExistingKeyException {
         NetworkMessage networkMessage = protocolSerializer.deserialize("key=value;action=join");
         assertEquals("join", networkMessage.getAction());
-        assertEquals(new String[]{"key"}, networkMessage.getKeys());
+        assertTrue(networkMessage.getKeys().contains("key"));
         assertEquals("value", networkMessage.getValue("key"));
     }
 
