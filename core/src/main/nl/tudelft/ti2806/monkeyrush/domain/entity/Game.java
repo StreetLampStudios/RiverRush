@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.monkeyrush.entities;
+package nl.tudelft.ti2806.monkeyrush.domain.entity;
 
 import nl.tudelft.ti2806.monkeyrush.entities.Player;
 

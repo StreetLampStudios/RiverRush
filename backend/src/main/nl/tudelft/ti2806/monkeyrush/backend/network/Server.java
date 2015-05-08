@@ -1,6 +1,7 @@
 package nl.tudelft.ti2806.monkeyrush.backend.network;
 
 import nl.tudelft.ti2806.monkeyrush.backend.JoinHandler;
+import nl.tudelft.ti2806.monkeyrush.backend.network.protocol.NetworkMessage;
 import nl.tudelft.ti2806.monkeyrush.failfast.FailIf;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
@@ -52,6 +53,8 @@ public class Server extends WebSocketServer {
     @Override
     public void onMessage(final WebSocket conn, final String message) {
         FailIf.isNull(conn, message);
+        final NetworkMessage msg = NetworkMessage.fromString(message);
+        this.commandHandlerMap.get(conn.getRemoteSocketAddress()).receive(msg);
     }
 
     @Override

@@ -6,7 +6,7 @@ import nl.tudelft.ti2806.monkeyrush.state.AnimalState;
 /**
  * Created by thomas on 8-5-15.
  */
-public abstract class AbstractAnimal implements Animal {
+public abstract class AbstractAnimal extends Observable implements Animal {
     protected AnimalState currentState;
 
     public AbstractAnimal() {

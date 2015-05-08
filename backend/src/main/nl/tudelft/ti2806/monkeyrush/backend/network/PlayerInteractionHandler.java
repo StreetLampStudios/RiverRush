@@ -1,7 +1,7 @@
 package nl.tudelft.ti2806.monkeyrush.backend.network;
 
 import nl.tudelft.ti2806.monkeyrush.backend.network.protocol.NetworkMessage;
-import nl.tudelft.ti2806.monkeyrush.entities.Command;
+import nl.tudelft.ti2806.monkeyrush.domain.entity.Command;
 import nl.tudelft.ti2806.monkeyrush.failfast.FailIf;
 
 import java.util.HashMap;
@@ -67,10 +67,11 @@ public class PlayerInteractionHandler {
      * @param message - The received message.
      */
     public void receive(final NetworkMessage message) {
+        FailIf.isNull(message);
+
         Command command = registeredCommands.get(message.getAction());
-        if (command != null) {
-            command.execute();
-        }
+        FailIf.isNull(command);
+        command.execute();
     }
 
     /**

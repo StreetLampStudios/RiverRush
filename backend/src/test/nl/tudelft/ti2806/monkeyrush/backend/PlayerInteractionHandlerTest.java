@@ -1,7 +1,7 @@
 package nl.tudelft.ti2806.monkeyrush.backend;
 
 import nl.tudelft.ti2806.monkeyrush.backend.network.PlayerInteractionHandler;
-import nl.tudelft.ti2806.monkeyrush.entities.Command;
+import nl.tudelft.ti2806.monkeyrush.domain.entity.Command;
 import nl.tudelft.ti2806.monkeyrush.failfast.NullException;
 import org.junit.Assert;
 import org.junit.Test;
