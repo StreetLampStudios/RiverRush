@@ -1,16 +1,16 @@
 package nl.tudelft.ti2806.monkeyrush.entities;
 
-import nl.tudelft.ti2806.monkeyrush.entities.states.PlayerOnBoat;
-import nl.tudelft.ti2806.monkeyrush.entities.states.PlayerState;
+import nl.tudelft.ti2806.monkeyrush.state.AnimalOnBoat;
+import nl.tudelft.ti2806.monkeyrush.state.AnimalState;
 
 /**
  * Created by thomas on 7-5-15.
  */
 public class Player extends Observable {
-    private PlayerState currentState;
+    private AnimalState currentState;
 
     public Player() {
-        currentState = new PlayerOnBoat();
+        currentState = new AnimalOnBoat();
     }
 
     public void jump() {

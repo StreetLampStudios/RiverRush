@@ -23,6 +23,6 @@ public abstract class Observable {
     }
 
     protected void  changed() {
-        changeHandlers.parallelStream().forEach(Command::execute);
+        changeHandlers.forEach(Command::execute);
     }
 }
