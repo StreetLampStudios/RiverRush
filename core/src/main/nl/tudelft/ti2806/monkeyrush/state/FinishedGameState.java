@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.monkeyrush.backend.state;
+package nl.tudelft.ti2806.monkeyrush.state;
 
 /**
  * Created by m.olsthoorn on 5/8/2015.
