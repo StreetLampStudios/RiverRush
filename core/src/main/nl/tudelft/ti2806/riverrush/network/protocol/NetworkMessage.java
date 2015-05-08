@@ -5,38 +5,40 @@ import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 import java.util.Map;
 
 /**
- * Created by thomas on 7-5-15.
+ * Network message to hold the invariants of the message.
  */
 public class NetworkMessage {
+
     private final String action;
     private final Map<String, String> keyValueStore;
-    private static Serializer serializer = new BasicProtocolSerializer();
 
-    public NetworkMessage(String action, final Map<String, String> keyValuePairs ) {
+    public NetworkMessage(String action, final Map<String, String> keyValuePairs) {
+        FailIf.isNull(action, keyValuePairs);
         this.action = action;
         this.keyValueStore = keyValuePairs;
     }
 
-    @Override
-    public String toString() {
-        return serializer.serialize(this);
-    }
+    /**
+     * Get the property value associated with the key
+     *
+     * @param key String
+     * @return String value
+     * @throws NonExistingKeyException
+     */
+    public String getValue(final String key) throws NonExistingKeyException {
+        FailIf.isNull(key);
+        if (keyValueStore.containsKey(key)) {
+            return keyValueStore.get(key);
+        }
 
-    public static NetworkMessage fromString(final String message) {
-        return serializer.deserialize(message);
+        throw new NonExistingKeyException();
     }
 
     /**
-     * Get the property value associated with the key
-     * @param key - The key.
-     * @return The property.
+     * Get the action of the network message
+     *
+     * @return String action
      */
-    public String getValue(final String key) {
-        FailIf.isNull(key);
-
-        return  keyValueStore.get(key);
-    }
-
     public String getAction() {
         return action;
     }
