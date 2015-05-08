@@ -12,8 +12,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 /**
- * Handles incomming connection requests over TCP
- * in an asynchronous way.
+ * Web socket endpoint for the backend to handle incoming tcp request from the client.
  */
 public class Server extends WebSocketServer {
     /**
