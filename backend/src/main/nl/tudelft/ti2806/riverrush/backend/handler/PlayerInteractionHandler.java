@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.riverrush.network;
+package nl.tudelft.ti2806.riverrush.backend.handler;
 
 import nl.tudelft.ti2806.riverrush.network.Server;
 import nl.tudelft.ti2806.riverrush.network.protocol.NetworkMessage;
