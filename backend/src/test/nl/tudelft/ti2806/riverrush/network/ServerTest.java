@@ -1,6 +1,7 @@
-package nl.tudelft.ti2806.riverrush.backend;
+package nl.tudelft.ti2806.riverrush.network;
 
-import nl.tudelft.ti2806.riverrush.network.PlayerInteractionHandler;
+import nl.tudelft.ti2806.riverrush.backend.handler.JoinHandler;
+import nl.tudelft.ti2806.riverrush.backend.handler.PlayerInteractionHandler;
 import nl.tudelft.ti2806.riverrush.network.Server;
 import org.java_websocket.WebSocket;
 import org.junit.Test;

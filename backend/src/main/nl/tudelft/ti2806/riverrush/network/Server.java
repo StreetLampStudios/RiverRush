@@ -1,7 +1,8 @@
 package nl.tudelft.ti2806.riverrush.network;
 
-import nl.tudelft.ti2806.riverrush.backend.JoinHandler;
-import nl.tudelft.ti2806.riverrush.network.protocol.NetworkMessage;
+import nl.tudelft.ti2806.riverrush.backend.handler.JoinHandler;
+import nl.tudelft.ti2806.riverrush.backend.handler.PlayerInteractionHandler;
+import nl.tudelft.ti2806.riverrush.network.protocol.*;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
@@ -15,6 +16,7 @@ import java.util.Map;
  * Web socket endpoint for the backend to handle incoming tcp request from the client.
  */
 public class Server extends WebSocketServer {
+
     /**
      * Maps a remote address to a handler for player actions.
      */
@@ -52,8 +54,16 @@ public class Server extends WebSocketServer {
     @Override
     public void onMessage(final WebSocket conn, final String message) {
         FailIf.isNull(conn, message);
-        final NetworkMessage msg = NetworkMessage.fromString(message);
-        this.commandHandlerMap.get(conn.getRemoteSocketAddress()).receive(msg);
+        ProtocolSerializer protocolSerializer = new BasicProtocolSerializer();
+        final NetworkMessage msg;
+        try {
+            msg = protocolSerializer.deserialize(message);
+            this.commandHandlerMap.get(conn.getRemoteSocketAddress()).receive(msg);
+        } catch (InvalidProtocolException e) {
+            e.printStackTrace();
+        } catch (InvalidActionException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
