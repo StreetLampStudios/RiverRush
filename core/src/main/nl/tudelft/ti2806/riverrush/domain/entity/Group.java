@@ -1,7 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.entity;
 
 /**
- * Created by m.olsthoorn on 5/8/2015.
+ * Abstract group representation. A group is a team either on a boat or in the lobby.
  */
 public interface Group {
 }

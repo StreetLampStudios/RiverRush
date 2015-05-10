@@ -7,38 +7,38 @@ import org.java_websocket.handshake.ServerHandshake;
 import java.net.URI;
 
 /**
- * Web socket client for connecting to the backend endpoint
+ * Web socket client for connecting to the backend endpoint.
  */
 public class Client extends WebSocketClient {
     /**
-     * Constructs a WebSocketClient instance and sets it to the connect to the
-     * specified URI. The channel does not attampt to connect automatically. You
-     * must call <var>connect</var> first to initiate the socket connection.
+     * Constructs a WebSocketClient instance and sets it to the connect to the specified URI.
+     * The channel does not attampt to connect automatically.
+     * You must call {@code connect} first to initiate the socket connection.
      *
-     * @param serverUri
-     * @param draft
+     * @param serverUri - The remote uri of the server.
+     * @param draft - The websocket draft to use.
      */
-    public Client(URI serverUri, Draft draft) {
+    public Client(final URI serverUri, final Draft draft) {
         super(serverUri, draft);
     }
 
     @Override
-    public void onOpen(ServerHandshake handshakedata) {
+    public void onOpen(final ServerHandshake handshakedata) {
 
     }
 
     @Override
-    public void onMessage(String message) {
+    public void onMessage(final String message) {
 
     }
 
     @Override
-    public void onClose(int code, String reason, boolean remote) {
+    public void onClose(final int code, final String reason, final boolean remote) {
 
     }
 
     @Override
-    public void onError(Exception ex) {
+    public void onError(final Exception ex) {
 
     }
 }

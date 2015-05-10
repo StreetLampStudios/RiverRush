@@ -1,7 +1,7 @@
 package nl.tudelft.ti2806.riverrush.state;
 
 /**
- * Created by m.olsthoorn on 5/8/2015.
+ * State in which the game is waiting for players to join.
  */
 public class WaitingGameState implements GameState {
 }

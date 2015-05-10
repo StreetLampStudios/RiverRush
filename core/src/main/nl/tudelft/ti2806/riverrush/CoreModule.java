@@ -17,8 +17,12 @@ public class CoreModule extends AbstractModule {
         bind(EventDispatcher.class).toProvider(BasicEventDispatcher::new);
     }
 
+    /**
+     * Configure the protocol by registering all valid messages that can be sent.
+     * @return The fully configured protocol.
+     */
     private Protocol configureProtocol() {
-        Protocol protocol = new BasicProtocol();
+        Protocol protocol = BasicProtocol.getInstance();
         // Register available network actions
         // protocol.registerNetworkAction(...);
         protocol.registerNetworkAction(JoinEvent.class, JoinEvent::new);

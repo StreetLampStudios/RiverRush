@@ -7,9 +7,9 @@ package nl.tudelft.ti2806.riverrush.domain.event;
 public interface EventListener {
 
     /**
-     * Handle a Domain Event
+     * Handle a Domain Event.
      *
-     * @param event
+     * @param event - The event to handle.
      */
     void handle(Event event);
 }

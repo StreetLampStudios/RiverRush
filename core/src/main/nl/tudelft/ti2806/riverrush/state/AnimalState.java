@@ -1,8 +1,12 @@
 package nl.tudelft.ti2806.riverrush.state;
 
 /**
- * Created by thomas on 7-5-15.
+ * Represents the state of an animal.
  */
 public interface AnimalState {
+    /**
+     * Animals can jump.
+     * @return The new state when an animal jumps.
+     */
     AnimalState jump();
 }

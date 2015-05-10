@@ -40,13 +40,15 @@ public class Server extends WebSocketServer {
 
     /**
      * Constructs the server, does NOT start it (see the {@link #start()} method).
+     * @param aProvider - A {@link Provider} for {@link EventDispatcher}s.
+     * @param aProtocol - The protocol to use when receiving and sending messages.
      */
     @Inject
-    public Server(final Provider<EventDispatcher> provider, Protocol protocol) {
-        super(new InetSocketAddress(protocol.getPortNumber()));
+    public Server(final Provider<EventDispatcher> aProvider, final Protocol aProtocol) {
+        super(new InetSocketAddress(aProtocol.getPortNumber()));
         this.eventDispatchers = new Hashtable<>();
-        this.protocol = protocol;
-        this.dispatcherProvider = provider;
+        this.protocol = aProtocol;
+        this.dispatcherProvider = aProvider;
     }
 
     @Override

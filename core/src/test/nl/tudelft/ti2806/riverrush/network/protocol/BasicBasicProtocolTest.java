@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests for the basic protocol serializer
+ * Tests for the basic protocol.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class BasicBasicProtocolTest {
@@ -35,30 +35,39 @@ public class BasicBasicProtocolTest {
      */
     private Protocol protocol;
 
+    /**
+     * String representation of a valid serialized event.
+     */
     private String stubEventSerialized;
 
+    /**
+     * String representation of an invalid serialized event.
+     */
     private String unknownEventSerialized;
 
 
+    /**
+     * Initialize the protoco.
+     */
     @Before
     public void setUp() {
-        protocol = new BasicProtocol();
+        protocol = BasicProtocol.getInstance();
         eventStub = new StubNetworkEvent();
         stubEventSerialized =
-                BasicProtocol.ACTION_KEY +
-                BasicProtocol.KEY_VALUE_SEPERATOR +
-                eventStub.getClass().getSimpleName();
+                protocol.getEventTypeFieldKey()
+                        + protocol.getKeyValueSeperator()
+                        + eventStub.getClass().getSimpleName();
 
         unknownEventSerialized =
-                BasicProtocol.ACTION_KEY +
-                BasicProtocol.KEY_VALUE_SEPERATOR +
-                "SomeUnknownEventClass";
+                protocol.getEventTypeFieldKey()
+                        + protocol.getKeyValueSeperator()
+                        + "SomeUnknownEventClass";
     }
 
     @Test
-    public void serialize_callsNetworkEvent() throws Exception, InvalidActionException {
+    public void serialize_callsNetworkEvent() throws InvalidActionException {
         protocol.serialize(eventMock);
-        Mockito.verify(eventMock).serialize();
+        Mockito.verify(eventMock).serialize(protocol);
     }
 
     @Test
@@ -80,14 +89,12 @@ public class BasicBasicProtocolTest {
         protocol.registerNetworkAction(StubNetworkEvent.class, StubNetworkEvent::new);
 
         final String expectedField =
-                "field" +
-                BasicProtocol.KEY_VALUE_SEPERATOR +
-                "HelloWorld" +
-                BasicProtocol.PAIR_SEPERATOR;
+                "field" + protocol.getKeyValueSeperator()
+                + "HelloWorld" + protocol.getPairSeperator();
         NetworkEvent networkMessage = protocol.deserialize(expectedField + stubEventSerialized);
 
         assertTrue(networkMessage instanceof StubNetworkEvent);
-        assertEquals("HelloWorld", ((StubNetworkEvent)networkMessage).getField());
+        assertEquals("HelloWorld", ((StubNetworkEvent) networkMessage).getField());
     }
 
     @Test(expected = InvalidProtocolException.class)
@@ -101,16 +108,22 @@ public class BasicBasicProtocolTest {
     }
 
 
+    /**
+     * Stub event for testing.
+     */
     private class StubNetworkEvent implements NetworkEvent {
+        /**
+         * A dummy field.
+         */
         private String field;
 
         @Override
-        public String serialize() {
-            return "field" + BasicProtocol.KEY_VALUE_SEPERATOR + field;
+        public String serialize(final Protocol p) {
+            return "field" + p.getKeyValueSeperator() + field;
         }
 
         @Override
-        public NetworkEvent deserialize(Map<String, String> keyValuePairs) {
+        public NetworkEvent deserialize(final Map<String, String> keyValuePairs) {
             this.field = keyValuePairs.get("field");
             return this;
         }

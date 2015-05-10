@@ -3,10 +3,15 @@ package nl.tudelft.ti2806.riverrush.failfast;
 /**
  * Utility class for developing code that fails fast.
  */
-public class FailIf {
+public final class FailIf {
 
     /**
-     * Throws {@link AssertionError} when one of the arguments is null
+     * Cannot construct, utility class.
+     */
+    private FailIf() { }
+
+    /**
+     * Throws {@link AssertionError} when one of the arguments is null.
      * @param queries - All objects to check for null.
      */
     public static void isNull(final Object ... queries) {
