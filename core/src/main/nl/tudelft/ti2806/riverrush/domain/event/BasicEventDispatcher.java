@@ -55,9 +55,11 @@ public class BasicEventDispatcher implements EventDispatcher {
 
     @Override
     public void dispatch(final Event event) {
-        this.registeredListeners.get(event.getClass())
-                .forEach(
-                        eventListener -> eventListener.handle(event)
-                );
+        List<EventListener> listeners = this.registeredListeners.get(event.getClass());
+        if (listeners != null) {
+            listeners.forEach(
+                eventListener -> eventListener.handle(event)
+            );
+        }
     }
 }
