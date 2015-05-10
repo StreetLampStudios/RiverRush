@@ -62,6 +62,7 @@ public class Server extends WebSocketServer {
     @Override
     public void onClose(final WebSocket conn, final int code, final String reason, final boolean remote) {
         FailIf.isNull(conn);
+        eventDispatchers.remove(conn.getRemoteSocketAddress());
     }
 
     @Override
