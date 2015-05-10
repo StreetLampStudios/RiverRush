@@ -5,5 +5,4 @@ package nl.tudelft.ti2806.riverrush.domain.event;
  */
 public interface Event {
 
-    String getName();
 }

@@ -3,7 +3,8 @@ package nl.tudelft.ti2806.riverrush.domain.event;
 /**
  * Event listener.
  */
-public interface Listener {
+@FunctionalInterface
+public interface EventListener {
 
     /**
      * Handle a Domain Event

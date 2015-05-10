@@ -1,22 +1,18 @@
 package nl.tudelft.ti2806.riverrush.network.protocol;
 
-import java.util.ArrayList;
-import java.util.Set;
+import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
 
-/**
- * Protocol class with the predefined actions
- */
-public class Protocol {
+public interface Protocol {
+    void registerNetworkAction(Class<? extends NetworkEvent> eventClass, EventInstantiator eventInstatiator);
+    boolean isRegistered(Class<? extends NetworkEvent> eventClass);
 
-    public static final String JOIN_ACTION = "join";
-    public static final String LEAVE_ACTION = "leave";
-    public static final String JUMP_ACTION = "jump";
+    NetworkEvent deserialize(String event) throws InvalidProtocolException, InvalidActionException;
+    String serialize(NetworkEvent event);
 
-    public static ArrayList<String> getActions() {
-        ArrayList<String> actions = new ArrayList<>();
-        actions.add(JOIN_ACTION);
-        actions.add(LEAVE_ACTION);
-        actions.add(JUMP_ACTION);
-        return actions;
+    int getPortNumber();
+
+    @FunctionalInterface
+    interface EventInstantiator {
+        NetworkEvent instantiate();
     }
 }
