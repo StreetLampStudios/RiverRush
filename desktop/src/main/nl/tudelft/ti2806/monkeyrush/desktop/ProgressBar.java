@@ -1,17 +1,17 @@
-package nl.tudelft.ti2806.monkeyrush;
+package nl.tudelft.ti2806.monkeyrush.desktop;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
  * Created by Martijn on 9-5-2015.
  */
-public class Status{
+public class ProgressBar {
 
-    public static Status staticStatus;
+    public static ProgressBar staticStatus;
 
-    public static Status getStatus() {
+    public static ProgressBar getStatus() {
         if(staticStatus == null){
-            staticStatus = new Status();
+            staticStatus = new ProgressBar();
         }
         return staticStatus;
     }
