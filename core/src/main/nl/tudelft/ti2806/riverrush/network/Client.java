@@ -16,55 +16,55 @@ import java.net.URI;
  */
 public class Client extends WebSocketClient implements EventListener {
 
-  private Protocol prot;
+    private Protocol prot;
 
-  private EventDispatcher dispatch;
+    private EventDispatcher dispatch;
 
-  /**
-   * Constructs a WebSocketClient instance and sets it to the connect to the
-   * specified URI. The channel does not attampt to connect automatically. You
-   * must call {@code connect} first to initiate the socket connection.
-   *
-   * @param serverUri - The remote uri of the server.
-   * @param draft     - The websocket draft to use.
-   */
-  public Client(final URI serverUri, final Draft draft) {
-    super(serverUri, draft);
-  }
+    /**
+     * Constructs a WebSocketClient instance and sets it to the connect to the
+     * specified URI. The channel does not attampt to connect automatically. You
+     * must call {@code connect} first to initiate the socket connection.
+     *
+     * @param serverUri - The remote uri of the server.
+     * @param draft     - The websocket draft to use.
+     */
+    public Client(final URI serverUri, final Draft draft) {
+        super(serverUri, draft);
+    }
 
-  @Override
-  public void onOpen(final ServerHandshake handshakedata) {
+    @Override
+    public void onOpen(final ServerHandshake handshakedata) {
 
-  }
+    }
 
-  @Override
-  public void onMessage(final String message) {
-    Event event = this.prot.deserialize(message);
-    this.dispatch.dispatch(event);
-  }
+    @Override
+    public void onMessage(final String message) {
+        Event event = this.prot.deserialize(message);
+        this.dispatch.dispatch(event);
+    }
 
-  @Override
-  public void onClose(final int code, final String reason,
-                      final boolean remote) {
+    @Override
+    public void onClose(final int code, final String reason,
+                        final boolean remote) {
 
-  }
+    }
 
-  @Override
-  public void onError(final Exception ex) {
+    @Override
+    public void onError(final Exception ex) {
 
-  }
+    }
 
-  @Override
-  public void handle(Event event) {
-    this.send(this.prot.serialize(event));
-  }
+    @Override
+    public void handle(Event event) {
+        this.send(this.prot.serialize(event));
+    }
 
-  @Inject
-  public void setProt(Protocol prot) {
-    this.prot = prot;
-  }
+    @Inject
+    public void setProt(Protocol prot) {
+        this.prot = prot;
+    }
 
-  public void setDispatch(EventDispatcher dispatch) {
-    this.dispatch = dispatch;
-  }
+    public void setDispatch(EventDispatcher dispatch) {
+        this.dispatch = dispatch;
+    }
 }

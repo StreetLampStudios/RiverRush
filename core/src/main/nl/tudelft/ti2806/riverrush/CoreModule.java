@@ -11,24 +11,24 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
  * Configures dependency injection.
  */
 public class CoreModule extends AbstractModule {
-  @Override
-  protected void configure() {
-    this.bind(Protocol.class).toInstance(this.configureProtocol());
-    this.bind(EventDispatcher.class).toProvider(BasicEventDispatcher::new);
-  }
+    @Override
+    protected void configure() {
+        this.bind(Protocol.class).toInstance(this.configureProtocol());
+        this.bind(EventDispatcher.class).toProvider(BasicEventDispatcher::new);
+    }
 
-  /**
-   * Configure the protocol by registering all valid messages that can be
-   * sent.
-   *
-   * @return The fully configured protocol.
-   */
-  private Protocol configureProtocol() {
-    Protocol protocol = BasicProtocol.getInstance();
-    // Register available network actions
-    // protocol.registerNetworkAction(...);
-    protocol.registerNetworkAction(JoinEvent.class, JoinEvent::new);
+    /**
+     * Configure the protocol by registering all valid messages that can be
+     * sent.
+     *
+     * @return The fully configured protocol.
+     */
+    private Protocol configureProtocol() {
+        Protocol protocol = BasicProtocol.getInstance();
+        // Register available network actions
+        // protocol.registerNetworkAction(...);
+        protocol.registerNetworkAction(JoinEvent.class, JoinEvent::new);
 
-    return protocol;
-  }
+        return protocol;
+    }
 }

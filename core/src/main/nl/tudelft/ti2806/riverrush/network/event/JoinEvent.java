@@ -10,19 +10,19 @@ import java.util.Map;
  */
 public class JoinEvent implements Event {
 
-  @Override
-  public String serialize(Protocol protocol) {
-    return "";
-  }
+    @Override
+    public String serialize(Protocol protocol) {
+        return "";
+    }
 
-  /**
-   * A join request has no parameters. Thus, {@code keyValuePairs} is ignored.
-   *
-   * @param keyValuePairs - Ignored.
-   * @return Just {@code this}.
-   */
-  @Override
-  public Event deserialize(final Map<String, String> keyValuePairs) {
-    return this;
-  }
+    /**
+     * A join request has no parameters. Thus, {@code keyValuePairs} is ignored.
+     *
+     * @param keyValuePairs - Ignored.
+     * @return Just {@code this}.
+     */
+    @Override
+    public Event deserialize(final Map<String, String> keyValuePairs) {
+        return this;
+    }
 }

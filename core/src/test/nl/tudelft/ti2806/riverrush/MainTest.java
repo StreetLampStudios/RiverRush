@@ -9,11 +9,11 @@ import static org.junit.Assert.assertTrue;
  */
 public class MainTest {
 
-  /**
-   * Some BS jdoc.
-   */
-  @Test
-  public void testMain() {
-    assertTrue(true);
-  }
+    /**
+     * Some BS jdoc.
+     */
+    @Test
+    public void testMain() {
+        assertTrue(true);
+    }
 }

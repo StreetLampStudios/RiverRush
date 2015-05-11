@@ -6,12 +6,12 @@ package nl.tudelft.ti2806.riverrush.failfast;
  */
 public final class NullException extends FailFastException {
 
-  /**
-   * Construct the exception with a clarifying message.
-   *
-   * @param message - The message.
-   */
-  public NullException(final String message) {
-    super(message);
-  }
+    /**
+     * Construct the exception with a clarifying message.
+     *
+     * @param message - The message.
+     */
+    public NullException(final String message) {
+        super(message);
+    }
 }

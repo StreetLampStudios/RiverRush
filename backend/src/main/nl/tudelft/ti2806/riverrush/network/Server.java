@@ -24,70 +24,70 @@ import java.util.Map;
 @Singleton
 public class Server extends WebSocketServer {
 
-  /**
-   * Maps a remote address to a handler for player actions.
-   */
-  private final Map<InetSocketAddress, EventDispatcher> eventDispatchers;
+    /**
+     * Maps a remote address to a handler for player actions.
+     */
+    private final Map<InetSocketAddress, EventDispatcher> eventDispatchers;
 
-  /**
-   * Provides instances of EventDispatcher when a client joins.
-   */
-  private final Provider<EventDispatcher> dispatcherProvider;
+    /**
+     * Provides instances of EventDispatcher when a client joins.
+     */
+    private final Provider<EventDispatcher> dispatcherProvider;
 
-  /**
-   * The protocol used to serialize/deserialize network messages.
-   */
-  private final Protocol protocol;
+    /**
+     * The protocol used to serialize/deserialize network messages.
+     */
+    private final Protocol protocol;
 
-  /**
-   * Constructs the server, does NOT start it (see the {@link #start()}
-   * method).
-   *
-   * @param aProvider - A {@link Provider} for {@link EventDispatcher}s.
-   * @param aProtocol - The protocol to use when receiving and sending messages.
-   */
-  @Inject
-  public Server(final Provider<EventDispatcher> aProvider,
-                final Protocol aProtocol) {
-    super(new InetSocketAddress(aProtocol.getPortNumber()));
-    this.eventDispatchers = new Hashtable<>();
-    this.protocol = aProtocol;
-    this.dispatcherProvider = aProvider;
-  }
-
-  @Override
-  public void onOpen(final WebSocket conn, final ClientHandshake handshake) {
-    FailIf.isNull(conn);
-    EventDispatcher dispatcher = this.dispatcherProvider.get();
-    this.eventDispatchers.put(conn.getRemoteSocketAddress(), dispatcher);
-  }
-
-  @Override
-  public void onClose(final WebSocket conn, final int code,
-                      final String reason, final boolean remote) {
-    FailIf.isNull(conn);
-    this.eventDispatchers.remove(conn.getRemoteSocketAddress());
-  }
-
-  @Override
-  public void onMessage(final WebSocket conn, final String message) {
-    FailIf.isNull(conn, message);
-    final Event event;
-    try {
-      event = this.protocol.deserialize(message);
-
-      EventDispatcher dispatcher = this.eventDispatchers.get(conn
-        .getRemoteSocketAddress());
-      dispatcher.dispatch(event);
-
-    } catch (InvalidProtocolException | InvalidActionException e) {
-      e.printStackTrace();
+    /**
+     * Constructs the server, does NOT start it (see the {@link #start()}
+     * method).
+     *
+     * @param aProvider - A {@link Provider} for {@link EventDispatcher}s.
+     * @param aProtocol - The protocol to use when receiving and sending messages.
+     */
+    @Inject
+    public Server(final Provider<EventDispatcher> aProvider,
+                  final Protocol aProtocol) {
+        super(new InetSocketAddress(aProtocol.getPortNumber()));
+        this.eventDispatchers = new Hashtable<>();
+        this.protocol = aProtocol;
+        this.dispatcherProvider = aProvider;
     }
-  }
 
-  @Override
-  public void onError(final WebSocket conn, final Exception ex) {
-    FailIf.isNull(conn, ex);
-  }
+    @Override
+    public void onOpen(final WebSocket conn, final ClientHandshake handshake) {
+        FailIf.isNull(conn);
+        EventDispatcher dispatcher = this.dispatcherProvider.get();
+        this.eventDispatchers.put(conn.getRemoteSocketAddress(), dispatcher);
+    }
+
+    @Override
+    public void onClose(final WebSocket conn, final int code,
+                        final String reason, final boolean remote) {
+        FailIf.isNull(conn);
+        this.eventDispatchers.remove(conn.getRemoteSocketAddress());
+    }
+
+    @Override
+    public void onMessage(final WebSocket conn, final String message) {
+        FailIf.isNull(conn, message);
+        final Event event;
+        try {
+            event = this.protocol.deserialize(message);
+
+            EventDispatcher dispatcher = this.eventDispatchers.get(conn
+                .getRemoteSocketAddress());
+            dispatcher.dispatch(event);
+
+        } catch (InvalidProtocolException | InvalidActionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onError(final WebSocket conn, final Exception ex) {
+        FailIf.isNull(conn, ex);
+    }
 
 }

@@ -1,14 +1,14 @@
-package nl.tudelft.ti2806.riverrush.domain.event;
+package nl.tudelft.ti2806.riverrush.network.event;
 
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
 
 /**
- * Domain event.
+ * Created by thomas on 11-5-15.
  */
-public interface Event {
-
+public interface NetworkEvent extends Event {
     /**
      * Serialize the current event to it's string representation.
      *
@@ -25,5 +25,4 @@ public interface Event {
      * @return The fully initialized event, ready for dispatch.
      */
     Event deserialize(Map<String, String> keyValuePairs);
-
 }
