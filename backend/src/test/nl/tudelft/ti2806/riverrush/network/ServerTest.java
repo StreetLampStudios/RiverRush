@@ -1,12 +1,17 @@
 package nl.tudelft.ti2806.riverrush.network;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Provider;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
+import java.net.InetSocketAddress;
+
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
+
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.junit.Before;
@@ -14,10 +19,10 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.net.InetSocketAddress;
-
-import static org.mockito.Mockito.*;
-
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Provider;
 
 /**
  * Tests for the socket layer Server class.
@@ -64,49 +69,47 @@ public class ServerTest extends AbstractModule {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         InetSocketAddress address = new InetSocketAddress(0);
-        when(webSocketMock.getRemoteSocketAddress())
-                .thenReturn(address);
+        when(this.webSocketMock.getRemoteSocketAddress()).thenReturn(address);
 
-        when(providerMock.get())
-                .thenReturn(dispatcherMock);
+        when(this.providerMock.get()).thenReturn(this.dispatcherMock);
 
-        injector = Guice.createInjector(this);
-        server = injector.getInstance(Server.class);
+        this.injector = Guice.createInjector(this);
+        this.server = this.injector.getInstance(Server.class);
     }
 
     /**
-     * When onOpen() is called, the server needs to create
-     * a new EventDispatcher using the provider.
-     * The server should also use the remote address of the socket.
+     * When onOpen() is called, the server needs to create a new EventDispatcher
+     * using the provider. The server should also use the remote address of the
+     * socket.
      */
     @Test
     public void onOpen_callsProvider() {
-        server.onOpen(webSocketMock, mock(ClientHandshake.class));
-        verify(webSocketMock).getRemoteSocketAddress();
-        verify(providerMock).get();
+        this.server.onOpen(this.webSocketMock, mock(ClientHandshake.class));
+        verify(this.webSocketMock).getRemoteSocketAddress();
+        verify(this.providerMock).get();
     }
 
     /**
-     * onClose should use the remote address to
-     * delete the dispatcher from dispatcher list.
+     * onClose should use the remote address to delete the dispatcher from
+     * dispatcher list.
      */
     @Test
     public void onClose_usesRemoteAddress() {
-        server.onClose(webSocketMock, 0, "", true);
-        verify(webSocketMock).getRemoteSocketAddress();
-        verifyNoMoreInteractions(webSocketMock);
+        this.server.onClose(this.webSocketMock, 0, "", true);
+        verify(this.webSocketMock).getRemoteSocketAddress();
+        verifyNoMoreInteractions(this.webSocketMock);
     }
 
     /**
-     * onMessage should use the Protocol to create an event,
-     * and then dispatch the event via EventDispatcher.
+     * onMessage should use the Protocol to create an event, and then dispatch
+     * the event via EventDispatcher.
      */
     @Test
     public void onMessage_usesProtocolAndDispatches() {
-        server.onOpen(webSocketMock, mock(ClientHandshake.class));
-        server.onMessage(webSocketMock, "HelloWorld");
-        verify(protocolMock).deserialize("HelloWorld");
-        verify(dispatcherMock).dispatch(any(NetworkEvent.class));
+        this.server.onOpen(this.webSocketMock, mock(ClientHandshake.class));
+        this.server.onMessage(this.webSocketMock, "HelloWorld");
+        verify(this.protocolMock).deserialize("HelloWorld");
+        verify(this.dispatcherMock).dispatch(any(Event.class));
     }
 
     /**
@@ -114,11 +117,11 @@ public class ServerTest extends AbstractModule {
      */
     @Override
     protected void configure() {
-        bind(Protocol.class).toInstance(protocolMock);
+        this.bind(Protocol.class).toInstance(this.protocolMock);
 
         // Every time a new EventDispatcher is requested by code under test,
         // Guice will inject a fresh mock.
-        bind(EventDispatcher.class).toProvider(providerMock);
-        bind(Server.class);
+        this.bind(EventDispatcher.class).toProvider(this.providerMock);
+        this.bind(Server.class);
     }
 }
