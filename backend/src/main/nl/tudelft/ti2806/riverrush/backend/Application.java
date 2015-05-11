@@ -13,44 +13,43 @@ import nl.tudelft.ti2806.riverrush.state.WaitingGameState;
  */
 public class Application extends AbstractModule {
 
-    /**
-     * The current state of the game.
-     */
-    private GameState gameState;
+  /**
+   * A {@link Server} that fires NetworkEvents for listeners to handle.
+   */
+  private final Server server;
+  /**
+   * The current state of the game.
+   */
+  private GameState gameState;
 
-    /**
-     * A {@link Server} that fires NetworkEvents for listeners to handle.
-     */
-    private final Server server;
+  /**
+   * Construct an application.
+   */
+  public Application() {
+    this.gameState = new WaitingGameState();
+    Injector injector = Guice.createInjector(new CoreModule(), this);
+    this.server = injector.getInstance(Server.class);
+  }
 
-    /**
-     * Construct an application.
-     */
-    public Application() {
-        this.gameState = new WaitingGameState();
-        Injector injector = Guice.createInjector(new CoreModule(), this);
-        this.server = injector.getInstance(Server.class);
-    }
+  /**
+   * Starts the application.
+   */
+  public void start() {
 
-    /**
-     * Starts the application.
-     */
-    public void start() {
+  }
 
-    }
+  /**
+   * Stops the application.
+   */
+  public void stop() {
 
-    /**
-     * Stops the application.
-     */
-    public void stop() {
+  }
 
-    }
-
-    /**
-     * Configure dependency injection.
-     */
-    @Override
-    protected void configure() {
-        bind(Server.class);
-    }
+  /**
+   * Configure dependency injection.
+   */
+  @Override
+  protected void configure() {
+    bind(Server.class);
+  }
 }

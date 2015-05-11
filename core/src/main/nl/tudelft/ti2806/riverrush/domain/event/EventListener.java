@@ -6,10 +6,10 @@ package nl.tudelft.ti2806.riverrush.domain.event;
 @FunctionalInterface
 public interface EventListener {
 
-    /**
-     * Handle a Domain Event.
-     *
-     * @param event - The event to handle.
-     */
-    void handle(Event event);
+  /**
+   * Handle a Domain Event.
+   *
+   * @param event - The event to handle.
+   */
+  void handle(Event event);
 }
