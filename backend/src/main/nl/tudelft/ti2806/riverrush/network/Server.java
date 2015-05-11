@@ -1,24 +1,21 @@
 package nl.tudelft.ti2806.riverrush.network;
 
-import java.net.InetSocketAddress;
-import java.util.Hashtable;
-import java.util.Map;
-
-import javax.inject.Provider;
-
-import nl.tudelft.ti2806.riverrush.domain.event.Event;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
+import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.InvalidActionException;
 import nl.tudelft.ti2806.riverrush.network.protocol.InvalidProtocolException;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
-
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Provider;
+import java.net.InetSocketAddress;
+import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * Web socket endpoint for the backend to handle incoming tcp request from the
@@ -77,7 +74,7 @@ public class Server extends WebSocketServer {
     @Override
     public void onMessage(final WebSocket conn, final String message) {
         FailIf.isNull(conn, message);
-        final Event event;
+        final NetworkEvent event;
         try {
             event = this.protocol.deserialize(message);
 

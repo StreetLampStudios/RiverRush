@@ -1,18 +1,17 @@
 package nl.tudelft.ti2806.riverrush.network.protocol;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Map;
-
-import nl.tudelft.ti2806.riverrush.domain.event.Event;
-
+import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for the basic protocol.
@@ -23,13 +22,13 @@ public class BasicBasicProtocolTest {
     /**
      * Stub for the event to send over the network.
      */
-    private Event eventStub;
+    private NetworkEvent eventStub;
 
     /**
      * Mock for an event.
      */
     @Mock
-    private Event eventMock;
+    private NetworkEvent eventMock;
 
     /**
      * Class under test.
@@ -78,9 +77,9 @@ public class BasicBasicProtocolTest {
     @Test
     public void testDeserializeActionOnly() throws InvalidProtocolException,
             InvalidActionException {
-        Event expected = new StubEvent();
+        NetworkEvent expected = new StubEvent();
         this.protocol.registerNetworkAction(StubEvent.class, () -> expected);
-        Event actualEvent = this.protocol.deserialize(this.stubEventSerialized);
+        NetworkEvent actualEvent = this.protocol.deserialize(this.stubEventSerialized);
         assertEquals(expected, actualEvent);
     }
 
@@ -92,7 +91,7 @@ public class BasicBasicProtocolTest {
         final String expectedField = "field"
                 + this.protocol.getKeyValueSeperator() + "HelloWorld"
                 + this.protocol.getPairSeperator();
-        Event networkMessage = this.protocol.deserialize(expectedField
+        NetworkEvent networkMessage = this.protocol.deserialize(expectedField
                 + this.stubEventSerialized);
 
         assertTrue(networkMessage instanceof StubEvent);
@@ -114,7 +113,7 @@ public class BasicBasicProtocolTest {
     /**
      * Stub event for testing.
      */
-    private class StubEvent implements Event {
+    private class StubEvent implements NetworkEvent {
         /**
          * A dummy field.
          */
@@ -126,7 +125,7 @@ public class BasicBasicProtocolTest {
         }
 
         @Override
-        public Event deserialize(final Map<String, String> keyValuePairs) {
+        public NetworkEvent deserialize(final Map<String, String> keyValuePairs) {
             this.field = keyValuePairs.get("field");
             return this;
         }

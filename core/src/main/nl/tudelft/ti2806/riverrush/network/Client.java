@@ -1,26 +1,25 @@
 package nl.tudelft.ti2806.riverrush.network;
 
-import java.net.URI;
-
+import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventListener;
+import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
-
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ServerHandshake;
 
-import com.google.inject.Inject;
+import java.net.URI;
 
 /**
  * Web socket client for connecting to the backend endpoint.
  */
 public class Client extends WebSocketClient implements EventListener {
 
-    private Protocol prot;
+    private Protocol protocol;
 
-    private EventDispatcher dispatch;
+    private EventDispatcher dispatcher;
 
     /**
      * Constructs a WebSocketClient instance and sets it to the connect to the
@@ -43,8 +42,8 @@ public class Client extends WebSocketClient implements EventListener {
 
     @Override
     public void onMessage(final String message) {
-        Event event = this.prot.deserialize(message);
-        this.dispatch.dispatch(event);
+        NetworkEvent event = this.protocol.deserialize(message);
+        this.dispatcher.dispatch(event);
     }
 
     @Override
@@ -59,16 +58,17 @@ public class Client extends WebSocketClient implements EventListener {
     }
 
     @Override
-    public void handle(Event event) {
-        this.send(this.prot.serialize(event));
+    public void handle(final Event event) {
+        this.send(this.protocol.serialize((NetworkEvent) event));
     }
 
     @Inject
-    public void setProt(Protocol prot) {
-        this.prot = prot;
+    public void setProtocol(final Protocol p) {
+        this.protocol = p;
     }
 
-    public void setDispatch(EventDispatcher dispatch) {
-        this.dispatch = dispatch;
+    @Inject
+    public void setDispatcher(final EventDispatcher d) {
+        this.dispatcher = d;
     }
 }
