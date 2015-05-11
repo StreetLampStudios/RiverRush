@@ -4,7 +4,7 @@ sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/main" ]
 sourceSets.test.java.srcDirs = [ "src/test" ]
 
-project.ext.mainClassName = "nl.tudelft.ti2806.monkeyrush.desktop.DesktopLauncher"
+project.ext.mainClassName = "nl.tudelft.ti2806.riverrush.desktop.DesktopLauncher"
 project.ext.assetsDir = new File("../assets");
 
 task run(dependsOn: classes, type: JavaExec) {
