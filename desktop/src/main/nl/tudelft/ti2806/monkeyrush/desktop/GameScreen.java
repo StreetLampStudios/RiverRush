@@ -2,8 +2,6 @@ package nl.tudelft.ti2806.monkeyrush.desktop;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,11 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-public class GameScreen implements Screen {
+public class GameScreen extends AbstractScreen {
 
     private static int WIDTH = 800;
     private static int HEIGHT = 480;
-    private final RiverGame game;
     public OrthographicCamera camera;
     public InputProcessor processor;
     private Stage leftStage;
@@ -33,10 +30,10 @@ public class GameScreen implements Screen {
     private Label title, author;
     private TextureAtlas atlas;
     public Level level;
-    private AssetManager manager = new AssetManager();
 
-    public GameScreen(RiverGame gm) {
-        this.game = gm;
+    public GameScreen(RiverGame game) {
+        // this.game = gm;
+        super(game);
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false, WIDTH, HEIGHT);
         this.level = new Level(this);
@@ -45,11 +42,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        this.manager.load("data/boat.jpg", Texture.class);
-        this.manager.finishLoading();
-        // Assets.manager.clear();
-        // Assets.loading();
-
         this.leftStage = new Stage();
         this.midStage = new Stage();
         this.rightStage = new Stage();
@@ -97,36 +89,33 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        this.camera.update();
+        this.game.batch.setProjectionMatrix(this.camera.combined);
+        this.game.batch.begin();
 
-        if (this.manager.update()) {
-            this.camera.update();
-            this.game.batch.setProjectionMatrix(this.camera.combined);
-            this.game.batch.begin();
+        // As if its paused for now
+        // this.game.font.draw(this.game.batch, "HELLO", 350, 300);
+        // this.game.font.draw(this.game.batch, "EYY", 350, 250);
 
-            // As if its paused for now
-            // this.game.font.draw(this.game.batch, "HELLO", 350, 300);
-            // this.game.font.draw(this.game.batch, "EYY", 350, 250);
+        this.game.batch.end();
+        this.leftStage.act(Gdx.graphics.getDeltaTime());
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth() / 3,
+                Gdx.graphics.getHeight());
+        this.leftStage.draw();
 
-            this.game.batch.end();
-            this.leftStage.act(Gdx.graphics.getDeltaTime());
-            Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth() / 3,
-                    Gdx.graphics.getHeight());
-            this.leftStage.draw();
+        this.midStage.act(Gdx.graphics.getDeltaTime());
+        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 3, 0,
+                Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight());
+        this.midStage.draw();
 
-            this.midStage.act(Gdx.graphics.getDeltaTime());
-            Gdx.gl.glViewport(Gdx.graphics.getWidth() / 3, 0,
-                    Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight());
-            this.midStage.draw();
+        this.rightStage.act(Gdx.graphics.getDeltaTime());
+        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 3 * 2, 0,
+                Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight());
+        this.rightStage.draw();
 
-            this.rightStage.act(Gdx.graphics.getDeltaTime());
-            Gdx.gl.glViewport(Gdx.graphics.getWidth() / 3 * 2, 0,
-                    Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight());
-            this.rightStage.draw();
-
-            for (GameGraphics g : this.level.graphics) {
-                this.game.batch.draw(g.getSprite(), g.getX(), g.getY());
-                g.update();
-            }
+        for (GameGraphics g : this.level.graphics) {
+            this.game.batch.draw(g.getSprite(), g.getX(), g.getY());
+            g.update();
         }
 
     }
