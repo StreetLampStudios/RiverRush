@@ -4,21 +4,13 @@ import com.badlogic.gdx.Screen;
 
 public abstract class AbstractScreen implements Screen {
 
-    protected RiverGame game;
-
-    public AbstractScreen(RiverGame game) {
-        this.game = game;
-    }
 
     @Override
-    public void pause() {
-    }
+    public abstract void pause();
 
     @Override
-    public void resume() {
-    }
+    public abstract void resume();
 
     @Override
-    public void dispose() {
-    }
+    public abstract void dispose();
 }

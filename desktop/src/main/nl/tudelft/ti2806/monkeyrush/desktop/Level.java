@@ -21,6 +21,6 @@ public class Level {
     }
 
     public void run() {
-        this.add(new BoatGraphic("data/boat.jpg", 800, 500));
+        this.add(new BoatGraphic("assets/data/boat.jpg", 800, 500));
     }
 }
