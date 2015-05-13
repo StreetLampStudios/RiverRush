@@ -10,7 +10,7 @@ import java.util.Map;
 public class EchoNetworkEvent implements NetworkEvent {
     @Override
     public String serialize(final Protocol protocol) {
-        return "";
+        return "pizza";
     }
 
     @Override

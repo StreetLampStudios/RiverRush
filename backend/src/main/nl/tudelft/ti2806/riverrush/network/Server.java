@@ -114,6 +114,7 @@ public class Server extends WebSocketServer {
      * @param dispatcher - The dispatcher responsible for the event.
      */
     public void sendEvent(final SendEvent event, final EventDispatcher dispatcher) {
+        System.out.println("Sending " + event.serialize(protocol));
         WebSocket sock = this.sockets.get(dispatcher.getRemoteAddress());
         sock.send(event.serialize(protocol));
     }
