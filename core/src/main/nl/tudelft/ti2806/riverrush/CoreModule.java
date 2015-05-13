@@ -1,7 +1,6 @@
 package nl.tudelft.ti2806.riverrush;
 
 import com.google.inject.AbstractModule;
-import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.network.event.JoinEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.BasicProtocol;
@@ -10,11 +9,11 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 /**
  * Configures dependency injection.
  */
-public class CoreModule extends AbstractModule {
+public abstract class CoreModule extends AbstractModule {
     @Override
     protected void configure() {
         this.bind(Protocol.class).toInstance(this.configureProtocol());
-        this.bind(EventDispatcher.class).toProvider(BasicEventDispatcher::new);
+        this.bind(EventDispatcher.class).toProvider(this::configureEventDispatcher);
     }
 
     /**
@@ -31,4 +30,11 @@ public class CoreModule extends AbstractModule {
 
         return protocol;
     }
+
+    /**
+     * Creates instances of EventDispatcher
+     * Override for the ability to pre-register any listeners.
+     * @return A fresh dispatcher.
+     */
+    protected abstract EventDispatcher configureEventDispatcher();
 }

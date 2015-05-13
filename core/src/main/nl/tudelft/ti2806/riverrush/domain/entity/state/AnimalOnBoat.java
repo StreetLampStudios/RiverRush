@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.riverrush.state;
+package nl.tudelft.ti2806.riverrush.domain.entity.state;
 
 /**
  * Created by thomas on 7-5-15.

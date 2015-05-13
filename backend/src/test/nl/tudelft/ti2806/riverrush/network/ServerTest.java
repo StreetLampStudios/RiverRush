@@ -80,7 +80,7 @@ public class ServerTest extends AbstractModule {
     @Test
     public void onOpen_callsProvider() {
         this.server.onOpen(this.webSocketMock, mock(ClientHandshake.class));
-        verify(this.webSocketMock).getRemoteSocketAddress();
+        verify(this.webSocketMock, atLeastOnce()).getRemoteSocketAddress();
         verify(this.providerMock).get();
     }
 

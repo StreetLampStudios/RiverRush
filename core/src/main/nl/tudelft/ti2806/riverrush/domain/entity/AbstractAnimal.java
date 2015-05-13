@@ -1,8 +1,8 @@
 package nl.tudelft.ti2806.riverrush.domain.entity;
 
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
-import nl.tudelft.ti2806.riverrush.state.AnimalOnBoat;
-import nl.tudelft.ti2806.riverrush.state.AnimalState;
+import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalOnBoat;
+import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalState;
 
 /**
  * An abstract implementation of {@link Animal}.

@@ -5,23 +5,23 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import java.util.Map;
 
 /**
- * Indicates that a client wants to join the game.
+ * Created by thomas on 13-5-15.
  */
-public class JoinEvent implements NetworkEvent {
+public class SendEvent implements NetworkEvent {
+
+    private final NetworkEvent toSend;
+
+    public SendEvent(final NetworkEvent event) {
+        this.toSend = event;
+    }
 
     @Override
     public String serialize(final Protocol protocol) {
-        return "";
+        return toSend.serialize(protocol);
     }
 
-    /**
-     * A join request has no parameters. Thus, {@code keyValuePairs} is ignored.
-     *
-     * @param keyValuePairs - Ignored.
-     * @return Just {@code this}.
-     */
     @Override
     public NetworkEvent deserialize(final Map<String, String> keyValuePairs) {
-        return this;
+        return toSend;
     }
 }

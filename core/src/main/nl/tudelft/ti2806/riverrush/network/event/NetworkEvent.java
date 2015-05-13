@@ -24,5 +24,5 @@ public interface NetworkEvent extends Event {
      * @param keyValuePairs - A map containing a value for each field of this Event.
      * @return The fully initialized event, ready for dispatch.
      */
-    Event deserialize(Map<String, String> keyValuePairs);
+    NetworkEvent deserialize(Map<String, String> keyValuePairs);
 }
