@@ -10,14 +10,8 @@ import nl.tudelft.ti2806.riverrush.network.event.SendEvent;
  */
 public class EchoNetworkEventListener extends EventListener<EchoNetworkEvent> {
 
-    private final EventDispatcher eventDispatcher;
-
-    public EchoNetworkEventListener(final EventDispatcher dispatcher) {
-        this.eventDispatcher = dispatcher;
-    }
-
     @Override
     public void handle(final EchoNetworkEvent event, final EventDispatcher dispatcher) {
-        eventDispatcher.dispatch(new SendEvent(new EchoNetworkEvent()));
+        dispatcher.dispatch(new SendEvent(new EchoNetworkEvent()));
     }
 }
