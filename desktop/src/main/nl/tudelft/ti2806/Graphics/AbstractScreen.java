@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.monkeyrush.desktop;
+package nl.tudelft.ti2806.Graphics;
 
 import com.badlogic.gdx.Screen;
 

@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.monkeyrush.desktop;
+package nl.tudelft.ti2806.Graphics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -16,36 +16,39 @@ import com.google.inject.Singleton;
 @Singleton
 public class LoadingScreen extends AbstractScreen {
 
-
     protected Stage stage;
     protected TextureAtlas atlas;
     protected Skin skin;
 
     private final AssetManager assetManager;
     private final RiverGame game;
+    private final Provider<GameScreen> scrnProvider;
 
-  @Inject
-  public LoadingScreen(AssetManager assetManager, Provider<RiverGame> provider) {
-    this.assetManager = assetManager;
-    this.game = provider.get();
-  }
+    @Inject
+    public LoadingScreen(AssetManager assetManager,
+            Provider<RiverGame> provider, Provider<GameScreen> screenProvider) {
+        this.assetManager = assetManager;
+        this.game = provider.get();
+        this.scrnProvider = screenProvider;
+    }
 
-  /**
-   * When a LoadingScreen is created by the dependency injector,
-   * It automatically calls this constructor.
-   */
+    /**
+     * When a LoadingScreen is created by the dependency injector, It
+     * automatically calls this constructor.
+     */
 
-
-  @Override
+    @Override
     public void show() {
 
         this.assetManager.finishLoading();
 
         this.stage = new Stage();
         this.atlas = new TextureAtlas("assets/uiskin.atlas");
-        this.skin = new Skin(Gdx.files.internal("assets/uiskin.json"), this.atlas);
+        this.skin = new Skin(Gdx.files.internal("assets/uiskin.json"),
+                this.atlas);
 
-        Texture texture = new Texture(Gdx.files.internal("assets/data/loading.jpeg"));
+        Texture texture = new Texture(
+                Gdx.files.internal("assets/data/loading.jpeg"));
         TextureRegion region = new TextureRegion(texture, 0, 0, 1920, 1080);
 
         Image image = new Image(region);
@@ -53,6 +56,10 @@ public class LoadingScreen extends AbstractScreen {
         this.stage.addActor(image);
 
         this.assetManager.load("assets/data/boat.jpg", Texture.class);
+        this.assetManager.load("assets/data/ship.png", Texture.class);
+        this.assetManager.load("assets/data/left.jpg", Texture.class);
+        this.assetManager.load("assets/data/grass.jpg", Texture.class);
+        this.assetManager.load("assets/data/river.jpg", Texture.class);
     }
 
     @Override
@@ -61,7 +68,7 @@ public class LoadingScreen extends AbstractScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (this.assetManager.update()) {
-            this.game.setScreen(new GameScreen(this.game));
+            this.game.setScreen(this.scrnProvider.get());
         }
 
         this.stage.act();
@@ -88,8 +95,6 @@ public class LoadingScreen extends AbstractScreen {
 
     @Override
     public void hide() {
-        this.assetManager.unload("assets/data/loading.jpeg");
-
     }
 
     @Override
