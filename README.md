@@ -1,4 +1,4 @@
-# ComputerGames 
+# RiverRush 
 master status: [![Build Status](https://travis-ci.org/StreetLampStudios/RiverRush.svg?branch=master)](https://travis-ci.org/StreetLampStudios/RiverRush)
 
 develop status: [![Build Status](https://travis-ci.org/StreetLampStudios/RiverRush.svg?branch=develop)](https://travis-ci.org/StreetLampStudios/RiverRush)
