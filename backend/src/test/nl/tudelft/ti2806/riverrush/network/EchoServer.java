@@ -18,7 +18,7 @@ public class EchoServer extends CoreModule{
      */
     private static Server server;
 
-    public EchoServer() {
+    public static void main(String[] args) {
         Injector injector = Guice.createInjector(new EchoServer());
         server = injector.getInstance(Server.class);
         server.start();
