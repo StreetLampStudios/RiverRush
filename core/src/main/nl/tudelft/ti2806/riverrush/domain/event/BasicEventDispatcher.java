@@ -21,7 +21,7 @@ public class BasicEventDispatcher implements EventDispatcher {
     private InetSocketAddress remoteAddress;
 
     @Override
-    public void register(final Class<? extends Event> eventType, final EventListener<?> eventListener) {
+    public <T extends Event> void register(final Class<T> eventType, final EventListener<T> eventListener) {
         List<EventListener<?>> listeners = registeredListeners.get(eventType);
 
         if (listeners == null) {

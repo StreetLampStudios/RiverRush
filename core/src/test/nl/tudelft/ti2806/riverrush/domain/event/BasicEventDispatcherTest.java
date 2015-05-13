@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
@@ -62,22 +63,24 @@ public class BasicEventDispatcherTest {
 
     @Test
     public void dispatch_callsListener() {
-        this.dispatcher.register(this.eventMock.getClass(), this.listenerMock);
+        this.dispatcher.register((Class<Event>)this.eventMock.getClass(), this.listenerMock);
         this.dispatcher.dispatch(this.eventMock);
         verify(this.listenerMock).dispatch(this.eventMock, this.dispatcher);
     }
 
     @Test
     public void dispatch_callsAllListeners() {
-        this.dispatcher.register(this.eventMock.getClass(), this.listenerMock);
-        this.dispatcher.register(this.eventMock.getClass(), this.listenerMock);
+        this.dispatcher.register((Class<Event>)this.eventMock.getClass(), this.listenerMock);
+        this.dispatcher.register((Class<Event>)this.eventMock.getClass(), this.listenerMock);
         this.dispatcher.dispatch(this.eventMock);
         verify(this.listenerMock, Mockito.times(2)).dispatch(this.eventMock, this.dispatcher);
     }
 
     @Test
     public void dispatch_callsCorrectListener() {
-        this.dispatcher.register(DummyEvent.class, this.listenerMock);
+        EventListener<DummyEvent> dummyListener = (EventListener<DummyEvent>) mock(EventListener.class);
+
+        this.dispatcher.register(DummyEvent.class, dummyListener);
         this.dispatcher.dispatch(this.eventMock);
         verifyZeroInteractions(this.listenerMock);
     }

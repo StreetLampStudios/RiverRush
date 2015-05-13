@@ -13,7 +13,7 @@ public interface EventDispatcher {
      * @param eventType - The runtime class to add a listener for.
      * @param eventListener - The listener itself.
      */
-    void register(Class<? extends Event> eventType, EventListener<?> eventListener);
+    <T extends Event> void register(Class<T> eventType, EventListener<T> eventListener);
 
     /**
      * Mainly used for testing.
