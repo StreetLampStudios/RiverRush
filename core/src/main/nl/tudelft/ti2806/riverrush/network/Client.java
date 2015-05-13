@@ -1,10 +1,10 @@
 package nl.tudelft.ti2806.riverrush.network;
 
 import com.google.inject.Inject;
-import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventListener;
 import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
+import nl.tudelft.ti2806.riverrush.network.event.SendEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
@@ -15,11 +15,16 @@ import java.net.URI;
 /**
  * Web socket client for connecting to the backend endpoint.
  */
-public class Client extends WebSocketClient implements EventListener {
+public class Client extends WebSocketClient {
 
     private Protocol protocol;
 
     private EventDispatcher dispatcher;
+
+    /**
+     * Called when a domain class wants to send some event over the network.
+     */
+    private final EventListener<SendEvent> sendEventEventListener;
 
     /**
      * Constructs a WebSocketClient instance and sets it to the connect to the
@@ -33,11 +38,26 @@ public class Client extends WebSocketClient implements EventListener {
      */
     public Client(final URI serverUri, final Draft draft) {
         super(serverUri, draft);
+        this.sendEventEventListener = new EventListener<SendEvent>() {
+            @Override
+            public void handle(final SendEvent event, final EventDispatcher d) {
+                sendEvent(event, d);
+            }
+        };
     }
 
     @Override
     public void onOpen(final ServerHandshake handshakedata) {
 
+    }
+
+    /**
+     * Send a domain event to the server.
+     * @param event - The event to send.
+     * @param d - The dispatcher that dispatched this event.
+     */
+    private void sendEvent(final SendEvent event, final EventDispatcher d) {
+        getConnection().send(event.serialize(protocol));
     }
 
     @Override
@@ -55,11 +75,6 @@ public class Client extends WebSocketClient implements EventListener {
     @Override
     public void onError(final Exception ex) {
 
-    }
-
-    @Override
-    public void handle(final Event event) {
-        this.send(this.protocol.serialize((NetworkEvent) event));
     }
 
     @Inject

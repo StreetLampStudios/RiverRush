@@ -3,8 +3,10 @@ package nl.tudelft.ti2806.riverrush.network;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.EventListener;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
+import nl.tudelft.ti2806.riverrush.network.event.SendEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.InvalidActionException;
 import nl.tudelft.ti2806.riverrush.network.protocol.InvalidProtocolException;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
@@ -18,7 +20,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 /**
- * Web socket endpoint for the backend to handle incoming tcp request from the
+ * Web socket endpoint for the backend to dispatch incoming tcp request from the
  * client.
  */
 @Singleton
@@ -28,6 +30,7 @@ public class Server extends WebSocketServer {
      * Maps a remote address to a handler for player actions.
      */
     private final Map<InetSocketAddress, EventDispatcher> eventDispatchers;
+    private final Map<InetSocketAddress, WebSocket> sockets;
 
     /**
      * Provides instances of EventDispatcher when a client joins.
@@ -38,6 +41,11 @@ public class Server extends WebSocketServer {
      * The protocol used to serialize/deserialize network messages.
      */
     private final Protocol protocol;
+
+    /**
+     * Called when a domain class wants to send some event over the network.
+     */
+    private final EventListener<SendEvent> sendEventEventListener;
 
     /**
      * Constructs the server, does NOT start it (see the {@link #start()}
@@ -53,15 +61,25 @@ public class Server extends WebSocketServer {
             final Protocol aProtocol) {
         super(new InetSocketAddress(aProtocol.getPortNumber()));
         this.eventDispatchers = new Hashtable<>();
+        this.sockets = new Hashtable<>();
         this.protocol = aProtocol;
         this.dispatcherProvider = aProvider;
+        this.sendEventEventListener = new EventListener<SendEvent>() {
+            @Override
+            public void handle(final SendEvent event, final EventDispatcher dispatcher) {
+                sendEvent(event, dispatcher);
+            }
+        };
     }
 
     @Override
     public void onOpen(final WebSocket conn, final ClientHandshake handshake) {
         FailIf.isNull(conn);
+
         EventDispatcher dispatcher = this.dispatcherProvider.get();
+        dispatcher.register(SendEvent.class, sendEventEventListener);
         this.eventDispatchers.put(conn.getRemoteSocketAddress(), dispatcher);
+        this.sockets.put(conn.getRemoteSocketAddress(), conn);
     }
 
     @Override
@@ -92,4 +110,13 @@ public class Server extends WebSocketServer {
         FailIf.isNull(conn, ex);
     }
 
+    /**
+     * Handles events to send over the network.
+     * @param event - The event to dispatch.
+     * @param dispatcher - The dispatcher responsible for the event.
+     */
+    public void sendEvent(final SendEvent event, final EventDispatcher dispatcher) {
+        WebSocket sock = this.sockets.get(dispatcher.getRemoteAddress());
+        sock.send(event.serialize(protocol));
+    }
 }

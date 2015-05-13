@@ -1,5 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
+import java.net.InetSocketAddress;
+
 /**
  * Created by thomas on 9-5-15.
  */
@@ -11,7 +13,7 @@ public interface EventDispatcher {
      * @param eventType - The runtime class to add a listener for.
      * @param eventListener - The listener itself.
      */
-    void register(Class<? extends Event> eventType, EventListener eventListener);
+    void register(Class<? extends Event> eventType, EventListener<?> eventListener);
 
     /**
      * Mainly used for testing.
@@ -32,4 +34,6 @@ public interface EventDispatcher {
      * @param event - The single event.
      */
     void dispatch(Event event);
+
+    InetSocketAddress getRemoteAddress();
 }

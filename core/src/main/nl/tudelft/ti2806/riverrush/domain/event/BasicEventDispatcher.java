@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
+import java.net.InetSocketAddress;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,18 +16,13 @@ public class BasicEventDispatcher implements EventDispatcher {
     /**
      * Maps event types to a list of listeners.
      */
-    private final Map<Class<? extends Event>, List<EventListener>> registeredListeners;
+    private final Map<Class<? extends Event>, List<EventListener<?>>> registeredListeners = new Hashtable<>();
 
-    /**
-     * .
-     */
-    public BasicEventDispatcher() {
-        this.registeredListeners = new Hashtable<>();
-    }
+    private InetSocketAddress remoteAddress;
 
     @Override
-    public void register(final Class<? extends Event> eventType, final EventListener eventListener) {
-        List<EventListener> listeners = registeredListeners.get(eventType);
+    public void register(final Class<? extends Event> eventType, final EventListener<?> eventListener) {
+        List<EventListener<?>> listeners = registeredListeners.get(eventType);
 
         if (listeners == null) {
             listeners = new LinkedList<>();
@@ -38,7 +34,7 @@ public class BasicEventDispatcher implements EventDispatcher {
 
     @Override
     public int countRegistered(final Class<? extends Event> eventType) {
-        List<EventListener> listeners = this.registeredListeners.get(eventType);
+        List<EventListener<?>> listeners = this.registeredListeners.get(eventType);
         if (listeners == null) {
             return 0;
         } else {
@@ -55,11 +51,20 @@ public class BasicEventDispatcher implements EventDispatcher {
 
     @Override
     public void dispatch(final Event event) {
-        List<EventListener> listeners = this.registeredListeners.get(event.getClass());
+        List<EventListener<?>> listeners = this.registeredListeners.get(event.getClass());
         if (listeners != null) {
             listeners.forEach(
-                eventListener -> eventListener.handle(event)
+                eventListener -> eventListener.dispatch(event, this)
             );
         }
+    }
+
+    @Override
+    public InetSocketAddress getRemoteAddress() {
+        return this.remoteAddress;
+    }
+
+    public void setRemoteAddress(InetSocketAddress address) {
+        this.remoteAddress = address;
     }
 }

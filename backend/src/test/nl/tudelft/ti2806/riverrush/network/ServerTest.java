@@ -1,17 +1,12 @@
 package nl.tudelft.ti2806.riverrush.network;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-
-import java.net.InetSocketAddress;
-
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Provider;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
-
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.junit.Before;
@@ -19,10 +14,10 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Provider;
+import java.net.InetSocketAddress;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for the socket layer Server class.
@@ -85,7 +80,7 @@ public class ServerTest extends AbstractModule {
     @Test
     public void onOpen_callsProvider() {
         this.server.onOpen(this.webSocketMock, mock(ClientHandshake.class));
-        verify(this.webSocketMock).getRemoteSocketAddress();
+        verify(this.webSocketMock, atLeastOnce()).getRemoteSocketAddress();
         verify(this.providerMock).get();
     }
 

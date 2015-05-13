@@ -25,7 +25,7 @@ public class BasicEventDispatcherTest {
     private EventDispatcher dispatcher;
 
     @Mock
-    private EventListener listenerMock;
+    private EventListener<Event> listenerMock;
 
     @Mock
     private Event eventMock;
@@ -64,7 +64,7 @@ public class BasicEventDispatcherTest {
     public void dispatch_callsListener() {
         this.dispatcher.register(this.eventMock.getClass(), this.listenerMock);
         this.dispatcher.dispatch(this.eventMock);
-        verify(this.listenerMock).handle(this.eventMock);
+        verify(this.listenerMock).dispatch(this.eventMock, this.dispatcher);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class BasicEventDispatcherTest {
         this.dispatcher.register(this.eventMock.getClass(), this.listenerMock);
         this.dispatcher.register(this.eventMock.getClass(), this.listenerMock);
         this.dispatcher.dispatch(this.eventMock);
-        verify(this.listenerMock, Mockito.times(2)).handle(this.eventMock);
+        verify(this.listenerMock, Mockito.times(2)).dispatch(this.eventMock, this.dispatcher);
     }
 
     @Test
