@@ -8,6 +8,8 @@ import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventListener;
 import nl.tudelft.ti2806.riverrush.network.event.EchoNetworkEvent;
+import nl.tudelft.ti2806.riverrush.network.protocol.BasicProtocol;
+import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 /**
  * Created by thomas on 13-5-15.
@@ -30,5 +32,15 @@ public class EchoServer extends CoreModule{
         EventDispatcher d = new BasicEventDispatcher();
         d.register(EchoNetworkEvent.class, joinListener);
         return d;
+    }
+
+    @Override
+    protected Protocol configureProtocol() {
+        Protocol protocol = BasicProtocol.getInstance();
+        // Register available network actions
+        // protocol.registerNetworkAction(...);
+        protocol.registerNetworkAction(EchoNetworkEvent.class, EchoNetworkEvent::new);
+
+        return protocol;
     }
 }

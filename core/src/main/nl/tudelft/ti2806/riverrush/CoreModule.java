@@ -22,7 +22,7 @@ public abstract class CoreModule extends AbstractModule {
      *
      * @return The fully configured protocol.
      */
-    private Protocol configureProtocol() {
+    protected Protocol configureProtocol() {
         Protocol protocol = BasicProtocol.getInstance();
         // Register available network actions
         // protocol.registerNetworkAction(...);
