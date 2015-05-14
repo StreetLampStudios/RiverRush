@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -17,6 +14,8 @@ public class GameScreen extends AbstractScreen {
 
     // private RunningGame runGame;
     private SideStage leftScreen;
+    private SideStage rightScreen;
+    private CenterStage midScreen;
 
     private Stage leftStage;
     private Stage midStage;
@@ -32,14 +31,17 @@ public class GameScreen extends AbstractScreen {
     @Inject
     public GameScreen(Provider<RiverGame> provider, AssetManager assets) {
         // this.runGame = runGame;
-        this.leftScreen = new SideStage(assets, WIDTH, HEIGHT,
-                "assets/data/left.jpg");
+        this.leftScreen = new SideStage(assets, WIDTH, HEIGHT, true);
+        this.rightScreen = new SideStage(assets, WIDTH, HEIGHT, false);
+        this.midScreen = new CenterStage(assets, WIDTH, HEIGHT);
 
         this.leftStage = new Stage();
         this.midStage = new Stage();
         this.rightStage = new Stage();
 
         this.leftStage.addActor(this.leftScreen);
+        this.rightStage.addActor(this.rightScreen);
+        this.midStage.addActor(this.midScreen);
 
         this.assets = assets;
         this.game = provider.get();
@@ -57,23 +59,25 @@ public class GameScreen extends AbstractScreen {
         this.game.getBatch().setProjectionMatrix(this.camera.combined);
 
         this.leftStage.act(Gdx.graphics.getDeltaTime());
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth() / 3,
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth() / 20 * 9,
                 Gdx.graphics.getHeight());
         this.leftStage.draw();
 
         this.midStage.act(Gdx.graphics.getDeltaTime());
-        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 3, 0,
-                Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight());
+        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20 * 9, 0,
+                Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight());
         this.midStage.draw();
 
         this.rightStage.act(Gdx.graphics.getDeltaTime());
-        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 3 * 2, 0,
-                Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight());
+        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20 * 11, 0,
+                Gdx.graphics.getWidth() / 20 * 9, Gdx.graphics.getHeight());
         this.rightStage.draw();
 
-        this.game.getBatch().begin();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
 
-        this.game.getBatch().end();
+        // this.game.getBatch().begin();
+        //
+        // this.game.getBatch().end();
     }
 
     @Override
@@ -86,13 +90,15 @@ public class GameScreen extends AbstractScreen {
         // TextureRegion leftregion = new TextureRegion(lefttexture, 0, 0, 472,
         // 455);
 
-        Texture midTex = new Texture(Gdx.files.internal("assets/data/mid.jpg"));
-        TextureRegion midRegion = new TextureRegion(midTex, 0, 0, 275, 183);
-
-        Texture righttexture = new Texture(
-                Gdx.files.internal("assets/data/right.jpg"));
-        TextureRegion rightregion = new TextureRegion(righttexture, 0, 0, 540,
-                540);
+        // Texture midTex = new
+        // Texture(Gdx.files.internal("assets/data/mid.jpg"));
+        // TextureRegion midRegion = new TextureRegion(midTex, 0, 0, 275, 183);
+        //
+        // Texture righttexture = new Texture(
+        // Gdx.files.internal("assets/data/right.jpg"));
+        // TextureRegion rightregion = new TextureRegion(righttexture, 0, 0,
+        // 540,
+        // 540);
 
         // Image leftImage = new Image(leftregion);
         // leftImage.setFillParent(true);
@@ -104,13 +110,13 @@ public class GameScreen extends AbstractScreen {
         // this.leftStage.addActor(river);
         // this.leftStage.addActor(boat);
 
-        Image midImage = new Image(midRegion);
-        midImage.setFillParent(true);
-        this.midStage.addActor(midImage);
-
-        Image rightImage = new Image(rightregion);
-        rightImage.setFillParent(true);
-        this.rightStage.addActor(rightImage);
+        // Image midImage = new Image(midRegion);
+        // midImage.setFillParent(true);
+        // this.midStage.addActor(midImage);
+        //
+        // Image rightImage = new Image(rightregion);
+        // rightImage.setFillParent(true);
+        // this.rightStage.addActor(rightImage);
     }
 
     @Override

@@ -3,6 +3,7 @@ package nl.tudelft.ti2806.riverrush.domain.entity;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.google.inject.Inject;
 
@@ -13,6 +14,7 @@ public class RiverBanks extends Actor {
     private float yPos;
     private float WIDTH;
     private float HEIGHT;
+    private static final String FILENAME = "assets/data/grass.jpg";
 
     @Inject
     public RiverBanks(AssetManager assetManager, float x, float y, float w,
@@ -27,8 +29,9 @@ public class RiverBanks extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        batch.draw(this.manager.get("assets/data/grass.jpg", Texture.class),
-                this.xPos, this.yPos, this.WIDTH, this.HEIGHT);
+        Texture tex = this.manager.get(FILENAME, Texture.class);
+        TextureRegion region = new TextureRegion(tex, 0, 0, 229, 138);
+        batch.draw(region, this.xPos, this.yPos, this.WIDTH, this.HEIGHT);
     }
 
     @Override
