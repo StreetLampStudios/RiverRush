@@ -16,14 +16,15 @@ import com.google.inject.Inject;
 public class River extends Actor {
 
     private AssetManager manager;
-    private float xPos;
-    private float yPos;
-    private float WIDTH;
-    private float HEIGHT;
-    private boolean isLeft;
+
+    // private float xPos;
+    // private float yPos;
+    // private float WIDTH;
+    // private float HEIGHT;
+    private float mid;
 
     @Inject
-    public River(AssetManager assetManager, float x, float y, float w, float h,
+    public River(AssetManager assetManager, float y, float w, float h,
             boolean left) {
         this.manager = assetManager;
         // this.yPos = y;
@@ -34,17 +35,19 @@ public class River extends Actor {
         // this.setX(x);
         // this.setY(y);
         // this.setY(h);
-        this.setPosition(x, h);
+        int offset = left ? 192 : 0;
+        this.setPosition(offset, h);
         this.setWidth(w);
         this.setHeight(h);
-        this.isLeft = left;
+        // this.mid = (w + 192) / 2 - offset;
+        this.mid = w / 2 + offset;
 
         MoveToAction moveDown = new MoveToAction();
-        moveDown.setPosition(x, y);
+        moveDown.setPosition(offset, y);
         moveDown.setDuration(1f);
 
         MoveToAction moveUp = new MoveToAction();
-        moveUp.setPosition(x, h * -1);
+        moveUp.setPosition(offset, h * -1);
 
         SequenceAction seq = sequence(moveUp, moveDown);
         RepeatAction rep = forever(seq);
@@ -67,5 +70,9 @@ public class River extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
+    }
+
+    public float getMid() {
+        return this.mid;
     }
 }

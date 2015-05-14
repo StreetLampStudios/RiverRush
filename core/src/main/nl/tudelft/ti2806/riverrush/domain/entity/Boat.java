@@ -59,8 +59,9 @@ public class Boat extends Actor implements Group {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        Texture tex = this.manager.get("assets/data/ship.png", Texture.class);
-        TextureRegion region = new TextureRegion(tex, 0, 0, 584, 1574);
+        Texture tex = this.manager.get("assets/data/ship2.png", Texture.class);
+        TextureRegion region = new TextureRegion(tex, 0, 0, 345, 792); // 584,
+                                                                       // 1574
         // batch.draw(tex, this.xPos, this.yPos, this.WIDTH, this.HEIGHT);
 
         // batch.draw(region, x, y, originX, originY, width, height, scaleX,
@@ -71,7 +72,7 @@ public class Boat extends Actor implements Group {
         // this.getRotation());
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA); // GL11.GL_SRC_ALPHA,
-                                                                                // GL11.GL_ONE_MINUS_SRC_ALPHA
+        // GL11.GL_ONE_MINUS_SRC_ALPHA
 
         batch.draw(region, this.getX(), this.getY(), this.getOriginX(),
                 this.getOriginY(), this.getWidth(), this.getHeight(),

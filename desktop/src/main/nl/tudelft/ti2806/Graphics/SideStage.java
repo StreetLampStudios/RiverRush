@@ -20,8 +20,10 @@ public class SideStage extends AbstractStage {
         this.setBounds(0, 0, width, height);
 
         this.background = new RiverBanks(assets, 0, 0, width, height);
-        this.boat = new Boat(assets, width / 2, height / 2, 200, 200);
-        this.river = new River(assets, 192, 0, 1536, 1080, left);
+        this.river = new River(assets, 0, 1728, 1080, left);
+        // this.boat = new Boat(assets, width / 2 - 192, 150, 600, 600);
+        this.boat = new Boat(assets, this.river.getMid() - 300, 150, 600, 600);
+
         this.addActor(this.background);
         this.addActor(this.river);
         this.addActor(this.boat);
@@ -37,4 +39,5 @@ public class SideStage extends AbstractStage {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
     }
+
 }
