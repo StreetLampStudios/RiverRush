@@ -5,6 +5,7 @@ buildscript {
     jcenter()
   }
   dependencies {
+      classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1'
   }
 }
 
@@ -98,6 +99,28 @@ project(":backend") {
   }
 }
 
+task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
+    dependsOn = subprojects.test
+    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories = files(subprojects.sourceSets.main.output)
+    executionData = files(subprojects.jacocoTestReport.executionData)
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = false
+    }
+}
+
 tasks.eclipse.doLast {
   delete ".project"
 }
+
+//coveralls {
+//    sourceDirs = publishedProjects.sourceSets.main.allSource.srcDirs.flatten()
+//    jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
+//}
+//
+//tasks.coveralls {
+//    dependsOn jacocoRootReport
+//    onlyIf { System.env.'CI' }
+//}
