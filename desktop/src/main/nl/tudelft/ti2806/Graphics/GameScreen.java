@@ -12,7 +12,6 @@ import com.google.inject.Singleton;
 @Singleton
 public class GameScreen extends AbstractScreen {
 
-    // private RunningGame runGame;
     private SideStage leftScreen;
     private SideStage rightScreen;
     private CenterStage midScreen;
@@ -20,8 +19,6 @@ public class GameScreen extends AbstractScreen {
     private Stage leftStage;
     private Stage midStage;
     private Stage rightStage;
-    // private TextureAtlas atlas;
-    // private Skin skin;
     public OrthographicCamera camera;
     private static int WIDTH = 1920;
     private static int HEIGHT = 1080;
@@ -30,7 +27,6 @@ public class GameScreen extends AbstractScreen {
 
     @Inject
     public GameScreen(Provider<RiverGame> provider, AssetManager assets) {
-        // this.runGame = runGame;
         this.leftScreen = new SideStage(assets, WIDTH, HEIGHT, true);
         this.rightScreen = new SideStage(assets, WIDTH, HEIGHT, false);
         this.midScreen = new CenterStage(assets, WIDTH, HEIGHT);
@@ -74,72 +70,26 @@ public class GameScreen extends AbstractScreen {
         this.rightStage.draw();
 
         Gdx.gl.glDisable(GL20.GL_BLEND);
-
-        // this.game.getBatch().begin();
-        //
-        // this.game.getBatch().end();
     }
 
     @Override
     public void show() {
-        // this.atlas = new TextureAtlas("uiskin.atlas");
-        // this.skin = new Skin(Gdx.files.internal("uiskin.json"), this.atlas);
-
-        // Texture lefttexture = new Texture(
-        // Gdx.files.internal("assets/data/left.jpg"));
-        // TextureRegion leftregion = new TextureRegion(lefttexture, 0, 0, 472,
-        // 455);
-
-        // Texture midTex = new
-        // Texture(Gdx.files.internal("assets/data/mid.jpg"));
-        // TextureRegion midRegion = new TextureRegion(midTex, 0, 0, 275, 183);
-        //
-        // Texture righttexture = new Texture(
-        // Gdx.files.internal("assets/data/right.jpg"));
-        // TextureRegion rightregion = new TextureRegion(righttexture, 0, 0,
-        // 540,
-        // 540);
-
-        // Image leftImage = new Image(leftregion);
-        // leftImage.setFillParent(true);
-        // this.leftStage.addActor(leftImage);
-        //
-        // Boat boat = new Boat(this.assets, WIDTH / 2, HEIGHT / 2, 200, 200,
-        // this.game.getBatch());
-        // River river = new River(this.assets, 192, 0, 1536, 1080);
-        // this.leftStage.addActor(river);
-        // this.leftStage.addActor(boat);
-
-        // Image midImage = new Image(midRegion);
-        // midImage.setFillParent(true);
-        // this.midStage.addActor(midImage);
-        //
-        // Image rightImage = new Image(rightregion);
-        // rightImage.setFillParent(true);
-        // this.rightStage.addActor(rightImage);
     }
 
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override
     public void hide() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void pause() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void resume() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
