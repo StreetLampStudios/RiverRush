@@ -1,16 +1,16 @@
-# ComputerGames 
-master status: ![Master build status](https://travis-ci.org/newnottakenname/ComputerGames.svg?branch=master) 
+# RiverRush 
+master status: [![Build Status](https://travis-ci.org/StreetLampStudios/RiverRush.svg?branch=master)](https://travis-ci.org/StreetLampStudios/RiverRush)
 
-develop status: ![Develop build status](https://travis-ci.org/newnottakenname/ComputerGames.svg?branch=develop) 
+develop status: [![Build Status](https://travis-ci.org/StreetLampStudios/RiverRush.svg?branch=develop)](https://travis-ci.org/StreetLampStudios/RiverRush)
 
-Welcome to the github page of Computer Games, group 3!
+Welcome to the github page of RiverRush
 Our group consists of:
-* Job Engel
 * Rob van der Berg
+* Job Engel
 * Mitchell Olsthoorn
 * Thomas Smith
 * Martijn Steenbergen
 
 ### Quick Links
 
-[Travis Build Page](https://travis-ci.org/newnottakenname/ComputerGames)
+[Travis Build Page](https://travis-ci.org/StreetLampStudios/RiverRush)
