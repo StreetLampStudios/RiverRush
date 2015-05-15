@@ -5,13 +5,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.google.inject.Inject;
 
 /**
  * Represents a boat that the animals row on.
  */
-public class Boat extends Actor implements Group {
+public class Boat extends AbstractGroup {
 
     private AssetManager manager;
 
@@ -22,7 +21,12 @@ public class Boat extends Actor implements Group {
         this.setY(y);
         this.setWidth(w);
         this.setHeight(h);
-
+        // Size is based on viewport: 1920, 1080 is full sized, 100, 100 wont
+        // give equivalent height/width
+        Monkey monk = new Monkey(this.manager,
+                (this.getX() + (this.getWidth() / 2)) - 48,
+                (this.getY() + (this.getHeight() / 2)) - 27, 144, 81);
+        this.addActor(monk);
     }
 
     @Override
@@ -34,7 +38,9 @@ public class Boat extends Actor implements Group {
         batch.draw(region, this.getX(), this.getY(), this.getOriginX(),
                 this.getOriginY(), this.getWidth(), this.getHeight(),
                 this.getScaleX(), this.getScaleY(), this.getRotation());
+        this.drawChildren(batch, parentAlpha);
         batch.disableBlending();
+
     }
 
     @Override

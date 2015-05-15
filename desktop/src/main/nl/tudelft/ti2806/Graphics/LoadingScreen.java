@@ -58,6 +58,7 @@ public class LoadingScreen extends AbstractScreen {
         this.assetManager.load("assets/data/boat.jpg", Texture.class);
         this.assetManager.load("assets/data/shipv2.png", Texture.class);
         this.assetManager.load("assets/data/ship.png", Texture.class);
+        this.assetManager.load("assets/data/raccoon.png", Texture.class);
         this.assetManager.load("assets/data/pirateship.png", Texture.class);
         this.assetManager.load("assets/data/left.jpg", Texture.class);
         this.assetManager.load("assets/data/grass.jpg", Texture.class);
