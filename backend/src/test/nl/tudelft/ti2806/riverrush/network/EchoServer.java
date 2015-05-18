@@ -4,10 +4,12 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.backend.eventlisteners.EchoNetworkEventListener;
+import nl.tudelft.ti2806.riverrush.backend.eventlisteners.JumpEventListener;
 import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventListener;
 import nl.tudelft.ti2806.riverrush.network.event.EchoNetworkEvent;
+import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.BasicProtocol;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
@@ -31,6 +33,7 @@ public class EchoServer extends CoreModule{
     protected EventDispatcher configureEventDispatcher() {
         EventDispatcher d = new BasicEventDispatcher();
         d.register(EchoNetworkEvent.class, joinListener);
+        d.register(JumpEvent.class, new JumpEventListener());
         return d;
     }
 
@@ -40,6 +43,7 @@ public class EchoServer extends CoreModule{
         // Register available network actions
         // protocol.registerNetworkAction(...);
         protocol.registerNetworkAction(EchoNetworkEvent.class, EchoNetworkEvent::new);
+        protocol.registerNetworkAction(JumpEvent.class, JumpEvent::new);
 
         return protocol;
     }
