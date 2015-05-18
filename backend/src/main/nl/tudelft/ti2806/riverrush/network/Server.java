@@ -76,11 +76,10 @@ public class Server extends WebSocketServer {
         FailIf.isNull(conn);
 
         EventDispatcher dispatcher = this.dispatcherProvider.get();
-        dispatcher.setRemoteAddress(conn.getRemoteSocketAddress());
         dispatcher.register(SendEvent.class, sendEventEventListener);
+        dispatcher.setRemoteAddress(conn.getRemoteSocketAddress());
         this.eventDispatchers.put(conn.getRemoteSocketAddress(), dispatcher);
         this.sockets.put(conn.getRemoteSocketAddress(), conn);
-        //conn.send("appel");
     }
 
     @Override
@@ -122,16 +121,4 @@ public class Server extends WebSocketServer {
         sock.send(event.serialize(protocol));
         System.out.println("Sent " + event.serialize(protocol));
     }
-
-    public void sendToAll(String text) {
-        Collection<WebSocket> con = connections();
-        synchronized (con)
-
-        {
-            for (WebSocket c : con) {
-                c.send( text );
-            }
-        }
-    }
-
 }

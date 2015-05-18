@@ -1,7 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
 /**
- * Created by thomas on 13-5-15.
+ * Event listener.
  */
 public abstract class EventListener<T extends Event>  {
     /**

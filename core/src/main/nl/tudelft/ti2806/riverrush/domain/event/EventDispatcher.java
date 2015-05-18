@@ -3,7 +3,7 @@ package nl.tudelft.ti2806.riverrush.domain.event;
 import java.net.InetSocketAddress;
 
 /**
- * Created by thomas on 9-5-15.
+ * Eventdispatcher.
  */
 public interface EventDispatcher {
 
@@ -40,5 +40,6 @@ public interface EventDispatcher {
     void dispatch(Event event);
 
     InetSocketAddress getRemoteAddress();
+
     void setRemoteAddress(InetSocketAddress address);
 }
