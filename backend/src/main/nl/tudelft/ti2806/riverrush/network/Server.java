@@ -24,7 +24,6 @@ import java.util.Map;
  * Web socket endpoint for the backend to dispatch incoming tcp request from the
  * client.
  */
-@Singleton
 public class Server extends WebSocketServer {
 
     /**

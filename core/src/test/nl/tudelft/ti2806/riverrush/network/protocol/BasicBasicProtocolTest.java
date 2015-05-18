@@ -50,7 +50,7 @@ public class BasicBasicProtocolTest {
      */
     @Before
     public void setUp() {
-        this.protocol = BasicProtocol.getInstance();
+        this.protocol = new BasicProtocol(0);
         this.eventStub = new StubEvent();
         this.stubEventSerialized = this.protocol.getEventTypeFieldKey()
             + this.protocol.getKeyValueSeperator()
