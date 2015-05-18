@@ -22,11 +22,11 @@ public class LoadingScreen extends AbstractScreen {
 
     private final AssetManager assetManager;
     private final RiverGame game;
-    private final Provider<GameScreen> scrnProvider;
+    private final Provider<WaitingScreen> scrnProvider;
 
     @Inject
     public LoadingScreen(AssetManager assetManager,
-            Provider<RiverGame> provider, Provider<GameScreen> screenProvider) {
+            Provider<RiverGame> provider, Provider<WaitingScreen> screenProvider) {
         this.assetManager = assetManager;
         this.game = provider.get();
         this.scrnProvider = screenProvider;
