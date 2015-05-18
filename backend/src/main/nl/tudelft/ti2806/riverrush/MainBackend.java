@@ -17,7 +17,9 @@ public final class MainBackend extends CoreModule {
     /**
      * A {@link Server} that fires NetworkEvents for listeners to dispatch.
      */
-    private static Server server;
+    private static Server renderServer;
+
+    private static Server clientServer;
 
     private static Game game;
 
@@ -30,21 +32,16 @@ public final class MainBackend extends CoreModule {
         Injector injector = Guice.createInjector(new MainBackend());
 
         game = injector.getInstance(Game.class);
-        initGame();
 
-        server = injector.getInstance(Server.class);
-        server.start();
-    }
-
-    private static void initGame() {
-
+        renderServer = injector.getInstance(Server.class);
+        clientServer = injector.getInstance(Server.class);
     }
 
     private static final EventListener<JoinEvent> joinListener = new JoinEventListener();
     @Override
     protected EventDispatcher configureEventDispatcher() {
-        EventDispatcher d = new BasicEventDispatcher();
-        d.register(JoinEvent.class, joinListener);
-        return d;
+        EventDispatcher dispatcher = new BasicEventDispatcher();
+        dispatcher.register(JoinEvent.class, joinListener);
+        return dispatcher;
     }
 }
