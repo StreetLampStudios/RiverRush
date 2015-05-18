@@ -19,8 +19,7 @@ public class River extends Actor {
     private float mid;
 
     @Inject
-    public River(AssetManager assetManager, float y, float w, float h,
-            boolean left) {
+    public River(AssetManager assetManager, float y, float w, float h) {
         this.manager = assetManager;
         this.setPosition(0, h);
         this.setWidth(w);
@@ -28,11 +27,11 @@ public class River extends Actor {
         this.mid = w / 2;
 
         MoveToAction moveDown = new MoveToAction();
-        moveDown.setPosition(0, y);
+        moveDown.setPosition(0, h * -1);
         moveDown.setDuration(1f);
 
         MoveToAction moveUp = new MoveToAction();
-        moveUp.setPosition(0, h * -1);
+        moveUp.setPosition(0, y);
 
         SequenceAction seq = sequence(moveUp, moveDown);
         RepeatAction rep = forever(seq);

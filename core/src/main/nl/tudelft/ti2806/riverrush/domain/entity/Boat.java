@@ -1,6 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.entity;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -35,9 +36,14 @@ public class Boat extends AbstractGroup {
         TextureRegion region = new TextureRegion(tex, 0, 0, 584, 1574);
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        Color color = this.getColor();
+        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+
         batch.draw(region, this.getX(), this.getY(), this.getOriginX(),
                 this.getOriginY(), this.getWidth(), this.getHeight(),
                 this.getScaleX(), this.getScaleY(), this.getRotation());
+        batch.setColor(Color.WHITE);
         this.drawChildren(batch, parentAlpha);
         batch.disableBlending();
 

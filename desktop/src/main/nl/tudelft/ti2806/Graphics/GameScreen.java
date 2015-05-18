@@ -32,8 +32,8 @@ public class GameScreen extends AbstractScreen {
 
     @Inject
     public GameScreen(Provider<RiverGame> provider, AssetManager assets) {
-        this.leftScreen = new SideStage(assets, WIDTH, HEIGHT, true);
-        this.rightScreen = new SideStage(assets, WIDTH, HEIGHT, false);
+        this.leftScreen = new SideStage(assets, WIDTH, HEIGHT);
+        this.rightScreen = new SideStage(assets, WIDTH, HEIGHT);
         this.midScreen = new CenterStage(assets, WIDTH, HEIGHT);
 
       leftScreen.spawnObstacle(0.0);
@@ -53,6 +53,9 @@ public class GameScreen extends AbstractScreen {
 
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false, WIDTH, HEIGHT);
+
+        this.leftScreen.win(assets);
+        this.rightScreen.lose(assets);
     }
 
     @Override
