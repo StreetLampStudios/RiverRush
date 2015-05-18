@@ -44,4 +44,9 @@ public interface EventDispatcher {
     InetSocketAddress getRemoteAddress();
 
     void setRemoteAddress(InetSocketAddress address);
+
+    @FunctionalInterface
+    interface HandlerLambda<T extends Event> {
+        void handle(T event);
+    }
 }

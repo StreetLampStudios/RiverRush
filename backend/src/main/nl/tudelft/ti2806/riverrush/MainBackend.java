@@ -6,6 +6,7 @@ import nl.tudelft.ti2806.riverrush.domain.entity.game.Game;
 import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.listener.EventListener;
+import nl.tudelft.ti2806.riverrush.domain.event.listener.SendEventListener;
 import nl.tudelft.ti2806.riverrush.network.Server;
 import org.reflections.Reflections;
 
@@ -29,31 +30,46 @@ public final class MainBackend extends CoreModule {
      * Main is a utility class.
      */
     private MainBackend() {
-        this.injector = Guice.createInjector(this);
+        injector = Guice.createInjector(this);
 
         this.game = injector.getInstance(Game.class);
 
-        this.renderServer = new Server(injector.getProvider(EventDispatcher.class),
-            this.configureRendererProtocol());
-        this.clientServer = new Server(injector.getProvider(EventDispatcher.class),
-            this.configureClientProtocol());
+        this.renderServer = new Server(
+            injector.getProvider(EventDispatcher.class),
+            this.configureRendererProtocol(),
+            injector.getInstance(SendEventListener.class));
 
-        Reflections reflections = new Reflections(getClass().getPackage().getName());
-        Set<Class<? extends EventListener>> classes = reflections.getSubTypesOf(EventListener.class);
-
-        for (Class<? extends EventListener> clasz : classes) {
-            requireBinding(clasz);
-        }
+        this.clientServer = new Server(
+            injector.getProvider(EventDispatcher.class),
+            this.configureClientProtocol(),
+            injector.getInstance(SendEventListener.class));
     }
 
     public static void main(final String[] args) {
-        MainBackend mainBackend = new MainBackend();
+        new MainBackend();
     }
+
 
     @Override
     protected EventDispatcher configureEventDispatcher() {
         EventDispatcher dispatcher = new BasicEventDispatcher();
 
+        try {
+            registerAllEventListeners(dispatcher);
+        } catch (IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+
+        return dispatcher;
+    }
+
+    /**
+     * Uses reflection to find all subclasses of {@link EventListener <?>}
+     * Registers an instance of each to any event dispatcher created on runtime.
+     * @param dispatcher
+     */
+    private void registerAllEventListeners(EventDispatcher dispatcher) throws IllegalAccessException, InstantiationException {
         Reflections reflections = new Reflections(getClass().getPackage().getName());
         Set<Class<? extends EventListener>> classes = reflections.getSubTypesOf(EventListener.class);
 
@@ -61,7 +77,5 @@ public final class MainBackend extends CoreModule {
             EventListener listener = injector.getInstance(clasz);
             dispatcher.register(listener.getEventType(), listener);
         }
-
-        return dispatcher;
     }
 }

@@ -2,7 +2,7 @@ package nl.tudelft.ti2806.riverrush.network;
 
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.listener.EventListener;
+import nl.tudelft.ti2806.riverrush.domain.event.listener.SendEventListener;
 import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
 import nl.tudelft.ti2806.riverrush.network.event.SendEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
@@ -24,7 +24,7 @@ public class Client extends WebSocketClient {
     /**
      * Called when a domain class wants to send some event over the network.
      */
-    private final EventListener<SendEvent> sendEventEventListener;
+    private final SendEventListener sendEventEventListener;
 
     /**
      * Constructs a WebSocketClient instance and sets it to the connect to the
@@ -36,17 +36,8 @@ public class Client extends WebSocketClient {
      */
     public Client(final URI serverUri, final Draft draft) {
         super(serverUri, draft);
-        this.sendEventEventListener = new EventListener<SendEvent>() {
-            @Override
-            public void handle(final SendEvent event, final EventDispatcher d) {
-                sendEvent(event, d);
-            }
-
-            @Override
-            public Class<SendEvent> getEventType() {
-                return SendEvent.class;
-            }
-        };
+        this.sendEventEventListener = new SendEventListener();
+        this.sendEventEventListener.onHandle(this::sendEvent);
     }
 
     @Override
