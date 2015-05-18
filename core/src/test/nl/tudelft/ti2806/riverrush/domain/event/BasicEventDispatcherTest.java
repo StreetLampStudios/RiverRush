@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
+import nl.tudelft.ti2806.riverrush.domain.event.listener.EventListener;
 import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.junit.Before;

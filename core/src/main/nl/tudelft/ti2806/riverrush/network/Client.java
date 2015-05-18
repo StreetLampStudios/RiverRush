@@ -2,7 +2,7 @@ package nl.tudelft.ti2806.riverrush.network;
 
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.EventListener;
+import nl.tudelft.ti2806.riverrush.domain.event.listener.EventListener;
 import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
 import nl.tudelft.ti2806.riverrush.network.event.SendEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
@@ -40,6 +40,11 @@ public class Client extends WebSocketClient {
             @Override
             public void handle(final SendEvent event, final EventDispatcher d) {
                 sendEvent(event, d);
+            }
+
+            @Override
+            public Class<SendEvent> getEventType() {
+                return SendEvent.class;
             }
         };
     }

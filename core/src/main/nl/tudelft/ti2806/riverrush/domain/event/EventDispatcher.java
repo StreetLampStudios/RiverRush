@@ -1,5 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
+import nl.tudelft.ti2806.riverrush.domain.event.listener.EventListener;
+
 import java.net.InetSocketAddress;
 
 /**
