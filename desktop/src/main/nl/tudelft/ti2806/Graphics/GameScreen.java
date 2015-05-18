@@ -36,6 +36,8 @@ public class GameScreen extends AbstractScreen {
         this.rightScreen = new SideStage(assets, WIDTH, HEIGHT, false);
         this.midScreen = new CenterStage(assets, WIDTH, HEIGHT);
 
+      leftScreen.spawnObstacle(0.0);
+
         this.banksLeft = new Stage();
         this.banksRight = new Stage();
         this.leftStage = new Stage();
@@ -68,7 +70,7 @@ public class GameScreen extends AbstractScreen {
 
         this.leftStage.act(Gdx.graphics.getDeltaTime());
         Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20, 0, // 0.05 - 0.45
-                Gdx.graphics.getWidth() / 5 * 2, Gdx.graphics.getHeight());
+          Gdx.graphics.getWidth() / 5 * 2, Gdx.graphics.getHeight());
         this.leftStage.draw();
 
         this.midStage.act(Gdx.graphics.getDeltaTime());
