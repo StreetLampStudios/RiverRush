@@ -36,7 +36,7 @@ public class GameScreen extends AbstractScreen {
         this.rightScreen = new SideStage(assets, WIDTH, HEIGHT);
         this.midScreen = new CenterStage(assets, WIDTH, HEIGHT);
 
-      leftScreen.spawnObstacle(0.0);
+        leftScreen.spawnObstacle(0.0);
 
         this.banksLeft = new Stage();
         this.banksRight = new Stage();
@@ -68,27 +68,27 @@ public class GameScreen extends AbstractScreen {
 
         this.banksLeft.act(Gdx.graphics.getDeltaTime());
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth() / 20, // 0 - 0.05
-                Gdx.graphics.getHeight());
+            Gdx.graphics.getHeight());
         this.banksLeft.draw();
 
         this.leftStage.act(Gdx.graphics.getDeltaTime());
         Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20, 0, // 0.05 - 0.45
-          Gdx.graphics.getWidth() / 5 * 2, Gdx.graphics.getHeight());
+            Gdx.graphics.getWidth() / 5 * 2, Gdx.graphics.getHeight());
         this.leftStage.draw();
 
         this.midStage.act(Gdx.graphics.getDeltaTime());
         Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20 * 9, 0, // 0.45 - 0.55
-                Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight());
+            Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight());
         this.midStage.draw();
 
         this.rightStage.act(Gdx.graphics.getDeltaTime());
         Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20 * 11, 0, // 0.55 - 0.95
-                Gdx.graphics.getWidth() / 5 * 2, Gdx.graphics.getHeight());
+            Gdx.graphics.getWidth() / 5 * 2, Gdx.graphics.getHeight());
         this.rightStage.draw();
 
         this.banksRight.act(Gdx.graphics.getDeltaTime());
         Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20 * 19, 0, // 0.95 - 1
-                Gdx.graphics.getWidth() / 20, Gdx.graphics.getHeight());
+            Gdx.graphics.getWidth() / 20, Gdx.graphics.getHeight());
         this.banksRight.draw();
 
         Gdx.gl.glDisable(GL20.GL_BLEND);
@@ -132,5 +132,4 @@ public class GameScreen extends AbstractScreen {
         this.game.getBatch().dispose();
 
     }
-
 }

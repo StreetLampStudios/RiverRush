@@ -14,7 +14,7 @@ public class SideStage extends AbstractStage {
 
     private Boat boat;
     private River river;
-    private Obstacle obstacle;
+    private ObstacleGraphic obstacle;
     private AssetManager assets;
 
     @Inject
@@ -31,7 +31,7 @@ public class SideStage extends AbstractStage {
 
     /**
      * Adds a new obstacle to the screen
-     * 
+     *
      * @param offset
      *            - double !! between 0 and 1 !!
      */
@@ -39,7 +39,7 @@ public class SideStage extends AbstractStage {
         if (this.obstacle != null) {
             this.removeActor(this.obstacle);
         }
-        this.obstacle = new Obstacle(this.assets, offset);
+        this.obstacle = new ObstacleGraphic(this.assets, offset);
         this.addActor(this.obstacle);
     }
 
@@ -66,5 +66,4 @@ public class SideStage extends AbstractStage {
         this.addActor(new Lose(assets));
         this.boat.addAction(Actions.fadeOut(1f));
     }
-
 }

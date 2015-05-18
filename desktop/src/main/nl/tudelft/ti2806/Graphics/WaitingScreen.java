@@ -1,8 +1,5 @@
 package nl.tudelft.ti2806.Graphics;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -16,9 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class WaitingScreen extends AbstractScreen {
 
-    protected Stage stage;
+    private static final int SECOND = 1000;
+    private Stage stage;
     private final AssetManager assetManager;
     private final RiverGame game;
     private final Provider<GameScreen> scrnProvider;
@@ -35,8 +36,9 @@ public class WaitingScreen extends AbstractScreen {
     private int count;
 
     @Inject
-    public WaitingScreen(AssetManager assetManager,
-            Provider<RiverGame> provider, Provider<GameScreen> screenProvider) {
+    public WaitingScreen(final AssetManager assetManager,
+                         Provider<RiverGame> provider,
+                         Provider<GameScreen> screenProvider) {
         this.assetManager = assetManager;
         this.game = provider.get();
         this.scrnProvider = screenProvider;
@@ -75,7 +77,7 @@ public class WaitingScreen extends AbstractScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (this.time == 0) {
-            this.tmr = null;
+            this.tmr.cancel();
             this.game.setScreen(this.scrnProvider.get());
         }
 
@@ -102,7 +104,7 @@ public class WaitingScreen extends AbstractScreen {
                 WaitingScreen.this.addConnection();
 
             }
-        }, 1000, 1000);
+        }, SECOND, SECOND);
     }
 
     @Override
@@ -132,7 +134,7 @@ public class WaitingScreen extends AbstractScreen {
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
-
+        this.tmr.cancel();
     }
 
 }

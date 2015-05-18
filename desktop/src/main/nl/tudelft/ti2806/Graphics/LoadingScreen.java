@@ -16,9 +16,9 @@ import com.google.inject.Singleton;
 @Singleton
 public class LoadingScreen extends AbstractScreen {
 
-    protected Stage stage;
-    protected TextureAtlas atlas;
-    protected Skin skin;
+    private Stage stage;
+    private TextureAtlas atlas;
+    private Skin skin;
 
     private final AssetManager assetManager;
     private final RiverGame game;
