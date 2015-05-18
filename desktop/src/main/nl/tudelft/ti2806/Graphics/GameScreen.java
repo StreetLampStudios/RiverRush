@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -19,6 +22,8 @@ public class GameScreen extends AbstractScreen {
     private Stage leftStage;
     private Stage midStage;
     private Stage rightStage;
+    private Stage banksLeft;
+    private Stage banksRight;
     public OrthographicCamera camera;
     private static int WIDTH = 1920;
     private static int HEIGHT = 1080;
@@ -31,6 +36,8 @@ public class GameScreen extends AbstractScreen {
         this.rightScreen = new SideStage(assets, WIDTH, HEIGHT, false);
         this.midScreen = new CenterStage(assets, WIDTH, HEIGHT);
 
+        this.banksLeft = new Stage();
+        this.banksRight = new Stage();
         this.leftStage = new Stage();
         this.midStage = new Stage();
         this.rightStage = new Stage();
@@ -54,26 +61,46 @@ public class GameScreen extends AbstractScreen {
         this.camera.update();
         this.game.getBatch().setProjectionMatrix(this.camera.combined);
 
-        this.leftStage.act(Gdx.graphics.getDeltaTime());
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth() / 20 * 9,
+        this.banksLeft.act(Gdx.graphics.getDeltaTime());
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth() / 20, // 0 - 0.05
                 Gdx.graphics.getHeight());
+        this.banksLeft.draw();
+
+        this.leftStage.act(Gdx.graphics.getDeltaTime());
+        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20, 0, // 0.05 - 0.45
+                Gdx.graphics.getWidth() / 5 * 2, Gdx.graphics.getHeight());
         this.leftStage.draw();
 
         this.midStage.act(Gdx.graphics.getDeltaTime());
-        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20 * 9, 0,
+        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20 * 9, 0, // 0.45 - 0.55
                 Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight());
         this.midStage.draw();
 
         this.rightStage.act(Gdx.graphics.getDeltaTime());
-        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20 * 11, 0,
-                Gdx.graphics.getWidth() / 20 * 9, Gdx.graphics.getHeight());
+        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20 * 11, 0, // 0.55 - 0.95
+                Gdx.graphics.getWidth() / 5 * 2, Gdx.graphics.getHeight());
         this.rightStage.draw();
+
+        this.banksRight.act(Gdx.graphics.getDeltaTime());
+        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20 * 19, 0, // 0.95 - 1
+                Gdx.graphics.getWidth() / 20, Gdx.graphics.getHeight());
+        this.banksRight.draw();
 
         Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
     @Override
     public void show() {
+
+        Texture tex = this.assets.get("assets/data/grass.jpg", Texture.class);
+        TextureRegion region = new TextureRegion(tex, 0, 0, 229, 138);
+        Image leftImg = new Image(region);
+        Image rightImg = new Image(region);
+        leftImg.setFillParent(true);
+        rightImg.setFillParent(true);
+        this.banksLeft.addActor(leftImg);
+        this.banksRight.addActor(rightImg);
+
     }
 
     @Override

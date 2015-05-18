@@ -22,18 +22,17 @@ public class River extends Actor {
     public River(AssetManager assetManager, float y, float w, float h,
             boolean left) {
         this.manager = assetManager;
-        int offset = left ? 192 : 0;
-        this.setPosition(offset, h);
+        this.setPosition(0, h);
         this.setWidth(w);
         this.setHeight(h);
-        this.mid = w / 2 + offset;
+        this.mid = w / 2;
 
         MoveToAction moveDown = new MoveToAction();
-        moveDown.setPosition(offset, y);
+        moveDown.setPosition(0, y);
         moveDown.setDuration(1f);
 
         MoveToAction moveUp = new MoveToAction();
-        moveUp.setPosition(offset, h * -1);
+        moveUp.setPosition(0, h * -1);
 
         SequenceAction seq = sequence(moveUp, moveDown);
         RepeatAction rep = forever(seq);
