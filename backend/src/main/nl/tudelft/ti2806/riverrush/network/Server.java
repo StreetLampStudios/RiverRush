@@ -16,6 +16,7 @@ import org.java_websocket.server.WebSocketServer;
 
 import javax.inject.Provider;
 import java.net.InetSocketAddress;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -75,9 +76,11 @@ public class Server extends WebSocketServer {
         FailIf.isNull(conn);
 
         EventDispatcher dispatcher = this.dispatcherProvider.get();
+        dispatcher.setRemoteAddress(conn.getRemoteSocketAddress());
         dispatcher.register(SendEvent.class, sendEventEventListener);
         this.eventDispatchers.put(conn.getRemoteSocketAddress(), dispatcher);
         this.sockets.put(conn.getRemoteSocketAddress(), conn);
+        //conn.send("appel");
     }
 
     @Override
@@ -110,12 +113,25 @@ public class Server extends WebSocketServer {
 
     /**
      * Handles events to send over the network.
-     * @param event - The event to dispatch.
+     *
+     * @param event      - The event to dispatch.
      * @param dispatcher - The dispatcher responsible for the event.
      */
     public void sendEvent(final SendEvent event, final EventDispatcher dispatcher) {
-        System.out.println("Sending " + event.serialize(protocol));
         WebSocket sock = this.sockets.get(dispatcher.getRemoteAddress());
         sock.send(event.serialize(protocol));
+        System.out.println("Sent " + event.serialize(protocol));
     }
+
+    public void sendToAll(String text) {
+        Collection<WebSocket> con = connections();
+        synchronized (con)
+
+        {
+            for (WebSocket c : con) {
+                c.send( text );
+            }
+        }
+    }
+
 }
