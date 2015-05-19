@@ -2,13 +2,14 @@ package nl.tudelft.ti2806.riverrush;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import nl.tudelft.ti2806.riverrush.backend.eventlisteners.JoinEventListener;
-import nl.tudelft.ti2806.riverrush.domain.entity.Game;
+import nl.tudelft.ti2806.riverrush.domain.entity.game.Game;
 import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.EventListener;
+import nl.tudelft.ti2806.riverrush.domain.event.listener.EventListener;
 import nl.tudelft.ti2806.riverrush.network.Server;
-import nl.tudelft.ti2806.riverrush.network.event.JoinEvent;
+import org.reflections.Reflections;
+
+import java.util.Set;
 
 /**
  * Entrypoint of the backend.
@@ -17,31 +18,50 @@ public final class MainBackend extends CoreModule {
     /**
      * A {@link Server} that fires NetworkEvents for listeners to dispatch.
      */
-    private static Server renderServer;
+    private Server renderServer;
 
-    private static Server clientServer;
+    private Server clientServer;
 
-    private static Game game;
+    private Game game;
+    private final Injector injector;
 
     /**
      * Main is a utility class.
      */
-    private MainBackend() { }
+    private MainBackend() {
+        this.injector = Guice.createInjector(this);
 
-    public static void main(final String[] args) {
-        Injector injector = Guice.createInjector(new MainBackend());
+        this.game = injector.getInstance(Game.class);
 
-        game = injector.getInstance(Game.class);
+        this.renderServer = new Server(injector.getProvider(EventDispatcher.class),
+            this.configureRendererProtocol());
+        this.clientServer = new Server(injector.getProvider(EventDispatcher.class),
+            this.configureClientProtocol());
 
-        renderServer = injector.getInstance(Server.class);
-        clientServer = injector.getInstance(Server.class);
+        Reflections reflections = new Reflections(getClass().getPackage().getName());
+        Set<Class<? extends EventListener>> classes = reflections.getSubTypesOf(EventListener.class);
+
+        for (Class<? extends EventListener> clasz : classes) {
+            requireBinding(clasz);
+        }
     }
 
-    private static final EventListener<JoinEvent> joinListener = new JoinEventListener();
+    public static void main(final String[] args) {
+        MainBackend mainBackend = new MainBackend();
+    }
+
     @Override
     protected EventDispatcher configureEventDispatcher() {
         EventDispatcher dispatcher = new BasicEventDispatcher();
-        dispatcher.register(JoinEvent.class, joinListener);
+
+        Reflections reflections = new Reflections(getClass().getPackage().getName());
+        Set<Class<? extends EventListener>> classes = reflections.getSubTypesOf(EventListener.class);
+
+        for (Class<? extends EventListener> clasz : classes) {
+            EventListener listener = injector.getInstance(clasz);
+            dispatcher.register(listener.getEventType(), listener);
+        }
+
         return dispatcher;
     }
 }

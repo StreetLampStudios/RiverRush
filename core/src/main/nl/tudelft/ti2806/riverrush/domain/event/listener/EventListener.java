@@ -1,4 +1,7 @@
-package nl.tudelft.ti2806.riverrush.domain.event;
+package nl.tudelft.ti2806.riverrush.domain.event.listener;
+
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 /**
  * Event listener.
@@ -14,4 +17,6 @@ public abstract class EventListener<T extends Event>  {
     public final void dispatch(final Event event, final EventDispatcher dispatcher) {
         this.handle((T)event, dispatcher);
     }
+
+    public abstract Class<T> getEventType();
 }

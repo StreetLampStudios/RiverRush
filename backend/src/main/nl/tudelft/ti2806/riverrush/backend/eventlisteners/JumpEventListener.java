@@ -1,8 +1,7 @@
 package nl.tudelft.ti2806.riverrush.backend.eventlisteners;
 
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.EventListener;
-import nl.tudelft.ti2806.riverrush.network.event.EchoNetworkEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.listener.EventListener;
 import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
 import nl.tudelft.ti2806.riverrush.network.event.SendEvent;
 import nl.tudelft.ti2806.riverrush.network.event.StringEvent;
@@ -17,6 +16,11 @@ public class JumpEventListener extends EventListener<JumpEvent> {
     public void handle(JumpEvent event, EventDispatcher dispatcher) {
         dispatcher.dispatch(new SendEvent(new StringEvent(fortune())));
         System.out.println("Somebody jumped");
+    }
+
+    @Override
+    public Class<JumpEvent> getEventType() {
+        return JumpEvent.class;
     }
 
     public String fortune()

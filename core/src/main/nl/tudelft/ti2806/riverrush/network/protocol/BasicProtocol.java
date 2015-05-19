@@ -13,34 +13,30 @@ import java.util.Map;
  * Defines how events are represented as network messages. This class is
  * singleton.
  */
-@Singleton
 public final class BasicProtocol implements Protocol {
-    /**
-     * For thread synchronization.
-     */
-    private static final Object LOCK = new Object();
+
     /**
      * We seperate key-value pairs with this character. E.g.:
      * event=JoinEvent;user=bob
      */
     private static final String PAIR_SEPERATOR = ";";
+
     /**
      * We seperate keys from values with this thing. E.g. event=JoinEvent
      */
     private static final String KEY_VALUE_SEPERATOR = "=";
+
     /**
      * The key representing the type of event. This could be action or event or
      * whatever.
      */
     private static final String ACTION_KEY = "event";
+
     /**
      * The port that this protocol operates on.
      */
-    private static final int PORT = 8080;
-    /**
-     * The singleton instance.
-     */
-    private static BasicProtocol instance;
+    private final int port;
+
     /**
      * Maps event type names to the lambda that instantiates the event.
      */
@@ -49,23 +45,10 @@ public final class BasicProtocol implements Protocol {
     /**
      * Singleton constructor.
      */
-    private BasicProtocol() {
+    public BasicProtocol(final int portNumber) {
         final int expectedEventTypes = 10;
         this.eventMapping = new Hashtable<>(expectedEventTypes);
-    }
-
-    /**
-     * Get the singleton instance of this protocol.
-     *
-     * @return One instance, always the same.
-     */
-    public static BasicProtocol getInstance() {
-        synchronized (LOCK) {
-            if (instance == null) {
-                instance = new BasicProtocol();
-            }
-        }
-        return instance;
+        this.port = portNumber;
     }
 
     @Override
@@ -125,7 +108,7 @@ public final class BasicProtocol implements Protocol {
 
     @Override
     public int getPortNumber() {
-        return PORT;
+        return this.port;
     }
 
     @Override

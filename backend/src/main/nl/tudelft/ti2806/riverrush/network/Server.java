@@ -1,9 +1,8 @@
 package nl.tudelft.ti2806.riverrush.network;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.EventListener;
+import nl.tudelft.ti2806.riverrush.domain.event.listener.EventListener;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
 import nl.tudelft.ti2806.riverrush.network.event.SendEvent;
@@ -16,7 +15,6 @@ import org.java_websocket.server.WebSocketServer;
 
 import javax.inject.Provider;
 import java.net.InetSocketAddress;
-import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -24,7 +22,6 @@ import java.util.Map;
  * Web socket endpoint for the backend to dispatch incoming tcp request from the
  * client.
  */
-@Singleton
 public class Server extends WebSocketServer {
 
     /**
@@ -67,6 +64,11 @@ public class Server extends WebSocketServer {
             @Override
             public void handle(final SendEvent event, final EventDispatcher dispatcher) {
                 sendEvent(event, dispatcher);
+            }
+
+            @Override
+            public Class<SendEvent> getEventType() {
+                return SendEvent.class;
             }
         };
     }
