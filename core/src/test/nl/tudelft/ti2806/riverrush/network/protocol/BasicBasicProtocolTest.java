@@ -90,10 +90,10 @@ public class BasicBasicProtocolTest {
         this.protocol.registerNetworkAction(StubEvent.class, StubEvent::new);
 
         final String expectedField = "field"
-                + this.protocol.getKeyValueSeperator() + "HelloWorld"
-                + this.protocol.getPairSeperator();
+            + this.protocol.getKeyValueSeperator() + "HelloWorld"
+            + this.protocol.getPairSeperator();
         Event networkMessage = this.protocol.deserialize(expectedField
-                + this.stubEventSerialized);
+            + this.stubEventSerialized);
         assertTrue(networkMessage instanceof StubEvent);
         assertEquals("HelloWorld", ((StubEvent) networkMessage).getField());
     }

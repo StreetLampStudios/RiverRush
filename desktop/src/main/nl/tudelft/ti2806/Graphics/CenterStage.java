@@ -1,10 +1,9 @@
 package nl.tudelft.ti2806.Graphics;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.RiverBanks;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.inject.Inject;
+import nl.tudelft.ti2806.riverrush.domain.entity.RiverBanks;
 
 /**
  * Center

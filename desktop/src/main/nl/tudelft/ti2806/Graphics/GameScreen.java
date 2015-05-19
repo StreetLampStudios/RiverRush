@@ -1,7 +1,5 @@
 package nl.tudelft.ti2806.Graphics;
 
-import nl.tudelft.ti2806.riverrush.desktop.DesktopLauncher;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import nl.tudelft.ti2806.riverrush.desktop.DesktopLauncher;
 
 @Singleton
 public class GameScreen extends AbstractScreen {
@@ -47,7 +46,7 @@ public class GameScreen extends AbstractScreen {
 
     @Inject
     public GameScreen(final Provider<RiverGame> provider,
-            final AssetManager assetsManager) {
+                      final AssetManager assetsManager) {
 
         this.assets = assetsManager;
         this.game = provider.get();
@@ -96,7 +95,7 @@ public class GameScreen extends AbstractScreen {
         this.banksLeft.act(Gdx.graphics.getDeltaTime());
         int width = (int) (Gdx.graphics.getWidth() * BANKSIZE);
         Gdx.gl.glViewport(0, 0, width, // 0 - 0.05
-                Gdx.graphics.getHeight());
+            Gdx.graphics.getHeight());
         this.banksLeft.draw();
     }
 
@@ -108,7 +107,7 @@ public class GameScreen extends AbstractScreen {
         int start = (int) (Gdx.graphics.getWidth() * FIRSTBANKEDGE);
         int width = (int) (Gdx.graphics.getWidth() * SCREENSIZE);
         Gdx.gl.glViewport(start, 0, // 0.05 - 0.45
-                width, Gdx.graphics.getHeight());
+            width, Gdx.graphics.getHeight());
         this.leftStage.draw();
     }
 
@@ -120,7 +119,7 @@ public class GameScreen extends AbstractScreen {
         int start = (int) (Gdx.graphics.getWidth() * LEFTSCREENEDGE);
         int width = (int) (Gdx.graphics.getWidth() * MIDSIZE);
         Gdx.gl.glViewport(start, 0, // 0.45 - 0.55
-                width, Gdx.graphics.getHeight());
+            width, Gdx.graphics.getHeight());
         this.midStage.draw();
     }
 
@@ -132,7 +131,7 @@ public class GameScreen extends AbstractScreen {
         int start = (int) (Gdx.graphics.getWidth() * MIDEDGE);
         int width = (int) (Gdx.graphics.getWidth() * SCREENSIZE);
         Gdx.gl.glViewport(start, 0, // 0.55 - 0.95
-                width, Gdx.graphics.getHeight());
+            width, Gdx.graphics.getHeight());
         this.rightStage.draw();
     }
 
@@ -144,7 +143,7 @@ public class GameScreen extends AbstractScreen {
         int start = (int) (Gdx.graphics.getWidth() * RIGHTSCREENEDGE);
         int width = (int) (Gdx.graphics.getWidth() * BANKSIZE);
         Gdx.gl.glViewport(start, 0, // 0.95 - 1
-                width, Gdx.graphics.getHeight());
+            width, Gdx.graphics.getHeight());
         this.banksRight.draw();
     }
 
@@ -153,7 +152,7 @@ public class GameScreen extends AbstractScreen {
         // Get texture
         Texture tex = this.assets.get("assets/data/grass.jpg", Texture.class);
         TextureRegion region = new TextureRegion(tex, 0, 0, ENDTEXTUREX,
-                ENDTEXTUREY);
+            ENDTEXTUREY);
 
         Image leftImg = new Image(region);
         leftImg.setFillParent(true);

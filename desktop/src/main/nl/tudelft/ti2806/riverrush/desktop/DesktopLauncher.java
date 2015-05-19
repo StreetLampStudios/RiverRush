@@ -1,15 +1,12 @@
 package nl.tudelft.ti2806.riverrush.desktop;
 
-import nl.tudelft.ti2806.Graphics.LoadingScreen;
-import nl.tudelft.ti2806.Graphics.RiverGame;
-import nl.tudelft.ti2806.riverrush.CoreModule;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import nl.tudelft.ti2806.Graphics.RiverGame;
+import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 public class DesktopLauncher extends CoreModule {

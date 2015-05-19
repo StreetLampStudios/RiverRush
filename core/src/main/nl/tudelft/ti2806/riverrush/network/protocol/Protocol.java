@@ -14,7 +14,7 @@ public interface Protocol {
      * @param eventInstatiator - A lambda that creates such an event.
      */
     void registerNetworkAction(Class<? extends Event> eventClass,
-            EventInstantiator eventInstatiator);
+                               EventInstantiator eventInstatiator);
 
     /**
      * Test whether the protocol supports a certain {@link Event}.
@@ -33,7 +33,7 @@ public interface Protocol {
      * @throws InvalidActionException   when the type of event was not registered.
      */
     Event deserialize(String event) throws InvalidProtocolException,
-            InvalidActionException;
+        InvalidActionException;
 
     /**
      * Translate a {@link Event} instance to it's string representation

@@ -3,7 +3,6 @@ package nl.tudelft.ti2806.riverrush.network.protocol;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 
-
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -52,7 +51,7 @@ public final class BasicProtocol implements Protocol {
 
     @Override
     public void registerNetworkAction(final Class<? extends Event> eventClass,
-            final EventInstantiator eventInstatiator) {
+                                      final EventInstantiator eventInstatiator) {
         this.eventMapping.put(eventClass.getSimpleName(), eventInstatiator);
     }
 
@@ -63,7 +62,7 @@ public final class BasicProtocol implements Protocol {
 
     @Override
     public Event deserialize(final String message)
-            throws InvalidProtocolException, InvalidActionException {
+        throws InvalidProtocolException, InvalidActionException {
         FailIf.isNull(message);
 
         String action = null;

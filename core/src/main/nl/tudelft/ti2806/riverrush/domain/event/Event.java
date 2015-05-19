@@ -12,6 +12,7 @@ import java.util.Map;
 public interface Event {
 
     void setPlayer(Player p);
+
     Player getPlayer();
 
     /**

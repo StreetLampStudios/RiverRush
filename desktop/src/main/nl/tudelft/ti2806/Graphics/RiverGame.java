@@ -19,8 +19,7 @@ public class RiverGame extends Game {
     /**
      * Creates a game.
      *
-     * @param provider
-     *            provides the game with its loading screen
+     * @param provider provides the game with its loading screen
      */
     @Inject
     public RiverGame(final Provider<LoadingScreen> provider) {

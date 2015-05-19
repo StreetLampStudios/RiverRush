@@ -3,6 +3,5 @@
 // Datum 13 May 2015
 /**
  * @author job
- *
  */
 package nl.tudelft.ti2806.Graphics;

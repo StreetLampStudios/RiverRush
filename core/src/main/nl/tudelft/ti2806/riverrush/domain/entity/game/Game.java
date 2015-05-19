@@ -2,11 +2,7 @@ package nl.tudelft.ti2806.riverrush.domain.entity.game;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import nl.tudelft.ti2806.riverrush.GameConfiguration;
-import nl.tudelft.ti2806.riverrush.domain.entity.Team;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-
-import java.util.ArrayList;
 
 /**
  * Represents an ongoing or waiting game.

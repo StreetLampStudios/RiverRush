@@ -1,14 +1,13 @@
 package nl.tudelft.ti2806.Graphics;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Boat;
-import nl.tudelft.ti2806.riverrush.domain.entity.Lose;
-import nl.tudelft.ti2806.riverrush.domain.entity.River;
-import nl.tudelft.ti2806.riverrush.domain.entity.Win;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.google.inject.Inject;
+import nl.tudelft.ti2806.riverrush.domain.entity.Boat;
+import nl.tudelft.ti2806.riverrush.domain.entity.Lose;
+import nl.tudelft.ti2806.riverrush.domain.entity.River;
+import nl.tudelft.ti2806.riverrush.domain.entity.Win;
 
 public class SideStage extends AbstractStage {
 

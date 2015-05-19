@@ -1,10 +1,5 @@
 package nl.tudelft.ti2806.Graphics;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-import nl.tudelft.ti2806.riverrush.desktop.DesktopLauncher;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -17,6 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import nl.tudelft.ti2806.riverrush.desktop.DesktopLauncher;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class WaitingScreen extends AbstractScreen {
 
@@ -40,8 +39,8 @@ public class WaitingScreen extends AbstractScreen {
 
     @Inject
     public WaitingScreen(final AssetManager assetManager,
-            final Provider<RiverGame> provider,
-            final Provider<GameScreen> screenProvider) {
+                         final Provider<RiverGame> provider,
+                         final Provider<GameScreen> screenProvider) {
         this.assets = assetManager;
         this.game = provider.get();
         this.scrnProvider = screenProvider;
@@ -52,13 +51,13 @@ public class WaitingScreen extends AbstractScreen {
     public void show() {
         this.atlas = new TextureAtlas("assets/uiskin.atlas");
         this.skin = new Skin(Gdx.files.internal("assets/uiskin.json"),
-                this.atlas);
+            this.atlas);
         this.stage = new Stage();
 
         Texture texture = new Texture(
-                Gdx.files.internal("assets/data/loading.jpeg"));
+            Gdx.files.internal("assets/data/loading.jpeg"));
         TextureRegion region = new TextureRegion(texture, 0, 0,
-                (int) DesktopLauncher.WIDTH, (int) DesktopLauncher.HEIGHT);
+            (int) DesktopLauncher.WIDTH, (int) DesktopLauncher.HEIGHT);
 
         Image image = new Image(region);
         image.setFillParent(true);
@@ -116,9 +115,8 @@ public class WaitingScreen extends AbstractScreen {
 
     /**
      * Start counting down to zero. When zero is reached go to the next screen
-     * 
-     * @param amountOfTime
-     *            - amount of seconds to count down to
+     *
+     * @param amountOfTime - amount of seconds to count down to
      */
     public void startTimer(final int amountOfTime) {
         this.tmr = new Timer();
@@ -128,7 +126,7 @@ public class WaitingScreen extends AbstractScreen {
             public void run() {
                 WaitingScreen.this.time--;
                 WaitingScreen.this.timer.setText("Time till game start: "
-                        + WaitingScreen.this.time);
+                    + WaitingScreen.this.time);
                 WaitingScreen.this.addConnection();
 
             }

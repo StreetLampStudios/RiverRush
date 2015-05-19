@@ -30,7 +30,7 @@ public class LoadingScreen extends AbstractScreen {
 
     @Inject
     public LoadingScreen(final AssetManager assetManager,
-            final Provider<RiverGame> provider, final Provider<WaitingScreen> screenProvider) {
+                         final Provider<RiverGame> provider, final Provider<WaitingScreen> screenProvider) {
         this.assets = assetManager;
         this.game = provider.get();
         this.scrnProvider = screenProvider;
@@ -49,10 +49,10 @@ public class LoadingScreen extends AbstractScreen {
         this.stage = new Stage();
         this.atlas = new TextureAtlas("assets/uiskin.atlas");
         this.skin = new Skin(Gdx.files.internal("assets/uiskin.json"),
-                this.atlas);
+            this.atlas);
 
         Texture texture = new Texture(
-                Gdx.files.internal("assets/data/loading.jpeg"));
+            Gdx.files.internal("assets/data/loading.jpeg"));
         TextureRegion region = new TextureRegion(texture, 0, 0, 1920, 1080);
 
         Image image = new Image(region);

@@ -48,7 +48,7 @@ public class Server extends WebSocketServer {
      * method).
      *
      * @param dispatcher - A {@link Provider} for {@link EventDispatcher}s.
-     * @param aProtocol - The protocol to use when receiving and sending messages.
+     * @param aProtocol  - The protocol to use when receiving and sending messages.
      */
     @Inject
     public Server(final EventDispatcher dispatcher,

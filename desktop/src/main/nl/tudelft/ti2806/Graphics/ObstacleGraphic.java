@@ -27,18 +27,19 @@ public class ObstacleGraphic extends Actor implements Obstacle {
 
     /**
      * Creates a new obstacle
+     *
      * @param assetsManager - Manager of assets
-     * @param offset - Shoots from different parts of the screen. Must be between 0 and 1
+     * @param offset        - Shoots from different parts of the screen. Must be between 0 and 1
      */
     public ObstacleGraphic(final AssetManager assetsManager, final double offset) {
         this.assets = assetsManager;
-        setWidth((float)SIZE);
+        setWidth((float) SIZE);
         setHeight((float) (SIZE * HEIGHT / WIDTH) / 2);
-        setPosition((float)((800.0 + 320.0 * offset) - SIZE/2), (float) HEIGHT);
+        setPosition((float) ((800.0 + 320.0 * offset) - SIZE / 2), (float) HEIGHT);
 
 
         MoveToAction moveDown = new MoveToAction();
-        moveDown.setPosition((float) (WIDTH/2 - SIZE / 2), (float)( -2 * SIZE));
+        moveDown.setPosition((float) (WIDTH / 2 - SIZE / 2), (float) (-2 * SIZE));
         moveDown.setDuration(DURATIONOFANIMATION);
 
         addAction(moveDown);

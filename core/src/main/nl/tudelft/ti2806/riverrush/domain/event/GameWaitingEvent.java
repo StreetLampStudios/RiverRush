@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Created by m.olsthoorn on 5/18/2015.
  */
-public class GameWaitingEvent implements Event{
+public class GameWaitingEvent implements Event {
     @Override
     public void setPlayer(Player p) {
 

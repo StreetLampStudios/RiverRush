@@ -65,7 +65,6 @@ public class ServerTest extends AbstractModule {
     }
 
 
-
     /**
      * onMessage should use the Protocol to create an event, and then dispatch
      * the event via EventDispatcher.

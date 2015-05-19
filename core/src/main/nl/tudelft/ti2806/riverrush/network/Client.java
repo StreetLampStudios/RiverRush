@@ -38,8 +38,9 @@ public class Client extends WebSocketClient {
 
     /**
      * Send a domain event to the server.
+     *
      * @param event - The event to send.
-     * @param d - The dispatcher that dispatched this event.
+     * @param d     - The dispatcher that dispatched this event.
      */
     private void sendEvent(final Event event, final EventDispatcher d) {
         getConnection().send(event.serialize(protocol));

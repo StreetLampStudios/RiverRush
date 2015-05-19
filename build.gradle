@@ -66,8 +66,8 @@ subprojects {
             version: '3.0'
 
         compile group: 'org.reflections',
-                name: 'reflections',
-                version: '0.9.9'
+            name: 'reflections',
+            version: '0.9.9'
 
         testCompile group: 'junit',
             name: 'junit',
