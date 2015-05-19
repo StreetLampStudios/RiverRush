@@ -5,11 +5,7 @@ import com.google.inject.Injector;
 import nl.tudelft.ti2806.riverrush.domain.entity.game.Game;
 import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.listener.EventListener;
 import nl.tudelft.ti2806.riverrush.network.Server;
-import org.reflections.Reflections;
-
-import java.util.Set;
 
 /**
  * Entrypoint of the backend.
@@ -29,38 +25,31 @@ public final class MainBackend extends CoreModule {
      * Main is a utility class.
      */
     private MainBackend() {
-        this.injector = Guice.createInjector(this);
+        injector = Guice.createInjector(this);
 
         this.game = injector.getInstance(Game.class);
 
-        this.renderServer = new Server(injector.getProvider(EventDispatcher.class),
+        this.renderServer = new Server(
+            injector.getInstance(EventDispatcher.class),
             this.configureRendererProtocol());
-        this.clientServer = new Server(injector.getProvider(EventDispatcher.class),
+
+        this.clientServer = new Server(
+            injector.getInstance(EventDispatcher.class),
             this.configureClientProtocol());
 
-        Reflections reflections = new Reflections(getClass().getPackage().getName());
-        Set<Class<? extends EventListener>> classes = reflections.getSubTypesOf(EventListener.class);
-
-        for (Class<? extends EventListener> clasz : classes) {
-            requireBinding(clasz);
-        }
+        this.clientServer.start();
+        this.renderServer.start();
     }
 
     public static void main(final String[] args) {
-        MainBackend mainBackend = new MainBackend();
+        new MainBackend();
     }
+
 
     @Override
     protected EventDispatcher configureEventDispatcher() {
         EventDispatcher dispatcher = new BasicEventDispatcher();
 
-        Reflections reflections = new Reflections(getClass().getPackage().getName());
-        Set<Class<? extends EventListener>> classes = reflections.getSubTypesOf(EventListener.class);
-
-        for (Class<? extends EventListener> clasz : classes) {
-            EventListener listener = injector.getInstance(clasz);
-            dispatcher.register(listener.getEventType(), listener);
-        }
 
         return dispatcher;
     }

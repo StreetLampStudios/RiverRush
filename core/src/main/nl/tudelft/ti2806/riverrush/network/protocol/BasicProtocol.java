@@ -1,8 +1,7 @@
 package nl.tudelft.ti2806.riverrush.network.protocol;
 
-import com.google.inject.Singleton;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
-import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
 
 
 import java.util.HashMap;
@@ -52,18 +51,18 @@ public final class BasicProtocol implements Protocol {
     }
 
     @Override
-    public void registerNetworkAction(final Class<? extends NetworkEvent> eventClass,
+    public void registerNetworkAction(final Class<? extends Event> eventClass,
             final EventInstantiator eventInstatiator) {
         this.eventMapping.put(eventClass.getSimpleName(), eventInstatiator);
     }
 
     @Override
-    public boolean isRegistered(final Class<? extends NetworkEvent> eventClass) {
+    public boolean isRegistered(final Class<? extends Event> eventClass) {
         return this.eventMapping.containsKey(eventClass.getSimpleName());
     }
 
     @Override
-    public NetworkEvent deserialize(final String message)
+    public Event deserialize(final String message)
             throws InvalidProtocolException, InvalidActionException {
         FailIf.isNull(message);
 
@@ -94,13 +93,13 @@ public final class BasicProtocol implements Protocol {
             throw new InvalidActionException("Unknown "
                 + this.getEventTypeFieldKey() + ": " + action);
         }
-        NetworkEvent result = eventInstatiator.instantiate();
+        Event result = eventInstatiator.instantiate();
 
         return result.deserialize(fields);
     }
 
     @Override
-    public String serialize(final NetworkEvent event) {
+    public String serialize(final Event event) {
         return event.serialize(this) + this.getPairSeperator()
             + this.getEventTypeFieldKey()
             + event.getClass().getSimpleName();

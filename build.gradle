@@ -65,6 +65,10 @@ subprojects {
             name: 'guice',
             version: '3.0'
 
+        compile group: 'org.reflections',
+                name: 'reflections',
+                version: '0.9.9'
+
         testCompile group: 'junit',
             name: 'junit',
             version: '4.12'
@@ -96,7 +100,6 @@ project(":desktop") {
 project(":backend") {
     dependencies {
         compile project(":core")
-        compile "org.reflections:reflections:0.9.9"
     }
 }
 

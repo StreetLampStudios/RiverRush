@@ -9,11 +9,19 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 /**
  * Configures dependency injection.
  */
+
 public abstract class CoreModule extends AbstractModule {
     @Override
     protected void configure() {
         this.bind(EventDispatcher.class).toInstance(this.configureEventDispatcher());
     }
+
+    /**
+     * Creates instances of EventDispatcher
+     * Override for the ability to pre-attatch any listeners.
+     * @return A fresh dispatcher.
+     */
+    protected abstract EventDispatcher configureEventDispatcher();
 
     /**
      * Configure the renderer protocol by registering all valid messages that can be
@@ -41,14 +49,8 @@ public abstract class CoreModule extends AbstractModule {
         // protocol.registerNetworkAction(...);
 
         protocol.registerNetworkAction(JoinEvent.class, JoinEvent::new);
+
         return protocol;
     }
 
-    /**
-     * Creates instances of EventDispatcher
-     * Override for the ability to pre-register any listeners.
-     *
-     * @return A fresh dispatcher.
-     */
-    protected abstract EventDispatcher configureEventDispatcher();
 }

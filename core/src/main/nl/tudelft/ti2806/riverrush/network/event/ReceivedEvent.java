@@ -4,27 +4,36 @@ import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
+import java.net.InetSocketAddress;
 import java.util.Map;
 
 /**
- * Created by Rob on 18-5-2015.
+ * Created by thomas on 18-5-15.
  */
-public class StringEvent implements Event {
-    private String message;
+public class ReceivedEvent implements Event {
 
-    public StringEvent(String message) {
-        this.message = message;
+    private final Event wrappedEvent;
+
+    private final InetSocketAddress address;
+
+
+    public ReceivedEvent(Event wrappedEvent, InetSocketAddress remoteAddress) {
+        this.wrappedEvent = wrappedEvent;
+        this.address = remoteAddress;
+    }
+
+    public InetSocketAddress getAddress() {
+        return address;
     }
 
     @Override
     public String serialize(Protocol protocol) {
-        return message;
+        return this.wrappedEvent.serialize(protocol);
     }
 
     @Override
     public Event deserialize(Map<String, String> keyValuePairs) {
-        message = keyValuePairs.get("message");
-        return this;
+        return this.wrappedEvent.deserialize(keyValuePairs);
     }
 
     @Override
@@ -37,3 +46,4 @@ public class StringEvent implements Event {
         return null;
     }
 }
+
