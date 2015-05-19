@@ -36,7 +36,7 @@ public class WaitingScreen extends AbstractScreen {
     private int count;
 
     @Inject
-    public WaitingScreen(final AssetManager assetManager, EventDispatcher eventDispatcher) {
+    public WaitingScreen(final AssetManager assetManager, final EventDispatcher eventDispatcher) {
         super(eventDispatcher);
         this.assets = assetManager;
         this.time = Integer.MAX_VALUE;
@@ -44,13 +44,13 @@ public class WaitingScreen extends AbstractScreen {
 
     @Override
     public void show() {
-        this.atlas = new TextureAtlas("assets/uiskin.atlas");
-        this.skin = new Skin(Gdx.files.internal("assets/uiskin.json"),
+        this.atlas = new TextureAtlas("uiskin.atlas");
+        this.skin = new Skin(Gdx.files.internal("uiskin.json"),
             this.atlas);
         this.stage = new Stage();
 
         Texture texture = new Texture(
-            Gdx.files.internal("assets/data/loading.jpeg"));
+            Gdx.files.internal("data/loading.jpeg"));
         TextureRegion region = new TextureRegion(texture, 0, 0,
             (int) MainDesktop.WIDTH, (int) MainDesktop.HEIGHT);
 
@@ -60,8 +60,6 @@ public class WaitingScreen extends AbstractScreen {
 
         this.createTimerLabel();
         this.createCounterLabel();
-
-        this.startTimer(2);
 
     }
 

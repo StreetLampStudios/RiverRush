@@ -73,6 +73,7 @@ public class RiverGame extends com.badlogic.gdx.Game {
 
     public void loadWaitingScreen() {
         this.setScreen(waitingScreenP.get());
+        this.loadingScreen.dispose();
     }
 
     public void loadGameScreen() {
