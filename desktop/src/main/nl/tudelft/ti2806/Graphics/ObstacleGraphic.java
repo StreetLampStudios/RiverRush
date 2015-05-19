@@ -6,44 +6,62 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import nl.tudelft.ti2806.riverrush.desktop.DesktopLauncher;
 import nl.tudelft.ti2806.riverrush.domain.entity.Obstacle;
 
 /**
- * Created by Martijn on 18-5-2015.
+ * Adds obstacles on the screen
  */
 public class ObstacleGraphic extends Actor implements Obstacle {
 
-  private final AssetManager assets;
-  private final static float SIZE = 256;
+    /**
+     * Size of the graphic.
+     */
+    private static final double SIZE = 256;
+    private static final float DURATIONOFANIMATION = 3f;
 
-  public ObstacleGraphic(AssetManager assets, double offset) {
-    this.assets = assets;
-    setWidth(256);
-    setHeight((float) (256.0 * 1080.0 / 1920.0) / 2);
-    setPosition((float)(800.0 + 320.0 * offset) - SIZE/2, 1080);
+    private final AssetManager assets;
+    private final double HEIGHT = DesktopLauncher.HEIGHT;
+    private final double WIDTH = DesktopLauncher.WIDTH;
 
 
-    MoveToAction moveDown = new MoveToAction();
-    moveDown.setPosition(960 - SIZE / 2, -2 * SIZE);
-    moveDown.setDuration(3f);
+    /**
+     * Creates a new obstacle
+     * @param assetsManager - Manager of assets
+     * @param offset - Shoots from different parts of the screen. Must be between 0 and 1
+     */
+    public ObstacleGraphic(final AssetManager assetsManager, final double offset) {
+        this.assets = assetsManager;
+        setWidth((float)SIZE);
+        setHeight((float) (SIZE * HEIGHT / WIDTH) / 2);
+        setPosition((float)((800.0 + 320.0 * offset) - SIZE/2), (float) HEIGHT);
 
-    addAction(moveDown);
-  }
 
-  @Override
-  public void draw(Batch batch, float parentAlpha) {
-    Texture tex = this.assets.get("assets/data/cannonball.png", Texture.class);
-    TextureRegion region = new TextureRegion(tex, 0, 0, 512, 512);
-    batch.enableBlending();
-    batch.draw(region, this.getX(), this.getY(), this.getOriginX(),
-      this.getOriginY(), this.getWidth(), this.getHeight(),
-      this.getScaleX(), this.getScaleY(), this.getRotation());
-  }
+        MoveToAction moveDown = new MoveToAction();
+        moveDown.setPosition((float) (WIDTH/2 - SIZE / 2), (float)( -2 * SIZE));
+        moveDown.setDuration(DURATIONOFANIMATION);
 
-  public boolean isDone(){
-    if(getY() == -2*SIZE){
-      return true;
+        addAction(moveDown);
     }
-    return false;
-  }
+
+    @Override
+    public void draw(final Batch batch, final float parentAlpha) {
+        Texture tex = this.assets.get("assets/data/cannonball.png", Texture.class);
+        TextureRegion region = new TextureRegion(tex, 0, 0, 512, 512);
+        batch.enableBlending();
+        batch.draw(region, this.getX(), this.getY(), this.getOriginX(),
+            this.getOriginY(), this.getWidth(), this.getHeight(),
+            this.getScaleX(), this.getScaleY(), this.getRotation());
+    }
+
+    /**
+     * @return true if the animation is done
+     */
+    public boolean isDone() {
+        //-2
+        if (getY() == -2 * SIZE) {
+            return true;
+        }
+        return false;
+    }
 }

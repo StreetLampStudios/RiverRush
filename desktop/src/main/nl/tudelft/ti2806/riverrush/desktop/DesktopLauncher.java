@@ -15,6 +15,10 @@ public class DesktopLauncher extends AbstractModule {
 
     private LoadingScreen loadingScreen;
 
+    public static final double WIDTH = 1920;
+    public static final double HEIGHT = 1080;
+
+
     public static void main(String[] arg) {
         // This injector can inject all dependencies configured in CoreModule
         // and this, the desktop module.

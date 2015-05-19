@@ -15,30 +15,32 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import nl.tudelft.ti2806.riverrush.desktop.DesktopLauncher;
 
 public class WaitingScreen extends AbstractScreen {
 
     private static final int SECOND = 1000;
     private Stage stage;
-    private final AssetManager assetManager;
+    private final AssetManager assets;
     private final RiverGame game;
     private final Provider<GameScreen> scrnProvider;
 
     private TextureAtlas atlas;
     private Skin skin;
 
-    private Label timer;
-    private Label counter;
-
+    //Label for time left till game start
     private Timer tmr;
-
+    private Label timer;
     private int time;
+
+    //Label for amount of people connected
+    private Label counter;
     private int count;
 
     @Inject
     public WaitingScreen(final AssetManager assetManager,
-            Provider<RiverGame> provider, Provider<GameScreen> screenProvider) {
-        this.assetManager = assetManager;
+            final Provider<RiverGame> provider, final Provider<GameScreen> screenProvider) {
+        this.assets = assetManager;
         this.game = provider.get();
         this.scrnProvider = screenProvider;
         this.time = Integer.MAX_VALUE;
@@ -46,28 +48,42 @@ public class WaitingScreen extends AbstractScreen {
 
     @Override
     public void show() {
-        this.atlas = new TextureAtlas("uiskin.atlas");
-        this.skin = new Skin(Gdx.files.internal("uiskin.json"), this.atlas);
+        this.atlas = new TextureAtlas("assets/uiskin.atlas");
+        this.skin  = new Skin(Gdx.files.internal("assets/uiskin.json"), this.atlas);
         this.stage = new Stage();
 
         Texture texture = new Texture(
                 Gdx.files.internal("assets/data/loading.jpeg"));
-        TextureRegion region = new TextureRegion(texture, 0, 0, 1920, 1080);
+        TextureRegion region = new TextureRegion(texture, 0, 0, (float) DesktopLauncher.WIDTH, (float) DesktopLauncher.HEIGHT);
 
         Image image = new Image(region);
         image.setFillParent(true);
         this.stage.addActor(image);
 
+        createTimerLabel();
+        createCounterLabel();
+
+
+        this.startTimer(2);
+
+    }
+
+    /**
+     * Creates a timerLabel
+     */
+    public void createTimerLabel() {
         this.timer = new Label("Time till game start: ", this.skin);
         this.timer.setPosition(1200, 540);
         this.stage.addActor(this.timer);
+    }
 
+    /**
+     * Creates the counter label
+     */
+    public void createCounterLabel() {
         this.counter = new Label("Connected: ", this.skin);
         this.counter.setPosition(1200, 500);
         this.stage.addActor(this.counter);
-
-        this.startTimer(1);
-
     }
 
     @Override
@@ -75,6 +91,7 @@ public class WaitingScreen extends AbstractScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        //If the counter is at 0 go to the game
         if (this.time == 0) {
             this.tmr.cancel();
             this.game.setScreen(this.scrnProvider.get());
@@ -85,15 +102,22 @@ public class WaitingScreen extends AbstractScreen {
 
     }
 
+    /**
+     * Tell the waiting screen that someone has connected
+     */
     public void addConnection() {
         this.count++;
         this.counter.setText("Connected: " + this.count);
 
     }
 
-    public void startTimer(int time) {
+    /**
+     * Start counting down to zero. When zero is reached go to the next screen
+     * @param amountOfTime - amount of seconds to count down to
+     */
+    public void startTimer(final int amountOfTime) {
         this.tmr = new Timer();
-        this.time = time;
+        this.time = amountOfTime;
         this.tmr.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {

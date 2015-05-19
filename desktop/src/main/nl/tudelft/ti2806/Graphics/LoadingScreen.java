@@ -20,14 +20,18 @@ public class LoadingScreen extends AbstractScreen {
     private TextureAtlas atlas;
     private Skin skin;
 
-    private final AssetManager assetManager;
+    private final AssetManager assets;
     private final RiverGame game;
     private final Provider<WaitingScreen> scrnProvider;
 
+    public static String getFileName(String name) {
+        return "assets/data/" + name;
+    }
+
     @Inject
-    public LoadingScreen(AssetManager assetManager,
-            Provider<RiverGame> provider, Provider<WaitingScreen> screenProvider) {
-        this.assetManager = assetManager;
+    public LoadingScreen(final AssetManager assetManager,
+            final Provider<RiverGame> provider, final Provider<WaitingScreen> screenProvider) {
+        this.assets = assetManager;
         this.game = provider.get();
         this.scrnProvider = screenProvider;
     }
@@ -40,7 +44,7 @@ public class LoadingScreen extends AbstractScreen {
     @Override
     public void show() {
 
-        this.assetManager.finishLoading();
+        this.assets.finishLoading();
 
         this.stage = new Stage();
         this.atlas = new TextureAtlas("assets/uiskin.atlas");
@@ -55,25 +59,27 @@ public class LoadingScreen extends AbstractScreen {
         image.setFillParent(true);
         this.stage.addActor(image);
 
-        this.assetManager.load("assets/data/boat.jpg", Texture.class);
-        this.assetManager.load("assets/data/shipv2.png", Texture.class);
-        this.assetManager.load("assets/data/ship.png", Texture.class);
-        this.assetManager.load("assets/data/raccoon.png", Texture.class);
-        this.assetManager.load("assets/data/pirateship.png", Texture.class);
-        this.assetManager.load("assets/data/left.jpg", Texture.class);
-        this.assetManager.load("assets/data/grass.jpg", Texture.class);
-        this.assetManager.load("assets/data/river.jpg", Texture.class);
-        this.assetManager.load("assets/data/cannonball.png", Texture.class);
-        this.assetManager.load("assets/data/win.png", Texture.class);
-        this.assetManager.load("assets/data/lose.png", Texture.class);
+        //Load all images/textures that we will use
+        this.assets.load(getFileName("boat.jpg"), Texture.class);
+        this.assets.load(getFileName("shipv2.png"), Texture.class);
+        this.assets.load(getFileName("ship.png"), Texture.class);
+        this.assets.load(getFileName("raccoon.png"), Texture.class);
+        this.assets.load(getFileName("pirateship.png"), Texture.class);
+        this.assets.load(getFileName("left.jpg"), Texture.class);
+        this.assets.load(getFileName("grass.jpg"), Texture.class);
+        this.assets.load(getFileName("river.jpg"), Texture.class);
+        this.assets.load(getFileName("cannonball.png"), Texture.class);
+        this.assets.load(getFileName("win.png"), Texture.class);
+        this.assets.load(getFileName("lose.png"), Texture.class);
     }
 
     @Override
-    public void render(float delta) {
+    public void render(final float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (this.assetManager.update()) {
+        //If all the assets have been correctly loaded, go to the next screen
+        if (this.assets.update()) {
             this.game.setScreen(this.scrnProvider.get());
         }
 
@@ -82,7 +88,7 @@ public class LoadingScreen extends AbstractScreen {
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(final int width, final int height) {
         // TODO Auto-generated method stub
 
     }

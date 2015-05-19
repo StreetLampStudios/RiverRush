@@ -11,9 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import nl.tudelft.ti2806.riverrush.desktop.DesktopLauncher;
 
 @Singleton
 public class GameScreen extends AbstractScreen {
+
+    private int WIDTH = (int) DesktopLauncher.WIDTH;
+    private int HEIGHT = (int) DesktopLauncher.HEIGHT;
 
     private SideStage leftScreen;
     private SideStage rightScreen;
@@ -25,87 +29,121 @@ public class GameScreen extends AbstractScreen {
     private Stage banksLeft;
     private Stage banksRight;
     public OrthographicCamera camera;
-    private static int WIDTH = 1920;
-    private static int HEIGHT = 1080;
     private RiverGame game;
     private AssetManager assets;
 
     @Inject
-    public GameScreen(Provider<RiverGame> provider, AssetManager assets) {
-        this.leftScreen = new SideStage(assets, WIDTH, HEIGHT);
-        this.rightScreen = new SideStage(assets, WIDTH, HEIGHT);
-        this.midScreen = new CenterStage(assets, WIDTH, HEIGHT);
+    public GameScreen(final Provider<RiverGame> provider, final AssetManager assetsManager) {
 
-        // this.leftScreen.spawnObstacle(0.0);
+        this.assets = assetsManager;
+        this.game = provider.get();
 
         this.banksLeft = new Stage();
-        this.banksRight = new Stage();
-        this.leftStage = new Stage();
-        this.midStage = new Stage();
-        this.rightStage = new Stage();
 
+        this.leftScreen = new SideStage(assets, WIDTH, HEIGHT);
+        this.leftStage = new Stage();
         this.leftStage.addActor(this.leftScreen);
-        this.rightStage.addActor(this.rightScreen);
+
+        this.midScreen = new CenterStage(assets, WIDTH, HEIGHT);
+        this.midStage = new Stage();
         this.midStage.addActor(this.midScreen);
 
-        this.assets = assets;
-        this.game = provider.get();
+        this.rightScreen = new SideStage(assets, WIDTH, HEIGHT);
+        this.rightStage = new Stage();
+        this.rightStage.addActor(this.rightScreen);
+
+        this.banksRight = new Stage();
 
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false, WIDTH, HEIGHT);
 
-        this.leftScreen.win(assets);
-        this.rightScreen.lose(assets);
+        //TODO temporary function calls to check functionality
+        leftScreen.spawnObstacle(0.0);
+
+        this.leftScreen.win();
+        this.rightScreen.lose();
     }
 
     @Override
-    public void render(float delta) {
+    public void render(final float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         this.camera.update();
         this.game.getBatch().setProjectionMatrix(this.camera.combined);
 
-        this.banksLeft.act(Gdx.graphics.getDeltaTime());
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth() / 20, // 0 - 0.05
-                Gdx.graphics.getHeight());
-        this.banksLeft.draw();
-
-        this.leftStage.act(Gdx.graphics.getDeltaTime());
-        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20, 0, // 0.05 - 0.45
-                Gdx.graphics.getWidth() / 5 * 2, Gdx.graphics.getHeight());
-        this.leftStage.draw();
-
-        this.midStage.act(Gdx.graphics.getDeltaTime());
-        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20 * 9, 0, // 0.45 - 0.55
-                Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight());
-        this.midStage.draw();
-
-        this.rightStage.act(Gdx.graphics.getDeltaTime());
-        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20 * 11, 0, // 0.55 - 0.95
-                Gdx.graphics.getWidth() / 5 * 2, Gdx.graphics.getHeight());
-        this.rightStage.draw();
-
-        this.banksRight.act(Gdx.graphics.getDeltaTime());
-        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20 * 19, 0, // 0.95 - 1
-                Gdx.graphics.getWidth() / 20, Gdx.graphics.getHeight());
-        this.banksRight.draw();
+        drawLeftBanks();
+        drawLeftStage();
+        drawMidStage();
+        drawRightStage();
+        drawRightBanks();
 
         Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
+    /**
+     * Draw left sandy beach.
+     */
+    public void drawLeftBanks() {
+        this.banksLeft.act(Gdx.graphics.getDeltaTime());
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth() / 20, // 0 - 0.05
+            Gdx.graphics.getHeight());
+        this.banksLeft.draw();
+    }
+
+    /**
+     * Draw right river with stuff.
+     */
+    public void drawLeftStage() {
+        this.leftStage.act(Gdx.graphics.getDeltaTime());
+        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20, 0, // 0.05 - 0.45
+            Gdx.graphics.getWidth() / 5 * 2, Gdx.graphics.getHeight());
+        this.leftStage.draw();
+    }
+
+    /**
+     * Draw the progressbar.
+     */
+    public void drawMidStage() {
+        this.midStage.act(Gdx.graphics.getDeltaTime());
+        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20 * 9, 0, // 0.45 - 0.55
+            Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight());
+        this.midStage.draw();
+    }
+
+    /**
+     * Draw left river with stuff.
+     */
+    public void drawRightStage() {
+        this.rightStage.act(Gdx.graphics.getDeltaTime());
+        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20 * 11, 0, // 0.55 - 0.95
+            Gdx.graphics.getWidth() / 5 * 2, Gdx.graphics.getHeight());
+        this.rightStage.draw();
+    }
+
+    /**
+     * Draw left sandy beach.
+     */
+    public void drawRightBanks() {
+        this.banksRight.act(Gdx.graphics.getDeltaTime());
+        Gdx.gl.glViewport(Gdx.graphics.getWidth() / 20 * 19, 0, // 0.95 - 1
+            Gdx.graphics.getWidth() / 20, Gdx.graphics.getHeight());
+        this.banksRight.draw();
+    }
+
     @Override
     public void show() {
-
+        //Get texture
         Texture tex = this.assets.get("assets/data/grass.jpg", Texture.class);
         TextureRegion region = new TextureRegion(tex, 0, 0, 229, 138);
-        Image leftImg = new Image(region);
-        Image rightImg = new Image(region);
-        leftImg.setFillParent(true);
-        rightImg.setFillParent(true);
-        this.banksLeft.addActor(leftImg);
-        this.banksRight.addActor(rightImg);
 
+        Image leftImg = new Image(region);
+        leftImg.setFillParent(true);
+        this.banksLeft.addActor(leftImg);
+
+        Image rightImg = new Image(region);
+        rightImg.setFillParent(true);
+        this.banksRight.addActor(rightImg);
     }
 
     @Override
