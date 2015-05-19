@@ -1,7 +1,7 @@
 package nl.tudelft.ti2806.riverrush.network;
 
 import com.google.inject.Inject;
-import nl.tudelft.ti2806.riverrush.backend.Controller;
+import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.backend.PlayerController;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
@@ -69,7 +69,7 @@ public class Server extends WebSocketServer {
     public void onClose(final WebSocket conn, final int code,
                         final String reason, final boolean remote) {
         FailIf.isNull(conn);
-        this.controllers.get(conn).detatch();
+        this.controllers.get(conn).detach();
         this.controllers.remove(conn);
     }
 

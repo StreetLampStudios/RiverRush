@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.Graphics;
+package nl.tudelft.ti2806.riverrush.graphics;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import nl.tudelft.ti2806.riverrush.desktop.DesktopLauncher;
+import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.entity.Obstacle;
 
 /**
@@ -21,8 +21,8 @@ public class ObstacleGraphic extends Actor implements Obstacle {
     private static final float DURATIONOFANIMATION = 3f;
 
     private final AssetManager assets;
-    private final double HEIGHT = DesktopLauncher.HEIGHT;
-    private final double WIDTH = DesktopLauncher.WIDTH;
+    private final double HEIGHT = MainDesktop.HEIGHT;
+    private final double WIDTH = MainDesktop.WIDTH;
 
 
     /**

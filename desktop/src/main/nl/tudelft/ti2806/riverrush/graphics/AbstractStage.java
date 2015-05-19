@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.Graphics;
+package nl.tudelft.ti2806.riverrush.graphics;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 

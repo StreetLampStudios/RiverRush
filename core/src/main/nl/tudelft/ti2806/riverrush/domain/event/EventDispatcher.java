@@ -12,9 +12,9 @@ public interface EventDispatcher {
      * @param eventType     - The runtime class to add a listener for.
      * @param handlerLambda - The listener itself.
      */
-    <T extends Event> void attatch(Class<T> eventType, HandlerLambda handlerLambda);
+    <T extends Event> void attach(Class<T> eventType, HandlerLambda handlerLambda);
 
-    <T extends Event> void detatch(Class<T> eventType, HandlerLambda handlerLambda);
+    <T extends Event> void detach(Class<T> eventType, HandlerLambda handlerLambda);
 
     /**
      * Mainly used for testing.

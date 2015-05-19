@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * Domain event dispatcher.
- * Allows registeredListeners to attatch to an event.
+ * Allows registeredListeners to attach to an event.
  * They get a call whenever an event of their type is fired.
  */
 @Singleton
@@ -22,7 +22,7 @@ public class BasicEventDispatcher implements EventDispatcher {
 
 
     @Override
-    public <T extends Event> void attatch(final Class<T> eventType, final HandlerLambda handler) {
+    public <T extends Event> void attach(final Class<T> eventType, final HandlerLambda handler) {
         List<HandlerLambda> handlers = registeredLambdas.get(eventType);
 
         if (handlers == null) {
@@ -34,7 +34,7 @@ public class BasicEventDispatcher implements EventDispatcher {
     }
 
     @Override
-    public <T extends Event> void detatch(Class<T> eventType, HandlerLambda handlerLambda) {
+    public <T extends Event> void detach(Class<T> eventType, HandlerLambda handlerLambda) {
         List<HandlerLambda> handlers = registeredLambdas.get(eventType);
 
         if (handlers != null) {

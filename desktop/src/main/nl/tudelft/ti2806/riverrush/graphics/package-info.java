@@ -4,4 +4,4 @@
 /**
  * @author job
  */
-package nl.tudelft.ti2806.Graphics;
+package nl.tudelft.ti2806.riverrush.graphics;

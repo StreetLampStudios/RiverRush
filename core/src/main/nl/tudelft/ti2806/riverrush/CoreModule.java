@@ -18,7 +18,7 @@ public abstract class CoreModule extends AbstractModule {
 
     /**
      * Creates instances of EventDispatcher
-     * Override for the ability to pre-attatch any listeners.
+     * Override for the ability to pre-attach any listeners.
      *
      * @return A fresh dispatcher.
      */

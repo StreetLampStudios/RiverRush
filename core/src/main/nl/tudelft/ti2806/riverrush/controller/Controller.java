@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.riverrush.backend;
+package nl.tudelft.ti2806.riverrush.controller;
 
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 
@@ -8,5 +8,5 @@ import nl.tudelft.ti2806.riverrush.domain.event.Event;
 public interface Controller {
     void onSocketMessage(Event event);
 
-    void detatch();
+    void detach();
 }

@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.Graphics;
+package nl.tudelft.ti2806.riverrush.graphics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -9,15 +9,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.inject.Singleton;
-import nl.tudelft.ti2806.riverrush.desktop.DesktopLauncher;
+import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 @Singleton
 public class GameScreen extends AbstractScreen {
 
-    private int WIDTH = (int) DesktopLauncher.WIDTH;
-    private int HEIGHT = (int) DesktopLauncher.HEIGHT;
+    private int WIDTH = (int) MainDesktop.WIDTH;
+    private int HEIGHT = (int) MainDesktop.HEIGHT;
     private static final double BANKSIZE = 1.0 / 20.0;
     private static final double SCREENSIZE = 1.0 / 5.0 * 2.0;
     private static final double MIDSIZE = 1.0 / 10.0;
@@ -45,11 +45,12 @@ public class GameScreen extends AbstractScreen {
     private AssetManager assets;
 
     @Inject
-    public GameScreen(final Provider<RiverGame> provider,
-                      final AssetManager assetsManager) {
+    public GameScreen(final AssetManager assetsManager, final RiverGame riverGame, final EventDispatcher eventDispatcher) {
+
+        super(eventDispatcher);
 
         this.assets = assetsManager;
-        this.game = provider.get();
+        this.game = riverGame;
 
         this.banksLeft = new Stage();
 

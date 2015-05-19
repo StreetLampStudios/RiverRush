@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.Graphics;
+package nl.tudelft.ti2806.riverrush.graphics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -11,8 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
-import nl.tudelft.ti2806.riverrush.desktop.DesktopLauncher;
+import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,8 +22,6 @@ public class WaitingScreen extends AbstractScreen {
     private static final int SECOND = 1000;
     private Stage stage;
     private final AssetManager assets;
-    private final RiverGame game;
-    private final Provider<GameScreen> scrnProvider;
 
     private TextureAtlas atlas;
     private Skin skin;
@@ -38,12 +36,9 @@ public class WaitingScreen extends AbstractScreen {
     private int count;
 
     @Inject
-    public WaitingScreen(final AssetManager assetManager,
-                         final Provider<RiverGame> provider,
-                         final Provider<GameScreen> screenProvider) {
+    public WaitingScreen(final AssetManager assetManager, EventDispatcher eventDispatcher) {
+        super(eventDispatcher);
         this.assets = assetManager;
-        this.game = provider.get();
-        this.scrnProvider = screenProvider;
         this.time = Integer.MAX_VALUE;
     }
 
@@ -57,7 +52,7 @@ public class WaitingScreen extends AbstractScreen {
         Texture texture = new Texture(
             Gdx.files.internal("assets/data/loading.jpeg"));
         TextureRegion region = new TextureRegion(texture, 0, 0,
-            (int) DesktopLauncher.WIDTH, (int) DesktopLauncher.HEIGHT);
+            (int) MainDesktop.WIDTH, (int) MainDesktop.HEIGHT);
 
         Image image = new Image(region);
         image.setFillParent(true);
@@ -92,12 +87,6 @@ public class WaitingScreen extends AbstractScreen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // If the counter is at 0 go to the game
-        if (this.time == 0) {
-            this.tmr.cancel();
-            this.game.setScreen(this.scrnProvider.get());
-        }
 
         this.stage.act();
         this.stage.draw();
