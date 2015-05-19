@@ -15,45 +15,65 @@ import com.google.inject.Inject;
 
 public class River extends Actor {
 
-    private AssetManager manager;
-    private float mid;
+  private static final int END_REGIONX = 570;
+  private static final int END_REGIONY = 570;
 
-    @Inject
-    public River(AssetManager assetManager, float y, float w, float h) {
-        this.manager = assetManager;
-        this.setPosition(0, h);
-        this.setWidth(w);
-        this.setHeight(h);
-        this.mid = w / 2;
+  private AssetManager manager;
+  private float mid;
 
-        MoveToAction moveDown = new MoveToAction();
-        moveDown.setPosition(0, h * -1);
-        moveDown.setDuration(1f);
+  /**
+   * Creates an river object with a given graphical representation.
+   *
+   * @param assetManager
+   *          enables the object to retrieve its assets
+   * @param ypos
+   *          represents the position of the river on the y axis
+   * @param width
+   *          represents the width of the river object
+   * @param height
+   *          represents the height of the river object
+   */
+  @Inject
+  public River(AssetManager assetManager, float ypos, float width, float height) {
+    this.manager = assetManager;
+    this.setPosition(0, height);
+    this.setWidth(width);
+    this.setHeight(height);
+    this.mid = width / 2;
 
-        MoveToAction moveUp = new MoveToAction();
-        moveUp.setPosition(0, y);
+    MoveToAction moveDown = new MoveToAction();
+    moveDown.setPosition(0, height * -1);
+    moveDown.setDuration(1f);
 
-        SequenceAction seq = sequence(moveUp, moveDown);
-        RepeatAction rep = forever(seq);
+    MoveToAction moveUp = new MoveToAction();
+    moveUp.setPosition(0, ypos);
 
-        this.addAction(rep);
-    }
+    SequenceAction seq = sequence(moveUp, moveDown);
+    RepeatAction rep = forever(seq);
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        Texture tex = this.manager.get("assets/data/river.jpg", Texture.class);
-        TextureRegion region = new TextureRegion(tex, 0, 0, 570, 570);
-        batch.draw(region, this.getX(), this.getY(), this.getOriginX(),
-                this.getOriginY(), this.getWidth(), this.getHeight() * 2,
-                this.getScaleX(), this.getScaleY(), this.getRotation());
-    }
+    this.addAction(rep);
+  }
 
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-    }
+  @Override
+  public void draw(Batch batch, float parentAlpha) {
+    Texture tex = this.manager.get("assets/data/river.jpg", Texture.class);
+    TextureRegion region = new TextureRegion(tex, 0, 0, END_REGIONX, END_REGIONY);
+    batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
+        this.getWidth(), this.getHeight() * 2, this.getScaleX(), this.getScaleY(),
+        this.getRotation());
+  }
 
-    public float getMid() {
-        return this.mid;
-    }
+  @Override
+  public void act(float delta) {
+    super.act(delta);
+  }
+
+  /**
+   * Gives the middle of the river on the x-axis.
+   *
+   * @return a float that represents the middle of the river
+   */
+  public float getMid() {
+    return this.mid;
+  }
 }

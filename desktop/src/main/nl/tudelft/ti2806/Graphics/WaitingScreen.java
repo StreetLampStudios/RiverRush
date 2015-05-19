@@ -1,5 +1,8 @@
 package nl.tudelft.ti2806.Graphics;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,9 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class WaitingScreen extends AbstractScreen {
 
@@ -37,8 +37,7 @@ public class WaitingScreen extends AbstractScreen {
 
     @Inject
     public WaitingScreen(final AssetManager assetManager,
-                         Provider<RiverGame> provider,
-                         Provider<GameScreen> screenProvider) {
+            Provider<RiverGame> provider, Provider<GameScreen> screenProvider) {
         this.assetManager = assetManager;
         this.game = provider.get();
         this.scrnProvider = screenProvider;
@@ -67,7 +66,7 @@ public class WaitingScreen extends AbstractScreen {
         this.counter.setPosition(1200, 500);
         this.stage.addActor(this.counter);
 
-        this.startTimer(5);
+        this.startTimer(1);
 
     }
 

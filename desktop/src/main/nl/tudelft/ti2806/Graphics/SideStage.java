@@ -52,9 +52,9 @@ public class SideStage extends AbstractStage {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         // TODO: Temporary code to add new cannonball
-        if (this.obstacle != null && this.obstacle.isDone()) {
-            this.spawnObstacle(1.0);
-        }
+        // if (this.obstacle != null && this.obstacle.isDone()) {
+        // this.spawnObstacle(1.0);
+        // }
     }
 
     public void win(AssetManager assets) {

@@ -16,6 +16,12 @@ public class RiverGame extends Game {
     private SpriteBatch batch;
     private LoadingScreen loadingScreen;
 
+    /**
+     * Creates a game.
+     *
+     * @param provider
+     *            provides the game with its loading screen
+     */
     @Inject
     public RiverGame(final Provider<LoadingScreen> provider) {
         this.provider = provider;
@@ -33,6 +39,9 @@ public class RiverGame extends Game {
         this.loadingScreen.dispose();
     }
 
+    /**
+     * @return sprite batch of the game.
+     */
     public SpriteBatch getBatch() {
         return this.batch;
     }
