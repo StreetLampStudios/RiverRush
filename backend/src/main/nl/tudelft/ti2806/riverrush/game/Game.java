@@ -1,7 +1,8 @@
-package nl.tudelft.ti2806.riverrush.domain.entity.game;
+package nl.tudelft.ti2806.riverrush.game;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 /**
@@ -24,7 +25,7 @@ public class Game {
     }
 
     public void play() {
-        this.gameState = this.gameState.play();
+        this.gameState = this.gameState.start();
     }
 
     public void stop() {

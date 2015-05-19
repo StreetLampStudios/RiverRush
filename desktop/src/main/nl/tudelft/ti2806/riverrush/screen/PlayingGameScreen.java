@@ -1,10 +1,12 @@
-package nl.tudelft.ti2806.riverrush.graphics;
+package nl.tudelft.ti2806.riverrush.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -12,10 +14,14 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.game.Game;
+import nl.tudelft.ti2806.riverrush.graphics.CenterStage;
+import nl.tudelft.ti2806.riverrush.graphics.SideStage;
 
 @Singleton
-public class GameScreen extends AbstractScreen {
+public class PlayingGameScreen implements Screen {
 
+    private final EventDispatcher dispatcher;
     private int WIDTH = (int) MainDesktop.WIDTH;
     private int HEIGHT = (int) MainDesktop.HEIGHT;
     private static final double BANKSIZE = 1.0 / 20.0;
@@ -41,16 +47,14 @@ public class GameScreen extends AbstractScreen {
     private Stage banksLeft;
     private Stage banksRight;
     public OrthographicCamera camera;
-    private RiverGame game;
+    private Game game;
     private AssetManager assets;
+    private SpriteBatch spriteBatch;
 
     @Inject
-    public GameScreen(final AssetManager assetsManager, final RiverGame riverGame, final EventDispatcher eventDispatcher) {
-
-        super(eventDispatcher);
-
+    public PlayingGameScreen(final AssetManager assetsManager, final EventDispatcher eventDispatcher) {
+        this.dispatcher = eventDispatcher;
         this.assets = assetsManager;
-        this.game = riverGame;
 
         this.banksLeft = new Stage();
 
@@ -70,6 +74,8 @@ public class GameScreen extends AbstractScreen {
 
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false, this.WIDTH, this.HEIGHT);
+
+        this.spriteBatch = new SpriteBatch();
     }
 
     @Override
@@ -78,7 +84,7 @@ public class GameScreen extends AbstractScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         this.camera.update();
-        this.game.getBatch().setProjectionMatrix(this.camera.combined);
+        this.spriteBatch.setProjectionMatrix(this.camera.combined);
 
         this.drawLeftBanks();
         this.drawLeftStage();
@@ -185,7 +191,7 @@ public class GameScreen extends AbstractScreen {
         this.leftStage.dispose();
         this.rightStage.dispose();
         this.midStage.dispose();
-        this.game.getBatch().dispose();
+        this.spriteBatch.dispose();
 
     }
 }

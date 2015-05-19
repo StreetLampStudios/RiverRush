@@ -1,12 +1,14 @@
-package nl.tudelft.ti2806.riverrush.domain.entity.game;
+package nl.tudelft.ti2806.riverrush.domain.entity.state;
 
 /**
  * Represents the current state of the game.
  */
 public interface GameState {
-    GameState play();
+    GameState start();
 
     GameState stop();
 
     GameState finish();
+
+    GameState waitForPlayers();
 }

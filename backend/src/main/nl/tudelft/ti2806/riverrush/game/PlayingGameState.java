@@ -1,5 +1,6 @@
-package nl.tudelft.ti2806.riverrush.domain.entity.game;
+package nl.tudelft.ti2806.riverrush.game;
 
+import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 
@@ -17,7 +18,7 @@ public class PlayingGameState implements GameState {
     }
 
     @Override
-    public GameState play() {
+    public GameState start() {
         return this;
     }
 
@@ -29,6 +30,11 @@ public class PlayingGameState implements GameState {
     @Override
     public GameState finish() {
         return new FinishedGameState(this.eventDispatcher);
+    }
+
+    @Override
+    public GameState waitForPlayers() {
+        return this;
     }
 
 

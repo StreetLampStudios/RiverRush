@@ -2,7 +2,7 @@ package nl.tudelft.ti2806.riverrush;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import nl.tudelft.ti2806.riverrush.domain.entity.game.Game;
+import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.network.Server;
