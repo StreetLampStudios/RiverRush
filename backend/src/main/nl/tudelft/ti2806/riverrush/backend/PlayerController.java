@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.backend;
 
+import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.network.Server;
@@ -19,12 +20,12 @@ public class PlayerController implements Controller {
         this.dispatcher = dispatcher;
         this.server = server;
 
-        dispatcher.attatch(JumpEvent.class, onJumpLambda);
-        dispatcher.attatch(GameAboutToStartEvent.class, onGameStateChangeLambda);
-        dispatcher.attatch(GameStartedEvent.class, onGameStateChangeLambda);
-        dispatcher.attatch(GameStoppedEvent.class, onGameStateChangeLambda);
-        dispatcher.attatch(GameFinishedEvent.class, onGameStateChangeLambda);
-        dispatcher.attatch(GameWaitingEvent.class, onGameStateChangeLambda);
+        dispatcher.attach(JumpEvent.class, onJumpLambda);
+        dispatcher.attach(GameAboutToStartEvent.class, onGameStateChangeLambda);
+        dispatcher.attach(GameStartedEvent.class, onGameStateChangeLambda);
+        dispatcher.attach(GameStoppedEvent.class, onGameStateChangeLambda);
+        dispatcher.attach(GameFinishedEvent.class, onGameStateChangeLambda);
+        dispatcher.attach(GameWaitingEvent.class, onGameStateChangeLambda);
     }
 
     @Override
@@ -34,13 +35,13 @@ public class PlayerController implements Controller {
     }
 
     @Override
-    public void detatch() {
-        this.dispatcher.detatch(JumpEvent.class, onJumpLambda);
-        this.dispatcher.detatch(GameWaitingEvent.class, onGameStateChangeLambda);
-        this.dispatcher.detatch(GameStartedEvent.class, onGameStateChangeLambda);
-        this.dispatcher.detatch(GameAboutToStartEvent.class, onGameStateChangeLambda);
-        this.dispatcher.detatch(GameStoppedEvent.class, onGameStateChangeLambda);
-        this.dispatcher.detatch(GameFinishedEvent.class, onGameStateChangeLambda);
+    public void detach() {
+        this.dispatcher.detach(JumpEvent.class, onJumpLambda);
+        this.dispatcher.detach(GameWaitingEvent.class, onGameStateChangeLambda);
+        this.dispatcher.detach(GameStartedEvent.class, onGameStateChangeLambda);
+        this.dispatcher.detach(GameAboutToStartEvent.class, onGameStateChangeLambda);
+        this.dispatcher.detach(GameStoppedEvent.class, onGameStateChangeLambda);
+        this.dispatcher.detach(GameFinishedEvent.class, onGameStateChangeLambda);
     }
 
     private void onGameStateChange(final Event event) {

@@ -39,18 +39,18 @@ public class BasicEventDispatcherTest {
     }
 
     /**
-     * attatch should add the event type and lsitener.
+     * attach should add the event type and lsitener.
      */
     @Test
     public void registerAddsListener1() {
-        this.dispatcher.attatch(Event.class, this.lambdaMock);
+        this.dispatcher.attach(Event.class, this.lambdaMock);
         assertEquals(1, this.dispatcher.countRegistered(Event.class));
     }
 
     @Test
     public void registerAddsListener2() {
-        this.dispatcher.attatch(Event.class, this.lambdaMock);
-        this.dispatcher.attatch(Event.class, this.lambdaMock);
+        this.dispatcher.attach(Event.class, this.lambdaMock);
+        this.dispatcher.attach(Event.class, this.lambdaMock);
         assertEquals(2, this.dispatcher.countRegistered(Event.class));
     }
 
@@ -61,15 +61,15 @@ public class BasicEventDispatcherTest {
 
     @Test
     public void dispatch_callsListener() {
-        this.dispatcher.attatch((Class<Event>) this.eventMock.getClass(), this.lambdaMock);
+        this.dispatcher.attach((Class<Event>) this.eventMock.getClass(), this.lambdaMock);
         this.dispatcher.dispatch(this.eventMock);
         verify(this.lambdaMock).handle(this.eventMock);
     }
 
     @Test
     public void dispatch_callsAllListeners() {
-        this.dispatcher.attatch((Class<Event>) this.eventMock.getClass(), this.lambdaMock);
-        this.dispatcher.attatch((Class<Event>) this.eventMock.getClass(), this.lambdaMock);
+        this.dispatcher.attach((Class<Event>) this.eventMock.getClass(), this.lambdaMock);
+        this.dispatcher.attach((Class<Event>) this.eventMock.getClass(), this.lambdaMock);
         this.dispatcher.dispatch(this.eventMock);
         verify(this.lambdaMock, Mockito.times(2)).handle(this.eventMock);
     }
@@ -78,7 +78,7 @@ public class BasicEventDispatcherTest {
     public void dispatch_callsCorrectListener() {
         HandlerLambda dummyListener = mock(HandlerLambda.class);
 
-        this.dispatcher.attatch(DummyEvent.class, dummyListener);
+        this.dispatcher.attach(DummyEvent.class, dummyListener);
         this.dispatcher.dispatch(this.eventMock);
         verifyZeroInteractions(this.lambdaMock);
     }

@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.Graphics;
+package nl.tudelft.ti2806.riverrush.graphics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -10,8 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import nl.tudelft.ti2806.riverrush.domain.event.AssetsLoadedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 @Singleton
 public class LoadingScreen extends AbstractScreen {
@@ -21,19 +22,15 @@ public class LoadingScreen extends AbstractScreen {
     private Skin skin;
 
     private final AssetManager assets;
-    private final RiverGame game;
-    private final Provider<WaitingScreen> scrnProvider;
 
     public static String getFileName(String name) {
         return "assets/data/" + name;
     }
 
     @Inject
-    public LoadingScreen(final AssetManager assetManager,
-                         final Provider<RiverGame> provider, final Provider<WaitingScreen> screenProvider) {
+    public LoadingScreen(final AssetManager assetManager, EventDispatcher eventDispatcher) {
+        super(eventDispatcher);
         this.assets = assetManager;
-        this.game = provider.get();
-        this.scrnProvider = screenProvider;
     }
 
     /**
@@ -80,7 +77,7 @@ public class LoadingScreen extends AbstractScreen {
 
         //If all the assets have been correctly loaded, go to the next screen
         if (this.assets.update()) {
-            this.game.setScreen(this.scrnProvider.get());
+            this.dispatcher.dispatch(new AssetsLoadedEvent());
         }
 
         this.stage.act();

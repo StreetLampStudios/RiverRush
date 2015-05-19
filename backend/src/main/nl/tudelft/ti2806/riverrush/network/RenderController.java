@@ -1,6 +1,6 @@
 package nl.tudelft.ti2806.riverrush.network;
 
-import nl.tudelft.ti2806.riverrush.backend.Controller;
+import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
@@ -14,7 +14,7 @@ public class RenderController implements Controller {
     public RenderController(EventDispatcher eventDispatcher, Server server) {
         this.dispatcher = eventDispatcher;
         this.server = server;
-        this.dispatcher.attatch(GameWaitingEvent.class, onGameStateChangedLambda);
+        this.dispatcher.attach(GameWaitingEvent.class, onGameStateChangedLambda);
     }
 
     private void onGameStateChanged(Event event) {
@@ -27,7 +27,7 @@ public class RenderController implements Controller {
     }
 
     @Override
-    public void detatch() {
-        this.dispatcher.detatch(GameWaitingEvent.class, onGameStateChangedLambda);
+    public void detach() {
+        this.dispatcher.detach(GameWaitingEvent.class, onGameStateChangedLambda);
     }
 }
