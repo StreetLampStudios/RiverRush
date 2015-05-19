@@ -43,7 +43,7 @@ public class Game extends GdxGame {
 
     @Override
     public void dispose() {
-        this.loadingScreen.dispose();
+        this.currentGameState.stop();
     }
 
 
