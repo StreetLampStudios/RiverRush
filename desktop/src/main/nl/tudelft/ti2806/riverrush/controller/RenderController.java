@@ -8,11 +8,12 @@ import nl.tudelft.ti2806.riverrush.graphics.RiverGame;
 @Singleton
 public class RenderController implements Controller {
     private final EventDispatcher dispatcher;
-    private final HandlerLambda onGameWaitingLambda;
-    private final HandlerLambda onGameAboutToStartLambda;
-    private final HandlerLambda onGameStartedLambda;
-    private final HandlerLambda onAssetsLoadedLambda;
+    private final HandlerLambda<GameWaitingEvent> onGameWaitingLambda;
+    private final HandlerLambda<GameAboutToStartEvent> onGameAboutToStartLambda;
+    private final HandlerLambda<GameStartedEvent> onGameStartedLambda;
+    private final HandlerLambda<AssetsLoadedEvent> onAssetsLoadedLambda;
     private RiverGame game;
+
 
     @Inject
     public RenderController(final RiverGame game, final EventDispatcher eventDispatcher) {

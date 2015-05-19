@@ -22,7 +22,7 @@ public class BasicEventDispatcher implements EventDispatcher {
 
 
     @Override
-    public <T extends Event> void attach(final Class<T> eventType, final HandlerLambda handler) {
+    public <T extends Event> void attach(final Class<T> eventType, final HandlerLambda<? super T> handler) {
         List<HandlerLambda> handlers = registeredLambdas.get(eventType);
 
         if (handlers == null) {
@@ -34,7 +34,7 @@ public class BasicEventDispatcher implements EventDispatcher {
     }
 
     @Override
-    public <T extends Event> void detach(Class<T> eventType, HandlerLambda handlerLambda) {
+    public <T extends Event> void detach(Class<T> eventType, HandlerLambda<? super T> handlerLambda) {
         List<HandlerLambda> handlers = registeredLambdas.get(eventType);
 
         if (handlers != null) {
@@ -54,11 +54,12 @@ public class BasicEventDispatcher implements EventDispatcher {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void dispatch(final Event event) {
         List<HandlerLambda> handlers = this.registeredLambdas.get(event.getClass());
         if (handlers != null) {
             handlers.forEach(
-                eventListener -> eventListener.handle(event)
+                (f) -> f.handle(event)
             );
         }
     }
