@@ -1,5 +1,7 @@
 package nl.tudelft.ti2806.riverrush.network.event;
 
+import nl.tudelft.ti2806.riverrush.domain.entity.Player;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.net.InetSocketAddress;
@@ -8,14 +10,14 @@ import java.util.Map;
 /**
  * Created by thomas on 18-5-15.
  */
-public class ReceivedEvent implements NetworkEvent {
+public class ReceivedEvent implements Event {
 
-    private final NetworkEvent wrappedEvent;
+    private final Event wrappedEvent;
 
     private final InetSocketAddress address;
 
 
-    public ReceivedEvent(NetworkEvent wrappedEvent, InetSocketAddress remoteAddress) {
+    public ReceivedEvent(Event wrappedEvent, InetSocketAddress remoteAddress) {
         this.wrappedEvent = wrappedEvent;
         this.address = remoteAddress;
     }
@@ -30,8 +32,18 @@ public class ReceivedEvent implements NetworkEvent {
     }
 
     @Override
-    public NetworkEvent deserialize(Map<String, String> keyValuePairs) {
+    public Event deserialize(Map<String, String> keyValuePairs) {
         return this.wrappedEvent.deserialize(keyValuePairs);
+    }
+
+    @Override
+    public void setPlayer(Player p) {
+
+    }
+
+    @Override
+    public Player getPlayer() {
+        return null;
     }
 }
 

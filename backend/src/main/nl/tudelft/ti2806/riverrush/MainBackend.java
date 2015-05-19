@@ -5,12 +5,10 @@ import com.google.inject.Injector;
 import nl.tudelft.ti2806.riverrush.domain.entity.game.Game;
 import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.listener.EventListener;
-import nl.tudelft.ti2806.riverrush.domain.event.listener.SendEventListener;
 import nl.tudelft.ti2806.riverrush.network.Server;
-import org.reflections.Reflections;
-
-import java.util.Set;
+import nl.tudelft.ti2806.riverrush.network.event.JoinEvent;
+import nl.tudelft.ti2806.riverrush.network.protocol.BasicProtocol;
+import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 /**
  * Entrypoint of the backend.
@@ -35,14 +33,15 @@ public final class MainBackend extends CoreModule {
         this.game = injector.getInstance(Game.class);
 
         this.renderServer = new Server(
-            injector.getProvider(EventDispatcher.class),
-            this.configureRendererProtocol(),
-            injector.getInstance(SendEventListener.class));
+            injector.getInstance(EventDispatcher.class),
+            this.configureRendererProtocol());
 
         this.clientServer = new Server(
-            injector.getProvider(EventDispatcher.class),
-            this.configureClientProtocol(),
-            injector.getInstance(SendEventListener.class));
+            injector.getInstance(EventDispatcher.class),
+            this.configureClientProtocol());
+
+        this.clientServer.start();
+        this.renderServer.start();
     }
 
     public static void main(final String[] args) {
@@ -54,28 +53,39 @@ public final class MainBackend extends CoreModule {
     protected EventDispatcher configureEventDispatcher() {
         EventDispatcher dispatcher = new BasicEventDispatcher();
 
-        try {
-            registerAllEventListeners(dispatcher);
-        } catch (IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
 
         return dispatcher;
     }
 
-    /**
-     * Uses reflection to find all subclasses of {@link EventListener <?>}
-     * Registers an instance of each to any event dispatcher created on runtime.
-     * @param dispatcher
-     */
-    private void registerAllEventListeners(EventDispatcher dispatcher) throws IllegalAccessException, InstantiationException {
-        Reflections reflections = new Reflections(getClass().getPackage().getName());
-        Set<Class<? extends EventListener>> classes = reflections.getSubTypesOf(EventListener.class);
 
-        for (Class<? extends EventListener> clasz : classes) {
-            EventListener listener = injector.getInstance(clasz);
-            dispatcher.register(listener.getEventType(), listener);
-        }
+    /**
+     * Configure the renderer protocol by registering all valid messages that can be
+     * sent.
+     *
+     * @return The fully configured protocol.
+     */
+    protected Protocol configureRendererProtocol() {
+        Protocol protocol = new BasicProtocol(81);
+        // Register available network actions
+        // protocol.registerNetworkAction(...);
+
+        return protocol;
     }
+
+    /**
+     * Configure the client protocol by registering all valid messages that can be
+     * sent.
+     *
+     * @return The fully configured protocol.
+     */
+    protected Protocol configureClientProtocol() {
+        Protocol protocol = new BasicProtocol(82);
+        // Register available network actions
+        // protocol.registerNetworkAction(...);
+
+        protocol.registerNetworkAction(JoinEvent.class, JoinEvent::new);
+
+        return protocol;
+    }
+
 }

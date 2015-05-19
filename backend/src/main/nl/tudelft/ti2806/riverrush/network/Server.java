@@ -1,11 +1,13 @@
 package nl.tudelft.ti2806.riverrush.network;
 
 import com.google.inject.Inject;
+import nl.tudelft.ti2806.riverrush.backend.Controller;
+import nl.tudelft.ti2806.riverrush.backend.PlayerController;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.listener.SendEventListener;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
-import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
-import nl.tudelft.ti2806.riverrush.network.event.SendEvent;
+import nl.tudelft.ti2806.riverrush.network.event.JoinEvent;
+import nl.tudelft.ti2806.riverrush.network.event.RenderJoinEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.InvalidActionException;
 import nl.tudelft.ti2806.riverrush.network.protocol.InvalidProtocolException;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
@@ -27,13 +29,13 @@ public class Server extends WebSocketServer {
     /**
      * Maps a remote address to a handler for player actions.
      */
-    private final Map<WebSocket, EventDispatcher> eventDispatchers;
-    private final Map<EventDispatcher, WebSocket> sockets;
+    private final Map<WebSocket, Controller> controllers;
+    private final Map<Controller, WebSocket> sockets;
 
     /**
      * Provides instances of EventDispatcher when a client joins.
      */
-    private final Provider<EventDispatcher> dispatcherProvider;
+    private final EventDispatcher eventDispatcher;
 
     /**
      * The protocol used to serialize/deserialize network messages.
@@ -45,36 +47,30 @@ public class Server extends WebSocketServer {
      * Constructs the server, does NOT start it (see the {@link #start()}
      * method).
      *
-     * @param aProvider - A {@link Provider} for {@link EventDispatcher}s.
+     * @param dispatcher - A {@link Provider} for {@link EventDispatcher}s.
      * @param aProtocol - The protocol to use when receiving and sending messages.
      */
     @Inject
-    public Server(final Provider<EventDispatcher> aProvider,
-                  final Protocol aProtocol,
-                  final SendEventListener sendListener) {
+    public Server(final EventDispatcher dispatcher,
+                  final Protocol aProtocol) {
         super(new InetSocketAddress(aProtocol.getPortNumber()));
-        this.eventDispatchers = new Hashtable<>();
+        this.controllers = new Hashtable<>();
         this.sockets = new Hashtable<>();
         this.protocol = aProtocol;
-        this.dispatcherProvider = aProvider;
-        sendListener.onHandle(this::sendEvent);
+        this.eventDispatcher = dispatcher;
     }
 
     @Override
     public void onOpen(final WebSocket conn, final ClientHandshake handshake) {
         FailIf.isNull(conn);
-
-        EventDispatcher dispatcher = this.dispatcherProvider.get();
-        dispatcher.setRemoteAddress(conn.getRemoteSocketAddress());
-        this.eventDispatchers.put(conn, dispatcher);
-        this.sockets.put(dispatcher, conn);
     }
 
     @Override
     public void onClose(final WebSocket conn, final int code,
                         final String reason, final boolean remote) {
         FailIf.isNull(conn);
-        this.eventDispatchers.remove(conn);
+        this.controllers.get(conn).detatch();
+        this.controllers.remove(conn);
     }
 
     @Override
@@ -87,11 +83,21 @@ public class Server extends WebSocketServer {
         }
     }
 
-    private void dispatchNetworkEvent(WebSocket conn, String message) {
-        final NetworkEvent event = this.protocol.deserialize(message);
+    private void dispatchNetworkEvent(final WebSocket conn, final String message) {
+        final Event event = this.protocol.deserialize(message);
 
-        EventDispatcher dispatcher = this.eventDispatchers.get(conn);
-        dispatcher.dispatch(event);
+        final Controller controller;
+        if (event instanceof JoinEvent) {
+            controller = new PlayerController(eventDispatcher, this);
+            controllers.put(conn, controller);
+        } else if (event instanceof RenderJoinEvent) {
+            controller = new RenderController(eventDispatcher, this);
+            controllers.put(conn, controller);
+        } else {
+            controller = controllers.get(conn);
+        }
+
+        controller.onSocketMessage(event);
     }
 
     @Override
@@ -103,10 +109,11 @@ public class Server extends WebSocketServer {
      * Handles events to send over the network.
      *
      * @param event      - The event to dispatch.
-     * @param dispatcher - The dispatcher responsible for the event.
+     * @param controller - The dispatcher responsible for the event.
      */
-    public void sendEvent(final SendEvent event, final EventDispatcher dispatcher) {
-        WebSocket sock = sockets.get(dispatcher);
+    public void sendEvent(final Event event, final Controller controller) {
+        WebSocket sock = sockets.get(controller);
         sock.send(event.serialize(protocol));
     }
+
 }

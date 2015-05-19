@@ -1,10 +1,8 @@
 package nl.tudelft.ti2806.riverrush.network;
 
 import com.google.inject.Inject;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.listener.SendEventListener;
-import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
-import nl.tudelft.ti2806.riverrush.network.event.SendEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
@@ -22,11 +20,6 @@ public class Client extends WebSocketClient {
     private EventDispatcher dispatcher;
 
     /**
-     * Called when a domain class wants to send some event over the network.
-     */
-    private final SendEventListener sendEventEventListener;
-
-    /**
      * Constructs a WebSocketClient instance and sets it to the connect to the
      * specified URI. The channel does not attampt to connect automatically. You
      * must call {@code connect} first to initiate the socket connection.
@@ -36,8 +29,6 @@ public class Client extends WebSocketClient {
      */
     public Client(final URI serverUri, final Draft draft) {
         super(serverUri, draft);
-        this.sendEventEventListener = new SendEventListener();
-        this.sendEventEventListener.onHandle(this::sendEvent);
     }
 
     @Override
@@ -50,13 +41,13 @@ public class Client extends WebSocketClient {
      * @param event - The event to send.
      * @param d - The dispatcher that dispatched this event.
      */
-    private void sendEvent(final SendEvent event, final EventDispatcher d) {
+    private void sendEvent(final Event event, final EventDispatcher d) {
         getConnection().send(event.serialize(protocol));
     }
 
     @Override
     public void onMessage(final String message) {
-        NetworkEvent event = this.protocol.deserialize(message);
+        Event event = this.protocol.deserialize(message);
         this.dispatcher.dispatch(event);
     }
 

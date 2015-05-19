@@ -1,6 +1,7 @@
 package nl.tudelft.ti2806.riverrush.network.protocol;
 
-import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
+import nl.tudelft.ti2806.riverrush.domain.entity.Player;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,13 +23,13 @@ public class BasicBasicProtocolTest {
     /**
      * Stub for the event to send over the network.
      */
-    private NetworkEvent eventStub;
+    private Event eventStub;
 
     /**
      * Mock for an event.
      */
     @Mock
-    private NetworkEvent eventMock;
+    private Event eventMock;
 
     /**
      * Class under test.
@@ -77,9 +78,9 @@ public class BasicBasicProtocolTest {
     @Test
     public void testDeserializeActionOnly() throws InvalidProtocolException,
         InvalidActionException {
-        NetworkEvent expected = new StubEvent();
+        Event expected = new StubEvent();
         this.protocol.registerNetworkAction(StubEvent.class, () -> expected);
-        NetworkEvent actualEvent = this.protocol.deserialize(this.stubEventSerialized);
+        Event actualEvent = this.protocol.deserialize(this.stubEventSerialized);
         assertEquals(expected, actualEvent);
     }
 
@@ -91,7 +92,7 @@ public class BasicBasicProtocolTest {
         final String expectedField = "field"
                 + this.protocol.getKeyValueSeperator() + "HelloWorld"
                 + this.protocol.getPairSeperator();
-        NetworkEvent networkMessage = this.protocol.deserialize(expectedField
+        Event networkMessage = this.protocol.deserialize(expectedField
                 + this.stubEventSerialized);
         assertTrue(networkMessage instanceof StubEvent);
         assertEquals("HelloWorld", ((StubEvent) networkMessage).getField());
@@ -112,11 +113,21 @@ public class BasicBasicProtocolTest {
     /**
      * Stub event for testing.
      */
-    private class StubEvent implements NetworkEvent {
+    private class StubEvent implements Event {
         /**
          * A dummy field.
          */
         private String field;
+
+        @Override
+        public void setPlayer(Player p) {
+
+        }
+
+        @Override
+        public Player getPlayer() {
+            return null;
+        }
 
         @Override
         public String serialize(final Protocol p) {
@@ -124,7 +135,7 @@ public class BasicBasicProtocolTest {
         }
 
         @Override
-        public NetworkEvent deserialize(final Map<String, String> keyValuePairs) {
+        public Event deserialize(final Map<String, String> keyValuePairs) {
             this.field = keyValuePairs.get("field");
             return this;
         }
