@@ -15,9 +15,9 @@ public class RenderController implements Controller {
     private RiverGame game;
 
     @Inject
-    public RenderController(final EventDispatcher eventDispatcher) {
+    public RenderController(final RiverGame game, final EventDispatcher eventDispatcher) {
         this.dispatcher = eventDispatcher;
-
+        this.game = game;
         this.onGameWaitingLambda = this::onGameWaiting;
         this.onGameAboutToStartLambda = this::onGameAboutToStart;
         this.onGameStartedLambda = this::onGameStarted;

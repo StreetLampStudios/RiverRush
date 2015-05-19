@@ -24,7 +24,7 @@ public class LoadingScreen extends AbstractScreen {
     private final AssetManager assets;
 
     public static String getFileName(String name) {
-        return "assets/data/" + name;
+        return "data/" + name;
     }
 
     @Inject
@@ -44,12 +44,12 @@ public class LoadingScreen extends AbstractScreen {
         this.assets.finishLoading();
 
         this.stage = new Stage();
-        this.atlas = new TextureAtlas("assets/uiskin.atlas");
-        this.skin = new Skin(Gdx.files.internal("assets/uiskin.json"),
+        this.atlas = new TextureAtlas("uiskin.atlas");
+        this.skin = new Skin(Gdx.files.internal("uiskin.json"),
             this.atlas);
 
         Texture texture = new Texture(
-            Gdx.files.internal("assets/data/loading.jpeg"));
+            Gdx.files.internal("data/loading.jpeg"));
         TextureRegion region = new TextureRegion(texture, 0, 0, 1920, 1080);
 
         Image image = new Image(region);
