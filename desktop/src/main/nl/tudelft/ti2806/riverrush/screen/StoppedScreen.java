@@ -1,14 +1,16 @@
 package nl.tudelft.ti2806.riverrush.screen;
 
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 /**
  * Created by thomas on 19-5-15.
  */
 public class StoppedScreen implements Screen {
-    public StoppedScreen(AssetManager assetManager, EventDispatcher eventDispatcher) {
+    public StoppedScreen(AssetManager assetManager,
+            EventDispatcher eventDispatcher) {
     }
 
     @Override
@@ -44,5 +46,8 @@ public class StoppedScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public void init() {
     }
 }
