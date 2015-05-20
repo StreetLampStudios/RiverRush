@@ -12,6 +12,14 @@ public class PlayerAddedEvent implements Event {
 
     private Player player;
 
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(final Player player) {
+        this.player = player;
+    }
+
     @Override
     public String serialize(final Protocol protocol) {
         return "";

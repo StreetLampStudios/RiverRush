@@ -9,6 +9,12 @@ import java.util.Map;
  */
 public class GameAboutToStartEvent implements Event {
 
+    private final int seconds;
+
+    public GameAboutToStartEvent(int seconds) {
+        this.seconds = seconds;
+    }
+
     @Override
     public String serialize(Protocol protocol) {
         return "";

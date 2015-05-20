@@ -10,6 +10,7 @@ public class RenderController implements Controller {
     private final EventDispatcher dispatcher;
     private final Game game;
     private final HandlerLambda<PlayerAddedEvent> onPlayerJoin;
+    private final HandlerLambda<Event> onGameStateChangedLambda;
 
     @Inject
     public RenderController(final EventDispatcher eventDispatcher, final Server server, final Game aGame) {
@@ -18,17 +19,17 @@ public class RenderController implements Controller {
         this.game = aGame;
 
         this.onPlayerJoin = (e) -> this.server.sendEvent(e, this);
+        this.onGameStateChangedLambda = (e) -> this.server.sendEvent(e, this);
+
         this.dispatcher.attach(PlayerAddedEvent.class, onPlayerJoin);
+        this.dispatcher.attach(GameAboutToStartEvent.class, onGameStateChangedLambda);
+        this.dispatcher.attach(GameStartedEvent.class, onGameStateChangedLambda);
     }
 
     @Override
     public void initialize() {
         this.game.waitForPlayers();
-        this.onGameStateChanged(new GameWaitingEvent());
-    }
-
-    private void onGameStateChanged(final Event event) {
-        this.server.sendEvent(event, this);
+        this.onGameStateChangedLambda.handle(new GameWaitingEvent());
     }
 
     @Override
@@ -39,6 +40,8 @@ public class RenderController implements Controller {
     @Override
     public void detach() {
         this.dispatcher.detach(PlayerAddedEvent.class, this.onPlayerJoin);
+        this.dispatcher.detach(GameAboutToStartEvent.class, this.onGameStateChangedLambda);
+        this.dispatcher.detach(GameStartedEvent.class, this.onGameStateChangedLambda);
         this.game.stop();
     }
 
