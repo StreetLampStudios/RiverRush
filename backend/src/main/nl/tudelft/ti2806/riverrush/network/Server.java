@@ -16,8 +16,16 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import javax.inject.Provider;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -58,6 +66,13 @@ public class Server extends WebSocketServer {
         this.sockets = new Hashtable<>();
         this.protocol = aProtocol;
         this.eventDispatcher = dispatcher;
+
+        System.out.println("I AM RIGHT HERE");
+        try {
+            this.sendHTTPRequest();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -114,6 +129,40 @@ public class Server extends WebSocketServer {
     public void sendEvent(final Event event, final Controller controller) {
         WebSocket sock = sockets.get(controller);
         sock.send(event.serialize(protocol));
+    }
+
+    private void sendHTTPRequest() throws IOException {
+        System.out.println("CONNECTING TO WEBSERVER");
+        URL url = new URL("http://monkeyrush.3dsplaza.com/setserver.php");
+        Map<String,Object> params = new LinkedHashMap<>();
+        params.put("password", "pizza");
+        params.put("port", "82");
+
+        StringBuilder postData = new StringBuilder();
+        for (Map.Entry<String,Object> param : params.entrySet()) {
+            if (postData.length() != 0) postData.append('&');
+            postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+            postData.append('=');
+            postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+        }
+        byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+
+        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+        conn.setDoOutput(true);
+        conn.getOutputStream().write(postDataBytes);
+
+        StringBuilder sb = new StringBuilder();
+        Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+        for ( int c = in.read(); c != -1; c = in.read() )
+            sb.append((char)c);
+        if(!sb.toString().equals("0"))
+        {
+            System.out.println("Warning: Call to setserver.php on the server to set the server's IP address and port failed");
+            System.out.println("Users might not be able to connect to the server now");
+        }
     }
 
 }

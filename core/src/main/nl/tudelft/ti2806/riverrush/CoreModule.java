@@ -3,6 +3,7 @@ package nl.tudelft.ti2806.riverrush;
 import com.google.inject.AbstractModule;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.network.event.JoinEvent;
+import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.BasicProtocol;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
@@ -50,6 +51,7 @@ public abstract class CoreModule extends AbstractModule {
         // protocol.registerNetworkAction(...);
 
         protocol.registerNetworkAction(JoinEvent.class, JoinEvent::new);
+        protocol.registerNetworkAction(JumpEvent.class, JumpEvent::new);
 
         return protocol;
     }
