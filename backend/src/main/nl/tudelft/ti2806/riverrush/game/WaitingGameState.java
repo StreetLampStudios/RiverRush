@@ -19,7 +19,7 @@ public class WaitingGameState implements GameState {
         this.eventDispatcher.attach(PlayerAddedEvent.class, addPlayer);
     }
 
-    private void addPlayer(PlayerAddedEvent playerAddedEvent) {
+    private void addPlayer(final PlayerAddedEvent playerAddedEvent) {
 
     }
 

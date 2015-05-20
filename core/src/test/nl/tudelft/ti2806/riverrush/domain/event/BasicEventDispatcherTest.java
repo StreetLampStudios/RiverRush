@@ -1,6 +1,5 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.junit.Before;
 import org.junit.Test;
@@ -84,16 +83,6 @@ public class BasicEventDispatcherTest {
     }
 
     private class DummyEvent implements Event {
-
-        @Override
-        public void setPlayer(Player p) {
-
-        }
-
-        @Override
-        public Player getPlayer() {
-            return null;
-        }
 
         @Override
         public String serialize(final Protocol protocol) {
