@@ -100,7 +100,7 @@ public final class BasicProtocol implements Protocol {
 
     @Override
     public String serialize(final Event event) {
-        //event.serialize(this) + this.getPairSeperator()
+        String ret = event.serialize(this) + this.getPairSeperator();
         return  this.getEventTypeFieldKey()
             + this.getKeyValueSeperator()
             + event.getClass().getSimpleName();
