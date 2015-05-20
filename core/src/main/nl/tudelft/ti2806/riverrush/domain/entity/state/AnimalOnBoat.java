@@ -2,7 +2,7 @@ package nl.tudelft.ti2806.riverrush.domain.entity.state;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.Monkey;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.network.event.FallOffEvent;
+import nl.tudelft.ti2806.riverrush.network.event.AnimalFellOff;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 
@@ -21,7 +21,7 @@ public class AnimalOnBoat implements AnimalState {
 
   @Override
   public AnimalState jump() {
-    return new AnimalJumping(this.monkey, this.dispatcher);
+    return new AnimalInAir(this.monkey, this.dispatcher);
   }
 
   @Override
@@ -33,7 +33,7 @@ public class AnimalOnBoat implements AnimalState {
   public AnimalState collide() {
     Action hit = this.monkey.getHit();
     this.monkey.addAction(hit);
-    this.dispatcher.dispatch(new FallOffEvent());
-    return new AnimalFallen(this.monkey, this.dispatcher);
+    this.dispatcher.dispatch(new AnimalFellOff());
+    return new AnimalInWater(this.monkey, this.dispatcher);
   }
 }

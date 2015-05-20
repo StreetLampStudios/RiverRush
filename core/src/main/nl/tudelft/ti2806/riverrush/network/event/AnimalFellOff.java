@@ -6,7 +6,7 @@ import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
-public class FallOffEvent implements Event {
+public class AnimalFellOff implements Event {
   private Player player;
 
   @Override

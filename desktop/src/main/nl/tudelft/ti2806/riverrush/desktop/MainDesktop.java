@@ -7,11 +7,8 @@ import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
 import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
-import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -41,28 +38,6 @@ public class MainDesktop extends CoreModule {
         this.setupGraphics();
         this.client.connect();
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.injector.getInstance(EventDispatcher.class).dispatch(
-                new GameAboutToStartEvent());
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.injector.getInstance(EventDispatcher.class).dispatch(
-                new GameStartedEvent());
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.injector.getInstance(EventDispatcher.class).dispatch(
-                new JumpEvent());
     }
 
     private void setupGraphics() {

@@ -3,16 +3,12 @@ package nl.tudelft.ti2806.riverrush.domain.entity.state;
 import nl.tudelft.ti2806.riverrush.domain.entity.Monkey;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
-/**
- * State in which the animal is in mid-air. This means the player can't control the animal while in
- * this state.
- */
-public class AnimalJumping implements AnimalState {
+public class AnimalInWater implements AnimalState {
 
   private Monkey monkey;
   private final EventDispatcher dispatcher;
 
-  public AnimalJumping(Monkey monk, EventDispatcher eventDispatcher) {
+  public AnimalInWater(Monkey monk, EventDispatcher eventDispatcher) {
     this.monkey = monk;
     this.dispatcher = eventDispatcher;
   }
@@ -24,11 +20,12 @@ public class AnimalJumping implements AnimalState {
 
   @Override
   public AnimalState drop() {
-    return new AnimalOnBoat(this.monkey, this.dispatcher);
+    return this;
   }
 
   @Override
   public AnimalState collide() {
     return this;
   }
+
 }
