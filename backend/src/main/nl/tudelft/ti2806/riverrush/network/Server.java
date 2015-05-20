@@ -67,7 +67,6 @@ public class Server extends WebSocketServer {
         this.protocol = aProtocol;
         this.eventDispatcher = dispatcher;
 
-        System.out.println("I AM RIGHT HERE");
         try {
             this.sendHTTPRequest();
         } catch (IOException e) {
@@ -132,7 +131,6 @@ public class Server extends WebSocketServer {
     }
 
     private void sendHTTPRequest() throws IOException {
-        System.out.println("CONNECTING TO WEBSERVER");
         URL url = new URL("http://monkeyrush.3dsplaza.com/setserver.php");
         Map<String,Object> params = new LinkedHashMap<>();
         params.put("password", "pizza");
@@ -160,8 +158,8 @@ public class Server extends WebSocketServer {
             sb.append((char)c);
         if(!sb.toString().equals("0"))
         {
-            System.out.println("Warning: Call to setserver.php on the server to set the server's IP address and port failed");
-            System.out.println("Users might not be able to connect to the server now");
+            // Warning: Call to setserver.php on the server to set the server's IP address and port failed
+            // Users might not be able to connect to the server now
         }
     }
 
