@@ -11,7 +11,7 @@ public class PlayingGameState implements GameState {
 
     private final EventDispatcher eventDispatcher;
 
-    public PlayingGameState(EventDispatcher dispatcher) {
+    public PlayingGameState(final EventDispatcher dispatcher) {
         this.eventDispatcher = dispatcher;
 
         dispatcher.dispatch(new GameStartedEvent());

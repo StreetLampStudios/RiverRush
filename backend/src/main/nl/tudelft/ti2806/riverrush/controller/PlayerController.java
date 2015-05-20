@@ -4,7 +4,6 @@ import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Server;
-import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
 
 public class PlayerController implements Controller {
 
@@ -12,7 +11,6 @@ public class PlayerController implements Controller {
     private final EventDispatcher dispatcher;
     private final Server server;
     private final HandlerLambda<Event> onGameStateChangeLambda = this::onGameStateChange;
-    private final HandlerLambda<Event> onJumpLambda = this::onJump;
     private final Game game;
 
 
@@ -22,7 +20,6 @@ public class PlayerController implements Controller {
         this.server = aServer;
         this.game = aGame;
 
-        this.dispatcher.attach(JumpEvent.class, onJumpLambda);
         this.dispatcher.attach(GameAboutToStartEvent.class, onGameStateChangeLambda);
         this.dispatcher.attach(GameStartedEvent.class, onGameStateChangeLambda);
         this.dispatcher.attach(GameStoppedEvent.class, onGameStateChangeLambda);
@@ -33,19 +30,20 @@ public class PlayerController implements Controller {
     @Override
     public void initialize() {
         PlayerAddedEvent event = new PlayerAddedEvent();
-        event.setPlayer(player);
+        event.setPlayer(this.player);
 
         this.dispatcher.dispatch(event);
     }
 
     @Override
     public void onSocketMessage(final Event event) {
+        event.setPlayer(this.player);
+
         this.dispatcher.dispatch(event);
     }
 
     @Override
     public void detach() {
-        this.dispatcher.detach(JumpEvent.class, onJumpLambda);
         this.dispatcher.detach(GameWaitingEvent.class, onGameStateChangeLambda);
         this.dispatcher.detach(GameStartedEvent.class, onGameStateChangeLambda);
         this.dispatcher.detach(GameAboutToStartEvent.class, onGameStateChangeLambda);
@@ -53,15 +51,8 @@ public class PlayerController implements Controller {
         this.dispatcher.detach(GameFinishedEvent.class, onGameStateChangeLambda);
     }
 
-
-
     private void onGameStateChange(final Event event) {
         server.sendEvent(event, this);
-    }
-
-    private void onJump(final Event event) {
-        JumpEvent jumpEvent = (JumpEvent) event;
-        server.sendEvent(jumpEvent, this);
     }
 
 }

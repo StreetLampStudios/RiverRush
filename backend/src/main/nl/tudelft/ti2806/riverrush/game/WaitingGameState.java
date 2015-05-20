@@ -2,6 +2,7 @@ package nl.tudelft.ti2806.riverrush.game;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
 
 /**
  * State in which the game is waiting for players to join.
@@ -13,6 +14,7 @@ public class WaitingGameState implements GameState {
 
     public WaitingGameState(final EventDispatcher dispatcher) {
         this.eventDispatcher = dispatcher;
+        this.eventDispatcher.dispatch(new GameWaitingEvent());
     }
 
     @Override

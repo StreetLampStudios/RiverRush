@@ -41,13 +41,13 @@ public class Game {
             eventDispatcher.dispatch(new GameAboutToStartEvent(5));
             final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
             scheduler.schedule(
-                () -> this.eventDispatcher.dispatch(new GameStartedEvent()),
+                this::start,
                 5,
                 TimeUnit.SECONDS);
         }
     }
 
-    public void play() {
+    public void start() {
         this.gameState = this.gameState.start();
     }
 

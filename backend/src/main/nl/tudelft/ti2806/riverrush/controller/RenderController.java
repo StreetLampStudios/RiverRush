@@ -9,8 +9,8 @@ public class RenderController implements Controller {
     private final Server server;
     private final EventDispatcher dispatcher;
     private final Game game;
-    private final HandlerLambda<PlayerAddedEvent> onPlayerJoin;
     private final HandlerLambda<Event> onGameStateChangedLambda;
+    private final HandlerLambda<PlayerJumpedEvent> onJump;
 
     @Inject
     public RenderController(final EventDispatcher eventDispatcher, final Server server, final Game aGame) {
@@ -18,18 +18,22 @@ public class RenderController implements Controller {
         this.server = server;
         this.game = aGame;
 
-        this.onPlayerJoin = (e) -> this.server.sendEvent(e, this);
         this.onGameStateChangedLambda = (e) -> this.server.sendEvent(e, this);
+        this.onJump = (e) -> this.server.sendEvent(e, this);
 
-        this.dispatcher.attach(PlayerAddedEvent.class, onPlayerJoin);
+        this.dispatcher.attach(PlayerAddedEvent.class, onGameStateChangedLambda);
+        this.dispatcher.attach(GameWaitingEvent.class, onGameStateChangedLambda);
         this.dispatcher.attach(GameAboutToStartEvent.class, onGameStateChangedLambda);
         this.dispatcher.attach(GameStartedEvent.class, onGameStateChangedLambda);
+        this.dispatcher.attach(GameFinishedEvent.class, onGameStateChangedLambda);
+        this.dispatcher.attach(GameStoppedEvent.class, onGameStateChangedLambda);
+        this.dispatcher.attach(PlayerJumpedEvent.class, onJump);
+
     }
 
     @Override
     public void initialize() {
         this.game.waitForPlayers();
-        this.onGameStateChangedLambda.handle(new GameWaitingEvent());
     }
 
     @Override
@@ -39,9 +43,13 @@ public class RenderController implements Controller {
 
     @Override
     public void detach() {
-        this.dispatcher.detach(PlayerAddedEvent.class, this.onPlayerJoin);
+        this.dispatcher.detach(PlayerAddedEvent.class, this.onGameStateChangedLambda);
         this.dispatcher.detach(GameAboutToStartEvent.class, this.onGameStateChangedLambda);
         this.dispatcher.detach(GameStartedEvent.class, this.onGameStateChangedLambda);
+        this.dispatcher.detach(GameWaitingEvent.class, this.onGameStateChangedLambda);
+        this.dispatcher.detach(GameFinishedEvent.class, this.onGameStateChangedLambda);
+        this.dispatcher.detach(GameStoppedEvent.class, this.onGameStateChangedLambda);
+        this.dispatcher.detach(PlayerJumpedEvent.class, this.onJump);
         this.game.stop();
     }
 

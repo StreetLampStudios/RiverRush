@@ -23,4 +23,9 @@ public class PlayerJumpedEvent implements Event {
         this.player = new Player(Long.parseLong(keyValuePairs.get("player")));
         return this;
     }
+
+    @Override
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 }

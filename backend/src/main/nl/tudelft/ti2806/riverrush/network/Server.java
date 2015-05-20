@@ -93,9 +93,9 @@ public class Server extends WebSocketServer {
             controller.initialize();
         } else {
             controller = controllers.get(conn);
+            controller.onSocketMessage(event);
         }
 
-        controller.onSocketMessage(event);
     }
 
     @Override

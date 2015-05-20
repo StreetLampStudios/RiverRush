@@ -46,7 +46,7 @@ public class MainDesktop extends CoreModule {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        injector.getInstance(EventDispatcher.class).dispatch(new GameAboutToStartEvent());
+        injector.getInstance(EventDispatcher.class).dispatch(new GameAboutToStartEvent(5));
 
         try {
             Thread.sleep(5000);
