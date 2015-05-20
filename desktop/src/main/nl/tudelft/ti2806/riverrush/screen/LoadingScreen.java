@@ -14,7 +14,7 @@ import nl.tudelft.ti2806.riverrush.domain.event.AssetsLoadedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 
-public class LoadingScreen  implements Screen {
+public class LoadingScreen implements Screen {
 
     private final EventDispatcher dispatcher;
     private Stage stage;

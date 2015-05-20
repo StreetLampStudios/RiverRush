@@ -1,12 +1,11 @@
 package nl.tudelft.ti2806.riverrush.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
 import nl.tudelft.ti2806.riverrush.screen.FinishedGameScreen;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 
 /**
  * Created by thomas on 19-5-15.
@@ -19,7 +18,7 @@ public class FinishedGameState implements GameState {
     private final FinishedGameScreen screen;
 
     public FinishedGameState(EventDispatcher eventDispatcher,
-            AssetManager assetManager, GdxGame game) {
+                             AssetManager assetManager, GdxGame game) {
         this.gameWindow = game;
         this.assets = assetManager;
         this.dispatcher = eventDispatcher;
@@ -30,7 +29,7 @@ public class FinishedGameState implements GameState {
             public void run() {
                 FinishedGameState.this.screen.init();
                 FinishedGameState.this.gameWindow
-                        .setScreen(FinishedGameState.this.screen);
+                    .setScreen(FinishedGameState.this.screen);
             }
         });
     }
@@ -43,13 +42,13 @@ public class FinishedGameState implements GameState {
     @Override
     public GameState start() {
         return new WaitingGameState(this.dispatcher, this.assets,
-                this.gameWindow);
+            this.gameWindow);
     }
 
     @Override
     public GameState stop() {
         return new StoppedGameState(this.dispatcher, this.assets,
-                this.gameWindow);
+            this.gameWindow);
     }
 
     @Override
@@ -60,6 +59,6 @@ public class FinishedGameState implements GameState {
     @Override
     public GameState waitForPlayers() {
         return new WaitingGameState(this.dispatcher, this.assets,
-                this.gameWindow);
+            this.gameWindow);
     }
 }

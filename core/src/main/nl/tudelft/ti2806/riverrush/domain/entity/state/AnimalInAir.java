@@ -9,26 +9,26 @@ import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
  */
 public class AnimalInAir implements AnimalState {
 
-  private Monkey monkey;
-  private final EventDispatcher dispatcher;
+    private Monkey monkey;
+    private final EventDispatcher dispatcher;
 
-  public AnimalInAir(Monkey monk, EventDispatcher eventDispatcher) {
-    this.monkey = monk;
-    this.dispatcher = eventDispatcher;
-  }
+    public AnimalInAir(Monkey monk, EventDispatcher eventDispatcher) {
+        this.monkey = monk;
+        this.dispatcher = eventDispatcher;
+    }
 
-  @Override
-  public AnimalState jump() {
-    return this;
-  }
+    @Override
+    public AnimalState jump() {
+        return this;
+    }
 
-  @Override
-  public AnimalState drop() {
-    return new AnimalOnBoat(this.monkey, this.dispatcher);
-  }
+    @Override
+    public AnimalState drop() {
+        return new AnimalOnBoat(this.monkey, this.dispatcher);
+    }
 
-  @Override
-  public AnimalState collide() {
-    return this;
-  }
+    @Override
+    public AnimalState collide() {
+        return this;
+    }
 }

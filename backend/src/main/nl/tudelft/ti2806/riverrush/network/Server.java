@@ -13,6 +13,7 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -52,8 +53,7 @@ public class Server extends WebSocketServer {
      * Constructs the server, does NOT start it (see the {@link #start()}
      * method).
      *
-
-     * @param aProtocol  - The protocol to use when receiving and sending messages.
+     * @param aProtocol - The protocol to use when receiving and sending messages.
      */
     @Inject
     public Server(final Protocol aProtocol, final ControllerFactory controllerFactory) {
@@ -129,12 +129,12 @@ public class Server extends WebSocketServer {
 
     private void sendHTTPRequest() throws IOException {
         URL url = new URL("http://riverrush.3dsplaza.com/setserver.php");
-        Map<String,Object> params = new LinkedHashMap<>();
+        Map<String, Object> params = new LinkedHashMap<>();
         params.put("password", "pizza");
         params.put("port", "82");
 
         StringBuilder postData = new StringBuilder();
-        for (Map.Entry<String,Object> param : params.entrySet()) {
+        for (Map.Entry<String, Object> param : params.entrySet()) {
             if (postData.length() != 0) postData.append('&');
             postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
             postData.append('=');
@@ -142,7 +142,7 @@ public class Server extends WebSocketServer {
         }
         byte[] postDataBytes = postData.toString().getBytes("UTF-8");
 
-        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
@@ -151,10 +151,9 @@ public class Server extends WebSocketServer {
 
         StringBuilder sb = new StringBuilder();
         Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-        for ( int c = in.read(); c != -1; c = in.read() )
-            sb.append((char)c);
-        if(!sb.toString().equals("0"))
-        {
+        for (int c = in.read(); c != -1; c = in.read())
+            sb.append((char) c);
+        if (!sb.toString().equals("0")) {
             // Warning: Call to setserver.php on the server to set the server's IP address and port failed
             // Users might not be able to connect to the server now
         }

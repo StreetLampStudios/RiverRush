@@ -1,14 +1,13 @@
 package nl.tudelft.ti2806.riverrush.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
 import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
 import nl.tudelft.ti2806.riverrush.screen.PlayingGameScreen;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 
 /**
  * Created by thomas on 19-5-15.
@@ -21,13 +20,13 @@ public class PlayingGameState implements GameState {
     private final PlayingGameScreen screen;
 
     public PlayingGameState(EventDispatcher eventDispatcher,
-            AssetManager assetManager, GdxGame game) {
+                            AssetManager assetManager, GdxGame game) {
         this.gameWindow = game;
         this.assets = assetManager;
         this.dispatcher = eventDispatcher;
 
         this.dispatcher
-                .attach(JumpEvent.class, (e) -> this.jump(e.getPlayer()));
+            .attach(JumpEvent.class, (e) -> this.jump(e.getPlayer()));
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(() -> {
             PlayingGameState.this.screen.init();
@@ -57,14 +56,14 @@ public class PlayingGameState implements GameState {
     public GameState stop() {
         this.screen.dispose();
         return new StoppedGameState(this.dispatcher, this.assets,
-                this.gameWindow);
+            this.gameWindow);
     }
 
     @Override
     public GameState finish() {
         this.screen.dispose();
         return new FinishedGameState(this.dispatcher, this.assets,
-                this.gameWindow);
+            this.gameWindow);
     }
 
     @Override

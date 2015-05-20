@@ -21,6 +21,7 @@ public class Client extends WebSocketClient {
     private EventDispatcher eventDispatcher;
 
     private Controller controller;
+
     /**
      * Constructs a WebSocketClient instance and sets it to the connect to the
      * specified URI. The channel does not attampt to connect automatically. You

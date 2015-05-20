@@ -20,7 +20,6 @@ public class ControllerFactory {
     private final Game game;
 
     /**
-     *
      * @param dispatcher - A  for {@link EventDispatcher}s.
      * @param game
      */

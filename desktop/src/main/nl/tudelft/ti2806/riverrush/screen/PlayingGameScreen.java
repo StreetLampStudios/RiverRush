@@ -1,13 +1,5 @@
 package nl.tudelft.ti2806.riverrush.screen;
 
-import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
-import nl.tudelft.ti2806.riverrush.domain.entity.Monkey;
-import nl.tudelft.ti2806.riverrush.domain.entity.Player;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.game.Game;
-import nl.tudelft.ti2806.riverrush.graphics.CenterStage;
-import nl.tudelft.ti2806.riverrush.graphics.SideStage;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -21,6 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
+import nl.tudelft.ti2806.riverrush.domain.entity.Monkey;
+import nl.tudelft.ti2806.riverrush.domain.entity.Player;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.game.Game;
+import nl.tudelft.ti2806.riverrush.graphics.CenterStage;
+import nl.tudelft.ti2806.riverrush.graphics.SideStage;
 
 @Singleton
 public class PlayingGameScreen implements Screen {
@@ -57,7 +56,7 @@ public class PlayingGameScreen implements Screen {
 
     @Inject
     public PlayingGameScreen(final AssetManager assetsManager,
-            final EventDispatcher eventDispatcher) {
+                             final EventDispatcher eventDispatcher) {
         this.dispatcher = eventDispatcher;
         this.assets = assetsManager;
     }
@@ -66,7 +65,7 @@ public class PlayingGameScreen implements Screen {
         this.banksLeft = new Stage();
 
         this.leftScreen = new SideStage(this.assets, this.WIDTH, this.HEIGHT,
-                this.dispatcher);
+            this.dispatcher);
         this.leftStage = new Stage();
         this.leftStage.addActor(this.leftScreen);
 
@@ -75,7 +74,7 @@ public class PlayingGameScreen implements Screen {
         this.midStage.addActor(this.midScreen);
 
         this.rightScreen = new SideStage(this.assets, this.WIDTH, this.HEIGHT,
-                this.dispatcher);
+            this.dispatcher);
         this.rightStage = new Stage();
         this.rightStage.addActor(this.rightScreen);
 
@@ -111,7 +110,7 @@ public class PlayingGameScreen implements Screen {
         this.banksLeft.act(Gdx.graphics.getDeltaTime());
         int width = (int) (Gdx.graphics.getWidth() * BANKSIZE);
         Gdx.gl.glViewport(0, 0, width, // 0 - 0.05
-                Gdx.graphics.getHeight());
+            Gdx.graphics.getHeight());
         this.banksLeft.draw();
     }
 
@@ -123,7 +122,7 @@ public class PlayingGameScreen implements Screen {
         int start = (int) (Gdx.graphics.getWidth() * FIRSTBANKEDGE);
         int width = (int) (Gdx.graphics.getWidth() * SCREENSIZE);
         Gdx.gl.glViewport(start, 0, // 0.05 - 0.45
-                width, Gdx.graphics.getHeight());
+            width, Gdx.graphics.getHeight());
         this.leftStage.draw();
     }
 
@@ -135,7 +134,7 @@ public class PlayingGameScreen implements Screen {
         int start = (int) (Gdx.graphics.getWidth() * LEFTSCREENEDGE);
         int width = (int) (Gdx.graphics.getWidth() * MIDSIZE);
         Gdx.gl.glViewport(start, 0, // 0.45 - 0.55
-                width, Gdx.graphics.getHeight());
+            width, Gdx.graphics.getHeight());
         this.midStage.draw();
     }
 
@@ -147,7 +146,7 @@ public class PlayingGameScreen implements Screen {
         int start = (int) (Gdx.graphics.getWidth() * MIDEDGE);
         int width = (int) (Gdx.graphics.getWidth() * SCREENSIZE);
         Gdx.gl.glViewport(start, 0, // 0.55 - 0.95
-                width, Gdx.graphics.getHeight());
+            width, Gdx.graphics.getHeight());
         this.rightStage.draw();
     }
 
@@ -159,7 +158,7 @@ public class PlayingGameScreen implements Screen {
         int start = (int) (Gdx.graphics.getWidth() * RIGHTSCREENEDGE);
         int width = (int) (Gdx.graphics.getWidth() * BANKSIZE);
         Gdx.gl.glViewport(start, 0, // 0.95 - 1
-                width, Gdx.graphics.getHeight());
+            width, Gdx.graphics.getHeight());
         this.banksRight.draw();
     }
 
@@ -168,7 +167,7 @@ public class PlayingGameScreen implements Screen {
         // Get texture
         Texture tex = this.assets.get("data/grass.jpg", Texture.class);
         TextureRegion region = new TextureRegion(tex, 0, 0, ENDTEXTUREX,
-                ENDTEXTUREY);
+            ENDTEXTUREY);
 
         Image leftImg = new Image(region);
         leftImg.setFillParent(true);
