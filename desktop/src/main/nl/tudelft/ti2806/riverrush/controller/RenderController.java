@@ -32,6 +32,11 @@ public class RenderController implements Controller {
             this.onAssetsLoadedLambda);
     }
 
+    @Override
+    public void initialize() {
+
+    }
+
     private void onAssetsLoaded(Event event) {
         this.game.waitForPlayers();
     }
@@ -52,4 +57,6 @@ public class RenderController implements Controller {
         this.dispatcher.detach(AssetsLoadedEvent.class,
                 this.onAssetsLoadedLambda);
     }
+
+
 }
