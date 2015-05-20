@@ -27,7 +27,7 @@ public class PlayerAddedEvent implements Event {
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
-        this.player = new Player(Long.parseLong(keyValuePairs.get("player")));
+        //this.player = new Player(Long.parseLong(keyValuePairs.get("player")));
         return this;
     }
 }

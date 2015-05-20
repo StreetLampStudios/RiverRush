@@ -10,12 +10,12 @@ public class RenderJoinEvent implements Event {
 
     @Override
     public String serialize(Protocol protocol) {
-        return null;
+        return "key=value";
     }
 
     @Override
     public Event deserialize(Map<String, String> keyValuePairs) {
-        return null;
+        return this;
     }
 
     @Override

@@ -100,9 +100,12 @@ public class Server extends WebSocketServer {
         if (event instanceof JoinEvent) {
             controller = this.factory.getController(this, "player");
             controllers.put(conn, controller);
+            sockets.put(controller, conn);
+            controller.initialize();
         } else if (event instanceof RenderJoinEvent) {
             controller = this.factory.getController(this, "renderer");
             controllers.put(conn, controller);
+            sockets.put(controller, conn);
             controller.initialize();
         } else {
             controller = controllers.get(conn);
@@ -124,7 +127,8 @@ public class Server extends WebSocketServer {
      */
     public void sendEvent(final Event event, final Controller controller) {
         WebSocket sock = sockets.get(controller);
-        sock.send(event.serialize(protocol));
+        String serialize = protocol.serialize(event);
+        sock.send(serialize);
     }
 
     private void sendHTTPRequest() throws IOException {

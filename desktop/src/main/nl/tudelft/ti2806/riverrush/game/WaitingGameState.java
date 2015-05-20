@@ -28,18 +28,15 @@ public class WaitingGameState implements GameState {
             (e) -> this.startTimer());
 
         this.screen = new WaitingScreen(assetManager, eventDispatcher);
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                WaitingGameState.this.screen.init();
-                WaitingGameState.this.gameWindow
-                    .setScreen(WaitingGameState.this.screen);
-            }
+        Gdx.app.postRunnable(() -> {
+            WaitingGameState.this.screen.init();
+            WaitingGameState.this.gameWindow
+                .setScreen(WaitingGameState.this.screen);
         });
     }
 
     private void startTimer() {
-        this.screen.startTimer(30);
+        this.screen.startTimer(5);
     }
 
     @Override

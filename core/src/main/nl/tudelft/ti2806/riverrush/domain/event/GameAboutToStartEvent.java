@@ -12,8 +12,8 @@ public class GameAboutToStartEvent implements Event {
 
     private final int seconds;
 
-    public GameAboutToStartEvent(final int seconds) {
-        this.seconds = seconds;
+    public GameAboutToStartEvent() {
+        this.seconds = 5;
     }
 
     @Override

@@ -41,7 +41,7 @@ public class Game {
     private void addPlayer(final PlayerAddedEvent playerAddedEvent) {
         playerCount++;
         if (playerCount > 0) {
-            eventDispatcher.dispatch(new GameAboutToStartEvent(5));
+            eventDispatcher.dispatch(new GameAboutToStartEvent());
             final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
             scheduler.schedule(
                 this::start,

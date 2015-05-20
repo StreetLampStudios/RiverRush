@@ -1,9 +1,10 @@
 package nl.tudelft.ti2806.riverrush;
 
 import com.google.inject.AbstractModule;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.network.event.JoinEvent;
 import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
+import nl.tudelft.ti2806.riverrush.network.event.RenderJoinEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.BasicProtocol;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
@@ -35,6 +36,15 @@ public abstract class CoreModule extends AbstractModule {
         Protocol protocol = new BasicProtocol(81);
         // Register available network actions
         // protocol.registerNetworkAction(...);
+
+        protocol.registerNetworkAction(RenderJoinEvent.class, RenderJoinEvent::new);
+        protocol.registerNetworkAction(GameWaitingEvent.class, GameWaitingEvent::new);
+        protocol.registerNetworkAction(GameAboutToStartEvent.class, GameAboutToStartEvent::new);
+        protocol.registerNetworkAction(GameStartedEvent.class, GameStartedEvent::new);
+        protocol.registerNetworkAction(GameFinishedEvent.class, GameFinishedEvent::new);
+        protocol.registerNetworkAction(GameStoppedEvent.class, GameStoppedEvent::new);
+        protocol.registerNetworkAction(PlayerAddedEvent.class, PlayerAddedEvent::new);
+        protocol.registerNetworkAction(PlayerJumpedEvent.class, PlayerJumpedEvent::new);
 
         return protocol;
     }

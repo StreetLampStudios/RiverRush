@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.PlayerJumpedEvent;
 import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
 import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
 import nl.tudelft.ti2806.riverrush.screen.PlayingGameScreen;
@@ -26,7 +27,7 @@ public class PlayingGameState implements GameState {
         this.dispatcher = eventDispatcher;
 
         this.dispatcher
-            .attach(JumpEvent.class, (e) -> this.jump(e.getPlayer()));
+            .attach(PlayerJumpedEvent.class, (e) -> this.jump(null));
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(() -> {
             PlayingGameState.this.screen.init();
