@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
@@ -17,22 +18,28 @@ public class WaitingGameState implements GameState {
     private final GdxGame gameWindow;
     private final WaitingScreen screen;
 
-    public WaitingGameState(EventDispatcher eventDispatcher, AssetManager assetManager, GdxGame game) {
+    public WaitingGameState(EventDispatcher eventDispatcher,
+                            AssetManager assetManager, GdxGame game) {
         this.gameWindow = game;
         this.assets = assetManager;
         this.dispatcher = eventDispatcher;
 
-        this.dispatcher.attach(
-            GameAboutToStartEvent.class,
+        this.dispatcher.attach(GameAboutToStartEvent.class,
             (e) -> this.startTimer());
 
         this.screen = new WaitingScreen(assetManager, eventDispatcher);
-        gameWindow.setScreen(this.screen);
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                WaitingGameState.this.screen.init();
+                WaitingGameState.this.gameWindow
+                    .setScreen(WaitingGameState.this.screen);
+            }
+        });
     }
 
-
     private void startTimer() {
-        screen.startTimer(30);
+        this.screen.startTimer(30);
     }
 
     @Override
@@ -46,13 +53,15 @@ public class WaitingGameState implements GameState {
     @Override
     public GameState start() {
         this.dispose();
-        return new PlayingGameState(dispatcher, assets, gameWindow);
+        return new PlayingGameState(this.dispatcher, this.assets,
+            this.gameWindow);
     }
 
     @Override
     public GameState stop() {
         this.dispose();
-        return new StoppedGameState(dispatcher, assets, gameWindow);
+        return new StoppedGameState(this.dispatcher, this.assets,
+            this.gameWindow);
     }
 
     @Override

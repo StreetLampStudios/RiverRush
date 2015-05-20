@@ -7,7 +7,6 @@ import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
 import nl.tudelft.ti2806.riverrush.screen.LoadingScreen;
-import nl.tudelft.ti2806.riverrush.screen.WaitingScreen;
 
 /**
  * Shared application class.
@@ -22,9 +21,9 @@ public class Game extends GdxGame {
 
     private GameState currentGameState;
 
-
     /**
      * Creates a game.
+     *
      * @param provider provides the game with its loading screen
      */
     @Inject
@@ -36,14 +35,17 @@ public class Game extends GdxGame {
 
     @Override
     public void create() {
-        this.currentGameState = new LoadingGameState(dispatcher, assets, this);
+
+        System.out.println("onCreate " + Thread.currentThread().getId());
+        this.currentGameState = new LoadingGameState(this.dispatcher,
+            this.assets, this);
+
     }
 
     @Override
     public void dispose() {
         this.currentGameState = this.currentGameState.stop();
     }
-
 
     public void start() {
         this.currentGameState = this.currentGameState.start();
