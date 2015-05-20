@@ -1,10 +1,12 @@
-package nl.tudelft.ti2806.riverrush;
+package nl.tudelft.ti2806.riverrush.backend;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import nl.tudelft.ti2806.riverrush.game.Game;
+import nl.tudelft.ti2806.riverrush.CoreModule;
+import nl.tudelft.ti2806.riverrush.controller.ControllerFactory;
 import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Server;
 
 /**
@@ -30,12 +32,12 @@ public final class MainBackend extends CoreModule {
         this.game = injector.getInstance(Game.class);
 
         this.renderServer = new Server(
-            injector.getInstance(EventDispatcher.class),
-            this.configureRendererProtocol());
+            this.configureRendererProtocol(),
+            injector.getInstance(ControllerFactory.class));
 
         this.clientServer = new Server(
-            injector.getInstance(EventDispatcher.class),
-            this.configureClientProtocol());
+            this.configureClientProtocol(),
+            injector.getInstance(ControllerFactory.class));
 
         this.clientServer.start();
         this.renderServer.start();

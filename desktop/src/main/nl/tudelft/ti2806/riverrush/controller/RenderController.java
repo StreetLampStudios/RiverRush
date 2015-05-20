@@ -24,10 +24,12 @@ public class RenderController implements Controller {
         this.game = game;
         this.onGameStartedLambda = this::onGameStarted;
         this.onAssetsLoadedLambda = this::onAssetsLoaded;
-        this.dispatcher
-                .attach(GameStartedEvent.class, this.onGameStartedLambda);
-        this.dispatcher.attach(AssetsLoadedEvent.class,
-                this.onAssetsLoadedLambda);
+        this.dispatcher.attach(
+            GameStartedEvent.class,
+            this.onGameStartedLambda);
+        this.dispatcher.attach(
+            AssetsLoadedEvent.class,
+            this.onAssetsLoadedLambda);
     }
 
     private void onAssetsLoaded(Event event) {

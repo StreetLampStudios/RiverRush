@@ -5,33 +5,22 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
 
-/**
- * Created by m.olsthoorn on 5/18/2015.
- */
-public class PlayerAddedEvent implements Event {
+public class PlayerJumpedEvent implements Event {
 
-    private Player player;
+    private final Player player;
 
-
-    @Override
-    public void setPlayer(Player p) {
-
-    }
-
-    @Override
-    public Player getPlayer() {
-        return null;
+    public PlayerJumpedEvent(Player player) {
+        this.player = player;
     }
 
     @Override
     public String serialize(Protocol protocol) {
-        return "";
+        return "player="+player.getId();
     }
 
     @Override
     public Event deserialize(Map<String, String> keyValuePairs) {
-        this.player =
-
+        player
         return this;
     }
 }

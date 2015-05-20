@@ -27,6 +27,11 @@ public class FinishedGameState implements GameState {
     }
 
     @Override
+    public void dispose() {
+
+    }
+
+    @Override
     public GameState start() {
         return new WaitingGameState(dispatcher, assets, gameWindow);
     }

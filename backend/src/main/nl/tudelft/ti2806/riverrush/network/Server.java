@@ -2,9 +2,8 @@ package nl.tudelft.ti2806.riverrush.network;
 
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
-import nl.tudelft.ti2806.riverrush.backend.PlayerController;
+import nl.tudelft.ti2806.riverrush.controller.ControllerFactory;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 import nl.tudelft.ti2806.riverrush.network.event.JoinEvent;
 import nl.tudelft.ti2806.riverrush.network.event.RenderJoinEvent;
@@ -15,7 +14,6 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
-import javax.inject.Provider;
 import java.net.InetSocketAddress;
 import java.util.Hashtable;
 import java.util.Map;
@@ -33,31 +31,30 @@ public class Server extends WebSocketServer {
     private final Map<Controller, WebSocket> sockets;
 
     /**
-     * Provides instances of EventDispatcher when a client joins.
-     */
-    private final EventDispatcher eventDispatcher;
-
-    /**
      * The protocol used to serialize/deserialize network messages.
      */
     private final Protocol protocol;
+
+    /**
+     * The factory is used to create controllers.
+     */
+    private final ControllerFactory factory;
 
 
     /**
      * Constructs the server, does NOT start it (see the {@link #start()}
      * method).
      *
-     * @param dispatcher - A {@link Provider} for {@link EventDispatcher}s.
+
      * @param aProtocol  - The protocol to use when receiving and sending messages.
      */
     @Inject
-    public Server(final EventDispatcher dispatcher,
-                  final Protocol aProtocol) {
+    public Server(final Protocol aProtocol, final ControllerFactory controllerFactory) {
         super(new InetSocketAddress(aProtocol.getPortNumber()));
         this.controllers = new Hashtable<>();
         this.sockets = new Hashtable<>();
         this.protocol = aProtocol;
-        this.eventDispatcher = dispatcher;
+        this.factory = controllerFactory;
     }
 
     @Override
@@ -88,10 +85,10 @@ public class Server extends WebSocketServer {
 
         final Controller controller;
         if (event instanceof JoinEvent) {
-            controller = new PlayerController(eventDispatcher, this);
+            controller = this.factory.getController(this, "player");
             controllers.put(conn, controller);
         } else if (event instanceof RenderJoinEvent) {
-            controller = new RenderController(eventDispatcher, this);
+            controller = this.factory.getController(this, "renderer");
             controllers.put(conn, controller);
         } else {
             controller = controllers.get(conn);

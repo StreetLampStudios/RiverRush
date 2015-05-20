@@ -18,12 +18,19 @@ public class FinishedGameState implements GameState {
     }
 
     @Override
+    public void dispose() {
+
+    }
+
+    @Override
     public GameState start() {
+        this.dispose();
         return new WaitingGameState(this.eventDispatcher);
     }
 
     @Override
     public GameState stop() {
+        this.dispose();
         return new StoppedGameState(this.eventDispatcher);
     }
 
@@ -34,6 +41,7 @@ public class FinishedGameState implements GameState {
 
     @Override
     public GameState waitForPlayers() {
+        this.dispose();
         return new WaitingGameState(this.eventDispatcher);
     }
 }

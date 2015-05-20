@@ -11,6 +11,7 @@ import nl.tudelft.ti2806.riverrush.controller.RenderController;
 import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
 
@@ -46,6 +47,13 @@ public class MainDesktop extends CoreModule {
             e.printStackTrace();
         }
         injector.getInstance(EventDispatcher.class).dispatch(new GameAboutToStartEvent());
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        injector.getInstance(EventDispatcher.class).dispatch(new GameStartedEvent());
     }
 
     private void setupGraphics() {

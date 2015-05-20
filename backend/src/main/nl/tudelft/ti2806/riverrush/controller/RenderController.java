@@ -1,20 +1,25 @@
-package nl.tudelft.ti2806.riverrush.network;
+package nl.tudelft.ti2806.riverrush.controller;
 
-import nl.tudelft.ti2806.riverrush.controller.Controller;
+import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
+import nl.tudelft.ti2806.riverrush.game.Game;
+import nl.tudelft.ti2806.riverrush.network.Server;
 
 public class RenderController implements Controller {
     private final Server server;
     private final EventDispatcher dispatcher;
-    private final HandlerLambda<Event> onGameStateChangedLambda = this::onGameStateChanged;
+    private final Game game;
 
-    public RenderController(EventDispatcher eventDispatcher, Server server) {
+    @Inject
+    public RenderController(final EventDispatcher eventDispatcher, final Server server, final Game aGame) {
         this.dispatcher = eventDispatcher;
         this.server = server;
-        this.dispatcher.attach(GameWaitingEvent.class, onGameStateChangedLambda);
+        this.game = aGame;
+
+        this.game.waitForPlayers();
+        this.onGameStateChanged(new GameWaitingEvent());
     }
 
     private void onGameStateChanged(Event event) {
@@ -28,6 +33,6 @@ public class RenderController implements Controller {
 
     @Override
     public void detach() {
-        this.dispatcher.detach(GameWaitingEvent.class, onGameStateChangedLambda);
+        this.game.stop();
     }
 }

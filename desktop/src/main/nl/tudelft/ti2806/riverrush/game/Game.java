@@ -32,8 +32,6 @@ public class Game extends GdxGame {
                 final AssetManager assetManager) {
         this.assets = assetManager;
         this.dispatcher = eventDispatcher;
-
-
     }
 
     @Override
@@ -43,23 +41,23 @@ public class Game extends GdxGame {
 
     @Override
     public void dispose() {
-        this.currentGameState.stop();
+        this.currentGameState = this.currentGameState.stop();
     }
 
 
     public void start() {
-        this.currentGameState.start();
+        this.currentGameState = this.currentGameState.start();
     }
 
     public void stop() {
-        this.currentGameState.stop();
+        this.currentGameState = this.currentGameState.stop();
     }
 
     public void finish() {
-        this.currentGameState.finish();
+        this.currentGameState = this.currentGameState.finish();
     }
 
     public void waitForPlayers() {
-        this.currentGameState.waitForPlayers();
+        this.currentGameState = this.currentGameState.waitForPlayers();
     }
 }

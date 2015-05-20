@@ -1,8 +1,8 @@
-package nl.tudelft.ti2806.riverrush.backend;
+package nl.tudelft.ti2806.riverrush.controller;
 
-import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.*;
+import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Server;
 import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
 
@@ -13,19 +13,25 @@ public class PlayerController implements Controller {
     private final Server server;
     private final HandlerLambda<Event> onGameStateChangeLambda = this::onGameStateChange;
     private final HandlerLambda<Event> onJumpLambda = this::onJump;
+    private final Game game;
 
 
-    public PlayerController(final EventDispatcher dispatcher, final Server server) {
+    public PlayerController(final EventDispatcher dispatcher, final Server server, final Game aGame) {
         this.player = new Player();
         this.dispatcher = dispatcher;
         this.server = server;
+        this.game = aGame;
 
-        dispatcher.attach(JumpEvent.class, onJumpLambda);
-        dispatcher.attach(GameAboutToStartEvent.class, onGameStateChangeLambda);
-        dispatcher.attach(GameStartedEvent.class, onGameStateChangeLambda);
-        dispatcher.attach(GameStoppedEvent.class, onGameStateChangeLambda);
-        dispatcher.attach(GameFinishedEvent.class, onGameStateChangeLambda);
-        dispatcher.attach(GameWaitingEvent.class, onGameStateChangeLambda);
+        this.dispatcher.attach(JumpEvent.class, onJumpLambda);
+        this.dispatcher.attach(GameAboutToStartEvent.class, onGameStateChangeLambda);
+        this.dispatcher.attach(GameStartedEvent.class, onGameStateChangeLambda);
+        this.dispatcher.attach(GameStoppedEvent.class, onGameStateChangeLambda);
+        this.dispatcher.attach(GameFinishedEvent.class, onGameStateChangeLambda);
+        this.dispatcher.attach(GameWaitingEvent.class, onGameStateChangeLambda);
+
+        PlayerAddedEvent event = new PlayerAddedEvent();
+        event.setPlayer(player);
+        this.dispatcher.dispatch(event);
     }
 
     @Override

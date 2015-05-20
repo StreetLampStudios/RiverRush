@@ -21,7 +21,7 @@ public class Game {
      */
     @Inject
     public Game(final EventDispatcher dispatcher) {
-        this.gameState = new WaitingGameState(dispatcher);
+        this.gameState = new WaitingForRendererState(dispatcher);
     }
 
     public void play() {
@@ -34,5 +34,9 @@ public class Game {
 
     public void finish() {
         this.gameState = this.gameState.finish();
+    }
+
+    public void waitForPlayers() {
+        this.gameState = this.gameState.waitForPlayers();
     }
 }

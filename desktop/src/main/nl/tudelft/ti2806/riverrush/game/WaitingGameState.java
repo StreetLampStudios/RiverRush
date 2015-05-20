@@ -35,7 +35,8 @@ public class WaitingGameState implements GameState {
         screen.startTimer(30);
     }
 
-    private void dispose() {
+    @Override
+    public void dispose() {
         this.dispatcher.detach(
             GameAboutToStartEvent.class,
             (e) -> this.startTimer());
