@@ -42,6 +42,7 @@ public final class BasicProtocol implements Protocol {
 
     /**
      * Singleton constructor.
+     * @param portNumber - On what port to connect
      */
     public BasicProtocol(final int portNumber) {
         final int expectedEventTypes = 10;

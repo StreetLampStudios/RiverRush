@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 public interface Animal {
     /**
      * Called when the player jumps.
+     * @return the action that should be performed
      */
     Action jump();
 
