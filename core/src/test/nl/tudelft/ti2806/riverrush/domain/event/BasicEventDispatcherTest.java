@@ -24,7 +24,7 @@ public class BasicEventDispatcherTest {
     private EventDispatcher dispatcher;
 
     @Mock
-    private HandlerLambda lambdaMock;
+    private HandlerLambda<Event> lambdaMock;
 
     @Mock
     private Event eventMock;

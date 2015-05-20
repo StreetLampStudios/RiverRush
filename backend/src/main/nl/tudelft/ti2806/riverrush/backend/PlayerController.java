@@ -11,8 +11,8 @@ public class PlayerController implements Controller {
     private final Player player;
     private final EventDispatcher dispatcher;
     private final Server server;
-    private final HandlerLambda onGameStateChangeLambda = this::onGameStateChange;
-    private final HandlerLambda onJumpLambda = this::onJump;
+    private final HandlerLambda<Event> onGameStateChangeLambda = this::onGameStateChange;
+    private final HandlerLambda<Event> onJumpLambda = this::onJump;
 
 
     public PlayerController(final EventDispatcher dispatcher, final Server server) {

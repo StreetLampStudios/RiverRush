@@ -9,7 +9,7 @@ import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 public class RenderController implements Controller {
     private final Server server;
     private final EventDispatcher dispatcher;
-    private final HandlerLambda onGameStateChangedLambda = this::onGameStateChanged;
+    private final HandlerLambda<Event> onGameStateChangedLambda = this::onGameStateChanged;
 
     public RenderController(EventDispatcher eventDispatcher, Server server) {
         this.dispatcher = eventDispatcher;
