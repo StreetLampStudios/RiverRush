@@ -7,20 +7,20 @@ import java.util.Map;
 
 public class PlayerJumpedEvent implements Event {
 
-    private final Player player;
+    private Player player;
 
     public PlayerJumpedEvent(Player player) {
         this.player = player;
     }
 
     @Override
-    public String serialize(Protocol protocol) {
-        return "player="+player.getId();
+    public String serialize(final Protocol protocol) {
+        return "player=" + player.getId();
     }
 
     @Override
-    public Event deserialize(Map<String, String> keyValuePairs) {
-        player
+    public Event deserialize(final Map<String, String> keyValuePairs) {
+        this.player = new Player(Long.parseLong(keyValuePairs.get("player")));
         return this;
     }
 }

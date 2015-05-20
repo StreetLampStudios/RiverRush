@@ -90,6 +90,7 @@ public class Server extends WebSocketServer {
         } else if (event instanceof RenderJoinEvent) {
             controller = this.factory.getController(this, "renderer");
             controllers.put(conn, controller);
+            controller.initialize();
         } else {
             controller = controllers.get(conn);
         }

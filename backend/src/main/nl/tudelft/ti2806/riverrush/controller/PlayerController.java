@@ -16,10 +16,10 @@ public class PlayerController implements Controller {
     private final Game game;
 
 
-    public PlayerController(final EventDispatcher dispatcher, final Server server, final Game aGame) {
+    public PlayerController(final EventDispatcher aDispatcher, final Server aServer, final Game aGame) {
         this.player = new Player();
-        this.dispatcher = dispatcher;
-        this.server = server;
+        this.dispatcher = aDispatcher;
+        this.server = aServer;
         this.game = aGame;
 
         this.dispatcher.attach(JumpEvent.class, onJumpLambda);
@@ -28,15 +28,18 @@ public class PlayerController implements Controller {
         this.dispatcher.attach(GameStoppedEvent.class, onGameStateChangeLambda);
         this.dispatcher.attach(GameFinishedEvent.class, onGameStateChangeLambda);
         this.dispatcher.attach(GameWaitingEvent.class, onGameStateChangeLambda);
+    }
 
+    @Override
+    public void initialize() {
         PlayerAddedEvent event = new PlayerAddedEvent();
         event.setPlayer(player);
+
         this.dispatcher.dispatch(event);
     }
 
     @Override
     public void onSocketMessage(final Event event) {
-        event.setPlayer(this.player);
         this.dispatcher.dispatch(event);
     }
 
@@ -49,6 +52,8 @@ public class PlayerController implements Controller {
         this.dispatcher.detach(GameStoppedEvent.class, onGameStateChangeLambda);
         this.dispatcher.detach(GameFinishedEvent.class, onGameStateChangeLambda);
     }
+
+
 
     private void onGameStateChange(final Event event) {
         server.sendEvent(event, this);
