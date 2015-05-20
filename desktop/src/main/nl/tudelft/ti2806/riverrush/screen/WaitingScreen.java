@@ -1,6 +1,7 @@
-package nl.tudelft.ti2806.riverrush.graphics;
+package nl.tudelft.ti2806.riverrush.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,9 +18,10 @@ import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class WaitingScreen extends AbstractScreen {
+public class WaitingScreen implements Screen {
 
     private static final int SECOND = 1000;
+    private final EventDispatcher dispatcher;
     private Stage stage;
     private final AssetManager assets;
 
@@ -37,7 +39,7 @@ public class WaitingScreen extends AbstractScreen {
 
     @Inject
     public WaitingScreen(final AssetManager assetManager, final EventDispatcher eventDispatcher) {
-        super(eventDispatcher);
+        this.dispatcher = eventDispatcher;
         this.assets = assetManager;
         this.time = Integer.MAX_VALUE;
     }

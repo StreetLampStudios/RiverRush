@@ -10,7 +10,8 @@ import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
 import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.graphics.RiverGame;
+import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
+import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
 
 import java.net.URISyntaxException;
@@ -31,8 +32,6 @@ public class MainDesktop extends CoreModule {
     public MainDesktop() throws URISyntaxException {
         injector = Guice.createInjector(this);
 
-        // This injector can inject all dependencies configured in CoreModule
-        // and this, the desktop module.
         client = new Client("localhost",
             this.configureRendererProtocol(),
             injector.getInstance(EventDispatcher.class),
@@ -40,6 +39,13 @@ public class MainDesktop extends CoreModule {
 
         setupGraphics();
         client.connect();
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        injector.getInstance(EventDispatcher.class).dispatch(new GameAboutToStartEvent());
     }
 
     private void setupGraphics() {
@@ -49,10 +55,7 @@ public class MainDesktop extends CoreModule {
         config.height = HEIGHT;
         // config.fullscreen = true;
 
-        // Get the game from the injector.
-        // The injector should not be passed to any other classes as a
-        // dependency!
-        RiverGame game = injector.getInstance(RiverGame.class);
+        Game game = injector.getInstance(Game.class);
         new LwjglApplication(game, config);
     }
 
@@ -63,10 +66,8 @@ public class MainDesktop extends CoreModule {
     @Override
     protected void configure() {
         super.configure();
-        // When injecting an AssetManager, use this specific instance.
         this.bind(AssetManager.class).toInstance(new AssetManager());
         this.bind(Controller.class).to(RenderController.class);
-        // this.bind(Table.class).to(RunningGame.class);
     }
 
     @Override

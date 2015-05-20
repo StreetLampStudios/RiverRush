@@ -1,6 +1,7 @@
-package nl.tudelft.ti2806.riverrush.graphics;
+package nl.tudelft.ti2806.riverrush.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,14 +10,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.domain.event.AssetsLoadedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
-@Singleton
-public class LoadingScreen extends AbstractScreen {
 
+public class LoadingScreen  implements Screen {
+
+    private final EventDispatcher dispatcher;
     private Stage stage;
     private TextureAtlas atlas;
     private Skin skin;
@@ -27,10 +27,9 @@ public class LoadingScreen extends AbstractScreen {
         return "data/" + name;
     }
 
-    @Inject
     public LoadingScreen(final AssetManager assetManager, EventDispatcher eventDispatcher) {
-        super(eventDispatcher);
         this.assets = assetManager;
+        this.dispatcher = eventDispatcher;
     }
 
     /**

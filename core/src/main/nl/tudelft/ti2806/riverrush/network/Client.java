@@ -31,7 +31,7 @@ public class Client extends WebSocketClient {
     public Client(final String host, Protocol protocol,
                   final EventDispatcher dispatcher,
                   final Controller controller) throws URISyntaxException {
-        super(new URI(host + ":" + protocol.getPortNumber()), new Draft_17());
+        super(new URI("http://" + host + ":" + protocol.getPortNumber()), new Draft_17());
         this.eventDispatcher = dispatcher;
         this.controller = controller;
     }
@@ -60,12 +60,12 @@ public class Client extends WebSocketClient {
     @Override
     public void onClose(final int code, final String reason,
                         final boolean remote) {
-
+        System.out.println("Connection closed.");
     }
 
     @Override
     public void onError(final Exception ex) {
-
+        System.out.println("Connection failed");
     }
 
 }

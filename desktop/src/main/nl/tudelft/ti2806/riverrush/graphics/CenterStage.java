@@ -2,13 +2,14 @@ package nl.tudelft.ti2806.riverrush.graphics;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.entity.RiverBanks;
 
 /**
  * Center
  */
-public class CenterStage extends AbstractStage {
+public class CenterStage extends Table {
 
     private RiverBanks background;
 
