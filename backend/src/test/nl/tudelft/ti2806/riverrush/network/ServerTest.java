@@ -3,9 +3,11 @@ package nl.tudelft.ti2806.riverrush.network;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import nl.tudelft.ti2806.riverrush.domain.event.Event;
+import nl.tudelft.ti2806.riverrush.controller.Controller;
+import nl.tudelft.ti2806.riverrush.controller.ControllerFactory;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.network.event.JoinEvent;
+import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.java_websocket.WebSocket;
 import org.junit.Before;
@@ -45,6 +47,12 @@ public class ServerTest extends AbstractModule {
     @Mock
     private Protocol protocolMock;
 
+    @Mock
+    private ControllerFactory factoryMock;
+
+    @Mock
+    private Controller controllerMock;
+
     /**
      * Class under test.
      */
@@ -57,8 +65,14 @@ public class ServerTest extends AbstractModule {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        Mockito.when(this.protocolMock.deserialize(any(String.class)))
+        Mockito.when(this.protocolMock.deserialize("join"))
             .thenReturn(new JoinEvent());
+
+        Mockito.when(this.protocolMock.deserialize("jump"))
+            .thenReturn(new JumpEvent());
+
+        Mockito.when(this.factoryMock.getController(any(Server.class), any(String.class)))
+            .thenReturn(this.controllerMock);
 
         this.injector = Guice.createInjector(this);
         this.server = this.injector.getInstance(Server.class);
@@ -71,8 +85,9 @@ public class ServerTest extends AbstractModule {
      */
     @Test
     public void onMessage_usesProtocolAndDispatches() {
-        this.server.onMessage(this.webSocketMock, "JoinEventOfzo");
-        verify(this.dispatcherMock).dispatch(any(Event.class));
+        this.server.onMessage(this.webSocketMock, "join");
+        this.server.onMessage(this.webSocketMock, "jump");
+        verify(this.controllerMock).onSocketMessage(any(JumpEvent.class));
     }
 
     /**
@@ -90,5 +105,6 @@ public class ServerTest extends AbstractModule {
         // Guice will inject a fresh mock.
         this.bind(EventDispatcher.class).toInstance(dispatcherMock);
         this.bind(Server.class);
+        this.bind(ControllerFactory.class).toInstance(factoryMock);
     }
 }

@@ -24,10 +24,17 @@ public class RenderController implements Controller {
         this.game = game;
         this.onGameStartedLambda = this::onGameStarted;
         this.onAssetsLoadedLambda = this::onAssetsLoaded;
-        this.dispatcher
-                .attach(GameStartedEvent.class, this.onGameStartedLambda);
-        this.dispatcher.attach(AssetsLoadedEvent.class,
-                this.onAssetsLoadedLambda);
+        this.dispatcher.attach(
+            GameStartedEvent.class,
+            this.onGameStartedLambda);
+        this.dispatcher.attach(
+            AssetsLoadedEvent.class,
+            this.onAssetsLoadedLambda);
+    }
+
+    @Override
+    public void initialize() {
+
     }
 
     private void onAssetsLoaded(Event event) {
@@ -50,4 +57,6 @@ public class RenderController implements Controller {
         this.dispatcher.detach(AssetsLoadedEvent.class,
                 this.onAssetsLoadedLambda);
     }
+
+
 }

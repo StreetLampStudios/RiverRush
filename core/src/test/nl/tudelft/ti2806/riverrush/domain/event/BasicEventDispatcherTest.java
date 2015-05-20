@@ -86,16 +86,6 @@ public class BasicEventDispatcherTest {
     private class DummyEvent implements Event {
 
         @Override
-        public void setPlayer(Player p) {
-
-        }
-
-        @Override
-        public Player getPlayer() {
-            return null;
-        }
-
-        @Override
         public String serialize(final Protocol protocol) {
             return "";
         }
@@ -103,6 +93,11 @@ public class BasicEventDispatcherTest {
         @Override
         public Event deserialize(final Map<String, String> keyValuePairs) {
             return this;
+        }
+
+        @Override
+        public void setPlayer(Player player) {
+
         }
     }
 }

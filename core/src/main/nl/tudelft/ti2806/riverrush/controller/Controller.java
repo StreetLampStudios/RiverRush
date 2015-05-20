@@ -9,4 +9,6 @@ public interface Controller {
     void onSocketMessage(Event event);
 
     void detach();
+
+    void initialize();
 }

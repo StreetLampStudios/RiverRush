@@ -10,16 +10,9 @@ import java.util.Map;
  * Created by Rob on 18-5-2015.
  */
 public class JumpEvent implements Event {
+
+
     private Player player;
-
-    public void setPlayer(final Player player) {
-        this.player = player;
-    }
-
-    @Override
-    public Player getPlayer() {
-        return this.player;
-    }
 
     @Override
     public String serialize(final Protocol protocol) {
@@ -29,5 +22,14 @@ public class JumpEvent implements Event {
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
         return this;
+    }
+
+    @Override
+    public void setPlayer(final Player aPlayer) {
+        this.player = aPlayer;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

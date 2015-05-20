@@ -27,6 +27,11 @@ public class LoadingGameState implements GameState {
     }
 
     @Override
+    public void dispose() {
+
+    }
+
+    @Override
     public GameState start() {
         return this;
     }

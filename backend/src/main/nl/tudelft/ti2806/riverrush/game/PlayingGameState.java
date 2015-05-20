@@ -11,10 +11,15 @@ public class PlayingGameState implements GameState {
 
     private final EventDispatcher eventDispatcher;
 
-    public PlayingGameState(EventDispatcher dispatcher) {
+    public PlayingGameState(final EventDispatcher dispatcher) {
         this.eventDispatcher = dispatcher;
 
         dispatcher.dispatch(new GameStartedEvent());
+    }
+
+    @Override
+    public void dispose() {
+
     }
 
     @Override
@@ -24,11 +29,13 @@ public class PlayingGameState implements GameState {
 
     @Override
     public GameState stop() {
+        this.dispose();
         return new StoppedGameState(this.eventDispatcher);
     }
 
     @Override
     public GameState finish() {
+        this.dispose();
         return new FinishedGameState(this.eventDispatcher);
     }
 

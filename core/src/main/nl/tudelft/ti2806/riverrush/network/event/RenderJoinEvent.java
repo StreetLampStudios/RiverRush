@@ -7,15 +7,6 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import java.util.Map;
 
 public class RenderJoinEvent implements Event {
-    @Override
-    public void setPlayer(Player p) {
-
-    }
-
-    @Override
-    public Player getPlayer() {
-        return null;
-    }
 
     @Override
     public String serialize(Protocol protocol) {
@@ -25,5 +16,10 @@ public class RenderJoinEvent implements Event {
     @Override
     public Event deserialize(Map<String, String> keyValuePairs) {
         return null;
+    }
+
+    @Override
+    public void setPlayer(Player player) {
+
     }
 }

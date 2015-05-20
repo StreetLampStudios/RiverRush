@@ -11,10 +11,6 @@ import java.util.Map;
  */
 public interface Event {
 
-    void setPlayer(Player p);
-
-    Player getPlayer();
-
     /**
      * Serialize the current event to it's string representation.
      *
@@ -31,4 +27,6 @@ public interface Event {
      * @return The fully initialized event, ready for dispatch.
      */
     Event deserialize(Map<String, String> keyValuePairs);
+
+    void setPlayer(Player player);
 }

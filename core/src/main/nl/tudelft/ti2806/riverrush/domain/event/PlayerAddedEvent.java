@@ -9,23 +9,25 @@ import java.util.Map;
  * Created by m.olsthoorn on 5/18/2015.
  */
 public class PlayerAddedEvent implements Event {
-    @Override
-    public void setPlayer(Player p) {
 
-    }
+    private Player player;
 
-    @Override
     public Player getPlayer() {
-        return null;
+        return player;
+    }
+
+    public void setPlayer(final Player player) {
+        this.player = player;
     }
 
     @Override
-    public String serialize(Protocol protocol) {
+    public String serialize(final Protocol protocol) {
         return "";
     }
 
     @Override
-    public Event deserialize(Map<String, String> keyValuePairs) {
+    public Event deserialize(final Map<String, String> keyValuePairs) {
+        this.player = new Player(Long.parseLong(keyValuePairs.get("player")));
         return this;
     }
 }

@@ -11,19 +11,25 @@ public class WaitingGameState implements GameState {
 
     private final EventDispatcher eventDispatcher;
 
+
     public WaitingGameState(final EventDispatcher dispatcher) {
         this.eventDispatcher = dispatcher;
+        this.eventDispatcher.dispatch(new GameWaitingEvent());
+    }
 
-        dispatcher.dispatch(new GameWaitingEvent());
+    @Override
+    public void dispose() {
     }
 
     @Override
     public GameState start() {
+        this.dispose();
         return new PlayingGameState(this.eventDispatcher);
     }
 
     @Override
     public GameState stop() {
+        this.dispose();
         return new StoppedGameState(this.eventDispatcher);
     }
 

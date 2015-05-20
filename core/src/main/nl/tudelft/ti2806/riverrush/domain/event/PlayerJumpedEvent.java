@@ -5,29 +5,27 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
 
-/**
- * Created by m.olsthoorn on 5/18/2015.
- */
-public class GameAboutToStartEvent implements Event {
+public class PlayerJumpedEvent implements Event {
 
-    private final int seconds;
+    private Player player;
 
-    public GameAboutToStartEvent(final int seconds) {
-        this.seconds = seconds;
+    public PlayerJumpedEvent(Player player) {
+        this.player = player;
     }
 
     @Override
     public String serialize(final Protocol protocol) {
-        return "";
+        return "player=" + player.getId();
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
+        this.player = new Player(Long.parseLong(keyValuePairs.get("player")));
         return this;
     }
 
     @Override
     public void setPlayer(Player player) {
-
+        this.player = player;
     }
 }

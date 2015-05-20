@@ -9,14 +9,6 @@ import java.util.Map;
  * Created by m.olsthoorn on 5/18/2015.
  */
 public class GameWaitingEvent implements Event {
-    @Override
-    public void setPlayer(Player p) {
-    }
-
-    @Override
-    public Player getPlayer() {
-        return null;
-    }
 
     @Override
     public String serialize(Protocol protocol) {
@@ -26,5 +18,10 @@ public class GameWaitingEvent implements Event {
     @Override
     public Event deserialize(Map<String, String> keyValuePairs) {
         return this;
+    }
+
+    @Override
+    public void setPlayer(Player player) {
+
     }
 }

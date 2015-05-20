@@ -28,12 +28,7 @@ public class JoinEvent implements Event {
     }
 
     @Override
-    public void setPlayer(Player p) {
+    public void setPlayer(Player player) {
 
-    }
-
-    @Override
-    public Player getPlayer() {
-        return null;
     }
 }

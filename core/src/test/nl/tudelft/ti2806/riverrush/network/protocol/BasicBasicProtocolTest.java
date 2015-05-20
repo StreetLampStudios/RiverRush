@@ -119,15 +119,6 @@ public class BasicBasicProtocolTest {
          */
         private String field;
 
-        @Override
-        public void setPlayer(Player p) {
-
-        }
-
-        @Override
-        public Player getPlayer() {
-            return null;
-        }
 
         @Override
         public String serialize(final Protocol p) {
@@ -138,6 +129,11 @@ public class BasicBasicProtocolTest {
         public Event deserialize(final Map<String, String> keyValuePairs) {
             this.field = keyValuePairs.get("field");
             return this;
+        }
+
+        @Override
+        public void setPlayer(Player player) {
+
         }
 
         public String getField() {
