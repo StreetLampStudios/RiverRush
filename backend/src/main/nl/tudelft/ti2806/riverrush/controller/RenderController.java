@@ -8,13 +8,11 @@ import nl.tudelft.ti2806.riverrush.network.Server;
 
 public class RenderController extends AbstractController {
     private final Server server;
-    private final EventDispatcher dispatcher;
     private final Game game;
 
     @Inject
     public RenderController(final EventDispatcher eventDispatcher, final RenderServer server, final Game aGame) {
         super(eventDispatcher);
-        this.dispatcher = eventDispatcher;
         this.server = server;
         this.game = aGame;
     }
@@ -29,7 +27,8 @@ public class RenderController extends AbstractController {
         this.listenTo(GameStartedEvent.class, onGameStateChangedLambda);
         this.listenTo(GameFinishedEvent.class, onGameStateChangedLambda);
         this.listenTo(GameStoppedEvent.class, onGameStateChangedLambda);
-        this.listenTo(PlayerJumpedEvent.class, (e) -> this.server.sendEvent(e, this));
+        this.listenTo(PlayerJumpedEvent.class, onGameStateChangedLambda);
+        this.listenTo(AnimalFellOff.class, onGameStateChangedLambda);
 
         this.game.waitForPlayers();
     }
