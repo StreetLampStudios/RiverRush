@@ -40,8 +40,6 @@ public class PlayerController implements Controller {
 
     @Override
     public void onSocketMessage(final Event event) {
-        event.setPlayer(this.player);
-
         this.dispatcher.dispatch(event);
     }
 

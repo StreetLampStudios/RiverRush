@@ -16,15 +16,15 @@ public class JumpEvent implements Event {
 
     @Override
     public String serialize(final Protocol protocol) {
-        return "[Serialized string van een JumpEvent]";
+        return "player" + protocol.getKeyValueSeperator() + player.getId();
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
+        this.player = new Player(Long.parseLong(keyValuePairs.get("player")));
         return this;
     }
 
-    @Override
     public void setPlayer(final Player aPlayer) {
         this.player = aPlayer;
     }

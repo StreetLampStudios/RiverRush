@@ -1,6 +1,5 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
@@ -22,8 +21,4 @@ public class AnimalFellOff implements Event {
         return this;
     }
 
-    @Override
-    public void setPlayer(final Player player) {
-
-    }
 }

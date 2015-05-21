@@ -2,6 +2,7 @@ package nl.tudelft.ti2806.riverrush.network;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
@@ -129,7 +130,7 @@ public abstract class Server extends WebSocketServer {
         URL url = new URL("http://riverrush.3dsplaza.com/setserver.php");
         Map<String, Object> params = new LinkedHashMap<>();
         params.put("password", "pizza");
-        params.put("port", "82");
+        params.put("port", CoreModule.CLIENT_PORT_NUMBER);
 
         StringBuilder postData = new StringBuilder();
         for (Map.Entry<String, Object> param : params.entrySet()) {
