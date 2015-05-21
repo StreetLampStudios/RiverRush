@@ -3,6 +3,7 @@ package nl.tudelft.ti2806.riverrush.controller;
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.Game;
+import nl.tudelft.ti2806.riverrush.network.RenderServer;
 import nl.tudelft.ti2806.riverrush.network.Server;
 
 public class RenderController implements Controller {
@@ -13,7 +14,7 @@ public class RenderController implements Controller {
     private final HandlerLambda<PlayerJumpedEvent> onJump;
 
     @Inject
-    public RenderController(final EventDispatcher eventDispatcher, final Server server, final Game aGame) {
+    public RenderController(final EventDispatcher eventDispatcher, final RenderServer server, final Game aGame) {
         this.dispatcher = eventDispatcher;
         this.server = server;
         this.game = aGame;

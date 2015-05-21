@@ -101,7 +101,6 @@ public class WaitingScreen implements Screen {
     public void addConnection() {
         this.count++;
         this.counter.setText("Connected: " + this.count);
-
     }
 
     /**
@@ -150,8 +149,9 @@ public class WaitingScreen implements Screen {
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
-        this.tmr.cancel();
+        if (this.tmr != null) {
+            this.tmr.cancel();
+        }
     }
 
 }

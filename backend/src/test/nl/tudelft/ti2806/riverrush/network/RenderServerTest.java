@@ -3,11 +3,10 @@ package nl.tudelft.ti2806.riverrush.network;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
-import nl.tudelft.ti2806.riverrush.controller.ControllerFactory;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.network.event.JoinEvent;
-import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
+import nl.tudelft.ti2806.riverrush.network.event.RenderJoinEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.java_websocket.WebSocket;
 import org.junit.Before;
@@ -16,13 +15,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import static org.mockito.Matchers.any;
+import static com.google.inject.name.Names.named;
 import static org.mockito.Mockito.verify;
 
 /**
- * Tests for the socket layer Server class.
+ * Created by thomas on 21-5-15.
  */
-public class ServerTest extends AbstractModule {
+public class RenderServerTest extends AbstractModule {
     /**
      * For dependency injection.
      */
@@ -48,7 +47,7 @@ public class ServerTest extends AbstractModule {
     private Protocol protocolMock;
 
     @Mock
-    private ControllerFactory factoryMock;
+    private Provider<Controller> controllerProviderMock;
 
     @Mock
     private Controller controllerMock;
@@ -58,6 +57,8 @@ public class ServerTest extends AbstractModule {
      */
     private Server server;
 
+
+
     /**
      * Every test needs a fresh {@link Server} instance.
      */
@@ -66,12 +67,9 @@ public class ServerTest extends AbstractModule {
         MockitoAnnotations.initMocks(this);
 
         Mockito.when(this.protocolMock.deserialize("join"))
-            .thenReturn(new JoinEvent());
+            .thenReturn(new RenderJoinEvent());
 
-        Mockito.when(this.protocolMock.deserialize("jump"))
-            .thenReturn(new JumpEvent());
-
-        Mockito.when(this.factoryMock.getController(any(Server.class), any(String.class)))
+        Mockito.when(this.controllerProviderMock.get())
             .thenReturn(this.controllerMock);
 
         this.injector = Guice.createInjector(this);
@@ -80,14 +78,23 @@ public class ServerTest extends AbstractModule {
 
 
     /**
-     * onMessage should use the Protocol to create an event, and then dispatch
-     * the event via EventDispatcher.
+     * When onMessage receives a JoinEvent,
+     * it should create a new Controller via the injected provider
      */
     @Test
-    public void onMessage_usesProtocolAndDispatches() {
+    public void onMessage_usesProviderToCreateController() {
         this.server.onMessage(this.webSocketMock, "join");
-        this.server.onMessage(this.webSocketMock, "jump");
-        verify(this.controllerMock).onSocketMessage(any(JumpEvent.class));
+        verify(this.controllerProviderMock).get();
+    }
+
+    /**
+     * When onMessage receives any event,
+     * it should call the Protocol to deserialize the message.
+     */
+    @Test
+    public void onMessage_usesProtocol() {
+        this.server.onMessage(this.webSocketMock, "join");
+        verify(this.protocolMock).deserialize("join");
     }
 
     /**
@@ -99,12 +106,18 @@ public class ServerTest extends AbstractModule {
      */
     @Override
     protected void configure() {
-        this.bind(Protocol.class).toInstance(this.protocolMock);
-
         // Every time a new EventDispatcher is requested by code under test,
         // Guice will inject a fresh mock.
         this.bind(EventDispatcher.class).toInstance(dispatcherMock);
-        this.bind(Server.class);
-        this.bind(ControllerFactory.class).toInstance(factoryMock);
+
+        this.bind(Controller.class)
+            .annotatedWith(named("renderController"))
+            .toProvider(this.controllerProviderMock);
+
+        this.bind(Protocol.class)
+            .annotatedWith(named("renderProtocol"))
+            .toInstance(this.protocolMock);
+
+        this.bind(Server.class).to(RenderServer.class);
     }
 }

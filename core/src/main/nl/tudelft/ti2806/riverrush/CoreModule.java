@@ -13,6 +13,10 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
  */
 
 public abstract class CoreModule extends AbstractModule {
+
+    public static final int RENDER_PORT_NUMBER = 51337;
+    public static final int CLIENT_PORT_NUMBER = 41337;
+
     @Override
     protected void configure() {
         this.bind(EventDispatcher.class).toInstance(this.configureEventDispatcher());
@@ -24,7 +28,9 @@ public abstract class CoreModule extends AbstractModule {
      *
      * @return A fresh dispatcher.
      */
-    protected abstract EventDispatcher configureEventDispatcher();
+    protected EventDispatcher configureEventDispatcher() {
+        return new BasicEventDispatcher();
+    }
 
     /**
      * Configure the renderer protocol by registering all valid messages that can be
@@ -33,7 +39,7 @@ public abstract class CoreModule extends AbstractModule {
      * @return The fully configured protocol.
      */
     protected Protocol configureRendererProtocol() {
-        Protocol protocol = new BasicProtocol(81);
+        Protocol protocol = new BasicProtocol(RENDER_PORT_NUMBER);
         // Register available network actions
         // protocol.registerNetworkAction(...);
 
@@ -56,7 +62,7 @@ public abstract class CoreModule extends AbstractModule {
      * @return The fully configured protocol.
      */
     protected Protocol configureClientProtocol() {
-        Protocol protocol = new BasicProtocol(82);
+        Protocol protocol = new BasicProtocol(CLIENT_PORT_NUMBER);
         // Register available network actions
         // protocol.registerNetworkAction(...);
 

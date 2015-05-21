@@ -1,12 +1,10 @@
 package nl.tudelft.ti2806.riverrush.network;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
-import nl.tudelft.ti2806.riverrush.controller.ControllerFactory;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
-import nl.tudelft.ti2806.riverrush.network.event.JoinEvent;
-import nl.tudelft.ti2806.riverrush.network.event.RenderJoinEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.InvalidActionException;
 import nl.tudelft.ti2806.riverrush.network.protocol.InvalidProtocolException;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
@@ -30,7 +28,7 @@ import java.util.Map;
  * Web socket endpoint for the backend to dispatch incoming tcp request from the
  * client.
  */
-public class Server extends WebSocketServer {
+public abstract class Server extends WebSocketServer {
 
     /**
      * Maps a remote address to a handler for player actions.
@@ -46,7 +44,7 @@ public class Server extends WebSocketServer {
     /**
      * The factory is used to create controllers.
      */
-    private final ControllerFactory factory;
+    private final Provider<Controller> controllerProvider;
 
 
     /**
@@ -56,12 +54,13 @@ public class Server extends WebSocketServer {
      * @param aProtocol - The protocol to use when receiving and sending messages.
      */
     @Inject
-    public Server(final Protocol aProtocol, final ControllerFactory controllerFactory) {
+    public Server(final Protocol aProtocol,
+                  final Provider<Controller> aProvider) {
         super(new InetSocketAddress(aProtocol.getPortNumber()));
         this.controllers = new Hashtable<>();
         this.sockets = new Hashtable<>();
         this.protocol = aProtocol;
-        this.factory = controllerFactory;
+        this.controllerProvider = aProvider;
 
         try {
             this.sendHTTPRequest();
@@ -87,36 +86,31 @@ public class Server extends WebSocketServer {
     public void onMessage(final WebSocket conn, final String message) {
         FailIf.isNull(conn, message);
         try {
-            dispatchNetworkEvent(conn, message);
+            final Event event = this.protocol.deserialize(message);
+            filterJoinEvents(conn, event);
         } catch (InvalidProtocolException | InvalidActionException e) {
             e.printStackTrace();
         }
     }
 
-    private void dispatchNetworkEvent(final WebSocket conn, final String message) {
-        final Event event = this.protocol.deserialize(message);
+    protected abstract void filterJoinEvents(final WebSocket conn, final Event event);
 
-        final Controller controller;
-        if (event instanceof JoinEvent) {
-            controller = this.factory.getController(this, "player");
-            controllers.put(conn, controller);
-            sockets.put(controller, conn);
-            controller.initialize();
-        } else if (event instanceof RenderJoinEvent) {
-            controller = this.factory.getController(this, "renderer");
-            controllers.put(conn, controller);
-            sockets.put(controller, conn);
-            controller.initialize();
-        } else {
-            controller = controllers.get(conn);
-            controller.onSocketMessage(event);
-        }
+    protected void createController(WebSocket conn) {
+        Controller controller = this.controllerProvider.get();
+        controllers.put(conn, controller);
+        sockets.put(controller, conn);
+        controller.initialize();
+    }
 
+    protected void dispatchToController(final Event event, final WebSocket connection) {
+        Controller controller = controllers.get(connection);
+        controller.onSocketMessage(event);
     }
 
     @Override
     public void onError(final WebSocket conn, final Exception ex) {
-        FailIf.isNull(conn, ex);
+        FailIf.isNull(ex);
+        ex.printStackTrace();
     }
 
     /**
@@ -146,15 +140,15 @@ public class Server extends WebSocketServer {
         }
         byte[] postDataBytes = postData.toString().getBytes("UTF-8");
 
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
-        conn.setDoOutput(true);
-        conn.getOutputStream().write(postDataBytes);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        connection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+        connection.setDoOutput(true);
+        connection.getOutputStream().write(postDataBytes);
 
         StringBuilder sb = new StringBuilder();
-        Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+        Reader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
         for (int c = in.read(); c != -1; c = in.read())
             sb.append((char) c);
         if (!sb.toString().equals("0")) {
