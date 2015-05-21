@@ -97,15 +97,21 @@ public abstract class Server extends WebSocketServer {
     protected abstract void filterJoinEvents(final WebSocket conn, final Event event);
 
     protected void createController(WebSocket conn) {
-        Controller controller = this.controllerProvider.get();
-        controllers.put(conn, controller);
-        sockets.put(controller, conn);
-        controller.initialize();
+        if (!hasJoined(conn)) {
+            Controller controller = this.controllerProvider.get();
+            controllers.put(conn, controller);
+            sockets.put(controller, conn);
+            controller.initialize();
+        }
     }
 
     protected void dispatchToController(final Event event, final WebSocket connection) {
         Controller controller = controllers.get(connection);
         controller.onSocketMessage(event);
+    }
+
+    protected boolean hasJoined(WebSocket connection) {
+        return controllers.containsKey(connection);
     }
 
     @Override
