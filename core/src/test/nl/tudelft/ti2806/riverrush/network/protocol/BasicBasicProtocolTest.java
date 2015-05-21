@@ -98,6 +98,21 @@ public class BasicBasicProtocolTest {
         assertEquals("HelloWorld", ((StubEvent) networkMessage).getField());
     }
 
+    @Test
+    public void testSerializeWithField() {
+        StubEvent event = new StubEvent();
+        event.setField("HelloWorld");
+
+        final String expectedField = "field"
+            + this.protocol.getKeyValueSeperator() + "HelloWorld"
+            + this.protocol.getPairSeperator();
+
+        final String actualField = protocol.serialize(event);
+
+        assertTrue(actualField.contains(expectedField));
+        assertTrue(actualField.contains(this.stubEventSerialized));
+    }
+
     @Test(expected = InvalidProtocolException.class)
     public void testDeserializeInvalidProtocol()
         throws InvalidProtocolException, InvalidActionException {
@@ -138,6 +153,10 @@ public class BasicBasicProtocolTest {
 
         public String getField() {
             return this.field;
+        }
+
+        public void setField(String f) {
+            this.field = f;
         }
     }
 }
