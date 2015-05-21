@@ -119,14 +119,14 @@ public abstract class ServerTest extends AbstractModule {
 
     /**
      * When onClose is called,
-     * the server should call Controller.detach on the correct controller
+     * the server should call Controller.dispose on the correct controller
      */
     @Test
     public void onClose_detachesController() {
         this.server.onMessage(mock(WebSocket.class), "join");
         this.server.onMessage(this.webSocketMock, "join");
         this.server.onClose(this.webSocketMock, 0, "", true);
-        verify(this.controllerMocks.get(1)).detach();
+        verify(this.controllerMocks.get(1)).dispose();
     }
 
     /**

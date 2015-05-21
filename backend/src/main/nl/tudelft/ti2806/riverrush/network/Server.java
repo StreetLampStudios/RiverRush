@@ -79,7 +79,7 @@ public abstract class Server extends WebSocketServer {
     public void onClose(final WebSocket conn, final int code,
                         final String reason, final boolean remote) {
         FailIf.isNull(conn);
-        this.controllers.get(conn).detach();
+        this.controllers.get(conn).dispose();
         this.controllers.remove(conn);
     }
 

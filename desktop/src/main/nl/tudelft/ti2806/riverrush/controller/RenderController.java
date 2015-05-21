@@ -48,9 +48,9 @@ public class RenderController implements Controller {
     }
 
     @Override
-    public void detach() {
+    public void dispose() {
         this.dispatcher.detach(GameStartedEvent.class,
-                this.onGameStartedLambda);
+            this.onGameStartedLambda);
         this.dispatcher.detach(AssetsLoadedEvent.class,
             this.onAssetsLoadedLambda);
     }
