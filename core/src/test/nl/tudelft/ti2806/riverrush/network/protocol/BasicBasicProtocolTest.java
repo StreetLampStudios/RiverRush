@@ -6,13 +6,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
 
 /**
  * Tests for the basic protocol.
@@ -65,7 +65,7 @@ public class BasicBasicProtocolTest {
     @Test
     public void serialize_callsEvent() throws InvalidActionException {
         this.protocol.serialize(this.eventMock);
-        Mockito.verify(this.eventMock).serialize(this.protocol);
+        verify(this.eventMock).serialize(this.protocol);
     }
 
     @Test
