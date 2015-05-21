@@ -12,13 +12,14 @@ import org.java_websocket.WebSocket;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by thomas on 21-5-15.
@@ -45,8 +46,8 @@ public abstract class ServerTest extends AbstractModule {
     @Mock
     protected Provider<Controller> controllerProviderMock;
 
-    @Mock
-    protected Controller controllerMock;
+    protected List<Controller> controllerMocks;
+
     /**
      * Class under test.
      */
@@ -59,11 +60,23 @@ public abstract class ServerTest extends AbstractModule {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        Mockito.when(this.protocolMock.deserialize("hello"))
-            .thenReturn(new StubEvent());
+        this.controllerMocks = new ArrayList<>();
 
-        Mockito.when(this.controllerProviderMock.get())
-            .thenReturn(this.controllerMock);
+        when(this.protocolMock.deserialize("hello"))
+            .thenReturn(mock(Event.class));
+
+        when(this.protocolMock.serialize(any(Event.class)))
+            .then(invocation -> {
+                Event argument = (Event) invocation.getArguments()[0];
+                return argument.serialize((Protocol) invocation.getMock());
+            });
+
+        when(this.controllerProviderMock.get())
+            .then(invocation -> {
+                Controller c = mock(Controller.class);
+                this.controllerMocks.add(c);
+                return c;
+            });
 
         Injector injector = Guice.createInjector(this);
         this.server = injector.getInstance(Server.class);
@@ -77,6 +90,7 @@ public abstract class ServerTest extends AbstractModule {
     public void onMessage_usesProviderToCreateController() {
         this.server.onMessage(this.webSocketMock, "join");
         verify(this.controllerProviderMock).get();
+        verify(this.controllerMocks.get(0)).initialize();
     }
 
     /**
@@ -91,25 +105,79 @@ public abstract class ServerTest extends AbstractModule {
 
     /**
      * When onMessage has registered a controller,
-     * and receives a JumpEvent,
+     * and receives a join event,
      * it should call the right Controller's onSocketMessage
      */
     @Test
     public void onMessage_callsController() {
+        this.server.onMessage(mock(WebSocket.class), "join");
         this.server.onMessage(this.webSocketMock, "join");
         this.server.onMessage(this.webSocketMock, "hello");
-        verify(this.controllerMock).onSocketMessage(any(StubEvent.class));
+        verify(this.controllerMocks.get(0), never()).onSocketMessage(any());
+        verify(this.controllerMocks.get(1)).onSocketMessage(any(Event.class));
     }
 
-    protected class StubEvent implements Event {
-        @Override
-        public String serialize(Protocol protocol) {
-            return "";
-        }
+    /**
+     * When onClose is called,
+     * the server should call Controller.detach on the correct controller
+     */
+    @Test
+    public void onClose_detachesController() {
+        this.server.onMessage(mock(WebSocket.class), "join");
+        this.server.onMessage(this.webSocketMock, "join");
+        this.server.onClose(this.webSocketMock, 0, "", true);
+        verify(this.controllerMocks.get(1)).detach();
+    }
 
-        @Override
-        public Event deserialize(Map<String, String> keyValuePairs) {
-            return this;
-        }
+    /**
+     * When a single connection calls join twice,
+     * the server silently rejects the last one.
+     */
+    @Test
+    public void onMessage_joinTwice_rejectLastJoin() {
+        this.server.onMessage(this.webSocketMock, "join");
+        this.server.onMessage(this.webSocketMock, "join");
+        assertEquals(1, this.controllerMocks.size());
+    }
+
+    /**
+     * When a controller calls sendEvent,
+     * and the controller is associated with a connection,
+     * the server calls WebSocket.send()
+     */
+    @Test
+    public void sendEvent_callsWebSocket() {
+        this.server.onMessage(this.webSocketMock, "join");
+
+        Event eventMock = mock(Event.class);
+        when(eventMock.serialize(any()))
+            .thenReturn("serialized-event");
+
+        this.server.sendEvent(eventMock, this.controllerMocks.get(0));
+        verify(this.webSocketMock).send("serialized-event");
+    }
+
+    /**
+     * When a controller calls sendEvent,
+     * and the controller is associated with a connection,
+     * the server calls Protocol.serialize() on the event.
+     */
+    @Test
+    public void sendEvent_callsProtocol() {
+        this.server.onMessage(this.webSocketMock, "join");
+
+        Event eventMock = mock(Event.class);
+        this.server.sendEvent(eventMock, this.controllerMocks.get(0));
+        verify(this.protocolMock).serialize(eventMock);
+    }
+
+    /**
+     * When a controller calls sendEvent,
+     * but there is no connection associates with the controller,
+     * the method should throw a NullPointerException
+     */
+    @Test(expected = NullPointerException.class)
+    public void sendEvent_noConnection_errors() {
+        this.server.sendEvent(mock(Event.class), mock(Controller.class));
     }
 }
