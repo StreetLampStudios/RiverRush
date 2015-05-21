@@ -1,18 +1,17 @@
 package nl.tudelft.ti2806.riverrush.network.protocol;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
 
 /**
  * Tests for the basic protocol.
@@ -65,7 +64,7 @@ public class BasicBasicProtocolTest {
     @Test
     public void serialize_callsEvent() throws InvalidActionException {
         this.protocol.serialize(this.eventMock);
-        Mockito.verify(this.eventMock).serialize(this.protocol);
+        verify(this.eventMock).serialize(this.protocol);
     }
 
     @Test
@@ -96,6 +95,21 @@ public class BasicBasicProtocolTest {
             + this.stubEventSerialized);
         assertTrue(networkMessage instanceof StubEvent);
         assertEquals("HelloWorld", ((StubEvent) networkMessage).getField());
+    }
+
+    @Test
+    public void testSerializeWithField() {
+        StubEvent event = new StubEvent();
+        event.setField("HelloWorld");
+
+        final String expectedField = "field"
+            + this.protocol.getKeyValueSeperator() + "HelloWorld"
+            + this.protocol.getPairSeperator();
+
+        final String actualField = protocol.serialize(event);
+
+        assertTrue(actualField.contains(expectedField));
+        assertTrue(actualField.contains(this.stubEventSerialized));
     }
 
     @Test(expected = InvalidProtocolException.class)
@@ -131,13 +145,12 @@ public class BasicBasicProtocolTest {
             return this;
         }
 
-        @Override
-        public void setPlayer(Player player) {
-
-        }
-
         public String getField() {
             return this.field;
+        }
+
+        public void setField(String f) {
+            this.field = f;
         }
     }
 }

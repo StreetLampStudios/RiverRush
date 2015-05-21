@@ -6,14 +6,19 @@ import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOff;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 /**
- * Created by thomas on 7-5-15.
+ * This is the standard state.
  */
 public class AnimalOnBoat implements AnimalState {
 
     private Monkey monkey;
     private final EventDispatcher dispatcher;
 
-    public AnimalOnBoat(Monkey monk, EventDispatcher eventDispatcher) {
+    /**
+     * Constructor.
+     * @param monk
+     * @param eventDispatcher
+     */
+    public AnimalOnBoat(final Monkey monk, final EventDispatcher eventDispatcher) {
         this.monkey = monk;
         this.dispatcher = eventDispatcher;
     }

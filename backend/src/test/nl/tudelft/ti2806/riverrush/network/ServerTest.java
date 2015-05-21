@@ -3,11 +3,10 @@ package nl.tudelft.ti2806.riverrush.network;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
-import nl.tudelft.ti2806.riverrush.controller.ControllerFactory;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.network.event.JoinEvent;
-import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.java_websocket.WebSocket;
 import org.junit.Before;
@@ -16,47 +15,42 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Map;
+
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 /**
- * Tests for the socket layer Server class.
+ * Created by thomas on 21-5-15.
  */
-public class ServerTest extends AbstractModule {
-    /**
-     * For dependency injection.
-     */
-    private Injector injector;
+public abstract class ServerTest extends AbstractModule {
+
 
     /**
      * Placeholder socket for server calls.
      */
     @Mock
-    private WebSocket webSocketMock;
-
+    protected WebSocket webSocketMock;
     /**
      * Used to verify calls from the server.
      */
     @Mock
-    private EventDispatcher dispatcherMock;
-
-
+    protected EventDispatcher dispatcherMock;
     /**
      * Used to verify calls from the server.
      */
     @Mock
-    private Protocol protocolMock;
+    protected Protocol protocolMock;
 
     @Mock
-    private ControllerFactory factoryMock;
+    protected Provider<Controller> controllerProviderMock;
 
     @Mock
-    private Controller controllerMock;
-
+    protected Controller controllerMock;
     /**
      * Class under test.
      */
-    private Server server;
+    protected Server server;
 
     /**
      * Every test needs a fresh {@link Server} instance.
@@ -65,46 +59,57 @@ public class ServerTest extends AbstractModule {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        Mockito.when(this.protocolMock.deserialize("join"))
-            .thenReturn(new JoinEvent());
+        Mockito.when(this.protocolMock.deserialize("hello"))
+            .thenReturn(new StubEvent());
 
-        Mockito.when(this.protocolMock.deserialize("jump"))
-            .thenReturn(new JumpEvent());
-
-        Mockito.when(this.factoryMock.getController(any(Server.class), any(String.class)))
+        Mockito.when(this.controllerProviderMock.get())
             .thenReturn(this.controllerMock);
 
-        this.injector = Guice.createInjector(this);
-        this.server = this.injector.getInstance(Server.class);
+        Injector injector = Guice.createInjector(this);
+        this.server = injector.getInstance(Server.class);
     }
 
-
     /**
-     * onMessage should use the Protocol to create an event, and then dispatch
-     * the event via EventDispatcher.
+     * When onMessage receives a JoinEvent,
+     * it should create a new Controller via the injected provider
      */
     @Test
-    public void onMessage_usesProtocolAndDispatches() {
+    public void onMessage_usesProviderToCreateController() {
         this.server.onMessage(this.webSocketMock, "join");
-        this.server.onMessage(this.webSocketMock, "jump");
-        verify(this.controllerMock).onSocketMessage(any(JumpEvent.class));
+        verify(this.controllerProviderMock).get();
     }
 
     /**
-     * onClose
+     * When onMessage receives any event,
+     * it should call the Protocol to deserialize the message.
      */
+    @Test
+    public void onMessage_usesProtocol() {
+        this.server.onMessage(this.webSocketMock, "join");
+        verify(this.protocolMock).deserialize("join");
+    }
 
     /**
-     * Configures injection of mocks.
+     * When onMessage has registered a controller,
+     * and receives a JumpEvent,
+     * it should call the right Controller's onSocketMessage
      */
-    @Override
-    protected void configure() {
-        this.bind(Protocol.class).toInstance(this.protocolMock);
+    @Test
+    public void onMessage_callsController() {
+        this.server.onMessage(this.webSocketMock, "join");
+        this.server.onMessage(this.webSocketMock, "hello");
+        verify(this.controllerMock).onSocketMessage(any(StubEvent.class));
+    }
 
-        // Every time a new EventDispatcher is requested by code under test,
-        // Guice will inject a fresh mock.
-        this.bind(EventDispatcher.class).toInstance(dispatcherMock);
-        this.bind(Server.class);
-        this.bind(ControllerFactory.class).toInstance(factoryMock);
+    protected class StubEvent implements Event {
+        @Override
+        public String serialize(Protocol protocol) {
+            return "";
+        }
+
+        @Override
+        public Event deserialize(Map<String, String> keyValuePairs) {
+            return this;
+        }
     }
 }

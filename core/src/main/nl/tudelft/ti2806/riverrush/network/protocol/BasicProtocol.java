@@ -42,6 +42,7 @@ public final class BasicProtocol implements Protocol {
 
     /**
      * Singleton constructor.
+     * @param portNumber - On what port to connect
      */
     public BasicProtocol(final int portNumber) {
         final int expectedEventTypes = 10;
@@ -99,9 +100,15 @@ public final class BasicProtocol implements Protocol {
 
     @Override
     public String serialize(final Event event) {
-        return event.serialize(this) + this.getPairSeperator()
-            + this.getEventTypeFieldKey()
-            + event.getClass().getSimpleName();
+        StringBuilder builder = new StringBuilder();
+        builder.append(event.serialize(this));
+        if (builder.length() > 0) {
+            builder.append(this.getPairSeperator());
+        }
+        builder.append(this.getEventTypeFieldKey());
+        builder.append(this.getKeyValueSeperator());
+        builder.append(event.getClass().getSimpleName());
+        return  builder.toString();
     }
 
     @Override

@@ -12,7 +12,12 @@ public class AnimalInAir implements AnimalState {
     private Monkey monkey;
     private final EventDispatcher dispatcher;
 
-    public AnimalInAir(Monkey monk, EventDispatcher eventDispatcher) {
+    /**
+     * Constructor.
+     * @param monk - The monkey that is in the air
+     * @param eventDispatcher
+     */
+    public AnimalInAir(final Monkey monk, final EventDispatcher eventDispatcher) {
         this.monkey = monk;
         this.dispatcher = eventDispatcher;
     }

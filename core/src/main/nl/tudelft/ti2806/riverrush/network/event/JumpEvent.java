@@ -7,7 +7,7 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import java.util.Map;
 
 /**
- * Created by Rob on 18-5-2015.
+ * This event is sent from the device to the server.
  */
 public class JumpEvent implements Event {
 
@@ -16,15 +16,15 @@ public class JumpEvent implements Event {
 
     @Override
     public String serialize(final Protocol protocol) {
-        return "[Serialized string van een JumpEvent]";
+        return "player" + protocol.getKeyValueSeperator() + player.getId();
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
+        this.player = new Player(Long.parseLong(keyValuePairs.get("player")));
         return this;
     }
 
-    @Override
     public void setPlayer(final Player aPlayer) {
         this.player = aPlayer;
     }

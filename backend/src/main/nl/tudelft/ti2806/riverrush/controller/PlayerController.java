@@ -1,9 +1,11 @@
 package nl.tudelft.ti2806.riverrush.controller;
 
+import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Server;
+import nl.tudelft.ti2806.riverrush.network.UserServer;
 
 public class PlayerController implements Controller {
 
@@ -14,7 +16,8 @@ public class PlayerController implements Controller {
     private final Game game;
 
 
-    public PlayerController(final EventDispatcher aDispatcher, final Server aServer, final Game aGame) {
+    @Inject
+    public PlayerController(final EventDispatcher aDispatcher, final UserServer aServer, final Game aGame) {
         this.player = new Player();
         this.dispatcher = aDispatcher;
         this.server = aServer;
@@ -37,8 +40,6 @@ public class PlayerController implements Controller {
 
     @Override
     public void onSocketMessage(final Event event) {
-        event.setPlayer(this.player);
-
         this.dispatcher.dispatch(event);
     }
 

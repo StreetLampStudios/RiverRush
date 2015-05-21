@@ -22,7 +22,7 @@ public class PlayerAddedEvent implements Event {
 
     @Override
     public String serialize(final Protocol protocol) {
-        return "";
+        return "player" + protocol.getKeyValueSeperator() + player.getId();
     }
 
     @Override

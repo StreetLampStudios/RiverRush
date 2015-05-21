@@ -3,6 +3,7 @@ package nl.tudelft.ti2806.riverrush.network;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.network.event.RenderJoinEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_17;
@@ -16,30 +17,35 @@ import java.net.URISyntaxException;
  */
 public class Client extends WebSocketClient {
 
-    private Protocol protocol;
+    private final Protocol protocol;
 
-    private EventDispatcher eventDispatcher;
+    private final EventDispatcher eventDispatcher;
 
-    private Controller controller;
+    private final Controller controller;
 
     /**
      * Constructs a WebSocketClient instance and sets it to the connect to the
      * specified URI. The channel does not attampt to connect automatically. You
      * must call {@code connect} first to initiate the socket connection.
      *
-     * @param host - The remote hostname of the server.
+     * @param host       - The remote hostname of the server.
+     * @param prot   - what protocol to use
+     * @param dispatcher - the dispatcher to use to send messages
+     * @param ctrl - the controller to use.
+     * @throws URISyntaxException
      */
-    public Client(final String host, Protocol protocol,
+    public Client(final String host, final Protocol prot,
                   final EventDispatcher dispatcher,
-                  final Controller controller) throws URISyntaxException {
-        super(new URI("http://" + host + ":" + protocol.getPortNumber()), new Draft_17());
+                  final Controller ctrl) throws URISyntaxException {
+        super(new URI("http://" + host + ":" + prot.getPortNumber()), new Draft_17());
         this.eventDispatcher = dispatcher;
-        this.controller = controller;
+        this.controller = ctrl;
+        this.protocol = prot;
     }
 
     @Override
     public void onOpen(final ServerHandshake handshakedata) {
-
+        this.sendEvent(new RenderJoinEvent(), null);
     }
 
     /**
@@ -49,7 +55,7 @@ public class Client extends WebSocketClient {
      * @param d     - The eventDispatcher that dispatched this event.
      */
     private void sendEvent(final Event event, final EventDispatcher d) {
-        this.getConnection().send(event.serialize(protocol));
+        this.getConnection().send(protocol.serialize(event));
     }
 
     @Override
@@ -67,6 +73,7 @@ public class Client extends WebSocketClient {
     @Override
     public void onError(final Exception ex) {
         System.out.println("Connection failed");
+        ex.printStackTrace();
     }
 
 }

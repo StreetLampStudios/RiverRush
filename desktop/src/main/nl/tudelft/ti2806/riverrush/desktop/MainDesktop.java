@@ -8,7 +8,6 @@ import com.google.inject.Injector;
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
-import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
@@ -58,10 +57,5 @@ public class MainDesktop extends CoreModule {
         super.configure();
         this.bind(AssetManager.class).toInstance(new AssetManager());
         this.bind(Controller.class).to(RenderController.class);
-    }
-
-    @Override
-    protected EventDispatcher configureEventDispatcher() {
-        return new BasicEventDispatcher();
     }
 }

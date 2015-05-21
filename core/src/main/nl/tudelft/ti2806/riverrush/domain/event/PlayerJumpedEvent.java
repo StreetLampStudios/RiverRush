@@ -9,23 +9,14 @@ public class PlayerJumpedEvent implements Event {
 
     private Player player;
 
-    public PlayerJumpedEvent(Player player) {
-        this.player = player;
-    }
-
     @Override
     public String serialize(final Protocol protocol) {
-        return "player=" + player.getId();
+        return "player" + protocol.getKeyValueSeperator() +  player.getId();
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
         this.player = new Player(Long.parseLong(keyValuePairs.get("player")));
         return this;
-    }
-
-    @Override
-    public void setPlayer(Player player) {
-        this.player = player;
     }
 }
