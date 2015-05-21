@@ -9,7 +9,7 @@ public class RenderJoinEvent implements Event {
 
     @Override
     public String serialize(Protocol protocol) {
-        return "key=value";
+        return "";
     }
 
     @Override
