@@ -6,7 +6,7 @@ sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = ["src/main"]
 sourceSets.test.java.srcDirs = ["src/test"]
 
-project.ext.mainClassName = "nl.tudelft.ti2806.riverrush.desktop.MainDesktop"
+project.ext.mainClassName = "nl.tudelft.ti2806.riverrush.backend.MainBackend"
 project.ext.assetsDir = new File("../assets");
 
 task dist(type: Jar) {
