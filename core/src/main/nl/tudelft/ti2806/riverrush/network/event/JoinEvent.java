@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.network.event;
 
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
@@ -7,7 +8,7 @@ import java.util.Map;
 /**
  * Indicates that a client wants to join the game.
  */
-public class JoinEvent implements NetworkEvent {
+public class JoinEvent implements Event {
 
     @Override
     public String serialize(final Protocol protocol) {
@@ -21,7 +22,7 @@ public class JoinEvent implements NetworkEvent {
      * @return Just {@code this}.
      */
     @Override
-    public NetworkEvent deserialize(final Map<String, String> keyValuePairs) {
+    public Event deserialize(final Map<String, String> keyValuePairs) {
         return this;
     }
 }

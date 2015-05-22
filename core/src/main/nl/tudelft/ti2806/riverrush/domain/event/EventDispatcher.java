@@ -1,9 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
-import java.net.InetSocketAddress;
-
 /**
- * Created by thomas on 9-5-15.
+ * Eventdispatcher.
  */
 public interface EventDispatcher {
 
@@ -12,25 +10,21 @@ public interface EventDispatcher {
      * Multiple registeredListeners per event are possible.
      *
      * @param eventType     - The runtime class to add a listener for.
-     * @param eventListener - The listener itself.
+     * @param handlerLambda - The listener itself.
      */
-    <T extends Event> void register(Class<T> eventType, EventListener<T> eventListener);
+    <T extends Event> void attach(Class<T> eventType, HandlerLambda<? super T> handlerLambda);
+
+    <T extends Event> void detach(Class<T> eventType, HandlerLambda<? super T> handlerLambda);
 
     /**
      * Mainly used for testing.
-     * Check the amount of registered {@link EventListener}s for a given {@link Event} type.
+     * Check the amount of registered {@link HandlerLambda}s for a given {@link Event} type.
      *
      * @param eventType - The type of event to check.
      * @return The amount of registered listeners.
      */
     int countRegistered(Class<? extends Event> eventType);
 
-    /**
-     * Dispatch an array of events to registered listeners.
-     *
-     * @param events - All events to dispatch.
-     */
-    void dispatch(Event[] events);
 
     /**
      * Dispatch one event to registered listeners.
@@ -38,6 +32,4 @@ public interface EventDispatcher {
      * @param event - The single event.
      */
     void dispatch(Event event);
-
-    InetSocketAddress getRemoteAddress();
 }

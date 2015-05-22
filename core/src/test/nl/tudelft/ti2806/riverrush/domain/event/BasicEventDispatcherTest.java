@@ -1,6 +1,5 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
-import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,9 +10,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link BasicEventDispatcher}.
@@ -26,7 +23,7 @@ public class BasicEventDispatcherTest {
     private EventDispatcher dispatcher;
 
     @Mock
-    private EventListener<Event> listenerMock;
+    private HandlerLambda<Event> lambdaMock;
 
     @Mock
     private Event eventMock;
@@ -41,18 +38,18 @@ public class BasicEventDispatcherTest {
     }
 
     /**
-     * register should add the event type and lsitener.
+     * attach should add the event type and lsitener.
      */
     @Test
     public void registerAddsListener1() {
-        this.dispatcher.register(Event.class, this.listenerMock);
+        this.dispatcher.attach(Event.class, this.lambdaMock);
         assertEquals(1, this.dispatcher.countRegistered(Event.class));
     }
 
     @Test
     public void registerAddsListener2() {
-        this.dispatcher.register(Event.class, this.listenerMock);
-        this.dispatcher.register(Event.class, this.listenerMock);
+        this.dispatcher.attach(Event.class, this.lambdaMock);
+        this.dispatcher.attach(Event.class, this.lambdaMock);
         assertEquals(2, this.dispatcher.countRegistered(Event.class));
     }
 
@@ -63,29 +60,29 @@ public class BasicEventDispatcherTest {
 
     @Test
     public void dispatch_callsListener() {
-        this.dispatcher.register((Class<Event>) this.eventMock.getClass(), this.listenerMock);
+        this.dispatcher.attach((Class<Event>) this.eventMock.getClass(), this.lambdaMock);
         this.dispatcher.dispatch(this.eventMock);
-        verify(this.listenerMock).dispatch(this.eventMock, this.dispatcher);
+        verify(this.lambdaMock).handle(this.eventMock);
     }
 
     @Test
     public void dispatch_callsAllListeners() {
-        this.dispatcher.register((Class<Event>) this.eventMock.getClass(), this.listenerMock);
-        this.dispatcher.register((Class<Event>) this.eventMock.getClass(), this.listenerMock);
+        this.dispatcher.attach((Class<Event>) this.eventMock.getClass(), this.lambdaMock);
+        this.dispatcher.attach((Class<Event>) this.eventMock.getClass(), this.lambdaMock);
         this.dispatcher.dispatch(this.eventMock);
-        verify(this.listenerMock, Mockito.times(2)).dispatch(this.eventMock, this.dispatcher);
+        verify(this.lambdaMock, Mockito.times(2)).handle(this.eventMock);
     }
 
     @Test
     public void dispatch_callsCorrectListener() {
-        EventListener<DummyEvent> dummyListener = (EventListener<DummyEvent>) mock(EventListener.class);
+        HandlerLambda dummyListener = mock(HandlerLambda.class);
 
-        this.dispatcher.register(DummyEvent.class, dummyListener);
+        this.dispatcher.attach(DummyEvent.class, dummyListener);
         this.dispatcher.dispatch(this.eventMock);
-        verifyZeroInteractions(this.listenerMock);
+        verifyZeroInteractions(this.lambdaMock);
     }
 
-    private class DummyEvent implements NetworkEvent {
+    private class DummyEvent implements Event {
 
         @Override
         public String serialize(final Protocol protocol) {
@@ -93,7 +90,7 @@ public class BasicEventDispatcherTest {
         }
 
         @Override
-        public NetworkEvent deserialize(final Map<String, String> keyValuePairs) {
+        public Event deserialize(final Map<String, String> keyValuePairs) {
             return this;
         }
     }

@@ -1,15 +1,18 @@
 apply plugin: "jacoco"
+apply plugin: 'com.github.kt3k.coveralls'
 
 jacoco {
-  toolVersion = "0.7.4.201502262128"
+    toolVersion = "0.7.4.201502262128"
 }
 
 jacocoTestReport {
-  reports {
-    xml.enabled false
-    csv.enabled false
-    html.destination "${buildDir}/reports/JaCoCo"
-  }
+    reports {
+        xml.enabled true
+        //xml.destination "${buildDir}/reports/JaCoCo/xml"
+        csv.enabled false
+        //html.destination "${buildDir}/reports/JaCoCo/html"
+        csv.enabled = false
+    }
 }
 
 check.finalizedBy(project.tasks.jacocoTestReport)

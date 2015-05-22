@@ -1,17 +1,17 @@
 package nl.tudelft.ti2806.riverrush.network.protocol;
 
-import nl.tudelft.ti2806.riverrush.network.event.NetworkEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
 
 /**
  * Tests for the basic protocol.
@@ -22,13 +22,13 @@ public class BasicBasicProtocolTest {
     /**
      * Stub for the event to send over the network.
      */
-    private NetworkEvent eventStub;
+    private Event eventStub;
 
     /**
      * Mock for an event.
      */
     @Mock
-    private NetworkEvent eventMock;
+    private Event eventMock;
 
     /**
      * Class under test.
@@ -50,7 +50,7 @@ public class BasicBasicProtocolTest {
      */
     @Before
     public void setUp() {
-        this.protocol = BasicProtocol.getInstance();
+        this.protocol = new BasicProtocol(0);
         this.eventStub = new StubEvent();
         this.stubEventSerialized = this.protocol.getEventTypeFieldKey()
             + this.protocol.getKeyValueSeperator()
@@ -64,7 +64,7 @@ public class BasicBasicProtocolTest {
     @Test
     public void serialize_callsEvent() throws InvalidActionException {
         this.protocol.serialize(this.eventMock);
-        Mockito.verify(this.eventMock).serialize(this.protocol);
+        verify(this.eventMock).serialize(this.protocol);
     }
 
     @Test
@@ -77,9 +77,9 @@ public class BasicBasicProtocolTest {
     @Test
     public void testDeserializeActionOnly() throws InvalidProtocolException,
         InvalidActionException {
-        NetworkEvent expected = new StubEvent();
+        Event expected = new StubEvent();
         this.protocol.registerNetworkAction(StubEvent.class, () -> expected);
-        NetworkEvent actualEvent = this.protocol.deserialize(this.stubEventSerialized);
+        Event actualEvent = this.protocol.deserialize(this.stubEventSerialized);
         assertEquals(expected, actualEvent);
     }
 
@@ -89,12 +89,27 @@ public class BasicBasicProtocolTest {
         this.protocol.registerNetworkAction(StubEvent.class, StubEvent::new);
 
         final String expectedField = "field"
-                + this.protocol.getKeyValueSeperator() + "HelloWorld"
-                + this.protocol.getPairSeperator();
-        NetworkEvent networkMessage = this.protocol.deserialize(expectedField
-                + this.stubEventSerialized);
+            + this.protocol.getKeyValueSeperator() + "HelloWorld"
+            + this.protocol.getPairSeperator();
+        Event networkMessage = this.protocol.deserialize(expectedField
+            + this.stubEventSerialized);
         assertTrue(networkMessage instanceof StubEvent);
         assertEquals("HelloWorld", ((StubEvent) networkMessage).getField());
+    }
+
+    @Test
+    public void testSerializeWithField() {
+        StubEvent event = new StubEvent();
+        event.setField("HelloWorld");
+
+        final String expectedField = "field"
+            + this.protocol.getKeyValueSeperator() + "HelloWorld"
+            + this.protocol.getPairSeperator();
+
+        final String actualField = protocol.serialize(event);
+
+        assertTrue(actualField.contains(expectedField));
+        assertTrue(actualField.contains(this.stubEventSerialized));
     }
 
     @Test(expected = InvalidProtocolException.class)
@@ -112,11 +127,12 @@ public class BasicBasicProtocolTest {
     /**
      * Stub event for testing.
      */
-    private class StubEvent implements NetworkEvent {
+    private class StubEvent implements Event {
         /**
          * A dummy field.
          */
         private String field;
+
 
         @Override
         public String serialize(final Protocol p) {
@@ -124,13 +140,17 @@ public class BasicBasicProtocolTest {
         }
 
         @Override
-        public NetworkEvent deserialize(final Map<String, String> keyValuePairs) {
+        public Event deserialize(final Map<String, String> keyValuePairs) {
             this.field = keyValuePairs.get("field");
             return this;
         }
 
         public String getField() {
             return this.field;
+        }
+
+        public void setField(String f) {
+            this.field = f;
         }
     }
 }

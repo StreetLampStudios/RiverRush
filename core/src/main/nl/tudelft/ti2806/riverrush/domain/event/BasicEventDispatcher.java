@@ -1,6 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
-import java.net.InetSocketAddress;
+import com.google.inject.Singleton;
+
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,33 +9,43 @@ import java.util.Map;
 
 /**
  * Domain event dispatcher.
- * Allows registeredListeners to register to an event.
+ * Allows registeredListeners to attach to an event.
  * They get a call whenever an event of their type is fired.
  */
+@Singleton
 public class BasicEventDispatcher implements EventDispatcher {
 
     /**
      * Maps event types to a list of listeners.
      */
-    private final Map<Class<? extends Event>, List<EventListener<?>>> registeredListeners = new Hashtable<>();
+    private final Map<Class<? extends Event>, List<HandlerLambda>> registeredLambdas = new Hashtable<>();
 
-    private InetSocketAddress remoteAddress;
 
     @Override
-    public <T extends Event> void register(final Class<T> eventType, final EventListener<T> eventListener) {
-        List<EventListener<?>> listeners = registeredListeners.get(eventType);
+    public <T extends Event> void attach(final Class<T> eventType, final HandlerLambda<? super T> handler) {
+        List<HandlerLambda> handlers = registeredLambdas.get(eventType);
 
-        if (listeners == null) {
-            listeners = new LinkedList<>();
+        if (handlers == null) {
+            handlers = new LinkedList<>();
         }
-        listeners.add(eventListener);
-        this.registeredListeners.put(eventType, listeners);
+
+        handlers.add(handler);
+        this.registeredLambdas.put(eventType, handlers);
+    }
+
+    @Override
+    public <T extends Event> void detach(final Class<T> eventType, final HandlerLambda<? super T> handlerLambda) {
+        List<HandlerLambda> handlers = registeredLambdas.get(eventType);
+
+        if (handlers != null) {
+            handlers.remove(handlerLambda);
+        }
     }
 
 
     @Override
     public int countRegistered(final Class<? extends Event> eventType) {
-        List<EventListener<?>> listeners = this.registeredListeners.get(eventType);
+        List<HandlerLambda> listeners = this.registeredLambdas.get(eventType);
         if (listeners == null) {
             return 0;
         } else {
@@ -43,28 +54,13 @@ public class BasicEventDispatcher implements EventDispatcher {
     }
 
     @Override
-    public void dispatch(final Event[] events) {
-        for (Event event : events) {
-            this.dispatch(event);
-        }
-    }
-
-    @Override
+    @SuppressWarnings("unchecked")
     public void dispatch(final Event event) {
-        List<EventListener<?>> listeners = this.registeredListeners.get(event.getClass());
-        if (listeners != null) {
-            listeners.forEach(
-                eventListener -> eventListener.dispatch(event, this)
+        List<HandlerLambda> handlers = this.registeredLambdas.get(event.getClass());
+        if (handlers != null) {
+            handlers.forEach(
+                (f) -> f.handle(event)
             );
         }
-    }
-
-    @Override
-    public InetSocketAddress getRemoteAddress() {
-        return this.remoteAddress;
-    }
-
-    public void setRemoteAddress(InetSocketAddress address) {
-        this.remoteAddress = address;
     }
 }

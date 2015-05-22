@@ -4,58 +4,57 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
+import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.java_websocket.WebSocket;
-import org.java_websocket.handshake.ClientHandshake;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
- * Tests for the socket layer Server class.
+ * Created by thomas on 21-5-15.
  */
-public class ServerTest extends AbstractModule {
-    /**
-     * For dependency injection.
-     */
-    private Injector injector;
+public abstract class ServerTest extends AbstractModule {
+
 
     /**
      * Placeholder socket for server calls.
      */
     @Mock
-    private WebSocket webSocketMock;
-
+    protected WebSocket webSocketMock;
     /**
      * Used to verify calls from the server.
      */
     @Mock
-    private EventDispatcher dispatcherMock;
-
-    /**
-     * To verify that Server calls the provider.
-     */
-    @Mock
-    private Provider<EventDispatcher> providerMock;
-
+    protected EventDispatcher dispatcherMock;
     /**
      * Used to verify calls from the server.
      */
     @Mock
-    private Protocol protocolMock;
+    protected Protocol protocolMock;
+
+    @Mock
+    protected Provider<Controller> controllerProviderMock;
+
+    protected List<Controller> controllerMocks;
 
     /**
      * Class under test.
      */
-    private Server server;
+    protected Server server;
 
     /**
      * Every test needs a fresh {@link Server} instance.
@@ -63,60 +62,125 @@ public class ServerTest extends AbstractModule {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        InetSocketAddress address = new InetSocketAddress(0);
-        when(this.webSocketMock.getRemoteSocketAddress()).thenReturn(address);
 
-        when(this.providerMock.get()).thenReturn(this.dispatcherMock);
+        this.controllerMocks = new ArrayList<>();
 
-        this.injector = Guice.createInjector(this);
-        this.server = this.injector.getInstance(Server.class);
+        when(this.protocolMock.deserialize("hello"))
+            .thenReturn(mock(Event.class));
+
+        when(this.protocolMock.serialize(any(Event.class)))
+            .then(invocation -> {
+                Event argument = (Event) invocation.getArguments()[0];
+                return argument.serialize((Protocol) invocation.getMock());
+            });
+
+        when(this.controllerProviderMock.get())
+            .then(invocation -> {
+                Controller c = mock(Controller.class);
+                this.controllerMocks.add(c);
+                return c;
+            });
+
+        Injector injector = Guice.createInjector(this);
+        this.server = injector.getInstance(Server.class);
     }
 
     /**
-     * When onOpen() is called, the server needs to create a new EventDispatcher
-     * using the provider. The server should also use the remote address of the
-     * socket.
+     * When onMessage receives a JoinEvent,
+     * it should create a new Controller via the injected provider
      */
     @Test
-    public void onOpen_callsProvider() {
-        this.server.onOpen(this.webSocketMock, mock(ClientHandshake.class));
-        verify(this.webSocketMock, atLeastOnce()).getRemoteSocketAddress();
-        verify(this.providerMock).get();
+    public void onMessage_usesProviderToCreateController() {
+        this.server.onMessage(this.webSocketMock, "join");
+        verify(this.controllerProviderMock).get();
+        verify(this.controllerMocks.get(0)).initialize();
     }
 
     /**
-     * onClose should use the remote address to delete the dispatcher from
-     * dispatcher list.
+     * When onMessage receives any event,
+     * it should call the Protocol to deserialize the message.
      */
     @Test
-    public void onClose_usesRemoteAddress() {
+    public void onMessage_usesProtocol() {
+        this.server.onMessage(this.webSocketMock, "join");
+        verify(this.protocolMock).deserialize("join");
+    }
+
+    /**
+     * When onMessage has registered a controller,
+     * and receives a join event,
+     * it should call the right Controller's onSocketMessage
+     */
+    @Test
+    public void onMessage_callsController() {
+        this.server.onMessage(mock(WebSocket.class), "join");
+        this.server.onMessage(this.webSocketMock, "join");
+        this.server.onMessage(this.webSocketMock, "hello");
+        verify(this.controllerMocks.get(0), never()).onSocketMessage(any());
+        verify(this.controllerMocks.get(1)).onSocketMessage(any(Event.class));
+    }
+
+    /**
+     * When onClose is called,
+     * the server should call Controller.dispose on the correct controller
+     */
+    @Test
+    public void onClose_detachesController() {
+        this.server.onMessage(mock(WebSocket.class), "join");
+        this.server.onMessage(this.webSocketMock, "join");
         this.server.onClose(this.webSocketMock, 0, "", true);
-        verify(this.webSocketMock).getRemoteSocketAddress();
-        verifyNoMoreInteractions(this.webSocketMock);
+        verify(this.controllerMocks.get(1)).dispose();
     }
 
     /**
-     * onMessage should use the Protocol to create an event, and then dispatch
-     * the event via EventDispatcher.
+     * When a single connection calls join twice,
+     * the server silently rejects the last one.
      */
     @Test
-    public void onMessage_usesProtocolAndDispatches() {
-        this.server.onOpen(this.webSocketMock, mock(ClientHandshake.class));
-        this.server.onMessage(this.webSocketMock, "HelloWorld");
-        verify(this.protocolMock).deserialize("HelloWorld");
-        verify(this.dispatcherMock).dispatch(any(Event.class));
+    public void onMessage_joinTwice_rejectLastJoin() {
+        this.server.onMessage(this.webSocketMock, "join");
+        this.server.onMessage(this.webSocketMock, "join");
+        assertEquals(1, this.controllerMocks.size());
     }
 
     /**
-     * Configures injection of mocks.
+     * When a controller calls sendEvent,
+     * and the controller is associated with a connection,
+     * the server calls WebSocket.send()
      */
-    @Override
-    protected void configure() {
-        this.bind(Protocol.class).toInstance(this.protocolMock);
+    @Test
+    public void sendEvent_callsWebSocket() {
+        this.server.onMessage(this.webSocketMock, "join");
 
-        // Every time a new EventDispatcher is requested by code under test,
-        // Guice will inject a fresh mock.
-        this.bind(EventDispatcher.class).toProvider(this.providerMock);
-        this.bind(Server.class);
+        Event eventMock = mock(Event.class);
+        when(eventMock.serialize(any()))
+            .thenReturn("serialized-event");
+
+        this.server.sendEvent(eventMock, this.controllerMocks.get(0));
+        verify(this.webSocketMock).send("serialized-event");
+    }
+
+    /**
+     * When a controller calls sendEvent,
+     * and the controller is associated with a connection,
+     * the server calls Protocol.serialize() on the event.
+     */
+    @Test
+    public void sendEvent_callsProtocol() {
+        this.server.onMessage(this.webSocketMock, "join");
+
+        Event eventMock = mock(Event.class);
+        this.server.sendEvent(eventMock, this.controllerMocks.get(0));
+        verify(this.protocolMock).serialize(eventMock);
+    }
+
+    /**
+     * When a controller calls sendEvent,
+     * but there is no connection associates with the controller,
+     * the method should throw a NullPointerException
+     */
+    @Test(expected = NullPointerException.class)
+    public void sendEvent_noConnection_errors() {
+        this.server.sendEvent(mock(Event.class), mock(Controller.class));
     }
 }

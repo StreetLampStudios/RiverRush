@@ -1,29 +1,17 @@
 package nl.tudelft.ti2806.riverrush.domain.entity;
 
-import nl.tudelft.ti2806.riverrush.failfast.FailIf;
-import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalOnBoat;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalState;
+import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 
 /**
  * An abstract implementation of {@link Animal}.
  */
-public abstract class AbstractAnimal implements Animal {
+public abstract class AbstractAnimal extends Actor implements Animal {
     /**
      * The current state of the animal.
      */
     private AnimalState currentState;
-
-    /**
-     * Create an animal in default state: {@link AnimalOnBoat}.
-     */
-    public AbstractAnimal() {
-        setState(new AnimalOnBoat());
-    }
-
-    @Override
-    public void jump() {
-        this.currentState = this.currentState.jump();
-    }
 
     @Override
     public void leave() {
@@ -36,7 +24,7 @@ public abstract class AbstractAnimal implements Animal {
      * @return {@link AnimalState}, never null.
      */
     protected AnimalState getState() {
-        return currentState;
+        return this.currentState;
     }
 
     /**
