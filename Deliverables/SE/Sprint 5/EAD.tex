@@ -1,0 +1,104 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{titling, palatino, booktabs}
+\usepackage[margin=2cm]{geometry}
+\usepackage[none]{hyphenat}
+\usepackage{listings}
+
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=1mm,
+  belowskip=1mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3,
+  escapeinside={||},
+  mathescape=true
+}
+
+\begin{document}
+\pagenumbering{gobble}
+\setlength{\droptitle}{-5em}
+\title{
+Emerging Architecture Design\\ 
+version 2.0
+}
+\date{\today}
+\maketitle
+
+\section{Introduction}
+This document provides an overview of the architecture that is going to be build for this project. The components are covered from a high level view, to give a representation of how the different components work and the dependencies between them.
+
+\subsection{Design goals}
+The following design goals will be maintained throughout the project:
+\begin{itemize}
+\item
+\textbf{Performance}\\
+The game server will have to serve requests from  potentially a couple thousand players at any given moment. To minimise the amount of lag introduced by latency of networks, we have to design the system in such a way that the game experience seems fluent to the users. For this reason we will use non-blocking sockets to handle all requests in parallel.
+
+\item
+\textbf{Modularity} \\
+As explained later, the game will involve three modules that work together. Two of these modules have several sub-components that must act independently when something happens to the game. To support modularity, we will use an event-driven architecture to let the players update game state and also to let sub-components communicate.
+
+\item
+\textbf{Code reuse}\\
+Dividing the different types of logic into modules is good for maintainability, but we will only get this advantage if logic that is similar for both components can be reused. To support this, we have divided the project into three sub-projects: \emph{Backend}, \emph{Desktop} and \emph{Core}. The \emph{Core} project contains all code shared between modules to maximise the possibility of reusing code.
+
+\end{itemize}
+
+\section{Software architecture views}
+This chapter is about architecture of the system. First the different parts of the system are explained and the relations between them. In the second paragraph the link between the software and the hardware are discussed. The third paragraph illustrates the data management of the system.
+
+\subsection{Subsystem decomposition (sub-systems and dependencies between them)}
+The system is broken down into 3 subsystems with a shared library to enable modularity. This way, all modules can be maintained separately while still being able to reuse shared code.
+
+\begin{itemize}
+\item \textbf{Renderer} \\
+The renderer connects to the backend via a specialized protocol. Its role is to display the model changes on the screen. For this purpose the renderer uses libGDX's graphical capabilities. The renderer receives events about the current game state (a.k.a. Domain events) over the protocol from the backend. These events are then processed and put into action on the screen.\\
+\\
+The renderer has its own game model. This is because the renderer can determine a lot of things on its own, which makes it much faster then waiting on the backend to give these pieces of information. To avoid giving the renderer to much control over the state of the game, we let the renderer predict what is going to happen and use the backend as the reliable source to check it against. This happens every time information arrives at the renderer.
+
+\item \textbf{Client} \\
+The client is a static HTML/JS website that is used to control the game from a smart phone. It send commands to the backend over WebSocket when the user moves his/her phone. It also receives domain events back from the backend to update the user screen accordingly with suitable information.
+
+\item \textbf{Backend} \\
+The backend runs the game engine and holds the model of the game in memory. Domain events are used to notify the connecting clients if there is any relevant change to the state of the game. The backend hosts separate servers to serve users and to connect the renderer. This creates opportunity for socket-level optimization between the backend and the renderer because these modules are not required to use WebSockets for communication. We have chosen for this set-up because the connection between backend and renderer is likely to become a performance bottleneck. It also leaves the possibility to run the backend server in a cloud environment, which would cut the hardware costs of the game dramatically.\\
+\\
+The backend is setup in a way that allows for great adaptability. When a client sends a join event to the backend it creates a virtual user in the game engine that is coupled to an entity in the game. This virtual user is coupled to the specific web socket of that client. Through this setup the virtual user can be easily swapped out for a virtual user controlled by an AI (Artificial Intelligence) or some sort of hardware input system, like keyboard controls.\\
+\\
+All communications between the virtual user and the domain model (The model containing all the game state) goes through the event dispatcher. Commands from the client are given to the event dispatcher and executed by the command handlers on the domain model. When the domain model wants to notify other systems, it can send a domain event through the event dispatcher and any part of the game can listen to it and act upon it.
+
+\item \textbf{Core library} \\
+The core module contains all classes that can be used by both the renderer and the backend. This involves for example:
+\begin{itemize}
+\item Protocol code to send and receive game events.
+\item Event dispatching code. Both modules use events to communicate and update their internal state.
+\item Game entity classes. Both modules need a compatible version of the data model, the backend to apply game mechanics to them, and the renderer uses entities for display.
+\end{itemize}
+
+\end{itemize}
+
+\subsection{Hardware/software mapping}
+Each module is backed by some hardware. In order to run the backend and renderer, at least one machine is needed, This set-up will practically eliminate latency between the renderer and the backend, but it has to run on a more expensive machine to support high loads.\\
+\\
+Another set-up is to run the renderer and backend on different machines. This allows for scenario's where the machine connected to the auditorium beamers does not support a high networking load. The backend can be run on a machine with well performing network hardware and send only relevant events to the renderer.\\
+\\
+A third option is to run the backend in a cloud environment and offer a subscription-fee to auditoriums. This reduces upfront costs and eliminates the requirement of high-end hardware inside the auditorium itself.\\
+\\
+The client HTML/JS application runs on all smartphone browsers that support WebSocket. 
+
+\end{document}
