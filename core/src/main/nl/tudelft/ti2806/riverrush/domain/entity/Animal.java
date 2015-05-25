@@ -10,7 +10,7 @@ public interface Animal {
      * Called when the player jumps.
      * @return the action that should be performed
      */
-    Action jump();
+    Action jumpAction();
 
     /**
      * Called when the animal disconnects.
