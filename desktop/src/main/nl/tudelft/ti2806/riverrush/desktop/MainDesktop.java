@@ -1,18 +1,21 @@
 package nl.tudelft.ti2806.riverrush.desktop;
 
+import java.net.URISyntaxException;
+
+import nl.tudelft.ti2806.riverrush.CoreModule;
+import nl.tudelft.ti2806.riverrush.controller.Controller;
+import nl.tudelft.ti2806.riverrush.controller.RenderController;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
+import nl.tudelft.ti2806.riverrush.game.Game;
+import nl.tudelft.ti2806.riverrush.network.Client;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import nl.tudelft.ti2806.riverrush.CoreModule;
-import nl.tudelft.ti2806.riverrush.controller.Controller;
-import nl.tudelft.ti2806.riverrush.controller.RenderController;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.game.Game;
-import nl.tudelft.ti2806.riverrush.network.Client;
-
-import java.net.URISyntaxException;
 
 public class MainDesktop extends CoreModule {
 
@@ -30,8 +33,8 @@ public class MainDesktop extends CoreModule {
         this.injector = Guice.createInjector(this);
 
         this.client = new Client("localhost", this.configureRendererProtocol(),
-            this.injector.getInstance(EventDispatcher.class),
-            this.injector.getInstance(Controller.class));
+                this.injector.getInstance(EventDispatcher.class),
+                this.injector.getInstance(Controller.class));
 
         this.setupGraphics();
         this.client.connect();
@@ -46,6 +49,23 @@ public class MainDesktop extends CoreModule {
 
         Game game = this.injector.getInstance(Game.class);
         new LwjglApplication(game, config);
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.injector.getInstance(EventDispatcher.class).dispatch(
+                new GameAboutToStartEvent());
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.injector.getInstance(EventDispatcher.class).dispatch(
+                new GameStartedEvent());
+
     }
 
     /**

@@ -57,7 +57,7 @@ public class River extends Actor {
 
   @Override
   public void draw(Batch batch, float parentAlpha) {
-    Texture tex = this.manager.get("data/river2.png", Texture.class);
+    Texture tex = this.manager.get("data/river.png", Texture.class);
     TextureRegion region = new TextureRegion(tex, 0, 0, END_REGIONX, END_REGIONY);
     batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
         this.getWidth(), this.getHeight() * 2, this.getScaleX(), this.getScaleY(),
