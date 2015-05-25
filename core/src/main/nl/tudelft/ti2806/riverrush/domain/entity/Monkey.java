@@ -38,7 +38,7 @@ public class Monkey extends AbstractAnimal {
   private static final float DELAY_DURATION = 5f;
   private static final float WIGGLE_DURATION = 0.5f;
   private static final float WIGGLE_DISTANCE = 5f;
-  private static final int RESPAWN_DELAY = 5000;
+  private static final int RESPAWN_DELAY = 2000;
 
   private AssetManager manager;
   private float origX;
@@ -139,7 +139,10 @@ public class Monkey extends AbstractAnimal {
     fall.setPosition(this.getX() + FALL_DISTANCEX, this.getY() + FALL_DISTANCEY);
     fall.setDuration(FALL_VELOCITY);
 
-    AlphaAction fade = Actions.fadeOut(FALL_VELOCITY);
+    // AlphaAction fade = Actions.fadeOut(FALL_VELOCITY);
+    AlphaAction fade = new AlphaAction();
+    fade.setAlpha(0f);
+    fade.setDuration(FALL_VELOCITY);
 
     return Actions.parallel(fade, fall);
   }
@@ -154,7 +157,10 @@ public class Monkey extends AbstractAnimal {
     fall.setPosition(this.origX, this.origY);
 
     // VisibleAction fade = Actions.show();
-    AlphaAction fade = Actions.fadeIn(0f);
+    // AlphaAction fade = Actions.fadeIn(0f);
+    AlphaAction fade = new AlphaAction();
+    fade.setAlpha(1f);
+    fade.setDuration(0f);
 
     return Actions.parallel(fade, fall);
 

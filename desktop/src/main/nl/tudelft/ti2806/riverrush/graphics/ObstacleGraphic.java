@@ -20,7 +20,7 @@ public class ObstacleGraphic extends Actor implements Obstacle {
      * Size of the graphic.
      */
     private static final double SIZE = 256;
-    private static final float VELOCITY = 7f;
+    private static final float VELOCITY = 3f;
 
     private final AssetManager assets;
     private final double HEIGHT = MainDesktop.HEIGHT;
