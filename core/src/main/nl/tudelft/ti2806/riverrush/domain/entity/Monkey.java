@@ -77,11 +77,11 @@ public class Monkey extends AbstractAnimal {
     Texture tex = this.manager.get("data/raccoon.png", Texture.class);
     TextureRegion region = new TextureRegion(tex, 0, 0, END_REGIONX, END_REGIONY);
 
-    batch.enableBlending();
-    batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
     Color color = this.getColor();
     batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+
+    batch.enableBlending();
+    batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
     batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
         this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation());
@@ -153,16 +153,29 @@ public class Monkey extends AbstractAnimal {
    * @return an action that can be added to the actor
    */
   public Action returnAction() {
-    MoveToAction fall = new MoveToAction();
-    fall.setPosition(this.origX, this.origY);
+    MoveToAction ret = new MoveToAction();
+    ret.setPosition(this.origX, this.origY);
 
-    // VisibleAction fade = Actions.show();
-    // AlphaAction fade = Actions.fadeIn(0f);
     AlphaAction fade = new AlphaAction();
     fade.setAlpha(1f);
     fade.setDuration(0f);
 
-    return Actions.parallel(fade, fall);
+    return Actions.parallel(fade, ret);
+  }
+
+  public Action returnMove() {
+    MoveToAction ret = new MoveToAction();
+    ret.setPosition(this.origX, this.origY);
+    return ret;
+  }
+
+  public Action returnFade() {
+
+    AlphaAction fade = new AlphaAction();
+    fade.setAlpha(1f);
+    fade.setDuration(0f);
+
+    return fade;
 
   }
 

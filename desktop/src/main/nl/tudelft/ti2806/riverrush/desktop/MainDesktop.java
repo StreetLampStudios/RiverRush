@@ -37,7 +37,7 @@ public class MainDesktop extends CoreModule {
                 this.injector.getInstance(Controller.class));
 
         this.setupGraphics();
-        this.client.connect();
+        // this.client.connect();
     }
 
     private void setupGraphics() {

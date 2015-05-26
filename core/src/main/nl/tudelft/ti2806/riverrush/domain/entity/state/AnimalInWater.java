@@ -45,8 +45,13 @@ public class AnimalInWater implements AnimalState {
   @Override
   public AnimalState returnToBoat() {
     this.dispatcher.dispatch(new AnimalReturnedToBoat());
-    Action ret = this.monkey.returnAction();
+    // Action ret = this.monkey.returnAction();
+    // this.monkey.addAction(ret);
+    Action fade = this.monkey.returnFade();
+    Action ret = this.monkey.returnMove();
     this.monkey.addAction(ret);
+    this.monkey.addAction(fade);
+
     return new AnimalOnBoat(this.monkey, this.dispatcher);
   }
 
