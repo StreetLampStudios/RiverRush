@@ -6,8 +6,6 @@ import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
 
@@ -37,7 +35,7 @@ public class MainDesktop extends CoreModule {
                 this.injector.getInstance(Controller.class));
 
         this.setupGraphics();
-        // this.client.connect();
+        this.client.connect();
     }
 
     private void setupGraphics() {
@@ -49,22 +47,6 @@ public class MainDesktop extends CoreModule {
 
         Game game = this.injector.getInstance(Game.class);
         new LwjglApplication(game, config);
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.injector.getInstance(EventDispatcher.class).dispatch(
-                new GameAboutToStartEvent());
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.injector.getInstance(EventDispatcher.class).dispatch(
-                new GameStartedEvent());
 
     }
 
