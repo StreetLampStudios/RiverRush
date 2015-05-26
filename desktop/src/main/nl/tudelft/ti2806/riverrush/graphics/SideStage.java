@@ -1,12 +1,18 @@
 package nl.tudelft.ti2806.riverrush.graphics;
 
+import nl.tudelft.ti2806.riverrush.domain.entity.Boat;
+import nl.tudelft.ti2806.riverrush.domain.entity.Lose;
+import nl.tudelft.ti2806.riverrush.domain.entity.Monkey;
+import nl.tudelft.ti2806.riverrush.domain.entity.Player;
+import nl.tudelft.ti2806.riverrush.domain.entity.River;
+import nl.tudelft.ti2806.riverrush.domain.entity.Win;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.inject.Inject;
-import nl.tudelft.ti2806.riverrush.domain.entity.*;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 public class SideStage extends Table {
 
@@ -19,17 +25,18 @@ public class SideStage extends Table {
      * Creates a stage for the river, etc.
      *
      * @param assets2
-     * @param width   of the bank
+     * @param width
+     *            of the bank
      * @param height
      */
     @Inject
     public SideStage(final AssetManager assets2, final float width,
-                     final float height, EventDispatcher eventDispatcher) {
+            final float height, EventDispatcher eventDispatcher) {
         this.setBounds(0, 0, width, height);
         this.assets = assets2;
         this.river = new River(this.assets, 0, 1920, 1080);
         this.boat = new Boat(this.assets, this.river.getMid() - 300, 150, 600,
-            600, eventDispatcher);
+                600, eventDispatcher);
         this.addActor(this.river);
         this.addActor(this.boat);
 
@@ -40,7 +47,8 @@ public class SideStage extends Table {
     /**
      * Adds a new obstacle to the screen.
      *
-     * @param offset - double !! between 0 and 1 !!
+     * @param offset
+     *            - double !! between 0 and 1 !!
      */
     public void spawnObstacle(final double offset) {
         if (this.obstacle != null) {

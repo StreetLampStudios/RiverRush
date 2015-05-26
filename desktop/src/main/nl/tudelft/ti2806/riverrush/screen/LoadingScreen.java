@@ -1,5 +1,8 @@
 package nl.tudelft.ti2806.riverrush.screen;
 
+import nl.tudelft.ti2806.riverrush.domain.event.AssetsLoadedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -10,9 +13,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import nl.tudelft.ti2806.riverrush.domain.event.AssetsLoadedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-
 
 public class LoadingScreen implements Screen {
 
@@ -27,7 +27,8 @@ public class LoadingScreen implements Screen {
         return "data/" + name;
     }
 
-    public LoadingScreen(final AssetManager assetManager, EventDispatcher eventDispatcher) {
+    public LoadingScreen(final AssetManager assetManager,
+            EventDispatcher eventDispatcher) {
         this.assets = assetManager;
         this.dispatcher = eventDispatcher;
     }
@@ -44,26 +45,21 @@ public class LoadingScreen implements Screen {
 
         this.stage = new Stage();
         this.atlas = new TextureAtlas("uiskin.atlas");
-        this.skin = new Skin(Gdx.files.internal("uiskin.json"),
-            this.atlas);
+        this.skin = new Skin(Gdx.files.internal("uiskin.json"), this.atlas);
 
-        Texture texture = new Texture(
-            Gdx.files.internal("data/loading.jpeg"));
+        Texture texture = new Texture(Gdx.files.internal("data/loading.jpeg"));
         TextureRegion region = new TextureRegion(texture, 0, 0, 1920, 1080);
 
         Image image = new Image(region);
         image.setFillParent(true);
         this.stage.addActor(image);
 
-        //Load all images/textures that we will use
-        this.assets.load(getFileName("boat.jpg"), Texture.class);
-        this.assets.load(getFileName("shipv2.png"), Texture.class);
+        // Load all images/textures that we will use
         this.assets.load(getFileName("ship.png"), Texture.class);
         this.assets.load(getFileName("raccoon.png"), Texture.class);
-        this.assets.load(getFileName("pirateship.png"), Texture.class);
-        this.assets.load(getFileName("left.jpg"), Texture.class);
         this.assets.load(getFileName("grass.jpg"), Texture.class);
-        this.assets.load(getFileName("river.jpg"), Texture.class);
+        this.assets.load(getFileName("field.jpg"), Texture.class);
+        this.assets.load(getFileName("river.png"), Texture.class);
         this.assets.load(getFileName("cannonball.png"), Texture.class);
         this.assets.load(getFileName("win.png"), Texture.class);
         this.assets.load(getFileName("lose.png"), Texture.class);
@@ -74,7 +70,7 @@ public class LoadingScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //If all the assets have been correctly loaded, go to the next screen
+        // If all the assets have been correctly loaded, go to the next screen
         if (this.assets.update()) {
             this.dispatcher.dispatch(new AssetsLoadedEvent());
         }
