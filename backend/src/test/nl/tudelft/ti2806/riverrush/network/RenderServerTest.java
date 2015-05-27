@@ -2,10 +2,7 @@ package nl.tudelft.ti2806.riverrush.network;
 
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.network.event.RenderJoinEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
-import org.junit.Before;
-import org.mockito.Mockito;
 
 import static com.google.inject.name.Names.named;
 
@@ -13,18 +10,6 @@ import static com.google.inject.name.Names.named;
  * Created by thomas on 21-5-15.
  */
 public class RenderServerTest extends ServerTest {
-
-
-    /**
-     * Every test needs a fresh {@link AbstractServer} instance.
-     */
-    @Before
-    public void setUp() {
-        super.setUp();
-
-        Mockito.when(this.protocolMock.deserialize("join"))
-            .thenReturn(new RenderJoinEvent());
-    }
 
     /**
      * Configures injection of mocks.

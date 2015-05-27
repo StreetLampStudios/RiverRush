@@ -29,7 +29,7 @@ public class AnimalOnBoat implements AnimalState {
   public AnimalState jump() {
     Action jump = this.monkey.jumpAction();
     this.monkey.addAction(jump);
-    // TODO: JumpEvent
+    // TODO: JumpCommand
     return new AnimalInAir(this.monkey, this.dispatcher);
   }
 

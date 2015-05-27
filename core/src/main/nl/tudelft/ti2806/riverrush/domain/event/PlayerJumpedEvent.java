@@ -9,10 +9,9 @@ public class PlayerJumpedEvent implements Event {
 
     private Player player;
 
-    //FIXME: Add player to event from jump event
     @Override
     public String serialize(final Protocol protocol) {
-        return "player" + protocol.getKeyValueSeperator() + "1234";
+        return "player" + protocol.getKeyValueSeperator() + player.getId();
     }
 
     @Override

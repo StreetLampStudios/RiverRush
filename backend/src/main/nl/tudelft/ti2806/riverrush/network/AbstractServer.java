@@ -73,6 +73,7 @@ public abstract class AbstractServer extends WebSocketServer {
     @Override
     public void onOpen(final WebSocket conn, final ClientHandshake handshake) {
         FailIf.isNull(conn);
+        createController(conn);
     }
 
     @Override
@@ -88,30 +89,22 @@ public abstract class AbstractServer extends WebSocketServer {
         FailIf.isNull(conn, message);
         try {
             final Event event = this.protocol.deserialize(message);
-            filterJoinEvents(conn, event);
+            dispatchToController(event, conn);
         } catch (InvalidProtocolException | InvalidActionException e) {
             e.printStackTrace();
         }
     }
 
-    protected abstract void filterJoinEvents(final WebSocket conn, final Event event);
-
-    protected void createController(WebSocket conn) {
-        if (!hasJoined(conn)) {
-            Controller controller = this.controllerProvider.get();
-            controllers.put(conn, controller);
-            sockets.put(controller, conn);
-            controller.initialize();
-        }
+    private void createController(WebSocket conn) {
+        Controller controller = this.controllerProvider.get();
+        controllers.put(conn, controller);
+        sockets.put(controller, conn);
+        controller.initialize();
     }
 
-    protected void dispatchToController(final Event event, final WebSocket connection) {
+    private void dispatchToController(final Event event, final WebSocket connection) {
         Controller controller = controllers.get(connection);
         controller.onSocketMessage(event);
-    }
-
-    protected boolean hasJoined(WebSocket connection) {
-        return controllers.containsKey(connection);
     }
 
     @Override

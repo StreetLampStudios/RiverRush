@@ -34,6 +34,8 @@ public class PlayerController extends AbstractController {
         PlayerAddedEvent event = new PlayerAddedEvent();
         event.setPlayer(this.player);
 
+        onGameStateChangedLambda.handle(event);
+
         this.dispatcher.dispatch(event);
     }
 

@@ -2,9 +2,7 @@ package nl.tudelft.ti2806.riverrush.network;
 
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.network.event.JoinEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
-import org.mockito.Mockito;
 
 import static com.google.inject.name.Names.named;
 
@@ -12,14 +10,6 @@ import static com.google.inject.name.Names.named;
  * Tests for the socket layer AbstractServer class.
  */
 public class UserServerTest extends ServerTest {
-
-    @Override
-    public void setUp() {
-        super.setUp();
-
-        Mockito.when(this.protocolMock.deserialize("join"))
-            .thenReturn(new JoinEvent());
-    }
 
     /**
      * Configures injection of mocks.

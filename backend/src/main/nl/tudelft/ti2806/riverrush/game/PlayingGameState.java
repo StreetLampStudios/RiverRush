@@ -3,8 +3,9 @@ package nl.tudelft.ti2806.riverrush.game;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.domain.event.PlayerJumpedEvent;
-import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
+import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
 
 /**
  * The game is on!
@@ -12,18 +13,20 @@ import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
 public class PlayingGameState implements GameState {
 
     private final EventDispatcher eventDispatcher;
+    private final HandlerLambda<JumpCommand> jumpCommandHandler;
 
     public PlayingGameState(final EventDispatcher dispatcher) {
         this.eventDispatcher = dispatcher;
 
-        this.eventDispatcher.attach(JumpEvent.class, (e) -> this.eventDispatcher.dispatch(new PlayerJumpedEvent()));
+        jumpCommandHandler = (e) -> this.eventDispatcher.dispatch(new PlayerJumpedEvent(e.getPlayer())); adasd
+        this.eventDispatcher.attach(JumpCommand.class, jumpCommandHandler);
 
         dispatcher.dispatch(new GameStartedEvent());
     }
 
     @Override
     public void dispose() {
-
+        this.eventDispatcher.detach(JumpCommand.class, jumpCommandHandler);
     }
 
     @Override
