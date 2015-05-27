@@ -14,7 +14,7 @@ import org.java_websocket.WebSocket;
  * Created by thomas on 21-5-15.
  */
 @Singleton
-public class RenderServer extends Server {
+public class RenderServer extends AbstractServer {
 
     /**
      * Constructs the server that communicates with rendering clients.

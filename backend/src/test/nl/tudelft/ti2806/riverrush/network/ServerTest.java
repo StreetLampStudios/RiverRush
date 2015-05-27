@@ -54,10 +54,10 @@ public abstract class ServerTest extends AbstractModule {
     /**
      * Class under test.
      */
-    protected Server server;
+    protected AbstractServer server;
 
     /**
-     * Every test needs a fresh {@link Server} instance.
+     * Every test needs a fresh {@link AbstractServer} instance.
      */
     @Before
     public void setUp() {
@@ -82,7 +82,7 @@ public abstract class ServerTest extends AbstractModule {
             });
 
         Injector injector = Guice.createInjector(this);
-        this.server = injector.getInstance(Server.class);
+        this.server = injector.getInstance(AbstractServer.class);
     }
 
     /**

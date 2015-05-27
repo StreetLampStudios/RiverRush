@@ -2,28 +2,17 @@ package nl.tudelft.ti2806.riverrush.controller;
 
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.entity.Player;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOff;
-import nl.tudelft.ti2806.riverrush.domain.event.Event;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameStoppedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
-import nl.tudelft.ti2806.riverrush.domain.event.PlayerAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.PlayerJumpedEvent;
-import nl.tudelft.ti2806.riverrush.network.Server;
-import nl.tudelft.ti2806.riverrush.network.UserServer;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
+import nl.tudelft.ti2806.riverrush.network.AbstractServer;
 
 public class PlayerController extends AbstractController {
 
     private final Player player;
     private final EventDispatcher dispatcher;
-    private final Server server;
+    private final AbstractServer server;
 
     @Inject
-    public PlayerController(final EventDispatcher aDispatcher, final UserServer aServer) {
+    public PlayerController(final EventDispatcher aDispatcher, final AbstractServer aServer) {
         super(aDispatcher);
         this.player = new Player();
         this.dispatcher = aDispatcher;
