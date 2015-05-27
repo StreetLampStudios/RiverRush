@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 import static com.google.inject.name.Names.named;
 
 /**
- * Tests for the socket layer Server class.
+ * Tests for the socket layer AbstractServer class.
  */
 public class UserServerTest extends ServerTest {
 
@@ -38,6 +38,6 @@ public class UserServerTest extends ServerTest {
             .annotatedWith(named("clientProtocol"))
             .toInstance(this.protocolMock);
 
-        this.bind(Server.class).to(UserServer.class);
+        this.bind(AbstractServer.class).to(UserServer.class);
     }
 }

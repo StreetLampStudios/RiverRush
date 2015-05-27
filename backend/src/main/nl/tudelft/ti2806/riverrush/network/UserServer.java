@@ -14,7 +14,7 @@ import org.java_websocket.WebSocket;
  * Created by thomas on 21-5-15.
  */
 @Singleton
-public class UserServer extends Server {
+public class UserServer extends AbstractServer {
 
     @Inject
     public UserServer(@Named("clientProtocol") final Protocol aProtocol,

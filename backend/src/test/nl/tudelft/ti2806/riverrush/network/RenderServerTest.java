@@ -16,7 +16,7 @@ public class RenderServerTest extends ServerTest {
 
 
     /**
-     * Every test needs a fresh {@link Server} instance.
+     * Every test needs a fresh {@link AbstractServer} instance.
      */
     @Before
     public void setUp() {
@@ -43,7 +43,7 @@ public class RenderServerTest extends ServerTest {
             .annotatedWith(named("renderProtocol"))
             .toInstance(this.protocolMock);
 
-        this.bind(Server.class).to(RenderServer.class);
+        this.bind(AbstractServer.class).to(RenderServer.class);
     }
 
 

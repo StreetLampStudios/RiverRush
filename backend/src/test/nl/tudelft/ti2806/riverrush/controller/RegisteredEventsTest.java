@@ -56,8 +56,4 @@ public abstract class RegisteredEventsTest {
         controller.initialize();
         assertTrue(registeredHandlers.contains(this.mustRegister));
     }
-
-    /**
-     * When the controller receives a
-     */
 }

@@ -29,7 +29,7 @@ import java.util.Map;
  * Web socket endpoint for the backend to dispatch incoming tcp request from the
  * client.
  */
-public abstract class Server extends WebSocketServer {
+public abstract class AbstractServer extends WebSocketServer {
 
     /**
      * Maps a remote address to a handler for player actions.
@@ -55,8 +55,8 @@ public abstract class Server extends WebSocketServer {
      * @param aProtocol - The protocol to use when receiving and sending messages.
      */
     @Inject
-    public Server(final Protocol aProtocol,
-                  final Provider<Controller> aProvider) {
+    public AbstractServer(final Protocol aProtocol,
+                          final Provider<Controller> aProvider) {
         super(new InetSocketAddress(aProtocol.getPortNumber()));
         this.controllers = new Hashtable<>();
         this.sockets = new Hashtable<>();

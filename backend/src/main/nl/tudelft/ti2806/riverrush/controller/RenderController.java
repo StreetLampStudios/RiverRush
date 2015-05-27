@@ -3,15 +3,14 @@ package nl.tudelft.ti2806.riverrush.controller;
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.Game;
-import nl.tudelft.ti2806.riverrush.network.RenderServer;
-import nl.tudelft.ti2806.riverrush.network.Server;
+import nl.tudelft.ti2806.riverrush.network.AbstractServer;
 
 public class RenderController extends AbstractController {
-    private final Server server;
+    private final AbstractServer server;
     private final Game game;
 
     @Inject
-    public RenderController(final EventDispatcher eventDispatcher, final RenderServer server, final Game aGame) {
+    public RenderController(final EventDispatcher eventDispatcher, final AbstractServer server, final Game aGame) {
         super(eventDispatcher);
         this.server = server;
         this.game = aGame;

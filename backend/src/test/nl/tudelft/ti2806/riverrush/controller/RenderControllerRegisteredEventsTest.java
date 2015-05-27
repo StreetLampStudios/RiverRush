@@ -38,7 +38,6 @@ public class RenderControllerRegisteredEventsTest extends RegisteredEventsTest {
         events.add(PlayerAddedEvent.class);
         events.add(AnimalFellOff.class);
         return events;
-
     }
 
     @Override
@@ -47,7 +46,7 @@ public class RenderControllerRegisteredEventsTest extends RegisteredEventsTest {
         this.controller = new RenderController(this.dispatcherMock, this.serverMock, this.gameMock);
     }
 
-    public RenderControllerRegisteredEventsTest(Class<?> eventClass) {
+    public RenderControllerRegisteredEventsTest(final Class<?> eventClass) {
         super(eventClass);
     }
 }
