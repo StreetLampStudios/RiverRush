@@ -208,8 +208,7 @@ public class PlayingGameScreen implements Screen {
         // TODO: Not actually considering which player, now only jumps the
         // animal on the left boat
         Monkey monk = this.leftScreen.getBoat().getAnimal(player);
-        Action jump = monk.jumpAction();
-        monk.addAction(jump);
+        monk.jump();
 
     }
 }
