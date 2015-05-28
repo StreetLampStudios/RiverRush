@@ -67,7 +67,9 @@
         <module name="JavadocVariable">
             <property name="scope" value="public"/>
         </module>
-        <module name="JavadocStyle"/>
+        <module name="JavadocStyle">
+            <property name="checkFirstSentence" value="false"/>
+        </module>
 
 
         <!-- Checks for Naming Conventions.                  -->

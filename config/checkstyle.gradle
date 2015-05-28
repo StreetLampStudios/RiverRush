@@ -1,5 +1,9 @@
 apply plugin: 'checkstyle'
 
+checkstyle {
+    toolVersion = "6.6"
+}
+
 checkstyleMain {
     ignoreFailures = true
     reports {
@@ -8,7 +12,7 @@ checkstyleMain {
             destination "${buildDir}/reports/checkstyle/main.xml"
         }
     }
-    configFile = new File("${rootProject.rootDir}/config/checkstyle-test.xml")
+    configFile = new File("${rootProject.rootDir}/config/checkstyle.xml")
 }
 
 checkstyleTest {
@@ -19,7 +23,7 @@ checkstyleTest {
             destination "${buildDir}/reports/checkstyle/test.xml"
         }
     }
-    configFile = new File("${rootProject.rootDir}/config/checkstyle.xml")
+    configFile = new File("${rootProject.rootDir}/config/checkstyle-test.xml")
 }
 
 check << {

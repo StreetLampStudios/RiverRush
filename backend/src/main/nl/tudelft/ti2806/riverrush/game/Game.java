@@ -27,7 +27,6 @@ public class Game {
      * The current state of the game.
      */
     private GameState gameState;
-    private final HandlerLambda<PlayerAddedEvent> addPlayer;
     private int playerCount = 0;
     private final EventDispatcher eventDispatcher;
 
@@ -41,16 +40,14 @@ public class Game {
         this.gameState = new WaitingForRendererState(dispatcher);
         this.eventDispatcher = dispatcher;
 
-        this.addPlayer = this::addPlayerHandler;
+        HandlerLambda<PlayerAddedEvent> addPlayer = (e) -> this.addPlayerHandler();
         this.eventDispatcher.attach(PlayerAddedEvent.class, addPlayer);
     }
 
     /**
-     * Add player handler.
-     *
-     * @param playerAddedEvent The player added event
+     * Handler that adds a player to the game.
      */
-    private void addPlayerHandler(final PlayerAddedEvent playerAddedEvent) {
+    private void addPlayerHandler() {
         playerCount++;
         if (playerCount > 0) {
             eventDispatcher.dispatch(new GameAboutToStartEvent());

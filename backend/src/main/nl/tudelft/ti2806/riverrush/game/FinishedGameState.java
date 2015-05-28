@@ -24,7 +24,7 @@ public class FinishedGameState implements GameState {
 
     @Override
     public void dispose() {
-
+        // Nothing to dispose.
     }
 
     @Override

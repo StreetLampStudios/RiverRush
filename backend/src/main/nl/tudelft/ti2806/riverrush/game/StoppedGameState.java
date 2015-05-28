@@ -18,16 +18,13 @@ public class StoppedGameState implements GameState {
      */
     public static final int DELAY = 30;
 
-    private final EventDispatcher eventDispatcher;
-
     /**
      * Create the stopped game state.
      *
      * @param dispatcher The event dispatcher for dispatching events
      */
     public StoppedGameState(final EventDispatcher dispatcher) {
-        this.eventDispatcher = dispatcher;
-        this.eventDispatcher.dispatch(new GameStoppedEvent());
+        dispatcher.dispatch(new GameStoppedEvent());
 
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         scheduler.schedule(() -> System.exit(0), DELAY, TimeUnit.SECONDS);
@@ -37,7 +34,7 @@ public class StoppedGameState implements GameState {
 
     @Override
     public void dispose() {
-
+        // Nothing to dispose.
     }
 
     @Override

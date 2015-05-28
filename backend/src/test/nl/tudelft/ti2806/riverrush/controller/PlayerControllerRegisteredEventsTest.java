@@ -16,7 +16,9 @@ import org.mockito.Mock;
 import java.util.ArrayList;
 import java.util.Collection;
 
-
+/**
+ * Tests whether controllers register the right events.
+ */
 @RunWith(Parameterized.class)
 public class PlayerControllerRegisteredEventsTest extends RegisteredEventsTest {
 
@@ -26,6 +28,7 @@ public class PlayerControllerRegisteredEventsTest extends RegisteredEventsTest {
     /**
      * PlayerController should attach handlers for at least
      * these events to notify the player of game state changes.
+     * @return The collection of events that have to be registered.
      */
     @Parameters(name = "{0}")
     public static Collection<Class<?>> parameters() {
@@ -47,6 +50,10 @@ public class PlayerControllerRegisteredEventsTest extends RegisteredEventsTest {
         this.controller = new PlayerController(this.dispatcherMock, this.serverMock);
     }
 
+    /**
+     * Constructor for parameterized testing.
+     * @param eventClass The collection of events that have to be registered.
+     */
     public PlayerControllerRegisteredEventsTest(final Class<?> eventClass) {
         super(eventClass);
     }

@@ -49,7 +49,7 @@ public abstract class AbstractController implements Controller {
     @Override
     @SuppressWarnings("unchecked")
     public void dispose() {
-        handlers.forEach((pair) -> this.dispatcher.detach(pair.l, pair.r));
+        this.handlers.forEach((pair) -> this.dispatcher.detach(pair.l, pair.r));
     }
 
     /**
@@ -58,10 +58,10 @@ public abstract class AbstractController implements Controller {
      * @param <L> Event name
      * @param <R> Event handler
      */
-    public class Pair<L, R> {
+    static class Pair<L, R> {
 
-        private L l;
-        private R r;
+        private final L l;
+        private final R r;
 
         /**
          * Create a event listener pair.

@@ -87,7 +87,7 @@ public abstract class ServerTest extends AbstractModule {
 
     /**
      * When onMessage receives a JoinEvent,
-     * it should create a new Controller via the injected provider
+     * it should create a new Controller via the injected provider.
      */
     @Test
     public void onMessage_usesProviderToCreateController() {

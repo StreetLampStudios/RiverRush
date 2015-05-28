@@ -13,12 +13,10 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Hashtable;
@@ -155,37 +153,45 @@ public abstract class AbstractServer extends WebSocketServer {
     /**
      * Sends a http request to register the backend server's IP and port.
      * So that clients can request the connection details.
-     * @throws IOException when the request fails.
+     * @throws IOException when something goes horribly wrong.
      */
     private void sendHTTPRequest() throws IOException {
-        URL url = new URL("http://riverrush.3dsplaza.com/setserver.php");
+        URL url = null;
+        try {
+            url = new URL("http://riverrush.3dsplaza.com/setserver.php");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         Map<String, Object> params = new LinkedHashMap<>();
         params.put("password", "pizza");
         params.put("port", CoreModule.CLIENT_PORT_NUMBER);
 
         StringBuilder postData = new StringBuilder();
+        String enc = "UTF-8";
         for (Map.Entry<String, Object> param : params.entrySet()) {
             if (postData.length() != 0) {
                 postData.append('&');
             }
-            postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+            postData.append(URLEncoder.encode(param.getKey(), enc));
             postData.append('=');
-            postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+            postData.append(URLEncoder.encode(String.valueOf(param.getValue()), enc));
         }
-        byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+        byte[] postDataBytes = postData.toString().getBytes(enc);
 
+        assert url != null;
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        connection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
-        connection.setDoOutput(true);
-        connection.getOutputStream().write(postDataBytes);
-
-        StringBuilder sb = new StringBuilder();
-        Reader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-        for (int c = in.read(); c != -1; c = in.read()) {
-            sb.append((char) c);
+        try {
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            connection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+            connection.setDoOutput(true);
+            connection.getOutputStream().write(postDataBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            connection.getOutputStream().close();
         }
+
     }
 
 }

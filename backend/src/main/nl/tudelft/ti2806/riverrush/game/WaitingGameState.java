@@ -23,6 +23,7 @@ public class WaitingGameState implements GameState {
 
     @Override
     public void dispose() {
+        // Nothing to dispose.
     }
 
     @Override

@@ -21,7 +21,7 @@ public class WaitingForRendererState implements GameState {
 
     @Override
     public void dispose() {
-
+        // Nothing to dispose.
     }
 
     @Override

@@ -4,6 +4,9 @@ import nl.tudelft.ti2806.riverrush.game.Game;
 
 import static org.mockito.Mockito.mock;
 
+/**
+ * General tests for the RenderController.
+ */
 public class RenderControllerTest extends ControllerTest {
 
     @Override

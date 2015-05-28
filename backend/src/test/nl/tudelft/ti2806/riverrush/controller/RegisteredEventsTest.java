@@ -14,7 +14,10 @@ import java.util.List;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 
-
+/**
+ * Parameterized test hierarchy.
+ * Tests whether controllers register the right events.
+ */
 public abstract class RegisteredEventsTest {
 
     @Mock
@@ -29,6 +32,11 @@ public abstract class RegisteredEventsTest {
 
     private Class<?> mustRegister;
 
+    /**
+     * Initializes the test.
+     * When a controller attaches a handler to an event,
+     * the event type is added to a list for verification.
+     */
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -43,6 +51,10 @@ public abstract class RegisteredEventsTest {
             }).when(dispatcherMock).attach(any(), any());
     }
 
+    /**
+     * Construct the parameterized test.
+     * @param eventClass The
+     */
     public RegisteredEventsTest(final Class<?> eventClass) {
         this.mustRegister = eventClass;
     }
