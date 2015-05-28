@@ -16,24 +16,33 @@ public abstract class AbstractController implements Controller {
     private final EventDispatcher dispatcher;
     private final List<Pair<Class<? extends Event>, HandlerLambda>> handlers;
 
-    public AbstractController(EventDispatcher dispatcher) {
-        this.dispatcher = dispatcher;
+    /**
+     * Class that all controller should extend for basic logic.
+     *
+     * @param eventDispatcher The event dispatcher for dispatching events
+     */
+    public AbstractController(final EventDispatcher eventDispatcher) {
+        this.dispatcher = eventDispatcher;
         this.handlers = new ArrayList<>();
     }
 
     /**
-     * All handlers registerd with this method will automatically be disposed
+     * All handlers registered with this method will automatically be disposed
      * when the controller is disposed.
      * @param eventClass The event to listen to
-     * @param <T> The handler to call when the event gets fired.
+     * @param handler The handler to call when the event gets fired.
+     * @param <T> Event
      */
-    protected <T extends Event> void listenTo(final Class<T> eventClass, final HandlerLambda<? super T> handler) {
+    protected <T extends Event> void listenTo(
+        final Class<T> eventClass,
+        final HandlerLambda<? super T> handler
+    ) {
         this.handlers.add(new Pair<>(eventClass, handler));
         this.dispatcher.attach(eventClass, handler);
     }
 
     @Override
-    public void onSocketMessage(Event event) {
+    public void onSocketMessage(final Event event) {
         this.dispatcher.dispatch(event);
     }
 
@@ -43,12 +52,34 @@ public abstract class AbstractController implements Controller {
         handlers.forEach((pair) -> this.dispatcher.detach(pair.l, pair.r));
     }
 
-    public class Pair<L,R> {
-        public L l;
-        public R r;
-        public Pair(L l, R r){
-            this.l = l;
-            this.r = r;
+    /**
+     * Used for creating event listeners pairs.
+     *
+     * @param <L> Event name
+     * @param <R> Event handler
+     */
+    public class Pair<L, R> {
+
+        private L l;
+        private R r;
+
+        /**
+         * Create a event listener pair.
+         *
+         * @param event Event name
+         * @param handler Event handler
+         */
+        public Pair(final L event, final R handler) {
+            this.l = event;
+            this.r = handler;
+        }
+
+        public L getEvent() {
+            return this.l;
+        }
+
+        public R getHandler() {
+            return this.r;
         }
     }
 }

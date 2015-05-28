@@ -5,12 +5,21 @@ import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.network.AbstractServer;
 
+/**
+ * Controller for the individual players.
+ */
 public class PlayerController extends AbstractController {
 
     private final Player player;
     private final EventDispatcher dispatcher;
     private final AbstractServer server;
 
+    /**
+     * Create a player controller.
+     *
+     * @param aDispatcher The event dispatcher for dispatching the events
+     * @param aServer The server for sending the events over the network
+     */
     @Inject
     public PlayerController(final EventDispatcher aDispatcher, final AbstractServer aServer) {
         super(aDispatcher);
