@@ -77,7 +77,7 @@ public class BasicBasicProtocolTest {
      */
     @Test
     public void testRegister() {
-        this.protocol.registerNetworkAction(StubEvent.class,
+        this.protocol.registerNetworkMessage(StubEvent.class,
             () -> this.eventStub);
         assertTrue(this.protocol.isRegistered(StubEvent.class));
     }
@@ -92,7 +92,7 @@ public class BasicBasicProtocolTest {
     public void testDeserializeActionOnly() throws InvalidProtocolException,
         InvalidActionException {
         Event expected = new StubEvent();
-        this.protocol.registerNetworkAction(StubEvent.class, () -> expected);
+        this.protocol.registerNetworkMessage(StubEvent.class, () -> expected);
         Event actualEvent = this.protocol.deserialize(this.stubEventSerialized);
         assertEquals(expected, actualEvent);
     }
@@ -106,7 +106,7 @@ public class BasicBasicProtocolTest {
     @Test
     public void testDeserializeWithField() throws InvalidProtocolException,
         InvalidActionException {
-        this.protocol.registerNetworkAction(StubEvent.class, StubEvent::new);
+        this.protocol.registerNetworkMessage(StubEvent.class, StubEvent::new);
 
         final String expectedField = "field"
             + this.protocol.getKeyValueSeperator() + "HelloWorld"

@@ -2,7 +2,6 @@ package nl.tudelft.ti2806.riverrush.network;
 
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
-import nl.tudelft.ti2806.riverrush.network.event.RenderJoinEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_17;
@@ -34,7 +33,7 @@ public class Client extends WebSocketClient {
      * @param host - The remote hostname of the server.
      * @param prot - what protocol to use
      * @param ctrl - the controller to use.
-     * @throws URISyntaxException -
+     * @throws URISyntaxException URI is invalid
      */
     public Client(
         final String host,
@@ -48,7 +47,7 @@ public class Client extends WebSocketClient {
 
     @Override
     public void onOpen(final ServerHandshake handshakedata) {
-        this.sendEvent(new RenderJoinEvent());
+        // Nothing supposed to happen
     }
 
     /**

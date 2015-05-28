@@ -5,9 +5,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.domain.event.PlayerJumpedEvent;
 import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
-import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
 import nl.tudelft.ti2806.riverrush.screen.PlayingGameScreen;
 
 /**
@@ -19,6 +19,8 @@ public class PlayingGameState implements GameState {
     private final AssetManager assets;
     private final GdxGame gameWindow;
     private final PlayingGameScreen screen;
+    private final HandlerLambda<PlayerJumpedEvent> playerJumpedEventHandlerLambda =
+        (e) -> this.jump(e.getPlayer());
 
     /**
      * The state of the game that indicates that the game is currently playable.
@@ -28,12 +30,16 @@ public class PlayingGameState implements GameState {
      * @param assetManager    has all necessary assets loaded and available for use.
      * @param game            refers to the game that this state belongs to.
      */
-    public PlayingGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
-                            final GdxGame game) {
+    public PlayingGameState(
+        final EventDispatcher eventDispatcher,
+        final AssetManager assetManager,
+        final GdxGame game
+    ) {
         this.gameWindow = game;
         this.assets = assetManager;
         this.dispatcher = eventDispatcher;
-        this.dispatcher.attach(PlayerJumpedEvent.class, (e) -> this.jump(null));
+        this.dispatcher.attach(PlayerJumpedEvent.class, playerJumpedEventHandlerLambda);
+
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(() -> {
             PlayingGameState.this.screen.init();
@@ -53,7 +59,7 @@ public class PlayingGameState implements GameState {
 
     @Override
     public void dispose() {
-        this.dispatcher.detach(JumpEvent.class, (e) -> this.jump(e.getPlayer()));
+        this.dispatcher.detach(PlayerJumpedEvent.class, playerJumpedEventHandlerLambda);
         this.screen.dispose();
     }
 

@@ -15,12 +15,12 @@ public final class BasicProtocol implements Protocol {
 
     /**
      * We seperate key-value pairs with this character. E.g.:
-     * event=JoinEvent;user=bob
+     * event=JumpCommand;user=12313
      */
     private static final String PAIR_SEPERATOR = ";";
 
     /**
-     * We seperate keys from values with this thing. E.g. event=JoinEvent
+     * We seperate keys from values with this thing. E.g. event=JumpCommand
      */
     private static final String KEY_VALUE_SEPERATOR = "=";
 
@@ -52,8 +52,8 @@ public final class BasicProtocol implements Protocol {
     }
 
     @Override
-    public void registerNetworkAction(final Class<? extends Event> eventClass,
-                                      final EventInstantiator eventInstatiator) {
+    public void registerNetworkMessage(final Class<? extends Event> eventClass,
+                                       final EventInstantiator eventInstatiator) {
         this.eventMapping.put(eventClass.getSimpleName(), eventInstatiator);
     }
 

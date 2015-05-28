@@ -17,7 +17,6 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
@@ -82,12 +81,12 @@ public abstract class ServerTest extends AbstractModule {
     }
 
     /**
-     * When onMessage receives a JoinEvent,
-     * it should create a new Controller via the injected provider.
+     * When onOpen is called,
+     * it should create a new Controller via the injected provider
      */
     @Test
-    public void onMessage_usesProviderToCreateController() {
-        this.server.onMessage(this.webSocketMock, "join");
+    public void onOpen_usesProviderToCreateController() {
+        this.server.onOpen(this.webSocketMock, null);
         verify(this.controllerProviderMock).get();
         verify(this.controllerMocks.get(0)).initialize();
     }
@@ -98,19 +97,20 @@ public abstract class ServerTest extends AbstractModule {
      */
     @Test
     public void onMessage_usesProtocol() {
-        this.server.onMessage(this.webSocketMock, "join");
-        verify(this.protocolMock).deserialize("join");
+        this.server.onOpen(this.webSocketMock, null);
+        this.server.onMessage(this.webSocketMock, "hello");
+        verify(this.protocolMock).deserialize("hello");
     }
 
     /**
-     * When onMessage has registered a controller,
-     * and receives a join event,
+     * When two connections are active,
+     * and the server receives an event on one of them,
      * it should call the right Controller's onSocketMessage
      */
     @Test
     public void onMessage_callsController() {
-        this.server.onMessage(mock(WebSocket.class), "join");
-        this.server.onMessage(this.webSocketMock, "join");
+        this.server.onOpen(mock(WebSocket.class), null);
+        this.server.onOpen(this.webSocketMock, null);
         this.server.onMessage(this.webSocketMock, "hello");
         verify(this.controllerMocks.get(0), never()).onSocketMessage(any());
         verify(this.controllerMocks.get(1)).onSocketMessage(any(Event.class));
@@ -122,21 +122,10 @@ public abstract class ServerTest extends AbstractModule {
      */
     @Test
     public void onClose_detachesController() {
-        this.server.onMessage(mock(WebSocket.class), "join");
-        this.server.onMessage(this.webSocketMock, "join");
+        this.server.onOpen(mock(WebSocket.class), null);
+        this.server.onOpen(this.webSocketMock, null);
         this.server.onClose(this.webSocketMock, 0, "", true);
         verify(this.controllerMocks.get(1)).dispose();
-    }
-
-    /**
-     * When a single connection calls join twice,
-     * the server silently rejects the last one.
-     */
-    @Test
-    public void onMessage_joinTwice_rejectLastJoin() {
-        this.server.onMessage(this.webSocketMock, "join");
-        this.server.onMessage(this.webSocketMock, "join");
-        assertEquals(1, this.controllerMocks.size());
     }
 
     /**
@@ -146,7 +135,7 @@ public abstract class ServerTest extends AbstractModule {
      */
     @Test
     public void sendEvent_callsWebSocket() {
-        this.server.onMessage(this.webSocketMock, "join");
+        this.server.onOpen(this.webSocketMock, null);
 
         Event eventMock = mock(Event.class);
         when(eventMock.serialize(any()))
@@ -163,7 +152,7 @@ public abstract class ServerTest extends AbstractModule {
      */
     @Test
     public void sendEvent_callsProtocol() {
-        this.server.onMessage(this.webSocketMock, "join");
+        this.server.onOpen(this.webSocketMock, null);
 
         Event eventMock = mock(Event.class);
         this.server.sendEvent(eventMock, this.controllerMocks.get(0));

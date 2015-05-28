@@ -75,6 +75,7 @@ public abstract class AbstractServer extends WebSocketServer {
     @Override
     public void onOpen(final WebSocket conn, final ClientHandshake handshake) {
         FailIf.isNull(conn);
+        createController(conn);
     }
 
     @Override
@@ -90,19 +91,11 @@ public abstract class AbstractServer extends WebSocketServer {
         FailIf.isNull(conn, message);
         try {
             final Event event = this.protocol.deserialize(message);
-            filterJoinEvents(conn, event);
+            dispatchToController(event, conn);
         } catch (InvalidProtocolException | InvalidActionException e) {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Filter received JoinEvent's in order to create new controllers.
-     *
-     * @param conn  The websocket connection involved.
-     * @param event The event to check, if it is a join event, a new controller will be created.
-     */
-    protected abstract void filterJoinEvents(final WebSocket conn, final Event event);
 
     /**
      * Creates a controller for a websocket.
@@ -110,12 +103,10 @@ public abstract class AbstractServer extends WebSocketServer {
      * @param conn - The websocket to create a controller for
      */
     protected void createController(final WebSocket conn) {
-        if (!hasJoined(conn)) {
-            Controller controller = this.controllerProvider.get();
-            controllers.put(conn, controller);
-            sockets.put(controller, conn);
-            controller.initialize();
-        }
+        Controller controller = this.controllerProvider.get();
+        controllers.put(conn, controller);
+        sockets.put(controller, conn);
+        controller.initialize();
     }
 
     /**
@@ -127,16 +118,6 @@ public abstract class AbstractServer extends WebSocketServer {
     protected void dispatchToController(final Event event, final WebSocket connection) {
         Controller controller = controllers.get(connection);
         controller.onSocketMessage(event);
-    }
-
-    /**
-     * Check whether a connection already has a controller associated with it.
-     *
-     * @param connection The connection to check.
-     * @return True iff the connection already has a controller.
-     */
-    protected boolean hasJoined(final WebSocket connection) {
-        return controllers.containsKey(connection);
     }
 
     @Override

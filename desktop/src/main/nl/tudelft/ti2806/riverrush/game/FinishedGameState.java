@@ -32,7 +32,9 @@ public class FinishedGameState implements GameState {
         this.dispatcher = eventDispatcher;
 
         this.screen = new FinishedGameScreen(assetManager, eventDispatcher);
-        Gdx.app.postRunnable(() -> FinishedGameState.this.gameWindow.setScreen(FinishedGameState.this.screen));
+        Gdx.app.postRunnable(
+            () -> FinishedGameState.this.gameWindow.setScreen(FinishedGameState.this.screen)
+        );
     }
 
     @Override

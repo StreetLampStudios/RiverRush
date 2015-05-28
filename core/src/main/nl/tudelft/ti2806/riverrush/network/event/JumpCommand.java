@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * This event is sent from the device to the server.
  */
-public class JumpEvent implements Event {
+public class JumpCommand implements Event {
 
 
     private Player player;
