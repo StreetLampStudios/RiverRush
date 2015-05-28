@@ -15,29 +15,51 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+/**
+ * This class is the main class to be ran when starting the game. This class sets up the graphics
+ * and the client connections.
+ *
+ */
 public class MainDesktop extends CoreModule {
 
-    public static final int WIDTH = 1920;
-    public static final int HEIGHT = 1080;
+    private static final int WIDTH = 1920;
+    private static final int HEIGHT = 1080;
     private final Injector injector;
-    private final Client client;
 
-    public static void main(String[] arg) throws URISyntaxException {
+    /**
+     * Calls the main desktop constructor that starts the game.
+     *
+     * @param arg
+     *            not used
+     * @throws URISyntaxException
+     *             handles the situation where the URI has the wrong syntax.
+     */
+    public static void main(final String[] arg) throws URISyntaxException {
         new MainDesktop();
 
     }
 
+    /**
+     * Constructor for main desktop. Configures the client connections and sets up the graphics.
+     *
+     * @throws URISyntaxException
+     *             handles the situation where the URI has the wrong syntax.
+     */
     public MainDesktop() throws URISyntaxException {
         this.injector = Guice.createInjector(this);
 
-        this.client = new Client("localhost", this.configureRendererProtocol(),
+        Client client = new Client("localhost", this.configureRendererProtocol(),
                 this.injector.getInstance(EventDispatcher.class),
                 this.injector.getInstance(Controller.class));
 
         this.setupGraphics();
-        this.client.connect();
+        client.connect();
     }
 
+    /**
+     * Creates a Lwjgl Configurations with the given height and width. It will then get an instance
+     * of the game class and use it to create the application.
+     */
     private void setupGraphics() {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.x = 0;
@@ -51,13 +73,31 @@ public class MainDesktop extends CoreModule {
     }
 
     /**
-     * Method is called when creating an {@link Injector}. It configures all
-     * dependencies specific to the desktop application.
+     * Method is called when creating an {@link Injector}. It configures all dependencies specific
+     * to the desktop application.
      */
     @Override
     protected void configure() {
         super.configure();
         this.bind(AssetManager.class).toInstance(new AssetManager());
         this.bind(Controller.class).to(RenderController.class);
+    }
+
+    /**
+     * Return the current width of the main screen.
+     *
+     * @return an integer value representing the width.
+     */
+    public static int getWidth() {
+        return WIDTH;
+    }
+
+    /**
+     * Return the current height of the main screen.
+     *
+     * @return an integer value representing the height.
+     */
+    public static int getHeight() {
+        return HEIGHT;
     }
 }

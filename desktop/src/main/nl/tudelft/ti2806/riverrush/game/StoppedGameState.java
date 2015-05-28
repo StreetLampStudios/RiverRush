@@ -1,35 +1,42 @@
 package nl.tudelft.ti2806.riverrush.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
 import nl.tudelft.ti2806.riverrush.screen.StoppedScreen;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 
 /**
  * Created by thomas on 19-5-15.
  */
 public class StoppedGameState implements GameState {
 
-    private final EventDispatcher dispatcher;
-    private final AssetManager assets;
     private final GdxGame gameWindow;
     private final StoppedScreen screen;
 
-    public StoppedGameState(EventDispatcher eventDispatcher,
-                            AssetManager assetManager, GdxGame game) {
+    /**
+     * The state of the game that indicates that the game has stopped. In this state the game has
+     * ended and cannot be restarted.
+     *
+     * @param eventDispatcher
+     *            the dispatcher that is used to handle any relevant events for the game in this
+     *            state.
+     * @param assetManager
+     *            has all necessary assets loaded and available for use.
+     * @param game
+     *            refers to the game that this state belongs to.
+     */
+    public StoppedGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
+            final GdxGame game) {
         this.gameWindow = game;
-        this.assets = assetManager;
-        this.dispatcher = eventDispatcher;
 
         this.screen = new StoppedScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
-                StoppedGameState.this.screen.init();
-                StoppedGameState.this.gameWindow
-                    .setScreen(StoppedGameState.this.screen);
+                StoppedGameState.this.gameWindow.setScreen(StoppedGameState.this.screen);
             }
         });
 
@@ -37,7 +44,7 @@ public class StoppedGameState implements GameState {
 
     @Override
     public void dispose() {
-
+        // Does not need to dispose
     }
 
     @Override
