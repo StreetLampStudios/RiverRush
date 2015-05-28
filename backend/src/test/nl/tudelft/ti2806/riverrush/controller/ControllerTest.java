@@ -19,46 +19,23 @@ import static org.mockito.Mockito.verifyZeroInteractions;
  * Tests the controller.
  */
 public abstract class ControllerTest {
-    public EventDispatcher getDispatcherMock() {
-        return dispatcherMock;
-    }
-
-    public void setDispatcherMock(final EventDispatcher setDispatcherMock) {
-        this.dispatcherMock = setDispatcherMock;
-    }
 
     /**
      * Mocks a dispatcher.
      */
     @Mock
-    private EventDispatcher dispatcherMock;
-
-    public AbstractServer getServerMock() {
-        return serverMock;
-    }
-
-    public void setServerMock(final AbstractServer setServerMock) {
-        this.serverMock = setServerMock;
-    }
+    protected EventDispatcher dispatcherMock;
 
     /**
      * Mocks a server.
      */
     @Mock
-    private AbstractServer serverMock;
-
-    public Controller getController() {
-        return controller;
-    }
-
-    public void setController(final Controller setController) {
-        this.controller = setController;
-    }
+    protected AbstractServer serverMock;
 
     /**
      * A controller.
      */
-    private Controller controller;
+    protected Controller controller;
 
     /**
      * The handlers that are not removed yet.

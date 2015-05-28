@@ -10,22 +10,21 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
  */
 public class AnimalReturnedToBoat implements Event {
 
-  @Override
-  public String serialize(final Protocol protocol) {
-    return "[Serialized string van een FallOffEvent]";
-  }
+    @Override
+    public String serialize(final Protocol protocol) {
+        return "[Serialized string van een FallOffEvent]";
+    }
 
-  @Override
-  public Event deserialize(final Map<String, String> keyValuePairs) {
-    return this;
-  }
+    @Override
+    public Event deserialize(final Map<String, String> keyValuePairs) {
+        return this;
+    }
 
     /**
      * Sets the player of this event.
      * @param player - The player
      */
-  public void setPlayer(final Player player) {
-
-  }
-
+    public void setPlayer(final Player player) {
+        // Not yet implemented
+    }
 }

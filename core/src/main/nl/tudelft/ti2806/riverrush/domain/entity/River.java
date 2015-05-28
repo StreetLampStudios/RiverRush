@@ -22,8 +22,8 @@ public class River extends Actor {
     private static final int END_REGIONY = 931; // 570;
     private static final float FLOW_DURATION = 3f;
 
-    private AssetManager manager;
-    private float mid;
+    private final AssetManager manager;
+    private final float mid;
 
     /**
      * Creates an river object with a given graphical representation.

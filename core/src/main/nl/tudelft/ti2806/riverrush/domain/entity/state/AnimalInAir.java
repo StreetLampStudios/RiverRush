@@ -12,7 +12,7 @@ public class AnimalInAir implements AnimalState {
     /**
      * The animal that is in the air.
      */
-    private Monkey monkey;
+    private final Monkey monkey;
 
     /**
      * The eventdispatcher of this event.

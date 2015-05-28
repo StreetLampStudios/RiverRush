@@ -14,7 +14,7 @@ public class AnimalOnBoat implements AnimalState {
     /**
      * The animal.
      */
-  private Monkey monkey;
+  private final Monkey monkey;
     /**
      * The event dispatcher of this class.
      */

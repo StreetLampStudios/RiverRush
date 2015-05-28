@@ -42,6 +42,7 @@ public final class BasicProtocol implements Protocol {
 
     /**
      * Singleton constructor.
+     *
      * @param portNumber - On what port to connect
      */
     public BasicProtocol(final int portNumber) {
@@ -105,10 +106,11 @@ public final class BasicProtocol implements Protocol {
         if (builder.length() > 0) {
             builder.append(this.getPairSeperator());
         }
-        builder.append(this.getEventTypeFieldKey());
-        builder.append(this.getKeyValueSeperator());
-        builder.append(event.getClass().getSimpleName());
-        return  builder.toString();
+        return builder
+            .append(this.getEventTypeFieldKey())
+            .append(this.getKeyValueSeperator())
+            .append(event.getClass().getSimpleName())
+            .toString();
     }
 
     @Override

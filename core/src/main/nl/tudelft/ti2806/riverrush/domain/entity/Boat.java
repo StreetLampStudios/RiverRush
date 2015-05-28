@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.domain.entity;
 
+import com.badlogic.gdx.scenes.scene2d.Group;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -13,12 +14,12 @@ import com.google.inject.Inject;
 /**
  * Represents a boat that the animals row on.
  */
-public class Boat extends AbstractGroup {
+public class Boat extends Group {
 
     /**
      * The asset manager.
      */
-  private AssetManager manager;
+  private final AssetManager manager;
     /**
      * Specifies the animal's width.
      */
@@ -42,7 +43,7 @@ public class Boat extends AbstractGroup {
     /**
      * The event dispatcher.
      */
-  private EventDispatcher dispatcher;
+  private final EventDispatcher dispatcher;
 
     /**
      * The animal on this boat.

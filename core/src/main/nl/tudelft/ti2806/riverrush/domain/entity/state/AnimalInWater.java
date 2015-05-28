@@ -14,7 +14,7 @@ public class AnimalInWater implements AnimalState {
     /**
      * The animal.
      */
-    private Monkey monkey;
+    private final Monkey monkey;
     /**
      * The dispatcher of this class.
      */

@@ -236,4 +236,9 @@ public class Monkey extends AbstractAnimal {
         return jump;
     }
 
+    @Override
+    public void leave() {
+        // Not yet implemented
+    }
+
 }

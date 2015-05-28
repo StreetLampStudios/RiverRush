@@ -12,7 +12,7 @@ import com.google.inject.Inject;
  */
 public class RiverBanks extends Actor {
 
-    private AssetManager manager;
+    private final AssetManager manager;
     private static final String FILENAME = "data/field.jpg";
 
     private static final int END_REGIONX = 103; // 229;
