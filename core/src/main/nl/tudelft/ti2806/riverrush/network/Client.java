@@ -2,7 +2,6 @@ package nl.tudelft.ti2806.riverrush.network;
 
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.network.event.RenderJoinEvent;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.java_websocket.client.WebSocketClient;
