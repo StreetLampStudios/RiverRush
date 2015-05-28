@@ -11,7 +11,11 @@ public class WaitingGameState implements GameState {
 
     private final EventDispatcher eventDispatcher;
 
-
+    /**
+     * Create the waiting game state.
+     *
+     * @param dispatcher The event dispatcher for firing events
+     */
     public WaitingGameState(final EventDispatcher dispatcher) {
         this.eventDispatcher = dispatcher;
         this.eventDispatcher.dispatch(new GameWaitingEvent());
@@ -19,6 +23,7 @@ public class WaitingGameState implements GameState {
 
     @Override
     public void dispose() {
+        // Nothing to dispose.
     }
 
     @Override

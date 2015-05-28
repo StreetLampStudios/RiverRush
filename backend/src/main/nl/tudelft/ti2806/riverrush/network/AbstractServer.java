@@ -13,12 +13,10 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Hashtable;
@@ -52,7 +50,8 @@ public abstract class AbstractServer extends WebSocketServer {
      * Constructs the server, does NOT start it (see the {@link #start()}
      * method).
      *
-     * @param aProtocol - The protocol to use when receiving and sending messages.
+     * @param aProtocol The protocol to use when receiving and sending messages.
+     * @param aProvider An injected provider used to create {@link Controller} objects.
      */
     @Inject
     public AbstractServer(final Protocol aProtocol,
@@ -94,9 +93,18 @@ public abstract class AbstractServer extends WebSocketServer {
         }
     }
 
+    /**
+     * Filter received JoinEvent's in order to create new controllers.
+     * @param conn The websocket connection involved.
+     * @param event The event to check, if it is a join event, a new controller will be created.
+     */
     protected abstract void filterJoinEvents(final WebSocket conn, final Event event);
 
-    protected void createController(WebSocket conn) {
+    /**
+     * Creates a controller and associates it with the connection.
+     * @param conn The connection involved.
+     */
+    protected void createController(final WebSocket conn) {
         if (!hasJoined(conn)) {
             Controller controller = this.controllerProvider.get();
             controllers.put(conn, controller);
@@ -105,12 +113,22 @@ public abstract class AbstractServer extends WebSocketServer {
         }
     }
 
+    /**
+     * When an event is received, it will be dispatched to the correct controller.
+     * @param event The event.
+     * @param connection The connection on which this event was received.
+     */
     protected void dispatchToController(final Event event, final WebSocket connection) {
         Controller controller = controllers.get(connection);
         controller.onSocketMessage(event);
     }
 
-    protected boolean hasJoined(WebSocket connection) {
+    /**
+     * Check whether a connection already has a controller associated with it.
+     * @param connection The connection to check.
+     * @return True iff the connection already has a controller.
+     */
+    protected boolean hasJoined(final WebSocket connection) {
         return controllers.containsKey(connection);
     }
 
@@ -132,36 +150,48 @@ public abstract class AbstractServer extends WebSocketServer {
         sock.send(serialize);
     }
 
+    /**
+     * Sends a http request to register the backend server's IP and port.
+     * So that clients can request the connection details.
+     * @throws IOException when something goes horribly wrong.
+     */
     private void sendHTTPRequest() throws IOException {
-        URL url = new URL("http://riverrush.3dsplaza.com/setserver.php");
+        URL url = null;
+        try {
+            url = new URL("http://riverrush.3dsplaza.com/setserver.php");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         Map<String, Object> params = new LinkedHashMap<>();
         params.put("password", "pizza");
         params.put("port", CoreModule.CLIENT_PORT_NUMBER);
 
         StringBuilder postData = new StringBuilder();
+        String enc = "UTF-8";
         for (Map.Entry<String, Object> param : params.entrySet()) {
-            if (postData.length() != 0) postData.append('&');
-            postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+            if (postData.length() != 0) {
+                postData.append('&');
+            }
+            postData.append(URLEncoder.encode(param.getKey(), enc));
             postData.append('=');
-            postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+            postData.append(URLEncoder.encode(String.valueOf(param.getValue()), enc));
         }
-        byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+        byte[] postDataBytes = postData.toString().getBytes(enc);
 
+        assert url != null;
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        connection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
-        connection.setDoOutput(true);
-        connection.getOutputStream().write(postDataBytes);
-
-        StringBuilder sb = new StringBuilder();
-        Reader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-        for (int c = in.read(); c != -1; c = in.read())
-            sb.append((char) c);
-        if (!sb.toString().equals("0")) {
-            // Warning: Call to setserver.php on the server to set the server's IP address and port failed
-            // Users might not be able to connect to the server now
+        try {
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            connection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+            connection.setDoOutput(true);
+            connection.getOutputStream().write(postDataBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            connection.getOutputStream().close();
         }
+
     }
 
 }

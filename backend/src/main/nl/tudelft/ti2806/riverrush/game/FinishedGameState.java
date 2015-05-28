@@ -5,12 +5,17 @@ import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 
 /**
- * Created by m.olsthoorn on 5/18/2015.
+ * When a team wins the game, it will go into this state.
  */
 public class FinishedGameState implements GameState {
 
     private final EventDispatcher eventDispatcher;
 
+    /**
+     * Initializes the state where the game is finished.
+     * A game is finished when one team has won.
+     * @param dispatcher The dispatcher, so we can dispatch {@link GameFinishedEvent}
+     */
     public FinishedGameState(final EventDispatcher dispatcher) {
         this.eventDispatcher = dispatcher;
 
@@ -19,7 +24,7 @@ public class FinishedGameState implements GameState {
 
     @Override
     public void dispose() {
-
+        // Nothing to dispose.
     }
 
     @Override

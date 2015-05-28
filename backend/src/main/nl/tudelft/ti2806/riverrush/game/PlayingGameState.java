@@ -7,23 +7,28 @@ import nl.tudelft.ti2806.riverrush.domain.event.PlayerJumpedEvent;
 import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
 
 /**
- * The game is on!
+ * State when the game is ongoing.
  */
 public class PlayingGameState implements GameState {
 
     private final EventDispatcher eventDispatcher;
 
+    /**
+     * The game transitions to this state when the game starts.
+     * @param dispatcher The dispatcher used to listen to {@link JumpEvent}.
+     */
     public PlayingGameState(final EventDispatcher dispatcher) {
         this.eventDispatcher = dispatcher;
 
-        this.eventDispatcher.attach(JumpEvent.class, (e) -> this.eventDispatcher.dispatch(new PlayerJumpedEvent()));
+        this.eventDispatcher.attach(JumpEvent.class,
+            (e) -> this.eventDispatcher.dispatch(new PlayerJumpedEvent()));
 
         dispatcher.dispatch(new GameStartedEvent());
     }
 
     @Override
     public void dispose() {
-
+        // Nothing to dispose.
     }
 
     @Override

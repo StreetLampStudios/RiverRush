@@ -11,11 +11,17 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.java_websocket.WebSocket;
 
 /**
- * Created by thomas on 21-5-15.
+ * The endpoint for the clients to connect.
  */
 @Singleton
 public class UserServer extends AbstractServer {
 
+    /**
+     * Create the user server.
+     *
+     * @param aProtocol The protocol for the clients
+     * @param controllerProvider The controller provider for creating the controllers
+     */
     @Inject
     public UserServer(@Named("clientProtocol") final Protocol aProtocol,
                       @Named("clientController") final Provider<Controller> controllerProvider) {
@@ -23,7 +29,7 @@ public class UserServer extends AbstractServer {
     }
 
     @Override
-    protected void filterJoinEvents(WebSocket connection, Event event) {
+    protected void filterJoinEvents(final WebSocket connection, final Event event) {
         if (event instanceof JoinEvent) {
             createController(connection);
         } else {

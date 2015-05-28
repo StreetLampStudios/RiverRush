@@ -16,6 +16,10 @@ import org.mockito.Mock;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Parameterized test hierarchy.
+ * Tests whether RenderController register the right events.
+ */
 @RunWith(Parameterized.class)
 public class RenderControllerRegisteredEventsTest extends RegisteredEventsTest {
 
@@ -25,6 +29,7 @@ public class RenderControllerRegisteredEventsTest extends RegisteredEventsTest {
     /**
      * RenderController should attach handlers for at least
      * these events to notify the player of game state changes.
+     * @return All events that controllers have to handle.
      */
     @Parameterized.Parameters(name = "{0}")
     public static Collection<Class<?>> parameters() {
@@ -46,6 +51,10 @@ public class RenderControllerRegisteredEventsTest extends RegisteredEventsTest {
         this.controller = new RenderController(this.dispatcherMock, this.serverMock, this.gameMock);
     }
 
+    /**
+     * Construct the parameterized test.
+     * @param eventClass The event that the RenderController has to attach to.
+     */
     public RenderControllerRegisteredEventsTest(final Class<?> eventClass) {
         super(eventClass);
     }

@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
 
     <description>
-        Custom PMD ruleset for MonkeyRush production code.
+        Custom PMD ruleset for RiverRush production code.
     </description>
 
     <rule ref="rulesets/java/basic.xml"/>
@@ -20,6 +20,7 @@
     <rule ref="rulesets/java/coupling.xml">
         <!-- We won't be using this rule,
              it pollutes the build output and isn't really beneficial -->
+        <exclude name="LawOfDemeter"/>
         <exclude name="LoosePackageCoupling"/>
     </rule>
 </ruleset>
