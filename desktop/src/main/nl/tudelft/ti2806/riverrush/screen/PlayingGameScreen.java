@@ -4,7 +4,6 @@ import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.entity.Monkey;
 import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.graphics.CenterStage;
 import nl.tudelft.ti2806.riverrush.graphics.SideStage;
 
@@ -16,27 +15,30 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+/**
+ * The playing game screen constructs and displays all the visuals that are required during game
+ * play.
+ */
 @Singleton
 public class PlayingGameScreen implements Screen {
 
     private final EventDispatcher dispatcher;
-    private int WIDTH = MainDesktop.WIDTH;
-    private int HEIGHT = MainDesktop.HEIGHT;
-    private static final double BANKSIZE = 1.0 / 20.0;
-    private static final double SCREENSIZE = 1.0 / 5.0 * 2.0;
-    private static final double MIDSIZE = 1.0 / 10.0;
+    private static final int WIDTH = MainDesktop.getWidth();
+    private static final int HEIGHT = MainDesktop.getHeight();
+    private static final double BANKSIZE = 0.05; // 1.0 / 20.0;
+    private static final double SCREENSIZE = 0.4; // 1.0 / 5.0 * 2.0;
+    private static final double MIDSIZE = 0.1; // 1.0 / 10.0;
 
     // Partioning
-    private static final double FIRSTBANKEDGE = 1.0 / 20.0;
-    private static final double LEFTSCREENEDGE = 1.0 / 20.0 * 9.0;
-    private static final double MIDEDGE = 1.0 / 20.0 * 11.0;
-    private static final double RIGHTSCREENEDGE = 1.0 / 20.0 * 19.0;
+    private static final double FIRSTBANKEDGE = 0.05; // 1.0 / 20.0;
+    private static final double LEFTSCREENEDGE = 0.45; // 1.0 / 20.0 * 9.0;
+    private static final double MIDEDGE = 0.55; // 1.0 / 20.0 * 11.0;
+    private static final double RIGHTSCREENEDGE = 0.95; // 1.0 / 20.0 * 19.0;
 
     private static final int ENDTEXTUREX = 103; // 229;
     private static final int ENDTEXTUREY = 314; // 138;
@@ -50,39 +52,49 @@ public class PlayingGameScreen implements Screen {
     private Stage rightStage;
     private Stage banksLeft;
     private Stage banksRight;
-    public OrthographicCamera camera;
-    private Game game;
-    private AssetManager assets;
+    private OrthographicCamera camera;
+    private final AssetManager assets;
     private SpriteBatch spriteBatch;
 
+    /**
+     * Creates the graphical representation of the playing game screen. The playing game screen
+     * shows the various stages that are relevant to the players including but not limited to the
+     * river, boats, characters, and obstacles.
+     *
+     * @param assetManager
+     *            refers to the manager that has made all loaded assets available for use.
+     *
+     * @param eventDispatcher
+     *            is the dispatcher that handles all relevant events.
+     */
     @Inject
-    public PlayingGameScreen(final AssetManager assetsManager,
-            final EventDispatcher eventDispatcher) {
+    public PlayingGameScreen(final AssetManager assetManager, final EventDispatcher eventDispatcher) {
         this.dispatcher = eventDispatcher;
-        this.assets = assetsManager;
+        this.assets = assetManager;
     }
 
+    /**
+     * Initialises the stages, screens, and cameras.
+     */
     public void init() {
         this.banksLeft = new Stage();
 
-        this.leftScreen = new SideStage(this.assets, this.WIDTH, this.HEIGHT,
-                this.dispatcher);
+        this.leftScreen = new SideStage(this.assets, WIDTH, HEIGHT, this.dispatcher);
         this.leftStage = new Stage();
         this.leftStage.addActor(this.leftScreen);
 
-        this.midScreen = new CenterStage(this.assets, this.WIDTH, this.HEIGHT);
+        this.midScreen = new CenterStage(this.assets, WIDTH, HEIGHT);
         this.midStage = new Stage();
         this.midStage.addActor(this.midScreen);
 
-        this.rightScreen = new SideStage(this.assets, this.WIDTH, this.HEIGHT,
-                this.dispatcher);
+        this.rightScreen = new SideStage(this.assets, WIDTH, HEIGHT, this.dispatcher);
         this.rightStage = new Stage();
         this.rightStage.addActor(this.rightScreen);
 
         this.banksRight = new Stage();
 
         this.camera = new OrthographicCamera();
-        this.camera.setToOrtho(false, this.WIDTH, this.HEIGHT);
+        this.camera.setToOrtho(false, WIDTH, HEIGHT);
 
         this.spriteBatch = new SpriteBatch();
     }
@@ -107,7 +119,7 @@ public class PlayingGameScreen implements Screen {
     /**
      * Draw left sandy beach.
      */
-    public void drawLeftBanks() {
+    private void drawLeftBanks() {
         this.banksLeft.act(Gdx.graphics.getDeltaTime());
         int width = (int) (Gdx.graphics.getWidth() * BANKSIZE);
         Gdx.gl.glViewport(0, 0, width, // 0 - 0.05
@@ -118,7 +130,7 @@ public class PlayingGameScreen implements Screen {
     /**
      * Draw right river with stuff.
      */
-    public void drawLeftStage() {
+    private void drawLeftStage() {
         this.leftStage.act(Gdx.graphics.getDeltaTime());
         int start = (int) (Gdx.graphics.getWidth() * FIRSTBANKEDGE);
         int width = (int) (Gdx.graphics.getWidth() * SCREENSIZE);
@@ -130,7 +142,7 @@ public class PlayingGameScreen implements Screen {
     /**
      * Draw the progressbar.
      */
-    public void drawMidStage() {
+    private void drawMidStage() {
         this.midStage.act(Gdx.graphics.getDeltaTime());
         int start = (int) (Gdx.graphics.getWidth() * LEFTSCREENEDGE);
         int width = (int) (Gdx.graphics.getWidth() * MIDSIZE);
@@ -142,7 +154,7 @@ public class PlayingGameScreen implements Screen {
     /**
      * Draw left river with stuff.
      */
-    public void drawRightStage() {
+    private void drawRightStage() {
         this.rightStage.act(Gdx.graphics.getDeltaTime());
         int start = (int) (Gdx.graphics.getWidth() * MIDEDGE);
         int width = (int) (Gdx.graphics.getWidth() * SCREENSIZE);
@@ -154,7 +166,7 @@ public class PlayingGameScreen implements Screen {
     /**
      * Draw left sandy beach.
      */
-    public void drawRightBanks() {
+    private void drawRightBanks() {
         this.banksRight.act(Gdx.graphics.getDeltaTime());
         int start = (int) (Gdx.graphics.getWidth() * RIGHTSCREENEDGE);
         int width = (int) (Gdx.graphics.getWidth() * BANKSIZE);
@@ -167,8 +179,7 @@ public class PlayingGameScreen implements Screen {
     public void show() {
         // Get texture
         Texture tex = this.assets.get("data/field.jpg", Texture.class);
-        TextureRegion region = new TextureRegion(tex, 0, 0, ENDTEXTUREX,
-                ENDTEXTUREY);
+        TextureRegion region = new TextureRegion(tex, 0, 0, ENDTEXTUREX, ENDTEXTUREY);
 
         Image leftImg = new Image(region);
         leftImg.setFillParent(true);
@@ -180,19 +191,23 @@ public class PlayingGameScreen implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(final int width, final int height) {
+        // Does not need to do anything
     }
 
     @Override
     public void hide() {
+        // Does not need to do anything
     }
 
     @Override
     public void pause() {
+        // Does not need to do anything
     }
 
     @Override
     public void resume() {
+        // Does not need to do anything
     }
 
     @Override
@@ -201,12 +216,15 @@ public class PlayingGameScreen implements Screen {
         this.rightStage.dispose();
         this.midStage.dispose();
         this.spriteBatch.dispose();
-
     }
 
-    public void jump(Player player) {
-        // TODO: Not actually considering which player, now only jumps the
-        // animal on the left boat
+    /**
+     * Tells a player that resides on this screen to jump.
+     *
+     * @param player
+     *            refers to the player that is commanded to jump.
+     */
+    public void jump(final Player player) {
         Monkey monk = this.leftScreen.getBoat().getAnimal(player);
         monk.jump();
 

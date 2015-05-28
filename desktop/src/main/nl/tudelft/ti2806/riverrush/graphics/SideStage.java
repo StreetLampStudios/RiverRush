@@ -14,33 +14,50 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.inject.Inject;
 
+/**
+ * This class defined the side stage. The side stage always holds a river and a boat as well as
+ * anything that occurs within those.
+ *
+ */
 public class SideStage extends Table {
 
-    private Boat boat;
-    private River river;
+    private final Boat boat;
+    private final River river;
     private ObstacleGraphic obstacle;
-    private AssetManager assets;
+    private final AssetManager assets;
+
+    private static final int RIVER_HEIGHT = 1920;
+    private static final int RIVER_WIDTH = 1080;
+    private static final int BOAT_OFFSET = 300;
+    private static final int BOAT_POSITION = 150;
+    private static final int BOAT_SIZE = 600;
+    private static final double OBSTACLE_OFFSET = 0.5;
 
     /**
-     * Creates a stage for the river, etc.
+     * Creates a stage that holds the river, boats, and any player characters that reside on it, as
+     * well as the obstacles that pass through it.
      *
-     * @param assets2
+     * @param assetManager
+     *            refers to the manager that has made all loaded assets available for use.
      * @param width
-     *            of the bank
+     *            is the width size that the stage will be given.
      * @param height
+     *            is the height size the stage will be given.
+     * @param eventDispatcher
+     *            is the dispatcher that handles all relevant events.
      */
     @Inject
-    public SideStage(final AssetManager assets2, final float width,
-            final float height, EventDispatcher eventDispatcher) {
+    public SideStage(final AssetManager assetManager, final float width, final float height,
+            final EventDispatcher eventDispatcher) {
         this.setBounds(0, 0, width, height);
-        this.assets = assets2;
-        this.river = new River(this.assets, 0, 1920, 1080);
-        this.boat = new Boat(this.assets, this.river.getMid() - 300, 150, 600,
-                600, eventDispatcher);
+        this.assets = assetManager;
+        this.river = new River(this.assets, 0, RIVER_HEIGHT, RIVER_WIDTH);
+        this.boat = new Boat(this.assets, this.river.getMid() - BOAT_OFFSET, BOAT_POSITION,
+                BOAT_SIZE, BOAT_SIZE, eventDispatcher);
         this.addActor(this.river);
         this.addActor(this.boat);
 
-        this.spawnObstacle(0.5);
+        this.spawnObstacle(OBSTACLE_OFFSET);
 
     }
 
@@ -74,7 +91,7 @@ public class SideStage extends Table {
         }
 
         if (this.obstacle != null && this.obstacle.isDone()) {
-            this.spawnObstacle(0.5);
+            this.spawnObstacle(OBSTACLE_OFFSET);
         }
 
     }
