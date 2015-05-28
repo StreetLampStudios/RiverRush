@@ -9,18 +9,28 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by m.olsthoorn on 5/18/2015.
+ * State in which the game is stopped.
  */
 public class StoppedGameState implements GameState {
 
+    /**
+     * Stopped game timer delay.
+     */
+    public static final int DELAY = 30;
+
     private final EventDispatcher eventDispatcher;
 
+    /**
+     * Create the stopped game state.
+     *
+     * @param dispatcher The event dispatcher for dispatching events
+     */
     public StoppedGameState(final EventDispatcher dispatcher) {
         this.eventDispatcher = dispatcher;
         this.eventDispatcher.dispatch(new GameStoppedEvent());
 
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.schedule(() -> System.exit(0), 30, TimeUnit.SECONDS);
+        scheduler.schedule(() -> System.exit(0), DELAY, TimeUnit.SECONDS);
 
         dispatcher.dispatch(new GameStoppedEvent());
     }

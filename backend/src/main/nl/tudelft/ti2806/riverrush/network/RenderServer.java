@@ -30,7 +30,7 @@ public class RenderServer extends AbstractServer {
     }
 
     @Override
-    protected void filterJoinEvents(WebSocket connection, Event event) {
+    protected void filterJoinEvents(final WebSocket connection, final Event event) {
         if (event instanceof RenderJoinEvent) {
             createController(connection);
         } else {

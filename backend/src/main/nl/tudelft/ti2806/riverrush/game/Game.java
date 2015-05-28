@@ -19,6 +19,11 @@ import java.util.concurrent.TimeUnit;
 public class Game {
 
     /**
+     * Game about to start timer delay.
+     */
+    public static final int DELAY = 5;
+
+    /**
      * The current state of the game.
      */
     private GameState gameState;
@@ -27,41 +32,60 @@ public class Game {
     private final EventDispatcher eventDispatcher;
 
     /**
-     * Construct an application.
+     * Create a game instance.
+     *
+     * @param dispatcher The event dispatcher
      */
     @Inject
     public Game(final EventDispatcher dispatcher) {
         this.gameState = new WaitingForRendererState(dispatcher);
         this.eventDispatcher = dispatcher;
 
-        this.addPlayer = this::addPlayer;
+        this.addPlayer = this::addPlayerHandler;
         this.eventDispatcher.attach(PlayerAddedEvent.class, addPlayer);
     }
 
-    private void addPlayer(final PlayerAddedEvent playerAddedEvent) {
+    /**
+     * Add player handler.
+     *
+     * @param playerAddedEvent The player added event
+     */
+    private void addPlayerHandler(final PlayerAddedEvent playerAddedEvent) {
         playerCount++;
         if (playerCount > 0) {
             eventDispatcher.dispatch(new GameAboutToStartEvent());
             final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
             scheduler.schedule(
                 this::start,
-                5,
+                DELAY,
                 TimeUnit.SECONDS);
         }
     }
 
+    /**
+     * Start the game.
+     */
     public void start() {
         this.gameState = this.gameState.start();
     }
 
+    /**
+     * Stop the game.
+     */
     public void stop() {
         this.gameState = this.gameState.stop();
     }
 
+    /**
+     * Finish the game.
+     */
     public void finish() {
         this.gameState = this.gameState.finish();
     }
 
+    /**
+     * Go to the wait for players state.
+     */
     public void waitForPlayers() {
         this.gameState = this.gameState.waitForPlayers();
     }

@@ -45,5 +45,4 @@ public class PlayerController extends AbstractController {
 
         this.dispatcher.dispatch(event);
     }
-
 }
