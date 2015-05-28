@@ -11,14 +11,20 @@ import com.badlogic.gdx.scenes.scene2d.Action;
  */
 public class AnimalOnBoat implements AnimalState {
 
+    /**
+     * The animal.
+     */
   private Monkey monkey;
+    /**
+     * The event dispatcher of this class.
+     */
   private final EventDispatcher dispatcher;
 
   /**
    * Constructor.
    *
-   * @param monk
-   * @param eventDispatcher
+   * @param monk - The animal that is on the boat
+   * @param eventDispatcher - The event disptacher
    */
   public AnimalOnBoat(final Monkey monk, final EventDispatcher eventDispatcher) {
     this.monkey = monk;
@@ -29,7 +35,6 @@ public class AnimalOnBoat implements AnimalState {
   public AnimalState jump() {
     Action jump = this.monkey.jumpAction();
     this.monkey.addAction(jump);
-    // TODO: JumpEvent
     return new AnimalInAir(this.monkey, this.dispatcher);
   }
 

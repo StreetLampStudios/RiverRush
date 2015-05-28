@@ -61,12 +61,19 @@ public class BasicBasicProtocolTest {
             + "SomeUnknownEventClass";
     }
 
+    /**
+     * serialize calls and event.
+     * @throws InvalidActionException - If an invalid action occurs.
+     */
     @Test
-    public void serialize_callsEvent() throws InvalidActionException {
+    public void serializeCallsEvent() throws InvalidActionException {
         this.protocol.serialize(this.eventMock);
         verify(this.eventMock).serialize(this.protocol);
     }
 
+    /**
+     * Tests a register.
+     */
     @Test
     public void testRegister() {
         this.protocol.registerNetworkAction(StubEvent.class,
@@ -74,6 +81,11 @@ public class BasicBasicProtocolTest {
         assertTrue(this.protocol.isRegistered(StubEvent.class));
     }
 
+    /**
+     * A deserialize test.
+     * @throws InvalidProtocolException -
+     * @throws InvalidActionException -
+     */
     @Test
     public void testDeserializeActionOnly() throws InvalidProtocolException,
         InvalidActionException {
@@ -83,6 +95,11 @@ public class BasicBasicProtocolTest {
         assertEquals(expected, actualEvent);
     }
 
+    /**
+     * Tests deserialize with a field.
+     * @throws InvalidProtocolException -
+     * @throws InvalidActionException -
+     */
     @Test
     public void testDeserializeWithField() throws InvalidProtocolException,
         InvalidActionException {
@@ -97,6 +114,9 @@ public class BasicBasicProtocolTest {
         assertEquals("HelloWorld", ((StubEvent) networkMessage).getField());
     }
 
+    /**
+     * Tests serialize with a field.
+     */
     @Test
     public void testSerializeWithField() {
         StubEvent event = new StubEvent();
@@ -112,12 +132,22 @@ public class BasicBasicProtocolTest {
         assertTrue(actualField.contains(this.stubEventSerialized));
     }
 
+    /**
+     * Tests deserialize on an invalid protocol.
+     * @throws InvalidProtocolException -
+     * @throws InvalidActionException -
+     */
     @Test(expected = InvalidProtocolException.class)
     public void testDeserializeInvalidProtocol()
         throws InvalidProtocolException, InvalidActionException {
         this.protocol.deserialize("key=a=value");
     }
 
+    /**
+     * Tests deserialize on an invalid action.
+     * @throws InvalidProtocolException -
+     * @throws InvalidActionException -
+     */
     @Test(expected = InvalidActionException.class)
     public void testDeserializeInvalidAction() throws InvalidProtocolException,
         InvalidActionException {
@@ -149,7 +179,7 @@ public class BasicBasicProtocolTest {
             return this.field;
         }
 
-        public void setField(String f) {
+        public void setField(final String f) {
             this.field = f;
         }
     }

@@ -5,6 +5,9 @@ import java.util.Map;
 import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
+/**
+ * The state where the animal gets back up on the boat after being knocked into the water.
+ */
 public class AnimalReturnedToBoat implements Event {
 
   @Override
@@ -17,7 +20,11 @@ public class AnimalReturnedToBoat implements Event {
     return this;
   }
 
-  public void setPlayer(Player player) {
+    /**
+     * Sets the player of this event.
+     * @param player - The player
+     */
+  public void setPlayer(final Player player) {
 
   }
 

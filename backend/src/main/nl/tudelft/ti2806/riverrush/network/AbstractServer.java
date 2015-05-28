@@ -35,6 +35,9 @@ public abstract class AbstractServer extends WebSocketServer {
      * Maps a remote address to a handler for player actions.
      */
     private final Map<WebSocket, Controller> controllers;
+    /**
+     * Maps a websocket to a controller.
+     */
     private final Map<Controller, WebSocket> sockets;
 
     /**
@@ -53,6 +56,7 @@ public abstract class AbstractServer extends WebSocketServer {
      * method).
      *
      * @param aProtocol - The protocol to use when receiving and sending messages.
+     * @param aProvider - The provider to use when receiving and sennding messages.
      */
     @Inject
     public AbstractServer(final Protocol aProtocol,
@@ -94,9 +98,18 @@ public abstract class AbstractServer extends WebSocketServer {
         }
     }
 
+    /**
+     * Joins the filter events.
+     * @param conn - The websocket
+     * @param event - The event
+     */
     protected abstract void filterJoinEvents(final WebSocket conn, final Event event);
 
-    protected void createController(WebSocket conn) {
+    /**
+     * Creates a controller for a websocket.
+     * @param conn - The websocket to create a controller for
+     */
+    protected void createController(final WebSocket conn) {
         if (!hasJoined(conn)) {
             Controller controller = this.controllerProvider.get();
             controllers.put(conn, controller);
@@ -105,12 +118,22 @@ public abstract class AbstractServer extends WebSocketServer {
         }
     }
 
+    /**
+     * Method to dispatch an event to a controller.
+     * @param event - The event to dispatch
+     * @param connection - the websocket
+     */
     protected void dispatchToController(final Event event, final WebSocket connection) {
         Controller controller = controllers.get(connection);
         controller.onSocketMessage(event);
     }
 
-    protected boolean hasJoined(WebSocket connection) {
+    /**
+     * Returns true if the connection has joined the game.
+     * @param connection - The connection to be checked
+     * @return - true if the connection has joined the game
+     */
+    protected boolean hasJoined(final WebSocket connection) {
         return controllers.containsKey(connection);
     }
 
@@ -132,6 +155,11 @@ public abstract class AbstractServer extends WebSocketServer {
         sock.send(serialize);
     }
 
+    /**
+     * Sends a HTTP request to the webserver to set the IP address and port that this server is running on,
+     * to make it possible for the connecting players to automatically connect to the game.
+     * @throws IOException - If the connection fails
+     */
     private void sendHTTPRequest() throws IOException {
         URL url = new URL("http://riverrush.3dsplaza.com/setserver.php");
         Map<String, Object> params = new LinkedHashMap<>();
@@ -140,7 +168,9 @@ public abstract class AbstractServer extends WebSocketServer {
 
         StringBuilder postData = new StringBuilder();
         for (Map.Entry<String, Object> param : params.entrySet()) {
-            if (postData.length() != 0) postData.append('&');
+            if (postData.length() != 0) {
+                postData.append('&');
+            }
             postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
             postData.append('=');
             postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
@@ -156,11 +186,13 @@ public abstract class AbstractServer extends WebSocketServer {
 
         StringBuilder sb = new StringBuilder();
         Reader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-        for (int c = in.read(); c != -1; c = in.read())
+        for (int c = in.read(); c != -1; c = in.read()) {
             sb.append((char) c);
+        }
         if (!sb.toString().equals("0")) {
             // Warning: Call to setserver.php on the server to set the server's IP address and port failed
             // Users might not be able to connect to the server now
+            System.exit(1);
         }
     }
 

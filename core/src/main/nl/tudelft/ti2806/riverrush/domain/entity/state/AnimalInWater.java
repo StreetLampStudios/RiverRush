@@ -11,16 +11,22 @@ import com.badlogic.gdx.scenes.scene2d.Action;
  */
 public class AnimalInWater implements AnimalState {
 
+    /**
+     * The animal.
+     */
   private Monkey monkey;
+    /**
+     * The dispatcher of this class.
+     */
   private final EventDispatcher dispatcher;
 
   /**
-   * Constructor
+   * Constructor.
    *
-   * @param monk
-   * @param eventDispatcher
+   * @param monk - The animal that is in the water
+   * @param eventDispatcher - The dispatcher of this event
    */
-  public AnimalInWater(Monkey monk, EventDispatcher eventDispatcher) {
+  public AnimalInWater(final Monkey monk, final EventDispatcher eventDispatcher) {
     this.monkey = monk;
     this.dispatcher = eventDispatcher;
 

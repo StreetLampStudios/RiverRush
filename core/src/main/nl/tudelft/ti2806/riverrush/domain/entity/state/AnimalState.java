@@ -28,7 +28,6 @@ public interface AnimalState {
 
   /**
    * Animal returns to the boast.
-   * 
    * @return the new state after returned to boat.
    */
   AnimalState returnToBoat();
