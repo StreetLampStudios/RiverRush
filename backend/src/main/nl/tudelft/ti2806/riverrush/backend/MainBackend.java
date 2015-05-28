@@ -24,7 +24,6 @@ public final class MainBackend extends CoreModule {
      */
     private MainBackend() {
         Injector injector = Guice.createInjector(this);
-
         injector.getInstance(Game.class);
 
         AbstractServer renderServer = injector.getInstance(RenderServer.class);
@@ -61,5 +60,13 @@ public final class MainBackend extends CoreModule {
         this.bind(Protocol.class)
             .annotatedWith(named("renderProtocol"))
             .toInstance(this.configureRendererProtocol());
+
+        this.bind(AbstractServer.class)
+            .annotatedWith(named("playerServer"))
+            .to(UserServer.class);
+
+        this.bind(AbstractServer.class)
+            .annotatedWith(named("renderServer"))
+            .to(RenderServer.class);
     }
 }

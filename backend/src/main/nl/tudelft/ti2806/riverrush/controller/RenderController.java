@@ -1,6 +1,7 @@
 package nl.tudelft.ti2806.riverrush.controller;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.AbstractServer;
@@ -22,7 +23,7 @@ public class RenderController extends AbstractController {
     @Inject
     public RenderController(
         final EventDispatcher eventDispatcher,
-        final AbstractServer aServer,
+        @Named("renderServer") final AbstractServer aServer,
         final Game aGame
     ) {
         super(eventDispatcher);

@@ -31,10 +31,7 @@ public class Game extends GdxGame {
 
     @Override
     public void create() {
-
-        System.out.println("onCreate " + Thread.currentThread().getId());
         this.currentGameState = new LoadingGameState(this.dispatcher, this.assets, this);
-
     }
 
     @Override

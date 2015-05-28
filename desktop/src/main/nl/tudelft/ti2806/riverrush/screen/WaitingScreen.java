@@ -80,7 +80,6 @@ public class WaitingScreen implements Screen {
      */
     private void createTimerLabel() {
         this.timer = new Label("Time till game start: ", this.skin);
-        System.out.println(Gdx.graphics.getWidth());
         this.timer.setPosition(Gdx.graphics.getWidth() * TIMER_LABEL_WIDTH_MULTIPLIER,
             Gdx.graphics.getHeight() * TIMER_LABEL_HEIGHT_MULTIPLIER); // 1200, 540
         this.stage.addActor(this.timer);

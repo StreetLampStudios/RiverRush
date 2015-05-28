@@ -63,7 +63,7 @@ subprojects {
 
         compile group: 'com.google.inject',
             name: 'guice',
-            version: '3.0'
+            version: '4.0'
 
         compile group: 'org.reflections',
             name: 'reflections',

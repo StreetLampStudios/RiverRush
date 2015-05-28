@@ -1,6 +1,7 @@
 package nl.tudelft.ti2806.riverrush.controller;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.network.AbstractServer;
@@ -21,7 +22,8 @@ public class PlayerController extends AbstractController {
      * @param aServer     The server for sending the events over the network
      */
     @Inject
-    public PlayerController(final EventDispatcher aDispatcher, final AbstractServer aServer) {
+    public PlayerController(final EventDispatcher aDispatcher,
+                            @Named("playerServer") final AbstractServer aServer) {
         super(aDispatcher);
         this.player = new Player();
         this.dispatcher = aDispatcher;
