@@ -21,7 +21,7 @@ public class JumpEvent implements Event {
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
-        this.player = new Player(1234);
+        this.player = new Player(1);
         return this;
     }
 

@@ -1,11 +1,11 @@
 package nl.tudelft.ti2806.riverrush.graphics;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.Boat;
-import nl.tudelft.ti2806.riverrush.domain.entity.Lose;
+import nl.tudelft.ti2806.riverrush.domain.entity.LoseActor;
 import nl.tudelft.ti2806.riverrush.domain.entity.Monkey;
 import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.entity.River;
-import nl.tudelft.ti2806.riverrush.domain.entity.Win;
+import nl.tudelft.ti2806.riverrush.domain.entity.WinActor;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -83,7 +83,7 @@ public class SideStage extends Table {
      * Is called when the team on this stage has won.
      */
     public void win() {
-        this.addActor(new Win(this.assets));
+        this.addActor(new WinActor(this.assets));
         this.boat.addAction(Actions.fadeOut(1f));
     }
 
@@ -91,7 +91,7 @@ public class SideStage extends Table {
      * Is called when the team on this stage has lost.
      */
     public void lose() {
-        this.addActor(new Lose(this.assets));
+        this.addActor(new LoseActor(this.assets));
         this.boat.addAction(Actions.fadeOut(1f));
     }
 

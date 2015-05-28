@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 /**
  * Win game object that represents the winning screen state.
  */
-public class Win extends End {
+public class WinActor extends EndActor {
 
     private static final int END_REGIONX = 313;
     private static final int END_REGIONY = 232;
@@ -17,10 +17,10 @@ public class Win extends End {
      *
      * @param assetManager enables the object to retrieve its assets.
      */
-    public Win(final AssetManager assetManager) {
-        super(assetManager);
+    public WinActor(final AssetManager assetManager) {
+        super();
         Texture tex = assetManager.get("assets/data/win.png", Texture.class);
-        this.region = new TextureRegion(tex, 0, 0, END_REGIONX, END_REGIONY);
+        this.setRegion(new TextureRegion(tex, 0, 0, END_REGIONX, END_REGIONY));
 
     }
 
