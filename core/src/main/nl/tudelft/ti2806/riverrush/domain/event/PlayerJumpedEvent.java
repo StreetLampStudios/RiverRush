@@ -5,6 +5,9 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
 
+/**
+ * Domain event for a jumping player.
+ */
 public class PlayerJumpedEvent implements Event {
 
     private Player player;

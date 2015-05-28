@@ -2,7 +2,6 @@ package nl.tudelft.ti2806.riverrush.graphics;
 
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.entity.Monkey;
-import nl.tudelft.ti2806.riverrush.domain.entity.Obstacle;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 /**
  * Adds obstacles on the screen
  */
-public class ObstacleGraphic extends Actor implements Obstacle {
+public class ObstacleGraphic extends Actor {
 
     /**
      * Size of the graphic.

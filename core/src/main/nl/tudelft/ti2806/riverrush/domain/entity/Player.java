@@ -1,21 +1,35 @@
 package nl.tudelft.ti2806.riverrush.domain.entity;
 
 /**
- * Created by thomas on 19-5-15.
+ * Game object representing a player.
  */
 public class Player {
 
+    /**
+     * Number of bits to shift the id.
+     */
+    public static final int BITS = 32;
     private static long highestId = 0;
     private final long id;
 
+    /**
+     * Create the player.
+     */
     public Player() {
         this.id = highestId + 1;
         highestId++;
     }
 
+    /**
+     * Create the player.
+     *
+     * @param uid Id of the player
+     */
     public Player(final long uid) {
         this.id = uid;
-        highestId = (uid > highestId) ? uid : highestId;
+        if (uid > highestId) {
+            highestId = uid;
+        }
     }
 
     public long getId() {
@@ -24,8 +38,12 @@ public class Player {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Player player = (Player) o;
 
@@ -35,6 +53,6 @@ public class Player {
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        return (int) (id ^ (id >>> BITS));
     }
 }
