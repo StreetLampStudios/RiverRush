@@ -15,6 +15,9 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
+/**
+ * Tests for each concrete controller class.
+ */
 public abstract class ControllerTest {
     @Mock
     protected EventDispatcher dispatcherMock;
@@ -24,6 +27,11 @@ public abstract class ControllerTest {
     protected Controller controller;
     private List<Class<?>> unRemovedHandlers;
 
+    /**
+     * Initialize the test.
+     * When a controller attaches an event handler, this event class is added to a list.
+     * When a controller detaches a handler, the event class is removed from the list.
+     */
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -55,7 +63,7 @@ public abstract class ControllerTest {
     }
 
     /**
-     * Every handler registered should be detached when Controller.dispose() is called
+     * Every handler registered should be detached when Controller.dispose() is called.
      */
     @Test
     public void dispose_shoudDetachAll() {

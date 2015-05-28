@@ -18,31 +18,26 @@ import static com.google.inject.name.Names.named;
  * Entrypoint of the backend.
  */
 public final class MainBackend extends CoreModule {
-    /**
-     * A {@link AbstractServer} that fires NetworkEvents for listeners to dispatch.
-     */
-    private AbstractServer renderServer;
-
-    private AbstractServer clientServer;
-
-    private Game game;
-    private final Injector injector;
 
     /**
      * Main is a utility class.
      */
     private MainBackend() {
-        injector = Guice.createInjector(this);
+        Injector injector = Guice.createInjector(this);
 
-        this.game = injector.getInstance(Game.class);
+        injector.getInstance(Game.class);
 
-        this.renderServer = injector.getInstance(RenderServer.class);
-        this.clientServer = injector.getInstance(UserServer.class);
+        AbstractServer renderServer = injector.getInstance(RenderServer.class);
+        AbstractServer clientServer = injector.getInstance(UserServer.class);
 
-        this.clientServer.start();
-        this.renderServer.start();
+        clientServer.start();
+        renderServer.start();
     }
 
+    /**
+     * Main entry point for the application.
+     * @param args Command line arguments are ignored.
+     */
     public static void main(final String[] args) {
         new MainBackend();
     }

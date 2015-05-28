@@ -52,7 +52,8 @@ public abstract class AbstractServer extends WebSocketServer {
      * Constructs the server, does NOT start it (see the {@link #start()}
      * method).
      *
-     * @param aProtocol - The protocol to use when receiving and sending messages.
+     * @param aProtocol The protocol to use when receiving and sending messages.
+     * @param aProvider An injected provider used to create {@link Controller} objects.
      */
     @Inject
     public AbstractServer(final Protocol aProtocol,
@@ -94,9 +95,18 @@ public abstract class AbstractServer extends WebSocketServer {
         }
     }
 
+    /**
+     * Filter received JoinEvent's in order to create new controllers.
+     * @param conn The websocket connection involved.
+     * @param event The event to check, if it is a join event, a new controller will be created.
+     */
     protected abstract void filterJoinEvents(final WebSocket conn, final Event event);
 
-    protected void createController(WebSocket conn) {
+    /**
+     * Creates a controller and associates it with the connection.
+     * @param conn The connection involved.
+     */
+    protected void createController(final WebSocket conn) {
         if (!hasJoined(conn)) {
             Controller controller = this.controllerProvider.get();
             controllers.put(conn, controller);
@@ -105,12 +115,22 @@ public abstract class AbstractServer extends WebSocketServer {
         }
     }
 
+    /**
+     * When an event is received, it will be dispatched to the correct controller.
+     * @param event The event.
+     * @param connection The connection on which this event was received.
+     */
     protected void dispatchToController(final Event event, final WebSocket connection) {
         Controller controller = controllers.get(connection);
         controller.onSocketMessage(event);
     }
 
-    protected boolean hasJoined(WebSocket connection) {
+    /**
+     * Check whether a connection already has a controller associated with it.
+     * @param connection The connection to check.
+     * @return True iff the connection already has a controller.
+     */
+    protected boolean hasJoined(final WebSocket connection) {
         return controllers.containsKey(connection);
     }
 
@@ -132,6 +152,11 @@ public abstract class AbstractServer extends WebSocketServer {
         sock.send(serialize);
     }
 
+    /**
+     * Sends a http request to register the backend server's IP and port.
+     * So that clients can request the connection details.
+     * @throws IOException when the request fails.
+     */
     private void sendHTTPRequest() throws IOException {
         URL url = new URL("http://riverrush.3dsplaza.com/setserver.php");
         Map<String, Object> params = new LinkedHashMap<>();
@@ -140,7 +165,9 @@ public abstract class AbstractServer extends WebSocketServer {
 
         StringBuilder postData = new StringBuilder();
         for (Map.Entry<String, Object> param : params.entrySet()) {
-            if (postData.length() != 0) postData.append('&');
+            if (postData.length() != 0) {
+                postData.append('&');
+            }
             postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
             postData.append('=');
             postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
@@ -156,11 +183,8 @@ public abstract class AbstractServer extends WebSocketServer {
 
         StringBuilder sb = new StringBuilder();
         Reader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-        for (int c = in.read(); c != -1; c = in.read())
+        for (int c = in.read(); c != -1; c = in.read()) {
             sb.append((char) c);
-        if (!sb.toString().equals("0")) {
-            // Warning: Call to setserver.php on the server to set the server's IP address and port failed
-            // Users might not be able to connect to the server now
         }
     }
 
