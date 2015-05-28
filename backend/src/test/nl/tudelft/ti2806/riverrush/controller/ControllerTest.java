@@ -19,12 +19,27 @@ import static org.mockito.Mockito.verifyZeroInteractions;
  * Tests for each concrete controller class.
  */
 public abstract class ControllerTest {
+
+    /**
+     * Mocks a dispatcher.
+     */
     @Mock
     protected EventDispatcher dispatcherMock;
+
+    /**
+     * Mocks a server.
+     */
     @Mock
     protected AbstractServer serverMock;
 
+    /**
+     * A controller.
+     */
     protected Controller controller;
+
+    /**
+     * The handlers that are not removed yet.
+     */
     private List<Class<?>> unRemovedHandlers;
 
     /**
@@ -66,7 +81,7 @@ public abstract class ControllerTest {
      * Every handler registered should be detached when Controller.dispose() is called.
      */
     @Test
-    public void dispose_shoudDetachAll() {
+    public void disposeShouldDetachAll() {
         controller.initialize();
         controller.dispose();
         assertTrue(unRemovedHandlers.isEmpty());

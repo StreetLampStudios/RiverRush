@@ -28,6 +28,7 @@ public class PlayerControllerRegisteredEventsTest extends RegisteredEventsTest {
     /**
      * PlayerController should attach handlers for at least
      * these events to notify the player of game state changes.
+     *
      * @return The collection of events that have to be registered.
      */
     @Parameters(name = "{0}")
@@ -52,6 +53,7 @@ public class PlayerControllerRegisteredEventsTest extends RegisteredEventsTest {
 
     /**
      * Constructor for parameterized testing.
+     *
      * @param eventClass The collection of events that have to be registered.
      */
     public PlayerControllerRegisteredEventsTest(final Class<?> eventClass) {

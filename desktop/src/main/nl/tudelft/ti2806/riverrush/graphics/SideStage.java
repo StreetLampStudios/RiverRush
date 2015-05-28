@@ -1,23 +1,21 @@
 package nl.tudelft.ti2806.riverrush.graphics;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Boat;
-import nl.tudelft.ti2806.riverrush.domain.entity.Lose;
-import nl.tudelft.ti2806.riverrush.domain.entity.Monkey;
-import nl.tudelft.ti2806.riverrush.domain.entity.Player;
-import nl.tudelft.ti2806.riverrush.domain.entity.River;
-import nl.tudelft.ti2806.riverrush.domain.entity.Win;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.inject.Inject;
+import nl.tudelft.ti2806.riverrush.domain.entity.Boat;
+import nl.tudelft.ti2806.riverrush.domain.entity.LoseActor;
+import nl.tudelft.ti2806.riverrush.domain.entity.Monkey;
+import nl.tudelft.ti2806.riverrush.domain.entity.Player;
+import nl.tudelft.ti2806.riverrush.domain.entity.River;
+import nl.tudelft.ti2806.riverrush.domain.entity.WinActor;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 /**
  * This class defined the side stage. The side stage always holds a river and a boat as well as
  * anything that occurs within those.
- *
  */
 public class SideStage extends Table {
 
@@ -37,23 +35,19 @@ public class SideStage extends Table {
      * Creates a stage that holds the river, boats, and any player characters that reside on it, as
      * well as the obstacles that pass through it.
      *
-     * @param assetManager
-     *            refers to the manager that has made all loaded assets available for use.
-     * @param width
-     *            is the width size that the stage will be given.
-     * @param height
-     *            is the height size the stage will be given.
-     * @param eventDispatcher
-     *            is the dispatcher that handles all relevant events.
+     * @param assetManager    refers to the manager that has made all loaded assets available for use.
+     * @param width           is the width size that the stage will be given.
+     * @param height          is the height size the stage will be given.
+     * @param eventDispatcher is the dispatcher that handles all relevant events.
      */
     @Inject
     public SideStage(final AssetManager assetManager, final float width, final float height,
-            final EventDispatcher eventDispatcher) {
+                     final EventDispatcher eventDispatcher) {
         this.setBounds(0, 0, width, height);
         this.assets = assetManager;
         this.river = new River(this.assets, 0, RIVER_HEIGHT, RIVER_WIDTH);
         this.boat = new Boat(this.assets, this.river.getMid() - BOAT_OFFSET, BOAT_POSITION,
-                BOAT_SIZE, BOAT_SIZE, eventDispatcher);
+            BOAT_SIZE, BOAT_SIZE, eventDispatcher);
         this.addActor(this.river);
         this.addActor(this.boat);
 
@@ -64,8 +58,7 @@ public class SideStage extends Table {
     /**
      * Adds a new obstacle to the screen.
      *
-     * @param offset
-     *            - double !! between 0 and 1 !!
+     * @param offset - double !! between 0 and 1 !!
      */
     public void spawnObstacle(final double offset) {
         if (this.obstacle != null) {
@@ -100,7 +93,7 @@ public class SideStage extends Table {
      * Is called when the team on this stage has won.
      */
     public void win() {
-        this.addActor(new Win(this.assets));
+        this.addActor(new WinActor(this.assets));
         this.boat.addAction(Actions.fadeOut(1f));
     }
 
@@ -108,7 +101,7 @@ public class SideStage extends Table {
      * Is called when the team on this stage has lost.
      */
     public void lose() {
-        this.addActor(new Lose(this.assets));
+        this.addActor(new LoseActor(this.assets));
         this.boat.addAction(Actions.fadeOut(1f));
     }
 

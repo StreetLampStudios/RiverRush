@@ -1,14 +1,13 @@
 package nl.tudelft.ti2806.riverrush.controller;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.domain.event.AssetsLoadedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.game.Game;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 /**
  * The render controller controls handles the game started and assets loaded events through
@@ -24,10 +23,8 @@ public class RenderController implements Controller {
     /**
      * Creates a render controller using the given game and event dispatcher.
      *
-     * @param gm
-     *            refers to the game that is to be controlled.
-     * @param eventDispatcher
-     *            refers to the dispatcher that sends and receives the relevant events.
+     * @param gm              refers to the game that is to be controlled.
+     * @param eventDispatcher refers to the dispatcher that sends and receives the relevant events.
      */
     @Inject
     public RenderController(final Game gm, final EventDispatcher eventDispatcher) {
@@ -46,9 +43,6 @@ public class RenderController implements Controller {
 
     /**
      * Handles the assets Loaded event through sending a command to the game.
-     *
-     * @param givenEvent
-     *            the event that was passed through the assets loaded message.
      */
     private void onAssetsLoaded() {
         this.game.waitForPlayers();
@@ -56,9 +50,6 @@ public class RenderController implements Controller {
 
     /**
      * Handles the game started event through sending a command to the game.
-     *
-     * @param givenEvent
-     *            the event that was passed through the assets loaded message.
      */
     private void onGameStarted() {
         this.game.start();

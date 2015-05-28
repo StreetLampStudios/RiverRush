@@ -6,7 +6,7 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import java.util.Map;
 
 /**
- * Created by m.olsthoorn on 5/18/2015.
+ * Domain event for when a player is added to the game.
  */
 public class PlayerAddedEvent implements Event {
 
@@ -16,8 +16,8 @@ public class PlayerAddedEvent implements Event {
         return player;
     }
 
-    public void setPlayer(final Player player) {
-        this.player = player;
+    public void setPlayer(final Player aPlayer) {
+        this.player = aPlayer;
     }
 
     @Override

@@ -1,24 +1,21 @@
 package nl.tudelft.ti2806.riverrush.desktop;
 
-import java.net.URISyntaxException;
-
-import nl.tudelft.ti2806.riverrush.CoreModule;
-import nl.tudelft.ti2806.riverrush.controller.Controller;
-import nl.tudelft.ti2806.riverrush.controller.RenderController;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.game.Game;
-import nl.tudelft.ti2806.riverrush.network.Client;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import nl.tudelft.ti2806.riverrush.CoreModule;
+import nl.tudelft.ti2806.riverrush.controller.Controller;
+import nl.tudelft.ti2806.riverrush.controller.RenderController;
+import nl.tudelft.ti2806.riverrush.game.Game;
+import nl.tudelft.ti2806.riverrush.network.Client;
+
+import java.net.URISyntaxException;
 
 /**
  * This class is the main class to be ran when starting the game. This class sets up the graphics
  * and the client connections.
- *
  */
 public class MainDesktop extends CoreModule {
 
@@ -29,10 +26,8 @@ public class MainDesktop extends CoreModule {
     /**
      * Calls the main desktop constructor that starts the game.
      *
-     * @param arg
-     *            not used
-     * @throws URISyntaxException
-     *             handles the situation where the URI has the wrong syntax.
+     * @param arg not used
+     * @throws URISyntaxException handles the situation where the URI has the wrong syntax.
      */
     public static void main(final String[] arg) throws URISyntaxException {
         new MainDesktop();
@@ -42,15 +37,13 @@ public class MainDesktop extends CoreModule {
     /**
      * Constructor for main desktop. Configures the client connections and sets up the graphics.
      *
-     * @throws URISyntaxException
-     *             handles the situation where the URI has the wrong syntax.
+     * @throws URISyntaxException handles the situation where the URI has the wrong syntax.
      */
     public MainDesktop() throws URISyntaxException {
         this.injector = Guice.createInjector(this);
 
         Client client = new Client("localhost", this.configureRendererProtocol(),
-                this.injector.getInstance(EventDispatcher.class),
-                this.injector.getInstance(Controller.class));
+            this.injector.getInstance(Controller.class));
 
         this.setupGraphics();
         client.connect();

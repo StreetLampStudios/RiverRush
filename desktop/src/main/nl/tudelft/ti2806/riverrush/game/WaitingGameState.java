@@ -1,16 +1,15 @@
 package nl.tudelft.ti2806.riverrush.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
 import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
 import nl.tudelft.ti2806.riverrush.screen.WaitingScreen;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-
 /**
- * Created by thomas on 19-5-15.
+ * State for a waiting game.
  */
 public class WaitingGameState implements GameState {
 
@@ -24,24 +23,19 @@ public class WaitingGameState implements GameState {
      * The state of the game that indicates that the game is waiting for players. In this state the
      * game can be started when enough players have connected.
      *
-     * @param eventDispatcher
-     *            the dispatcher that is used to handle any relevant events for the game in this
-     *            state.
-     * @param assetManager
-     *            has all necessary assets loaded and available for use.
-     * @param game
-     *            refers to the game that this state belongs to.
+     * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game in this
+     *                        state.
+     * @param assetManager    has all necessary assets loaded and available for use.
+     * @param game            refers to the game that this state belongs to.
      */
     public WaitingGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
-            final GdxGame game) {
+                            final GdxGame game) {
         this.gameWindow = game;
         this.assets = assetManager;
         this.dispatcher = eventDispatcher;
         this.dispatcher.attach(GameAboutToStartEvent.class, (e) -> this.startTimer());
         this.screen = new WaitingScreen(assetManager, eventDispatcher);
-        Gdx.app.postRunnable(() -> {
-            WaitingGameState.this.gameWindow.setScreen(WaitingGameState.this.screen);
-        });
+        Gdx.app.postRunnable(() -> WaitingGameState.this.gameWindow.setScreen(WaitingGameState.this.screen));
     }
 
     /**

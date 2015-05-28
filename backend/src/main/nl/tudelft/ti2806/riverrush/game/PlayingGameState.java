@@ -15,6 +15,7 @@ public class PlayingGameState implements GameState {
 
     /**
      * The game transitions to this state when the game starts.
+     *
      * @param dispatcher The dispatcher used to listen to {@link JumpEvent}.
      */
     public PlayingGameState(final EventDispatcher dispatcher) {

@@ -1,23 +1,19 @@
 package nl.tudelft.ti2806.riverrush.screen;
 
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 /**
- * Created by thomas on 19-5-15.
+ * State for a finished game.
  */
 public class FinishedGameScreen implements Screen {
 
     /**
      * Creates the graphical representation of the finished game screen.
      *
-     * @param assetManager
-     *            refers to the manager that has made all loaded assets available for use.
-     *
-     * @param eventDispatcher
-     *            is the dispatcher that handles all relevant events.
+     * @param assetManager    refers to the manager that has made all loaded assets available for use.
+     * @param eventDispatcher is the dispatcher that handles all relevant events.
      */
     public FinishedGameScreen(final AssetManager assetManager, final EventDispatcher eventDispatcher) {
         // Does not need to do anything yet

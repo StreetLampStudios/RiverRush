@@ -5,6 +5,9 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
 
+/**
+ * Domain event for a jumping player.
+ */
 public class PlayerJumpedEvent implements Event {
 
     private Player player;
@@ -19,5 +22,13 @@ public class PlayerJumpedEvent implements Event {
     public Event deserialize(final Map<String, String> keyValuePairs) {
         this.player = new Player(Long.parseLong(keyValuePairs.get("player")));
         return this;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(final Player aPlayer) {
+        this.player = aPlayer;
     }
 }

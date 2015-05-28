@@ -36,6 +36,7 @@ public final class MainBackend extends CoreModule {
 
     /**
      * Main entry point for the application.
+     *
      * @param args Command line arguments are ignored.
      */
     public static void main(final String[] args) {

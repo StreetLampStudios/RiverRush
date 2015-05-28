@@ -1,8 +1,5 @@
 package nl.tudelft.ti2806.riverrush.screen;
 
-import nl.tudelft.ti2806.riverrush.domain.event.AssetsLoadedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -11,6 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import nl.tudelft.ti2806.riverrush.domain.event.AssetsLoadedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 /**
  * Creates the graphical representation of the loading game screen. The loading game screen simply
@@ -29,11 +28,8 @@ public class LoadingScreen implements Screen {
      * Creates the graphical representation of the loading game screen. The loading game screen
      * simply shows an image to indicate that the game is loading.
      *
-     * @param assetManager
-     *            refers to the manager that has made all loaded assets available for use.
-     *
-     * @param eventDispatcher
-     *            is the dispatcher that handles all relevant events.
+     * @param assetManager    refers to the manager that has made all loaded assets available for use.
+     * @param eventDispatcher is the dispatcher that handles all relevant events.
      */
     public LoadingScreen(final AssetManager assetManager, final EventDispatcher eventDispatcher) {
         this.assets = assetManager;
@@ -112,8 +108,7 @@ public class LoadingScreen implements Screen {
     /**
      * Returns the filename in proper formatting.
      *
-     * @param name
-     *            the name of the file.
+     * @param name the name of the file.
      * @return the name of the file with "data/" added to it.
      */
     public static String getFileName(final String name) {

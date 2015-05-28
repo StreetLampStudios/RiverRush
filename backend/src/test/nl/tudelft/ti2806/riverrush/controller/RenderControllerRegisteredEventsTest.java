@@ -29,6 +29,7 @@ public class RenderControllerRegisteredEventsTest extends RegisteredEventsTest {
     /**
      * RenderController should attach handlers for at least
      * these events to notify the player of game state changes.
+     *
      * @return All events that controllers have to handle.
      */
     @Parameterized.Parameters(name = "{0}")
@@ -53,6 +54,7 @@ public class RenderControllerRegisteredEventsTest extends RegisteredEventsTest {
 
     /**
      * Construct the parameterized test.
+     *
      * @param eventClass The event that the RenderController has to attach to.
      */
     public RenderControllerRegisteredEventsTest(final Class<?> eventClass) {

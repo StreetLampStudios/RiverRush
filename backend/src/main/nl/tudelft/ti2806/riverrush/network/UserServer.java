@@ -19,7 +19,7 @@ public class UserServer extends AbstractServer {
     /**
      * Create the user server.
      *
-     * @param aProtocol The protocol for the clients
+     * @param aProtocol          The protocol for the clients
      * @param controllerProvider The controller provider for creating the controllers
      */
     @Inject

@@ -2,17 +2,7 @@ package nl.tudelft.ti2806.riverrush.controller;
 
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.entity.Player;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOff;
-import nl.tudelft.ti2806.riverrush.domain.event.Event;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameStoppedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
-import nl.tudelft.ti2806.riverrush.domain.event.PlayerAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.PlayerJumpedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.network.AbstractServer;
 
 /**
@@ -28,7 +18,7 @@ public class PlayerController extends AbstractController {
      * Create a player controller.
      *
      * @param aDispatcher The event dispatcher for dispatching the events
-     * @param aServer The server for sending the events over the network
+     * @param aServer     The server for sending the events over the network
      */
     @Inject
     public PlayerController(final EventDispatcher aDispatcher, final AbstractServer aServer) {

@@ -53,6 +53,7 @@ public abstract class RegisteredEventsTest {
 
     /**
      * Construct the parameterized test.
+     *
      * @param eventClass The
      */
     public RegisteredEventsTest(final Class<?> eventClass) {

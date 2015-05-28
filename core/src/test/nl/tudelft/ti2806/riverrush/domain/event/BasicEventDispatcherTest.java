@@ -12,6 +12,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
+
 /**
  * Tests for {@link BasicEventDispatcher}.
  */
@@ -22,9 +23,15 @@ public class BasicEventDispatcherTest {
      */
     private EventDispatcher dispatcher;
 
+    /**
+     * Mocks a lambda.
+     */
     @Mock
     private HandlerLambda<Event> lambdaMock;
 
+    /**
+     * Mocks an event.
+     */
     @Mock
     private Event eventMock;
 
@@ -38,7 +45,7 @@ public class BasicEventDispatcherTest {
     }
 
     /**
-     * attach should add the event type and lsitener.
+     * Attach should add the event type and lsitener.
      */
     @Test
     public void registerAddsListener1() {
@@ -46,6 +53,9 @@ public class BasicEventDispatcherTest {
         assertEquals(1, this.dispatcher.countRegistered(Event.class));
     }
 
+    /**
+     * Attach should add the event type and lsitener.
+     */
     @Test
     public void registerAddsListener2() {
         this.dispatcher.attach(Event.class, this.lambdaMock);
@@ -53,28 +63,40 @@ public class BasicEventDispatcherTest {
         assertEquals(2, this.dispatcher.countRegistered(Event.class));
     }
 
+    /**
+     * Should register 0 counts.
+     */
     @Test
     public void countRegistered() {
         assertEquals(0, this.dispatcher.countRegistered(Event.class));
     }
 
+    /**
+     * Dispatches a call listener.
+     */
     @Test
-    public void dispatch_callsListener() {
-        this.dispatcher.attach((Class<Event>) this.eventMock.getClass(), this.lambdaMock);
+    public void dispatchCallsListener() {
+        this.dispatcher.attach(this.eventMock.getClass(), this.lambdaMock);
         this.dispatcher.dispatch(this.eventMock);
         verify(this.lambdaMock).handle(this.eventMock);
     }
 
+    /**
+     * Dispatches all call listeners.
+     */
     @Test
-    public void dispatch_callsAllListeners() {
-        this.dispatcher.attach((Class<Event>) this.eventMock.getClass(), this.lambdaMock);
-        this.dispatcher.attach((Class<Event>) this.eventMock.getClass(), this.lambdaMock);
+    public void dispatchCallsAllListeners() {
+        this.dispatcher.attach(this.eventMock.getClass(), this.lambdaMock);
+        this.dispatcher.attach(this.eventMock.getClass(), this.lambdaMock);
         this.dispatcher.dispatch(this.eventMock);
         verify(this.lambdaMock, Mockito.times(2)).handle(this.eventMock);
     }
 
+    /**
+     * Dispatches calls on a correct listener.
+     */
     @Test
-    public void dispatch_callsCorrectListener() {
+    public void dispatchCallsCorrectListener() {
         HandlerLambda dummyListener = mock(HandlerLambda.class);
 
         this.dispatcher.attach(DummyEvent.class, dummyListener);
@@ -82,6 +104,9 @@ public class BasicEventDispatcherTest {
         verifyZeroInteractions(this.lambdaMock);
     }
 
+    /**
+     * Plays as a dummy for an event.
+     */
     private class DummyEvent implements Event {
 
         @Override

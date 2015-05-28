@@ -33,6 +33,9 @@ public abstract class AbstractServer extends WebSocketServer {
      * Maps a remote address to a handler for player actions.
      */
     private final Map<WebSocket, Controller> controllers;
+    /**
+     * Maps a websocket to a controller.
+     */
     private final Map<Controller, WebSocket> sockets;
 
     /**
@@ -95,14 +98,16 @@ public abstract class AbstractServer extends WebSocketServer {
 
     /**
      * Filter received JoinEvent's in order to create new controllers.
-     * @param conn The websocket connection involved.
+     *
+     * @param conn  The websocket connection involved.
      * @param event The event to check, if it is a join event, a new controller will be created.
      */
     protected abstract void filterJoinEvents(final WebSocket conn, final Event event);
 
     /**
-     * Creates a controller and associates it with the connection.
-     * @param conn The connection involved.
+     * Creates a controller for a websocket.
+     *
+     * @param conn - The websocket to create a controller for
      */
     protected void createController(final WebSocket conn) {
         if (!hasJoined(conn)) {
@@ -115,7 +120,8 @@ public abstract class AbstractServer extends WebSocketServer {
 
     /**
      * When an event is received, it will be dispatched to the correct controller.
-     * @param event The event.
+     *
+     * @param event      The event.
      * @param connection The connection on which this event was received.
      */
     protected void dispatchToController(final Event event, final WebSocket connection) {
@@ -125,6 +131,7 @@ public abstract class AbstractServer extends WebSocketServer {
 
     /**
      * Check whether a connection already has a controller associated with it.
+     *
      * @param connection The connection to check.
      * @return True iff the connection already has a controller.
      */
@@ -153,6 +160,7 @@ public abstract class AbstractServer extends WebSocketServer {
     /**
      * Sends a http request to register the backend server's IP and port.
      * So that clients can request the connection details.
+     *
      * @throws IOException when something goes horribly wrong.
      */
     private void sendHTTPRequest() throws IOException {
@@ -191,7 +199,5 @@ public abstract class AbstractServer extends WebSocketServer {
         } finally {
             connection.getOutputStream().close();
         }
-
     }
-
 }

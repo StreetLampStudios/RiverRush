@@ -13,7 +13,13 @@ import java.util.List;
  */
 public abstract class AbstractController implements Controller {
 
+    /**
+     * The event dispatcher of this class.
+     */
     private final EventDispatcher dispatcher;
+    /**
+     * A list of handlers and their assigned action.
+     */
     private final List<Pair<Class<? extends Event>, HandlerLambda>> handlers;
 
     /**
@@ -29,9 +35,10 @@ public abstract class AbstractController implements Controller {
     /**
      * All handlers registered with this method will automatically be disposed
      * when the controller is disposed.
+     *
      * @param eventClass The event to listen to
-     * @param handler The handler to call when the event gets fired.
-     * @param <T> Event
+     * @param handler    The handler to call when the event gets fired.
+     * @param <T>        Event
      */
     protected <T extends Event> void listenTo(
         final Class<T> eventClass,
@@ -66,7 +73,7 @@ public abstract class AbstractController implements Controller {
         /**
          * Create a event listener pair.
          *
-         * @param event Event name
+         * @param event   Event name
          * @param handler Event handler
          */
         public Pair(final L event, final R handler) {

@@ -14,6 +14,7 @@ public class FinishedGameState implements GameState {
     /**
      * Initializes the state where the game is finished.
      * A game is finished when one team has won.
+     *
      * @param dispatcher The dispatcher, so we can dispatch {@link GameFinishedEvent}
      */
     public FinishedGameState(final EventDispatcher dispatcher) {

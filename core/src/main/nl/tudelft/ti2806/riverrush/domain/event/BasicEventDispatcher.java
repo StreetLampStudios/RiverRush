@@ -34,7 +34,8 @@ public class BasicEventDispatcher implements EventDispatcher {
     }
 
     @Override
-    public <T extends Event> void detach(final Class<T> eventType, final HandlerLambda<? super T> handlerLambda) {
+    public <T extends Event> void detach(final Class<T> eventType,
+                                         final HandlerLambda<? super T> handlerLambda) {
         List<HandlerLambda> handlers = registeredLambdas.get(eventType);
 
         if (handlers != null) {

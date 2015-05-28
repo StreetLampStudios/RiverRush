@@ -13,11 +13,6 @@ public abstract class AbstractAnimal extends Actor implements Animal {
      */
     private AnimalState currentState;
 
-    @Override
-    public void leave() {
-
-    }
-
     /**
      * Get the current state of the animal.
      *
