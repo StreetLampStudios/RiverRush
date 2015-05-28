@@ -12,42 +12,43 @@ public class AnimalInAir implements AnimalState {
     /**
      * The animal that is in the air.
      */
-  private Monkey monkey;
+    private Monkey monkey;
+
     /**
      * The eventdispatcher of this event.
      */
-  private final EventDispatcher dispatcher;
+    private final EventDispatcher dispatcher;
 
-  /**
-   * Constructor.
-   *
-   * @param monk
-   *          - The monkey that is in the air
-   * @param eventDispatcher
-   *          - The event dispatcher of this event
-   */
-  public AnimalInAir(final Monkey monk, final EventDispatcher eventDispatcher) {
-    this.monkey = monk;
-    this.dispatcher = eventDispatcher;
-  }
+    /**
+     * Constructor.
+     *
+     * @param monk
+     *          - The monkey that is in the air
+     * @param eventDispatcher
+     *          - The event dispatcher of this event
+     */
+    public AnimalInAir(final Monkey monk, final EventDispatcher eventDispatcher) {
+        this.monkey = monk;
+        this.dispatcher = eventDispatcher;
+    }
 
-  @Override
-  public AnimalState jump() {
-    return this;
-  }
+    @Override
+    public AnimalState jump() {
+        return this;
+    }
 
-  @Override
-  public AnimalState drop() {
-    return new AnimalOnBoat(this.monkey, this.dispatcher);
-  }
+    @Override
+    public AnimalState drop() {
+        return new AnimalOnBoat(this.monkey, this.dispatcher);
+    }
 
-  @Override
-  public AnimalState collide() {
-    return this;
-  }
+    @Override
+    public AnimalState collide() {
+        return this;
+    }
 
-  @Override
-  public AnimalState returnToBoat() {
-    return this;
-  }
+    @Override
+    public AnimalState returnToBoat() {
+        return this;
+    }
 }
