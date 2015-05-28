@@ -15,15 +15,59 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
+/**
+ * Tests the controller.
+ */
 public abstract class ControllerTest {
-    @Mock
-    protected EventDispatcher dispatcherMock;
-    @Mock
-    protected AbstractServer serverMock;
+    public EventDispatcher getDispatcherMock() {
+        return dispatcherMock;
+    }
 
-    protected Controller controller;
+    public void setDispatcherMock(final EventDispatcher setDispatcherMock) {
+        this.dispatcherMock = setDispatcherMock;
+    }
+
+    /**
+     * Mocks a dispatcher.
+     */
+    @Mock
+    private EventDispatcher dispatcherMock;
+
+    public AbstractServer getServerMock() {
+        return serverMock;
+    }
+
+    public void setServerMock(final AbstractServer setServerMock) {
+        this.serverMock = setServerMock;
+    }
+
+    /**
+     * Mocks a server.
+     */
+    @Mock
+    private AbstractServer serverMock;
+
+    public Controller getController() {
+        return controller;
+    }
+
+    public void setController(final Controller setController) {
+        this.controller = setController;
+    }
+
+    /**
+     * A controller.
+     */
+    private Controller controller;
+
+    /**
+     * The handlers that are not removed yet.
+     */
     private List<Class<?>> unRemovedHandlers;
 
+    /**
+     * Sets up for the tests.
+     */
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -55,10 +99,10 @@ public abstract class ControllerTest {
     }
 
     /**
-     * Every handler registered should be detached when Controller.dispose() is called
+     * Every handler registered should be detached when Controller.dispose() is called.
      */
     @Test
-    public void dispose_shoudDetachAll() {
+    public void disposeShouldDetachAll() {
         controller.initialize();
         controller.dispose();
         assertTrue(unRemovedHandlers.isEmpty());

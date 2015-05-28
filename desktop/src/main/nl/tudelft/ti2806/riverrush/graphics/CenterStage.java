@@ -7,12 +7,21 @@ import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.entity.RiverBanks;
 
 /**
- * Center
+ * Center.
  */
 public class CenterStage extends Table {
 
+    /**
+     * Specifies the background.
+     */
     private RiverBanks background;
 
+    /**
+     * The constructor of the center stage class.
+     * @param assets - specifies the assets
+     * @param width - specifies the width
+     * @param height - specifies the height
+     */
     @Inject
     public CenterStage(final AssetManager assets, final float width, final float height) {
         this.setBounds(0, 0, width, height);

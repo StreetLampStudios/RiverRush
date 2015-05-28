@@ -15,14 +15,38 @@ import com.google.inject.Inject;
  */
 public class Boat extends AbstractGroup {
 
+    /**
+     * The asset manager.
+     */
   private AssetManager manager;
+    /**
+     * Specifies the animal's width.
+     */
   private static final float MONKEY_WIDTH = 144;
+    /**
+     * Specifies the animal's height.
+     */
   private static final float MONKEY_HEIGHT = 81;
+    /**
+     * Yup. Seems legit.
+     */
   private static final float HALF = 2;
+    /**
+     * Specifies dimension x.
+     */
   private static final int REGION_ENDX = 584;
+    /**
+     * Specifies dimension y.
+     */
   private static final int REGION_ENDY = 1574;
+    /**
+     * The event dispatcher.
+     */
   private EventDispatcher dispatcher;
 
+    /**
+     * The animal on this boat.
+     */
   private Monkey monkey;
 
   /**
@@ -38,12 +62,14 @@ public class Boat extends AbstractGroup {
    *          represents the width of the boat object
    * @param height
    *          represents the height of the boat object
+   * @param eventDispatcher
+   *          the event dispatcher of the boat object
    */
   @Inject
-  public Boat(AssetManager assetManager, float xpos, float ypos, float width, float height,
-      EventDispatcher dispatcher) {
+  public Boat(final AssetManager assetManager, final float xpos, final float ypos,
+              final float width, final float height, final EventDispatcher eventDispatcher) {
     this.manager = assetManager;
-    this.dispatcher = dispatcher;
+    this.dispatcher = eventDispatcher;
     this.setX(xpos);
     this.setY(ypos);
     this.setWidth(width);
@@ -56,7 +82,7 @@ public class Boat extends AbstractGroup {
   }
 
   @Override
-  public void draw(Batch batch, float parentAlpha) {
+  public void draw(final Batch batch, final float parentAlpha) {
     Texture tex = this.manager.get("data/ship.png", Texture.class);
     TextureRegion region = new TextureRegion(tex, 0, 0, REGION_ENDX, REGION_ENDY);
     batch.enableBlending();
@@ -74,7 +100,7 @@ public class Boat extends AbstractGroup {
   }
 
   @Override
-  public void act(float delta) {
+  public void act(final float delta) {
     super.act(delta);
   }
 
@@ -94,9 +120,9 @@ public class Boat extends AbstractGroup {
    * @param player
    *          whose animal needs to be retrieved. This method currently does not take in
    *          consideration which player. Instead just takes whatever animal is on the boat.
-   * @return
+   * @return the animal of the player
    */
-  public Monkey getAnimal(Player player) {
+  public Monkey getAnimal(final Player player) {
     return this.monkey;
 
   }

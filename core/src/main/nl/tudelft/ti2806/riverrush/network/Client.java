@@ -17,10 +17,19 @@ import java.net.URISyntaxException;
  */
 public class Client extends WebSocketClient {
 
+    /**
+     * The protocol of the websocket client.
+     */
     private final Protocol protocol;
 
+    /**
+     * This class' event dispatcher.
+     */
     private final EventDispatcher eventDispatcher;
 
+    /**
+     * The controller of the websocket client.
+     */
     private final Controller controller;
 
     /**
@@ -32,7 +41,7 @@ public class Client extends WebSocketClient {
      * @param prot   - what protocol to use
      * @param dispatcher - the dispatcher to use to send messages
      * @param ctrl - the controller to use.
-     * @throws URISyntaxException
+     * @throws URISyntaxException -
      */
     public Client(final String host, final Protocol prot,
                   final EventDispatcher dispatcher,

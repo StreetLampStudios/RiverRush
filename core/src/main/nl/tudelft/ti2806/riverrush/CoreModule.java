@@ -1,7 +1,15 @@
 package nl.tudelft.ti2806.riverrush;
 
 import com.google.inject.AbstractModule;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
+import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.GameStoppedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.PlayerAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.PlayerJumpedEvent;
 import nl.tudelft.ti2806.riverrush.network.event.JoinEvent;
 import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
 import nl.tudelft.ti2806.riverrush.network.event.RenderJoinEvent;
@@ -14,7 +22,13 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 public abstract class CoreModule extends AbstractModule {
 
+    /**
+     * Specifies the render port.
+     */
     public static final int RENDER_PORT_NUMBER = 51337;
+    /**
+     * Specifies the client port.
+     */
     public static final int CLIENT_PORT_NUMBER = 41337;
 
     @Override
