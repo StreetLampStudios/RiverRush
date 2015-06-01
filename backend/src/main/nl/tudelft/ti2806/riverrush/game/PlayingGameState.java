@@ -1,6 +1,8 @@
 package nl.tudelft.ti2806.riverrush.game;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
@@ -14,6 +16,7 @@ public class PlayingGameState implements GameState {
 
     private final EventDispatcher eventDispatcher;
     private final HandlerLambda<JumpCommand> jumpCommandHandler;
+    private final HandlerLambda<AnimalCollidedEvent> animalCollidedHandler;
 
     /**
      * The game transitions to this state when the game starts.
@@ -28,7 +31,15 @@ public class PlayingGameState implements GameState {
             event.setPlayer(e.getPlayer());
             this.eventDispatcher.dispatch(event);
         };
+
+        animalCollidedHandler = (e) -> {
+            AnimalFellOffEvent event = new AnimalFellOffEvent();
+            event.setPlayer(e.getPlayer());
+            this.eventDispatcher.dispatch(event);
+        };
+        
         this.eventDispatcher.attach(JumpCommand.class, jumpCommandHandler);
+        this.eventDispatcher.attach(AnimalCollidedEvent.class, animalCollidedHandler);
 
         dispatcher.dispatch(new GameStartedEvent());
     }

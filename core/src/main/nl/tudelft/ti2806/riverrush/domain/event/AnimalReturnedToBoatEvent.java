@@ -6,11 +6,9 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import java.util.Map;
 
 /**
- * This is the event that is sent from the server to the device and the renderer to say that the animal
- * has fallen off the boat
- * //TODO calculate everything on the server. Now the renderer sends this event
+ * The state where the animal gets back up on the boat after being knocked into the water.
  */
-public class AnimalFellOff implements Event {
+public class AnimalReturnedToBoatEvent implements Event {
 
     private Player player;
 

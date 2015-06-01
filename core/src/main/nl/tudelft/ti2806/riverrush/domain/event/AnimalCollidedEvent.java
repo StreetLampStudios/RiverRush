@@ -6,15 +6,16 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import java.util.Map;
 
 /**
- * The state where the animal gets back up on the boat after being knocked into the water.
+ * This is the event that is sent from the renderer to the server to say that the animal
+ * has collided
  */
-public class AnimalReturnedToBoat implements Event {
+public class AnimalCollidedEvent implements Event {
 
     private Player player;
 
     @Override
     public String serialize(final Protocol protocol) {
-        return "[Serialized string van een FallOffEvent]";
+        return "[Serialized string van een CollidedEvent]";
     }
 
     @Override

@@ -1,6 +1,6 @@
 package nl.tudelft.ti2806.riverrush.controller;
 
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOff;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
@@ -42,7 +42,7 @@ public class RenderControllerRegisteredEventsTest extends RegisteredEventsTest {
         events.add(GameAboutToStartEvent.class);
         events.add(PlayerJumpedEvent.class);
         events.add(PlayerAddedEvent.class);
-        events.add(AnimalFellOff.class);
+        events.add(AnimalFellOffEvent.class);
         return events;
     }
 

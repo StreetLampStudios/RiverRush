@@ -2,7 +2,7 @@ package nl.tudelft.ti2806.riverrush.domain.entity.state;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 import nl.tudelft.ti2806.riverrush.domain.entity.Monkey;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalReturnedToBoat;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalReturnedToBoatEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 /**
@@ -49,7 +49,7 @@ public class AnimalInWater implements AnimalState {
 
     @Override
     public AnimalState returnToBoat() {
-        this.dispatcher.dispatch(new AnimalReturnedToBoat());
+        this.dispatcher.dispatch(new AnimalReturnedToBoatEvent());
         // Action ret = this.monkey.returnAction();
         // this.monkey.addAction(ret);
         Action fade = this.monkey.returnFade();

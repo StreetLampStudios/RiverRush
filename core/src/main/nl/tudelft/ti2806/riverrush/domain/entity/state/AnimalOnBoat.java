@@ -2,7 +2,7 @@ package nl.tudelft.ti2806.riverrush.domain.entity.state;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 import nl.tudelft.ti2806.riverrush.domain.entity.Monkey;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOff;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 /**
@@ -46,7 +46,7 @@ public class AnimalOnBoat implements AnimalState {
     public AnimalState collide() {
         Action hit = this.monkey.collideAction();
         this.monkey.addAction(hit);
-        this.dispatcher.dispatch(new AnimalFellOff());
+        this.dispatcher.dispatch(new AnimalFellOffEvent());
         return new AnimalInWater(this.monkey, this.dispatcher);
     }
 

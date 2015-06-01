@@ -42,7 +42,7 @@ public class RenderController extends AbstractController {
         this.listenTo(GameFinishedEvent.class, onGameStateChangedLambda);
         this.listenTo(GameStoppedEvent.class, onGameStateChangedLambda);
         this.listenTo(PlayerJumpedEvent.class, onGameStateChangedLambda);
-        this.listenTo(AnimalFellOff.class, onGameStateChangedLambda);
+        this.listenTo(AnimalFellOffEvent.class, onGameStateChangedLambda);
 
         this.game.waitForPlayers();
     }
