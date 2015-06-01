@@ -46,4 +46,9 @@ public class RenderController extends AbstractController {
 
         this.game.waitForPlayers();
     }
+
+    @Override
+    public void onSocketMessage(final Event event) {
+        this.dispatcher.dispatch(event);
+    }
 }

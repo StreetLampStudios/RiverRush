@@ -49,4 +49,10 @@ public class PlayerController extends AbstractController {
 
         this.dispatcher.dispatch(event);
     }
+
+    @Override
+    public void onSocketMessage(final Event event) {
+        event.setPlayer(this.player);
+        this.dispatcher.dispatch(event);
+    }
 }

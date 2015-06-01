@@ -23,11 +23,13 @@ public class PlayerJumpedEvent implements Event {
         return this;
     }
 
-    public Player getPlayer() {
-        return player;
+    @Override
+    public void setPlayer(Player aPlayer) {
+        this.player = aPlayer;
     }
 
-    public void setPlayer(final Player aPlayer) {
-        this.player = aPlayer;
+    @Override
+    public Player getPlayer() {
+        return this.player;
     }
 }

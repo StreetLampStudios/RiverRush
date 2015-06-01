@@ -16,7 +16,7 @@ public abstract class AbstractController implements Controller {
     /**
      * The event dispatcher of this class.
      */
-    private final EventDispatcher dispatcher;
+    protected final EventDispatcher dispatcher;
     /**
      * A list of handlers and their assigned action.
      */
@@ -49,9 +49,7 @@ public abstract class AbstractController implements Controller {
     }
 
     @Override
-    public void onSocketMessage(final Event event) {
-        this.dispatcher.dispatch(event);
-    }
+    public abstract void onSocketMessage(Event event);
 
     @Override
     @SuppressWarnings("unchecked")

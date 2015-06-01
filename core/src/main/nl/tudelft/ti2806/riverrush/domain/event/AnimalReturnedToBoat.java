@@ -10,6 +10,8 @@ import java.util.Map;
  */
 public class AnimalReturnedToBoat implements Event {
 
+    private Player player;
+
     @Override
     public String serialize(final Protocol protocol) {
         return "[Serialized string van een FallOffEvent]";
@@ -20,12 +22,13 @@ public class AnimalReturnedToBoat implements Event {
         return this;
     }
 
-    /**
-     * Sets the player of this event.
-     *
-     * @param player - The player
-     */
-    public void setPlayer(final Player player) {
-        // Not yet implemented
+    @Override
+    public void setPlayer(Player aPlayer) {
+        this.player = aPlayer;
+    }
+
+    @Override
+    public Player getPlayer() {
+        return this.player;
     }
 }

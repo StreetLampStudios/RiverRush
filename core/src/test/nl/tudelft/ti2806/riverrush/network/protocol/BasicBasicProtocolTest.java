@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.network.protocol;
 
+import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import org.junit.Before;
 import org.junit.Test;
@@ -178,6 +179,17 @@ public class BasicBasicProtocolTest {
         public Event deserialize(final Map<String, String> keyValuePairs) {
             this.field = keyValuePairs.get("field");
             return this;
+        }
+
+        @Override
+        public void setPlayer(Player player) {
+            // Has to be empty
+        }
+
+        @Override
+        public Player getPlayer() {
+            // Has to be empty
+            return null;
         }
 
         public String getField() {

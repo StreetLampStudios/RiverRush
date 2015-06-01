@@ -12,14 +12,6 @@ public class PlayerAddedEvent implements Event {
 
     private Player player;
 
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(final Player aPlayer) {
-        this.player = aPlayer;
-    }
-
     @Override
     public String serialize(final Protocol protocol) {
         return "player" + protocol.getKeyValueSeperator() + player.getId();
@@ -29,5 +21,15 @@ public class PlayerAddedEvent implements Event {
     public Event deserialize(final Map<String, String> keyValuePairs) {
         this.player = new Player(Long.parseLong(keyValuePairs.get("player")));
         return this;
+    }
+
+    @Override
+    public void setPlayer(Player aPlayer) {
+        this.player = aPlayer;
+    }
+
+    @Override
+    public Player getPlayer() {
+        return this.player;
     }
 }
