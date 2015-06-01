@@ -23,7 +23,11 @@ public class PlayingGameState implements GameState {
     public PlayingGameState(final EventDispatcher dispatcher) {
         this.eventDispatcher = dispatcher;
 
-        jumpCommandHandler = (e) -> this.eventDispatcher.dispatch(new PlayerJumpedEvent());
+        jumpCommandHandler = (e) -> {
+            PlayerJumpedEvent event = new PlayerJumpedEvent();
+            event.setPlayer(e.getPlayer());
+            this.eventDispatcher.dispatch(event);
+        };
         this.eventDispatcher.attach(JumpCommand.class, jumpCommandHandler);
 
         dispatcher.dispatch(new GameStartedEvent());
@@ -55,6 +59,4 @@ public class PlayingGameState implements GameState {
     public GameState waitForPlayers() {
         return this;
     }
-
-
 }
