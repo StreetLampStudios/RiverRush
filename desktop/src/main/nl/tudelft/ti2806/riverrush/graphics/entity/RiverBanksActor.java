@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.riverrush.domain.entity;
+package nl.tudelft.ti2806.riverrush.graphics.entity;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,7 +10,7 @@ import com.google.inject.Inject;
 /**
  * Game class represents the river bank.
  */
-public class RiverBanks extends Actor {
+public class RiverBanksActor extends Actor {
 
     private final AssetManager manager;
     private static final String FILENAME = "data/field.jpg";
@@ -28,7 +28,7 @@ public class RiverBanks extends Actor {
      * @param height       represents the height of the river banks object
      */
     @Inject
-    public RiverBanks(
+    public RiverBanksActor(
         final AssetManager assetManager,
         final float xpos,
         final float ypos,

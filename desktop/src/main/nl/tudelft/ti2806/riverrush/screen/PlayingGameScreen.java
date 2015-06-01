@@ -1,5 +1,10 @@
 package nl.tudelft.ti2806.riverrush.screen;
 
+import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.graphics.CenterStage;
+import nl.tudelft.ti2806.riverrush.graphics.SideStage;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -12,12 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
-import nl.tudelft.ti2806.riverrush.domain.entity.Monkey;
-import nl.tudelft.ti2806.riverrush.domain.entity.Player;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.graphics.CenterStage;
-import nl.tudelft.ti2806.riverrush.graphics.SideStage;
 
 /**
  * The playing game screen constructs and displays all the visuals that are required during game
@@ -60,8 +59,10 @@ public class PlayingGameScreen implements Screen {
      * shows the various stages that are relevant to the players including but not limited to the
      * river, boats, characters, and obstacles.
      *
-     * @param assetManager    refers to the manager that has made all loaded assets available for use.
-     * @param eventDispatcher is the dispatcher that handles all relevant events.
+     * @param assetManager
+     *            refers to the manager that has made all loaded assets available for use.
+     * @param eventDispatcher
+     *            is the dispatcher that handles all relevant events.
      */
     @Inject
     public PlayingGameScreen(final AssetManager assetManager, final EventDispatcher eventDispatcher) {
@@ -119,7 +120,7 @@ public class PlayingGameScreen implements Screen {
         this.banksLeft.act(Gdx.graphics.getDeltaTime());
         int width = (int) (Gdx.graphics.getWidth() * BANKSIZE);
         Gdx.gl.glViewport(0, 0, width, // 0 - 0.05
-            Gdx.graphics.getHeight());
+                Gdx.graphics.getHeight());
         this.banksLeft.draw();
     }
 
@@ -131,7 +132,7 @@ public class PlayingGameScreen implements Screen {
         int start = (int) (Gdx.graphics.getWidth() * FIRSTBANKEDGE);
         int width = (int) (Gdx.graphics.getWidth() * SCREENSIZE);
         Gdx.gl.glViewport(start, 0, // 0.05 - 0.45
-            width, Gdx.graphics.getHeight());
+                width, Gdx.graphics.getHeight());
         this.leftStage.draw();
     }
 
@@ -143,7 +144,7 @@ public class PlayingGameScreen implements Screen {
         int start = (int) (Gdx.graphics.getWidth() * LEFTSCREENEDGE);
         int width = (int) (Gdx.graphics.getWidth() * MIDSIZE);
         Gdx.gl.glViewport(start, 0, // 0.45 - 0.55
-            width, Gdx.graphics.getHeight());
+                width, Gdx.graphics.getHeight());
         this.midStage.draw();
     }
 
@@ -155,7 +156,7 @@ public class PlayingGameScreen implements Screen {
         int start = (int) (Gdx.graphics.getWidth() * MIDEDGE);
         int width = (int) (Gdx.graphics.getWidth() * SCREENSIZE);
         Gdx.gl.glViewport(start, 0, // 0.55 - 0.95
-            width, Gdx.graphics.getHeight());
+                width, Gdx.graphics.getHeight());
         this.rightStage.draw();
     }
 
@@ -167,7 +168,7 @@ public class PlayingGameScreen implements Screen {
         int start = (int) (Gdx.graphics.getWidth() * RIGHTSCREENEDGE);
         int width = (int) (Gdx.graphics.getWidth() * BANKSIZE);
         Gdx.gl.glViewport(start, 0, // 0.95 - 1
-            width, Gdx.graphics.getHeight());
+                width, Gdx.graphics.getHeight());
         this.banksRight.draw();
     }
 
@@ -214,14 +215,4 @@ public class PlayingGameScreen implements Screen {
         this.spriteBatch.dispose();
     }
 
-    /**
-     * Tells a player that resides on this screen to jump.
-     *
-     * @param player refers to the player that is commanded to jump.
-     */
-    public void jump(final Player player) {
-        Monkey monk = this.leftScreen.getBoat().getAnimal(player);
-        monk.jump();
-
-    }
 }

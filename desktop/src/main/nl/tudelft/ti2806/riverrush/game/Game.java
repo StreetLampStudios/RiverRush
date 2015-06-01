@@ -1,11 +1,15 @@
 package nl.tudelft.ti2806.riverrush.game;
 
+import java.util.HashMap;
+
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
+import nl.tudelft.ti2806.riverrush.domain.entity.GameState;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
 
 /**
  * Shared application class.
@@ -16,12 +20,15 @@ public class Game extends GdxGame {
     private final AssetManager assets;
     private final EventDispatcher dispatcher;
     private GameState currentGameState;
+    private HashMap<Integer, AbstractAnimal> map;
 
     /**
      * Creates a game class.
      *
-     * @param eventDispatcher the dispatcher that handles the events that are relevant to the game class.
-     * @param assetManager    has all necessary assets loaded and available for use.
+     * @param eventDispatcher
+     *            the dispatcher that handles the events that are relevant to the game class.
+     * @param assetManager
+     *            has all necessary assets loaded and available for use.
      */
     @Inject
     public Game(final EventDispatcher eventDispatcher, final AssetManager assetManager) {

@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.riverrush.domain.entity;
+package nl.tudelft.ti2806.riverrush.graphics.entity;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -8,12 +8,14 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.google.inject.Inject;
+
+import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 /**
  * Represents a boat that the animals row on.
  */
-public class Boat extends Group {
+public class BoatGroup extends Group {
 
     /**
      * The asset manager.
@@ -47,7 +49,7 @@ public class Boat extends Group {
     /**
      * The animal on this boat.
      */
-    private Monkey monkey;
+    private MonkeyActor monkey;
 
     /**
      * Creates an boat object with a given graphical representation.
@@ -60,7 +62,7 @@ public class Boat extends Group {
      * @param eventDispatcher the event dispatcher of the boat object
      */
     @Inject
-    public Boat(final AssetManager assetManager, final float xpos, final float ypos,
+    public BoatGroup(final AssetManager assetManager, final float xpos, final float ypos,
                 final float width, final float height, final EventDispatcher eventDispatcher) {
         this.manager = assetManager;
         this.dispatcher = eventDispatcher;
@@ -102,7 +104,7 @@ public class Boat extends Group {
      * Add an animal entity to the boat.
      */
     public void addAnimal() {
-        this.monkey = new Monkey(this.manager, (this.getX() + (this.getWidth() / HALF))
+        this.monkey = new MonkeyActor(this.manager, (this.getX() + (this.getWidth() / HALF))
             - (MONKEY_WIDTH / 2), (this.getY() + (this.getHeight() / HALF)) - (MONKEY_HEIGHT / 2),
             MONKEY_WIDTH, MONKEY_HEIGHT, this.dispatcher);
         this.addActor(this.monkey);
@@ -115,7 +117,7 @@ public class Boat extends Group {
      *               consideration which player. Instead just takes whatever animal is on the boat.
      * @return the animal of the player
      */
-    public Monkey getAnimal(final Player player) {
+    public MonkeyActor getAnimal(final Player player) {
         return this.monkey;
 
     }

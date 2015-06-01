@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.riverrush.domain.entity.state;
+package nl.tudelft.ti2806.riverrush.domain.entity;
 
 /**
  * Represents the current state of the game.
@@ -6,8 +6,8 @@ package nl.tudelft.ti2806.riverrush.domain.entity.state;
 public interface GameState {
 
     /**
-     * Disposes a state.
-     * This method should be called to give states the opportunity to detach event handlers.
+     * Disposes a state. This method should be called to give states the opportunity to detach event
+     * handlers.
      */
     void dispose();
 

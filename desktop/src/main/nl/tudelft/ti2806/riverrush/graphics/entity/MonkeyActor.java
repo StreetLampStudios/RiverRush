@@ -1,4 +1,7 @@
-package nl.tudelft.ti2806.riverrush.domain.entity;
+package nl.tudelft.ti2806.riverrush.graphics.entity;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -7,24 +10,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RotateByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.inject.Inject;
-import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalOnBoat;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
  * Game object representing a monkey.
  */
-public class Monkey extends AbstractAnimal {
+public class MonkeyActor extends Actor {
 
     private static final float JUMP_HEIGHT = 100;
     private static final int END_REGIONX = 432;
@@ -40,7 +37,6 @@ public class Monkey extends AbstractAnimal {
     private static final float WIGGLE_RIGHT_DURATION = 0.25f;
     private static final float WIGGLE_LEFT_DURATION = 0.125f;
     private static final float WIGGLE_DISTANCE = 5f;
-    private static final int RESPAWN_DELAY = 2000;
 
     /**
      * Number of milliseconds in a second.
@@ -54,22 +50,22 @@ public class Monkey extends AbstractAnimal {
     /**
      * Creates a monkey object that represents player characters.
      *
-     * @param assetManager enables the object to retrieve its assets
-     * @param xpos         represents the position of the monkey on the x axis
-     * @param ypos         represents the position of the monkey on the y axis
-     * @param width        represents the width of the monkey object
-     * @param height       represents the height of the monkey object
-     * @param dispatcher   Event dispatcher for dispatching events
+     * @param assetManager
+     *            enables the object to retrieve its assets
+     * @param xpos
+     *            represents the position of the monkey on the x axis
+     * @param ypos
+     *            represents the position of the monkey on the y axis
+     * @param width
+     *            represents the width of the monkey object
+     * @param height
+     *            represents the height of the monkey object
+     * @param dispatcher
+     *            Event dispatcher for dispatching events
      */
     @Inject
-    public Monkey(
-        final AssetManager assetManager,
-        final float xpos,
-        final float ypos,
-        final float width,
-        final float height,
-        final EventDispatcher dispatcher
-    ) {
+    public MonkeyActor(final AssetManager assetManager, final float xpos, final float ypos,
+            final float width, final float height, final EventDispatcher dispatcher) {
         this.manager = assetManager;
         this.setX(xpos);
         this.setY(ypos);
@@ -78,7 +74,6 @@ public class Monkey extends AbstractAnimal {
 
         this.origX = xpos;
         this.origY = ypos;
-        this.setState(new AnimalOnBoat(this, dispatcher));
     }
 
     @Override
@@ -93,7 +88,8 @@ public class Monkey extends AbstractAnimal {
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation());
+                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+                this.getRotation());
 
         batch.setColor(Color.WHITE);
 
@@ -104,41 +100,6 @@ public class Monkey extends AbstractAnimal {
     public void act(final float delta) {
         super.act(delta);
 
-    }
-
-    /**
-     * Changes the state to that having been collided.
-     */
-    public void collide() {
-        this.setState(this.getState().collide());
-    }
-
-    /**
-     * Changes the state to that having jumped.
-     */
-    public void jump() {
-        this.setState(this.getState().jump());
-    }
-
-    /**
-     * Changes the state to that having returned to the boat.
-     */
-    public void returnToBoat() {
-        this.setState(this.getState().returnToBoat());
-    }
-
-    /**
-     * Respawn the monkey.
-     */
-    public void respawn() {
-        Timer tmr = new Timer();
-        tmr.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Monkey.this.returnToBoat();
-                tmr.cancel();
-            }
-        }, RESPAWN_DELAY, RESPAWN_DELAY);
     }
 
     /**
@@ -157,22 +118,6 @@ public class Monkey extends AbstractAnimal {
         fade.setDuration(FALL_VELOCITY);
 
         return Actions.parallel(fade, fall);
-    }
-
-    /**
-     * Creates an action that represents returning to the boat graphically.
-     *
-     * @return an action that can be added to the actor
-     */
-    public Action returnAction() {
-        MoveToAction ret = new MoveToAction();
-        ret.setPosition(this.origX, this.origY);
-
-        AlphaAction fade = new AlphaAction();
-        fade.setAlpha(1f);
-        fade.setDuration(0f);
-
-        return Actions.parallel(fade, ret);
     }
 
     /**
@@ -198,7 +143,6 @@ public class Monkey extends AbstractAnimal {
         return fade;
     }
 
-    @Override
     public Action jumpAction() {
         MoveToAction jumpUp = new MoveToAction();
         jumpUp.setPosition(this.getX(), this.getY() + JUMP_HEIGHT);
@@ -222,23 +166,9 @@ public class Monkey extends AbstractAnimal {
         SequenceAction wiggle = sequence(wiggleLeft, wiggleRight, wiggleBack);
 
         SequenceAction jump = sequence(jumpUp,
-            Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
+                Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
 
-        int time = (int) ((JUMP_DOWN_DURATION + JUMP_UP_DURATION + DELAY_DURATION) * SECOND);
-        Timer tmr = new Timer();
-        tmr.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Monkey.this.setState(Monkey.this.getState().drop());
-                tmr.cancel();
-            }
-        }, time, time);
         return jump;
-    }
-
-    @Override
-    public void leave() {
-        // Not yet implemented
     }
 
 }

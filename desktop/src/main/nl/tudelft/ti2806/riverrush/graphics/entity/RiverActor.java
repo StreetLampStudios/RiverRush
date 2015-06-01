@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.riverrush.domain.entity;
+package nl.tudelft.ti2806.riverrush.graphics.entity;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,7 +16,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 /**
  * Game class representing a river.
  */
-public class River extends Actor {
+public class RiverActor extends Actor {
 
     private static final int END_REGIONX = 1599; // 570;
     private static final int END_REGIONY = 931; // 570;
@@ -34,7 +34,7 @@ public class River extends Actor {
      * @param height       represents the height of the river object
      */
     @Inject
-    public River(final AssetManager assetManager, final float ypos, final float width, final float height) {
+    public RiverActor(final AssetManager assetManager, final float ypos, final float width, final float height) {
         this.manager = assetManager;
         this.setPosition(0, height);
         this.setWidth(width);

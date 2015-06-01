@@ -1,6 +1,6 @@
 package nl.tudelft.ti2806.riverrush.game;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
+import nl.tudelft.ti2806.riverrush.domain.entity.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
 
@@ -9,42 +9,42 @@ import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
  */
 public class WaitingGameState implements GameState {
 
-    private final EventDispatcher eventDispatcher;
+  private final EventDispatcher eventDispatcher;
 
-    /**
-     * Create the waiting game state.
-     *
-     * @param dispatcher The event dispatcher for firing events
-     */
-    public WaitingGameState(final EventDispatcher dispatcher) {
-        this.eventDispatcher = dispatcher;
-        this.eventDispatcher.dispatch(new GameWaitingEvent());
-    }
+  /**
+   * Create the waiting game state.
+   *
+   * @param dispatcher The event dispatcher for firing events
+   */
+  public WaitingGameState(final EventDispatcher dispatcher) {
+    this.eventDispatcher = dispatcher;
+    this.eventDispatcher.dispatch(new GameWaitingEvent());
+  }
 
-    @Override
-    public void dispose() {
-        // Nothing to dispose.
-    }
+  @Override
+  public void dispose() {
+    // Nothing to dispose.
+  }
 
-    @Override
-    public GameState start() {
-        this.dispose();
-        return new PlayingGameState(this.eventDispatcher);
-    }
+  @Override
+  public GameState start() {
+    this.dispose();
+    return new PlayingGameState(this.eventDispatcher);
+  }
 
-    @Override
-    public GameState stop() {
-        this.dispose();
-        return new StoppedGameState(this.eventDispatcher);
-    }
+  @Override
+  public GameState stop() {
+    this.dispose();
+    return new StoppedGameState(this.eventDispatcher);
+  }
 
-    @Override
-    public GameState finish() {
-        return this;
-    }
+  @Override
+  public GameState finish() {
+    return this;
+  }
 
-    @Override
-    public GameState waitForPlayers() {
-        return this;
-    }
+  @Override
+  public GameState waitForPlayers() {
+    return this;
+  }
 }

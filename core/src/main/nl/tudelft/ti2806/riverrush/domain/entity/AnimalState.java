@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.riverrush.domain.entity.state;
+package nl.tudelft.ti2806.riverrush.domain.entity;
 
 /**
  * Represents the state of an animal.
