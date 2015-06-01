@@ -31,7 +31,7 @@ public class SideStage extends Table {
     /**
      * Creates a stage that holds the river, boats, and any player characters that reside on it, as
      * well as the obstacles that pass through it.
-     *
+     * 
      * @param assetManager
      *            refers to the manager that has made all loaded assets available for use.
      * @param width
@@ -39,7 +39,7 @@ public class SideStage extends Table {
      * @param height
      *            is the height size the stage will be given.
      * @param eventDispatcher
-     *            is the dispatcher that handles all relevant events.
+     *            - the event dispatcher
      */
     @Inject
     public SideStage(final AssetManager assetManager, final float width, final float height,
@@ -52,21 +52,22 @@ public class SideStage extends Table {
         this.addActor(this.river);
         this.addActor(this.boat);
 
-        this.spawnObstacle(OBSTACLE_OFFSET);
+        // this.spawnObstacle(OBSTACLE_OFFSET);
 
     }
 
     /**
      * Adds a new obstacle to the screen.
-     *
-     * @param offset
-     *            - double !! between 0 and 1 !!
+     * 
+     * @param graphic
+     *            - The obstacle that you want to add.
      */
-    public void spawnObstacle(final double offset) {
+    public void spawnObstacle(final ObstacleGraphic graphic) {
         if (this.obstacle != null) {
             this.removeActor(this.obstacle);
         }
-        this.obstacle = new ObstacleGraphic(this.assets, offset);
+        graphic.init();
+        this.obstacle = graphic;
         this.addActor(this.obstacle);
     }
 
@@ -88,7 +89,6 @@ public class SideStage extends Table {
         // if (this.obstacle != null && this.obstacle.isDone()) {
         // this.spawnObstacle(OBSTACLE_OFFSET);
         // }
-
     }
 
     // /**

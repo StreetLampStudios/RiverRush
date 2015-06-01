@@ -27,20 +27,28 @@ public class ObstacleGraphic extends Actor {
     private static final double OFFSET_POS = 320.0;
     private static final int NEGATIVE_MULTIPLIER = -2;
     private static final int TEXTURE_SIZE = 512;
+    private final double offset;
 
     /**
      * Creates a new obstacle.
      *
      * @param assetsManager
      *            refers to the manager that has made all loaded assets available for use.
-     * @param offset
+     * @param off
      *            Configures the place from which the obstacle is fired. Must be between 0 and 1
      */
-    public ObstacleGraphic(final AssetManager assetsManager, final double offset) {
+    public ObstacleGraphic(final AssetManager assetsManager, final double off) {
         this.assets = assetsManager;
+        this.offset  = off;
+    }
+
+    /**
+     * Actually adds the obstacle to the screen.
+     */
+    public void init() {
         this.setWidth((float) SIZE);
         this.setHeight((float) (SIZE * HEIGHT / WIDTH) / 2);
-        this.setPosition((float) ((INIT_POS + OFFSET_POS * offset) - SIZE / 2), (float) HEIGHT);
+        this.setPosition((float) ((INIT_POS + OFFSET_POS * this.offset) - SIZE / 2), (float) HEIGHT);
 
         MoveToAction moveDown = new MoveToAction();
         moveDown.setPosition((float) (WIDTH / 2 - SIZE / 2), (float) (NEGATIVE_MULTIPLIER * SIZE));
