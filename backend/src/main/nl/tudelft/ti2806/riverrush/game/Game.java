@@ -6,7 +6,7 @@ import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
-import nl.tudelft.ti2806.riverrush.domain.event.PlayerAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -40,8 +40,8 @@ public class Game {
         this.gameState = new WaitingForRendererState(dispatcher);
         this.eventDispatcher = dispatcher;
 
-        HandlerLambda<PlayerAddedEvent> addPlayer = (e) -> this.addPlayerHandler();
-        this.eventDispatcher.attach(PlayerAddedEvent.class, addPlayer);
+        HandlerLambda<AnimalAddedEvent> addPlayer = (e) -> this.addPlayerHandler();
+        this.eventDispatcher.attach(AnimalAddedEvent.class, addPlayer);
     }
 
     /**

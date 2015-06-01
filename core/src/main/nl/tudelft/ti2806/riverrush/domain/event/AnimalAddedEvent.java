@@ -1,6 +1,6 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Player;
+import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
@@ -8,28 +8,27 @@ import java.util.Map;
 /**
  * Domain event for when a player is added to the game.
  */
-public class PlayerAddedEvent implements Event {
+public class AnimalAddedEvent implements Event {
 
-    private Player player;
+    private Animal animal;
 
     @Override
     public String serialize(final Protocol protocol) {
-        return "player" + protocol.getKeyValueSeperator() + player.getId();
+        return "[Serialized string van een CollidedEvent]";
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
-        this.player = new Player(Long.parseLong(keyValuePairs.get("player")));
         return this;
     }
 
     @Override
-    public void setPlayer(Player aPlayer) {
-        this.player = aPlayer;
+    public void setAnimal(Animal aAnimal) {
+        this.animal = aAnimal;
     }
 
     @Override
-    public Player getPlayer() {
-        return this.player;
+    public Animal getAnimal() {
+        return this.animal;
     }
 }

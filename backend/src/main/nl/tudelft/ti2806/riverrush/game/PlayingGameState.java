@@ -1,12 +1,12 @@
 package nl.tudelft.ti2806.riverrush.game;
 
+import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
-import nl.tudelft.ti2806.riverrush.domain.event.PlayerJumpedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
 import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
 
 /**
@@ -27,17 +27,15 @@ public class PlayingGameState implements GameState {
         this.eventDispatcher = dispatcher;
 
         jumpCommandHandler = (e) -> {
-            PlayerJumpedEvent event = new PlayerJumpedEvent();
-            event.setPlayer(e.getPlayer());
+            AnimalJumpedEvent event = new AnimalJumpedEvent();
+            event.setAnimal(e.getAnimal());
             this.eventDispatcher.dispatch(event);
         };
 
         animalCollidedHandler = (e) -> {
-            AnimalFellOffEvent event = new AnimalFellOffEvent();
-            event.setPlayer(e.getPlayer());
-            this.eventDispatcher.dispatch(event);
+            Animal animal = e.getAnimal();
         };
-        
+
         this.eventDispatcher.attach(JumpCommand.class, jumpCommandHandler);
         this.eventDispatcher.attach(AnimalCollidedEvent.class, animalCollidedHandler);
 

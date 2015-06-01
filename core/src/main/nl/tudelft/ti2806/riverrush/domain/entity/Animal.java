@@ -12,9 +12,4 @@ public interface Animal {
      * @return the action that should be performed
      */
     Action jumpAction();
-
-    /**
-     * Called when the animal disconnects.
-     */
-    void leave();
 }

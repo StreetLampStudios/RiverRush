@@ -39,10 +39,10 @@ public class PlayerController extends AbstractController {
         this.listenTo(GameStoppedEvent.class, onGameStateChangedLambda);
         this.listenTo(GameFinishedEvent.class, onGameStateChangedLambda);
         this.listenTo(GameWaitingEvent.class, onGameStateChangedLambda);
-        this.listenTo(PlayerJumpedEvent.class, onGameStateChangedLambda);
+        this.listenTo(AnimalJumpedEvent.class, onGameStateChangedLambda);
         this.listenTo(AnimalFellOffEvent.class, onGameStateChangedLambda);
 
-        PlayerAddedEvent event = new PlayerAddedEvent();
+        AnimalAddedEvent event = new AnimalAddedEvent();
         event.setPlayer(this.player);
 
         onGameStateChangedLambda.handle(event);

@@ -6,7 +6,7 @@ import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
-import nl.tudelft.ti2806.riverrush.domain.event.PlayerJumpedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
 import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
 import nl.tudelft.ti2806.riverrush.screen.PlayingGameScreen;
 
@@ -19,7 +19,7 @@ public class PlayingGameState implements GameState {
     private final AssetManager assets;
     private final GdxGame gameWindow;
     private final PlayingGameScreen screen;
-    private final HandlerLambda<PlayerJumpedEvent> playerJumpedEventHandlerLambda =
+    private final HandlerLambda<AnimalJumpedEvent> playerJumpedEventHandlerLambda =
         (e) -> this.jump(e.getPlayer());
 
     /**
@@ -38,7 +38,7 @@ public class PlayingGameState implements GameState {
         this.gameWindow = game;
         this.assets = assetManager;
         this.dispatcher = eventDispatcher;
-        this.dispatcher.attach(PlayerJumpedEvent.class, playerJumpedEventHandlerLambda);
+        this.dispatcher.attach(AnimalJumpedEvent.class, playerJumpedEventHandlerLambda);
 
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(() -> {
@@ -59,7 +59,7 @@ public class PlayingGameState implements GameState {
 
     @Override
     public void dispose() {
-        this.dispatcher.detach(PlayerJumpedEvent.class, playerJumpedEventHandlerLambda);
+        this.dispatcher.detach(AnimalJumpedEvent.class, playerJumpedEventHandlerLambda);
         this.screen.dispose();
     }
 

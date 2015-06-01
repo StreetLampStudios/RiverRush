@@ -1,6 +1,6 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Player;
+import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class AnimalReturnedToBoatEvent implements Event {
 
-    private Player player;
+    private Animal animal;
 
     @Override
     public String serialize(final Protocol protocol) {
@@ -23,12 +23,12 @@ public class AnimalReturnedToBoatEvent implements Event {
     }
 
     @Override
-    public void setPlayer(Player aPlayer) {
-        this.player = aPlayer;
+    public void setAnimal(Animal aAnimal) {
+        this.animal = aAnimal;
     }
 
     @Override
-    public Player getPlayer() {
-        return this.player;
+    public Animal getAnimal() {
+        return this.animal;
     }
 }

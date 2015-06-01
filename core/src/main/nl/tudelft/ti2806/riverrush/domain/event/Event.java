@@ -1,7 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Player;
+import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
@@ -28,7 +28,7 @@ public interface Event {
      */
     Event deserialize(Map<String, String> keyValuePairs);
 
-    void setPlayer(Player player);
+    void setAnimal(Animal animal);
 
-    Player getPlayer();
+    Animal getAnimal();
 }

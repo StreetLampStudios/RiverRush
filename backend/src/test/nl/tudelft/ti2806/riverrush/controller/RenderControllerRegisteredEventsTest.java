@@ -6,8 +6,8 @@ import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStoppedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.PlayerAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.PlayerJumpedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
 import nl.tudelft.ti2806.riverrush.network.RenderServer;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -40,8 +40,8 @@ public class RenderControllerRegisteredEventsTest extends RegisteredEventsTest {
         events.add(GameFinishedEvent.class);
         events.add(GameWaitingEvent.class);
         events.add(GameAboutToStartEvent.class);
-        events.add(PlayerJumpedEvent.class);
-        events.add(PlayerAddedEvent.class);
+        events.add(AnimalJumpedEvent.class);
+        events.add(AnimalAddedEvent.class);
         events.add(AnimalFellOffEvent.class);
         return events;
     }
