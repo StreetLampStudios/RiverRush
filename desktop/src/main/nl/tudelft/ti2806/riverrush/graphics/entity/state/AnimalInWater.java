@@ -3,7 +3,7 @@ package nl.tudelft.ti2806.riverrush.graphics.entity.state;
 import nl.tudelft.ti2806.riverrush.domain.entity.AnimalState;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalReturnedToBoat;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
+import nl.tudelft.ti2806.riverrush.graphics.entity.MonkeyActor;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 
@@ -15,7 +15,7 @@ public class AnimalInWater implements AnimalState {
     /**
      * The animal.
      */
-    private final Animal animal;
+    private final MonkeyActor actor;
     /**
      * The dispatcher of this class.
      */
@@ -24,16 +24,14 @@ public class AnimalInWater implements AnimalState {
     /**
      * Constructor.
      *
-     * @param anim
+     * @param act
      *            - The animal that is in the water
      * @param eventDispatcher
      *            - The dispatcher of this event
      */
-    public AnimalInWater(final Animal anim, final EventDispatcher eventDispatcher) {
-        this.animal = anim;
+    public AnimalInWater(final MonkeyActor act, final EventDispatcher eventDispatcher) {
+        this.actor = act;
         this.dispatcher = eventDispatcher;
-
-        this.animal.respawn();
     }
 
     @Override
@@ -54,14 +52,12 @@ public class AnimalInWater implements AnimalState {
     @Override
     public AnimalState returnToBoat() {
         this.dispatcher.dispatch(new AnimalReturnedToBoat());
-        // Action ret = this.monkey.returnAction();
-        // this.monkey.addAction(ret);
-        Action fade = this.animal.returnFade();
-        Action ret = this.animal.returnMove();
-        this.animal.getActor().addAction(ret);
-        this.animal.getActor().addAction(fade);
+        Action fade = this.actor.returnFade();
+        Action ret = this.actor.returnMove();
+        this.actor.addAction(ret);
+        this.actor.addAction(fade);
 
-        return new AnimalOnBoat(this.animal, this.dispatcher);
+        return new AnimalOnBoat(this.actor, this.dispatcher);
     }
 
 }

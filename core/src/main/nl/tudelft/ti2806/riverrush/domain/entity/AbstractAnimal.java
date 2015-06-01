@@ -3,6 +3,7 @@ package nl.tudelft.ti2806.riverrush.domain.entity;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 
 /**
@@ -16,6 +17,26 @@ public abstract class AbstractAnimal {
 
   private static final int RESPAWN_DELAY = 2000;
   private static final int DROP_DELAY = 5000;
+  private static final int BITS = 32;
+  private static long highestId = 0;
+  private final long id;
+
+  /**
+   * Create an animal.
+   * @param dispatcher handles all events that relate to it.
+   */
+  public AbstractAnimal(final EventDispatcher dispatcher, AnimalState state) {
+    this.setState(state);
+    this.id = highestId + 1;
+    highestId++;
+  }
+
+  public AbstractAnimal(final long uid) {
+    this.id = uid;
+    if (uid > highestId) {
+      highestId = uid;
+    }
+  }
 
   /**
    * Get the current state of the animal.
@@ -45,6 +66,7 @@ public abstract class AbstractAnimal {
    */
   public void collide() {
     this.setState(this.getState().collide());
+    this.respawn(); // TEMP
   }
 
   /**
@@ -81,5 +103,28 @@ public abstract class AbstractAnimal {
         tmr.cancel();
       }
     }, RESPAWN_DELAY, RESPAWN_DELAY);
+  }
+
+  public long getId() {
+    return this.id;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+
+    AbstractAnimal animal = (AbstractAnimal) o;
+    return this.id == animal.id;
+
+  }
+
+  @Override
+  public int hashCode() {
+    return (int) (this.id ^ (this.id >>> BITS));
   }
 }

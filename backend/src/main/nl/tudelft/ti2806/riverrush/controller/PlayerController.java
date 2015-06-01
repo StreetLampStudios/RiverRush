@@ -43,7 +43,7 @@ public class PlayerController extends AbstractController {
         this.listenTo(AnimalFellOff.class, onGameStateChangedLambda);
 
         PlayerAddedEvent event = new PlayerAddedEvent();
-        event.setPlayer(this.player);
+        event.setAnimalID(this.player);
 
         onGameStateChangedLambda.handle(event);
 

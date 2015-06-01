@@ -2,7 +2,6 @@ package nl.tudelft.ti2806.riverrush.game;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
 import nl.tudelft.ti2806.riverrush.screen.StoppedScreen;
 
 import com.badlogic.gdx.Gdx;
@@ -11,9 +10,8 @@ import com.badlogic.gdx.assets.AssetManager;
 /**
  * State for a stopped game.
  */
-public class StoppedGameState implements GameState {
+public class StoppedGameState extends AbstractGameState {
 
-    private final GdxGame gameWindow;
     private final StoppedScreen screen;
 
     /**
@@ -25,15 +23,14 @@ public class StoppedGameState implements GameState {
      *            state.
      * @param assetManager
      *            has all necessary assets loaded and available for use.
-     * @param game
+     * @param gm
      *            refers to the game that this state belongs to.
      */
     public StoppedGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
-            final GdxGame game) {
-        this.gameWindow = game;
-
+            final Game gm) {
+        super(eventDispatcher, assetManager, gm);
         this.screen = new StoppedScreen(assetManager, eventDispatcher);
-        Gdx.app.postRunnable(() -> StoppedGameState.this.gameWindow
+        Gdx.app.postRunnable(() -> StoppedGameState.this.game
                 .setScreen(StoppedGameState.this.screen));
     }
 

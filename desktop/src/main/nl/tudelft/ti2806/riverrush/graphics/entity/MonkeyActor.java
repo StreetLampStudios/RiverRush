@@ -23,6 +23,15 @@ import com.google.inject.Inject;
  */
 public class MonkeyActor extends Actor {
 
+    /**
+     * Specifies the animal's width.
+     */
+    private static final float MONKEY_WIDTH = 144;
+    /**
+     * Specifies the animal's height.
+     */
+    private static final float MONKEY_HEIGHT = 81;
+
     private static final float JUMP_HEIGHT = 100;
     private static final int END_REGIONX = 432;
     private static final int END_REGIONY = 432;
@@ -65,12 +74,12 @@ public class MonkeyActor extends Actor {
      */
     @Inject
     public MonkeyActor(final AssetManager assetManager, final float xpos, final float ypos,
-            final float width, final float height, final EventDispatcher dispatcher) {
+            final EventDispatcher dispatcher) {
         this.manager = assetManager;
         this.setX(xpos);
         this.setY(ypos);
-        this.setWidth(width);
-        this.setHeight(height);
+        // this.setWidth(width);
+        // this.setHeight(height);
 
         this.origX = xpos;
         this.origY = ypos;

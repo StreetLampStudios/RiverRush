@@ -3,7 +3,7 @@ package nl.tudelft.ti2806.riverrush.graphics.entity.state;
 import nl.tudelft.ti2806.riverrush.domain.entity.AnimalState;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOff;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
+import nl.tudelft.ti2806.riverrush.graphics.entity.MonkeyActor;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 
@@ -15,7 +15,7 @@ public class AnimalOnBoat implements AnimalState {
     /**
      * The animal.
      */
-    private final Animal animal;
+    private final MonkeyActor actor;
     /**
      * The event dispatcher of this class.
      */
@@ -24,21 +24,21 @@ public class AnimalOnBoat implements AnimalState {
     /**
      * Constructor.
      *
-     * @param anim
+     * @param act
      *            - The animal that is on the boat
      * @param eventDispatcher
      *            - The event disptacher
      */
-    public AnimalOnBoat(final Animal anim, final EventDispatcher eventDispatcher) {
-        this.animal = anim;
+    public AnimalOnBoat(final MonkeyActor act, final EventDispatcher eventDispatcher) {
+        this.actor = act;
         this.dispatcher = eventDispatcher;
     }
 
     @Override
     public AnimalState jump() {
-        Action jump = this.animal.jumpAction();
-        this.animal.getActor().addAction(jump);
-        return new AnimalInAir(this.animal, this.dispatcher);
+        Action jump = this.actor.jumpAction();
+        this.actor.addAction(jump);
+        return new AnimalInAir(this.actor, this.dispatcher);
     }
 
     @Override
@@ -48,10 +48,10 @@ public class AnimalOnBoat implements AnimalState {
 
     @Override
     public AnimalState collide() {
-        Action hit = this.animal.collideAction();
-        this.animal.getActor().addAction(hit);
+        Action hit = this.actor.collideAction();
+        this.actor.addAction(hit);
         this.dispatcher.dispatch(new AnimalFellOff());
-        return new AnimalInWater(this.animal, this.dispatcher);
+        return new AnimalInWater(this.actor, this.dispatcher);
     }
 
     @Override

@@ -2,7 +2,6 @@ package nl.tudelft.ti2806.riverrush.game;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
 import nl.tudelft.ti2806.riverrush.screen.FinishedGameScreen;
 
 import com.badlogic.gdx.Gdx;
@@ -11,11 +10,8 @@ import com.badlogic.gdx.assets.AssetManager;
 /**
  * State for a finished game.
  */
-public class FinishedGameState implements GameState {
+public class FinishedGameState extends AbstractGameState {
 
-    private final EventDispatcher dispatcher;
-    private final AssetManager assets;
-    private final GdxGame gameWindow;
     private final FinishedGameScreen screen;
 
     /**
@@ -26,17 +22,14 @@ public class FinishedGameState implements GameState {
      *            state.
      * @param assetManager
      *            has all necessary assets loaded and available for use.
-     * @param game
+     * @param gm
      *            refers to the game that this state belongs to.
      */
     public FinishedGameState(final EventDispatcher eventDispatcher,
-            final AssetManager assetManager, final GdxGame game) {
-        this.gameWindow = game;
-        this.assets = assetManager;
-        this.dispatcher = eventDispatcher;
-
+            final AssetManager assetManager, final Game gm) {
+        super(eventDispatcher, assetManager, gm);
         this.screen = new FinishedGameScreen(assetManager, eventDispatcher);
-        Gdx.app.postRunnable(() -> FinishedGameState.this.gameWindow
+        Gdx.app.postRunnable(() -> FinishedGameState.this.game
                 .setScreen(FinishedGameState.this.screen));
     }
 
@@ -47,12 +40,12 @@ public class FinishedGameState implements GameState {
 
     @Override
     public GameState start() {
-        return new WaitingGameState(this.dispatcher, this.assets, this.gameWindow);
+        return new WaitingGameState(this.dispatcher, this.assets, this.game);
     }
 
     @Override
     public GameState stop() {
-        return new StoppedGameState(this.dispatcher, this.assets, this.gameWindow);
+        return new StoppedGameState(this.dispatcher, this.assets, this.game);
     }
 
     @Override
@@ -62,6 +55,6 @@ public class FinishedGameState implements GameState {
 
     @Override
     public GameState waitForPlayers() {
-        return new WaitingGameState(this.dispatcher, this.assets, this.gameWindow);
+        return new WaitingGameState(this.dispatcher, this.assets, this.game);
     }
 }

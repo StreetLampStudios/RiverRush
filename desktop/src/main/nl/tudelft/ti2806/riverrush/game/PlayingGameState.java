@@ -5,7 +5,6 @@ import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.domain.event.PlayerJumpedEvent;
-import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
 import nl.tudelft.ti2806.riverrush.screen.PlayingGameScreen;
 
 import com.badlogic.gdx.Gdx;
@@ -14,11 +13,8 @@ import com.badlogic.gdx.assets.AssetManager;
 /**
  * State for a game that is playing.
  */
-public class PlayingGameState implements GameState {
+public class PlayingGameState extends AbstractGameState {
 
-    private final EventDispatcher dispatcher;
-    private final AssetManager assets;
-    private final GdxGame gameWindow;
     private final PlayingGameScreen screen;
     private final HandlerLambda<PlayerJumpedEvent> playerJumpedEventHandlerLambda = (e) -> this
             .jump(e.getPlayer());
@@ -31,20 +27,18 @@ public class PlayingGameState implements GameState {
      *            state.
      * @param assetManager
      *            has all necessary assets loaded and available for use.
-     * @param game
+     * @param gm
      *            refers to the game that this state belongs to.
      */
     public PlayingGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
-            final GdxGame game) {
-        this.gameWindow = game;
-        this.assets = assetManager;
-        this.dispatcher = eventDispatcher;
+            final Game gm) {
+        super(eventDispatcher, assetManager, gm);
         this.dispatcher.attach(PlayerJumpedEvent.class, this.playerJumpedEventHandlerLambda);
 
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(() -> {
             PlayingGameState.this.screen.init();
-            PlayingGameState.this.gameWindow.setScreen(PlayingGameState.this.screen);
+            PlayingGameState.this.game.setScreen(PlayingGameState.this.screen);
         });
 
     }
@@ -73,13 +67,13 @@ public class PlayingGameState implements GameState {
     @Override
     public GameState stop() {
         this.screen.dispose();
-        return new StoppedGameState(this.dispatcher, this.assets, this.gameWindow);
+        return new StoppedGameState(this.dispatcher, this.assets, this.game);
     }
 
     @Override
     public GameState finish() {
         this.screen.dispose();
-        return new FinishedGameState(this.dispatcher, this.assets, this.gameWindow);
+        return new FinishedGameState(this.dispatcher, this.assets, this.game);
     }
 
     @Override

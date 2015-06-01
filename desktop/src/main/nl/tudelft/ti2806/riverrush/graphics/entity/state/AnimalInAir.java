@@ -2,7 +2,7 @@ package nl.tudelft.ti2806.riverrush.graphics.entity.state;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.AnimalState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
+import nl.tudelft.ti2806.riverrush.graphics.entity.MonkeyActor;
 
 /**
  * State in which the animal is in mid-air. This means the player can't control the animal while in
@@ -13,7 +13,7 @@ public class AnimalInAir implements AnimalState {
     /**
      * The animal that is in the air.
      */
-    private final Animal animal;
+    private final MonkeyActor actor;
 
     /**
      * The eventdispatcher of this event.
@@ -23,13 +23,13 @@ public class AnimalInAir implements AnimalState {
     /**
      * Constructor.
      *
-     * @param anim
+     * @param act
      *            - The monkey that is in the air
      * @param eventDispatcher
      *            - The event dispatcher of this event
      */
-    public AnimalInAir(final Animal anim, final EventDispatcher eventDispatcher) {
-        this.animal = anim;
+    public AnimalInAir(final MonkeyActor act, final EventDispatcher eventDispatcher) {
+        this.actor = act;
         this.dispatcher = eventDispatcher;
     }
 
@@ -40,7 +40,7 @@ public class AnimalInAir implements AnimalState {
 
     @Override
     public AnimalState drop() {
-        return new AnimalOnBoat(this.animal, this.dispatcher);
+        return new AnimalOnBoat(this.actor, this.dispatcher);
     }
 
     @Override

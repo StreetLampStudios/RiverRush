@@ -10,8 +10,8 @@ public class Team extends AbstractTeam {
     private HashMap<Integer, AbstractAnimal> animals;
     private BoatGroup boat;
 
-    public Team() {
-
+    public Team(int id) {
+        super(id);
     }
 
 }

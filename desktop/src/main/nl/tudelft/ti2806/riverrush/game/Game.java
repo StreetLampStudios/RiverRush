@@ -1,9 +1,11 @@
 package nl.tudelft.ti2806.riverrush.game;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 
@@ -20,7 +22,7 @@ public class Game extends GdxGame {
     private final AssetManager assets;
     private final EventDispatcher dispatcher;
     private GameState currentGameState;
-    private ArrayList<Team> teams;
+    private HashMap<Integer, Team> teams;
 
     /**
      * Creates a game class.
@@ -34,15 +36,32 @@ public class Game extends GdxGame {
     public Game(final EventDispatcher eventDispatcher, final AssetManager assetManager) {
         this.assets = assetManager;
         this.dispatcher = eventDispatcher;
-        this.teams = new ArrayList<Team>();
+        this.teams = new HashMap<Integer, Team>();
     }
 
     /**
      * Add a new team to the current listing of teams.
+     *
+     * @param id
+     *            is the identifier for the new team.
      */
-    public void addTeam() {
-        Team tm = new Team();
-        this.teams.add(tm);
+    public void addTeam(int id) {
+        Team tm = new Team(id);
+        this.teams.put(id, tm);
+    }
+
+    /**
+     * Add a new animal to the given team.
+     *
+     * @param anim
+     *            add this animal
+     * @param id
+     *            is the identifier for the team to which the animal should be added.
+     */
+    public void addAnimal(AbstractAnimal anim, Integer teamID) {
+        Team tm = this.teams.get(teamID);
+        FailIf.isNull(tm);
+        tm.addAnimal(anim);
     }
 
     @Override
@@ -81,5 +100,9 @@ public class Game extends GdxGame {
      */
     public void waitForPlayers() {
         this.currentGameState = this.currentGameState.waitForPlayers();
+    }
+
+    public HashMap<Integer, Team> getTeams() {
+        return this.teams;
     }
 }

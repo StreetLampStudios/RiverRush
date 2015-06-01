@@ -1,9 +1,7 @@
 package nl.tudelft.ti2806.riverrush.graphics;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
-import nl.tudelft.ti2806.riverrush.graphics.entity.MonkeyActor;
 import nl.tudelft.ti2806.riverrush.graphics.entity.ObstacleGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.RiverActor;
 
@@ -50,7 +48,7 @@ public class SideStage extends Table {
         this.assets = assetManager;
         this.river = new RiverActor(this.assets, 0, RIVER_HEIGHT, RIVER_WIDTH);
         this.boat = new BoatGroup(this.assets, this.river.getMid() - BOAT_OFFSET, BOAT_POSITION,
-                BOAT_SIZE, BOAT_SIZE, eventDispatcher);
+                BOAT_SIZE, BOAT_SIZE);
         this.addActor(this.river);
         this.addActor(this.boat);
 
@@ -82,14 +80,14 @@ public class SideStage extends Table {
         super.draw(batch, parentAlpha);
         // We check if the current obstacle hits the only currently available
         // player (the player parameter is currently unusued)
-        MonkeyActor monk = this.boat.getAnimal(new Player());
-        if (this.obstacle != null && this.obstacle.collide(monk)) {
-            // monk.collide();
-        }
-
-        if (this.obstacle != null && this.obstacle.isDone()) {
-            this.spawnObstacle(OBSTACLE_OFFSET);
-        }
+        // MonkeyActor monk = this.boat.getAnimal(new Player());
+        // if (this.obstacle != null && this.obstacle.collide(monk)) {
+        // monk.collide();
+        // }
+        //
+        // if (this.obstacle != null && this.obstacle.isDone()) {
+        // this.spawnObstacle(OBSTACLE_OFFSET);
+        // }
 
     }
 
