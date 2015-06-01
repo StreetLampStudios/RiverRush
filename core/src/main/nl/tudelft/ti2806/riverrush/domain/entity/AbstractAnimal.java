@@ -66,7 +66,6 @@ public abstract class AbstractAnimal {
      */
     public void collide() {
         this.setState(this.getState().collide());
-        this.respawn(); // TEMP
     }
 
     /**

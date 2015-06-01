@@ -4,7 +4,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.LoadingGameState;
@@ -21,6 +23,7 @@ public class Game extends GdxGame {
 
     private final AssetManager assets;
     private final EventDispatcher dispatcher;
+    private final HandlerLambda<AnimalFellOffEvent> animalFellOffEventHandlerLambda;
     private GameState currentGameState;
     private HashMap<Integer, Team> teams;
 
@@ -32,9 +35,22 @@ public class Game extends GdxGame {
      */
     @Inject
     public Game(final EventDispatcher eventDispatcher, final AssetManager assetManager) {
-        this.assets = assetManager;
         this.dispatcher = eventDispatcher;
-        this.teams = new HashMap<Integer, Team>();
+        this.assets = assetManager;
+        this.teams = new HashMap<>();
+
+        animalFellOffEventHandlerLambda = (e) -> this.getTeam(e.getTeam()).getAnimals().get(e.getAnimal()).collide();
+
+        this.dispatcher.attach(AnimalFellOffEvent.class, animalFellOffEventHandlerLambda);
+    }
+
+    /**
+     * Get a team.
+     *
+     * @param teamId is the identifier for the team.
+     */
+    public Team getTeam(final Integer teamId) {
+        return this.teams.get(teamId);
     }
 
     /**
@@ -50,13 +66,13 @@ public class Game extends GdxGame {
     /**
      * Add a new animal to the given team.
      *
-     * @param anim   add this animal
+     * @param animal   add this animal
      * @param teamId is the identifier for the team to which the animal should be added.
      */
-    public void addAnimal(AbstractAnimal anim, Integer teamId) {
+    public void addAnimal(final AbstractAnimal animal, final Integer teamId) {
         Team tm = this.teams.get(teamId);
         FailIf.isNull(tm);
-        tm.addAnimal(anim);
+        tm.addAnimal(animal);
     }
 
     @Override
@@ -66,6 +82,7 @@ public class Game extends GdxGame {
 
     @Override
     public void dispose() {
+        this.dispatcher.detach(AnimalFellOffEvent.class, animalFellOffEventHandlerLambda);
         this.currentGameState = this.currentGameState.stop();
     }
 
@@ -95,9 +112,5 @@ public class Game extends GdxGame {
      */
     public void waitForPlayers() {
         this.currentGameState = this.currentGameState.waitForPlayers();
-    }
-
-    public HashMap<Integer, Team> getTeams() {
-        return this.teams;
     }
 }

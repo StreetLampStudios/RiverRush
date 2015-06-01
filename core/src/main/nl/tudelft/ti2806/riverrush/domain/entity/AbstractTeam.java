@@ -6,11 +6,16 @@ import java.util.List;
 public abstract class AbstractTeam {
 
     private int id;
+
     private final List<AbstractAnimal> animals;
 
     public AbstractTeam(final int aId) {
         this.id = aId;
         this.animals = new ArrayList<>();
+    }
+
+    public List<AbstractAnimal> getAnimals() {
+        return animals;
     }
 
     public void addAnimal(AbstractAnimal animal) {

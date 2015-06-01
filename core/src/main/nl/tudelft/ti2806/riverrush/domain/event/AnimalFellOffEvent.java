@@ -1,6 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractTeam;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
@@ -11,7 +12,9 @@ import java.util.Map;
  */
 public class AnimalFellOffEvent implements Event {
 
-    private Integer id;
+    private Integer animalId;
+
+    private Integer teamId;
 
     @Override
     public String serialize(final Protocol protocol) {
@@ -24,12 +27,20 @@ public class AnimalFellOffEvent implements Event {
     }
 
     @Override
-    public void setAnimal(AbstractAnimal aAnimal) {
-        this.id = aAnimal.getId();
+    public void setAnimal(final AbstractAnimal aAnimal) {
+        this.animalId = aAnimal.getId();
     }
 
     @Override
     public Integer getAnimal() {
-        return this.id;
+        return this.animalId;
+    }
+
+    public Integer getTeam() {
+        return this.teamId;
+    }
+
+    public void setTeam(AbstractTeam team) {
+        this.teamId = team.getId();
     }
 }

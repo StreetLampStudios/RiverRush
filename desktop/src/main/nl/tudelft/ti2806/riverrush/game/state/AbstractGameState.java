@@ -5,7 +5,6 @@ import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.game.Game;
-import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
 import nl.tudelft.ti2806.riverrush.graphics.entity.MonkeyActor;
 import nl.tudelft.ti2806.riverrush.graphics.entity.state.AnimalOnBoat;
@@ -58,7 +57,7 @@ public class AbstractGameState implements GameState {
     public void addAnimal(AnimalAddedEvent event) {
         MonkeyActor actor = new MonkeyActor(this.assets, 0, 0, this.dispatcher);
         AbstractAnimal anim = new Animal(new AnimalOnBoat(actor, this.dispatcher));
-        this.game.getTeams().get(event.getTeamId()).addAnimal(anim);
+        this.game.getTeam(event.getTeam()).addAnimal(anim);
     }
 
 }

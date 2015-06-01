@@ -3,6 +3,7 @@ package nl.tudelft.ti2806.riverrush.controller;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
+import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.network.AbstractServer;
 
@@ -25,7 +26,7 @@ public class UserController extends AbstractController {
     public UserController(final EventDispatcher aDispatcher,
                           @Named("playerServer") final AbstractServer aServer) {
         super(aDispatcher);
-        this.animal = null; //FIXME: make an actual animal
+        this.animal = new Animal(aDispatcher);
         this.dispatcher = aDispatcher;
         this.server = aServer;
     }
@@ -34,13 +35,15 @@ public class UserController extends AbstractController {
     public void initialize() {
         final HandlerLambda<Event> onGameStateChangedLambda = (e) -> this.server.sendEvent(e, this);
 
+        this.listenTo(GameWaitingEvent.class, onGameStateChangedLambda);
         this.listenTo(GameAboutToStartEvent.class, onGameStateChangedLambda);
         this.listenTo(GameStartedEvent.class, onGameStateChangedLambda);
         this.listenTo(GameStoppedEvent.class, onGameStateChangedLambda);
         this.listenTo(GameFinishedEvent.class, onGameStateChangedLambda);
-        this.listenTo(GameWaitingEvent.class, onGameStateChangedLambda);
+        this.listenTo(AnimalAddedEvent.class, onGameStateChangedLambda);
         this.listenTo(AnimalJumpedEvent.class, onGameStateChangedLambda);
         this.listenTo(AnimalFellOffEvent.class, onGameStateChangedLambda);
+        this.listenTo(AnimalReturnedToBoatEvent.class, onGameStateChangedLambda);
 
         AnimalAddedEvent event = new AnimalAddedEvent();
         event.setAnimal(this.animal);

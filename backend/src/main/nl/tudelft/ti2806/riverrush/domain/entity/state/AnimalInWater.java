@@ -1,6 +1,5 @@
 package nl.tudelft.ti2806.riverrush.domain.entity.state;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalReturnedToBoatEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
@@ -12,11 +11,10 @@ public class AnimalInWater extends AbstractAnimalState {
     /**
      * Constructor.
      *
-     * @param aAnimal         - The animal that is on the boat
      * @param eventDispatcher - The event disptacher
      */
-    public AnimalInWater(AbstractAnimal aAnimal, EventDispatcher eventDispatcher) {
-        super(aAnimal, eventDispatcher);
+    public AnimalInWater(EventDispatcher eventDispatcher) {
+        super(eventDispatcher);
     }
 
     @Override
@@ -38,7 +36,7 @@ public class AnimalInWater extends AbstractAnimalState {
     public AnimalState returnToBoat() {
         this.getDispatcher().dispatch(new AnimalReturnedToBoatEvent());
 
-        return new AnimalOnBoat(this.getAnimal(), this.getDispatcher());
+        return new AnimalOnBoat(this.getDispatcher());
     }
 
 }

@@ -1,6 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractTeam;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
@@ -10,8 +11,8 @@ import java.util.Map;
  */
 public class AddObstacleEvent implements Event {
 
-    private boolean isLeft = false; //TODO: rename
     private double location;
+    private Integer teamId;
 
     @Override
     public String serialize(final Protocol protocol) {
@@ -20,10 +21,8 @@ public class AddObstacleEvent implements Event {
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
-        if (keyValuePairs.get("isLeft").equals("true")) {
-            isLeft = true;
-        }
-        location = Double.parseDouble(keyValuePairs.get("location"));
+        this.teamId = Integer.parseInt(keyValuePairs.get("team"));
+        this.location = Double.parseDouble(keyValuePairs.get("location"));
         return this;
     }
 
@@ -41,7 +40,11 @@ public class AddObstacleEvent implements Event {
         return location;
     }
 
-    public boolean isLeft() {
-        return isLeft;
+    public Integer getTeam() {
+        return this.teamId;
+    }
+
+    public void setTeam(AbstractTeam team) {
+        this.teamId = team.getId();
     }
 }

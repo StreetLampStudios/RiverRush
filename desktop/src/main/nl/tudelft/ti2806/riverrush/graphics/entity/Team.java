@@ -13,5 +13,4 @@ public class Team extends AbstractTeam {
     public Team(final int id) {
         super(id);
     }
-
 }

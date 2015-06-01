@@ -35,11 +35,11 @@ public class AnimalAddedEvent implements Event {
         return this.animalId;
     }
 
-    public Integer getTeamId() {
+    public Integer getTeam() {
         return this.teamId;
     }
 
-    public void setTeamId(AbstractTeam team) {
+    public void setTeam(AbstractTeam team) {
         this.teamId = team.getId();
     }
 }
