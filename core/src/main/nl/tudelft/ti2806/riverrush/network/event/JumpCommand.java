@@ -1,7 +1,6 @@
 package nl.tudelft.ti2806.riverrush.network.event;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
-import nl.tudelft.ti2806.riverrush.domain.entity.Player;
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
@@ -13,7 +12,7 @@ import java.util.Map;
 public class JumpCommand implements Event {
 
 
-    private Animal animal;
+    private Integer id;
 
     @Override
     public String serialize(final Protocol protocol) {
@@ -25,11 +24,11 @@ public class JumpCommand implements Event {
         return this;
     }
 
-    public void setAnimal(final Animal aAnimal) {
-        this.animal = aAnimal;
+    public void setAnimal(final AbstractAnimal aAnimal) {
+        this.id = aAnimal.getId();
     }
 
-    public Animal getAnimal() {
-        return this.animal;
+    public Integer getAnimal() {
+        return this.id;
     }
 }

@@ -2,11 +2,12 @@ package nl.tudelft.ti2806.riverrush.game;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.game.state.GameState;
+import nl.tudelft.ti2806.riverrush.game.state.WaitingForRendererState;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -48,14 +49,11 @@ public class Game {
      * Handler that adds a player to the game.
      */
     private void addPlayerHandler() {
-        playerCount++;
-        if (playerCount > 0) {
-            eventDispatcher.dispatch(new GameAboutToStartEvent());
+        this.playerCount++;
+        if (this.playerCount > 0) {
+            this.eventDispatcher.dispatch(new GameAboutToStartEvent());
             final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-            scheduler.schedule(
-                this::start,
-                DELAY,
-                TimeUnit.SECONDS);
+            scheduler.schedule(this::start, DELAY, TimeUnit.SECONDS);
         }
     }
 

@@ -1,6 +1,6 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
@@ -22,12 +22,12 @@ public class AssetsLoadedEvent implements Event {
     }
 
     @Override
-    public void setAnimal(Animal animal) {
+    public void setAnimal(final AbstractAnimal animal) {
         // Has to be empty
     }
 
     @Override
-    public Animal getAnimal() {
+    public Integer getAnimal() {
         // Has to be empty
         return null;
     }

@@ -2,8 +2,7 @@ package nl.tudelft.ti2806.riverrush.controller;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
-import nl.tudelft.ti2806.riverrush.domain.entity.Player;
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.network.AbstractServer;
 
@@ -12,7 +11,7 @@ import nl.tudelft.ti2806.riverrush.network.AbstractServer;
  */
 public class UserController extends AbstractController {
 
-    private final Animal animal;
+    private final AbstractAnimal animal;
     private final EventDispatcher dispatcher;
     private final AbstractServer server;
 

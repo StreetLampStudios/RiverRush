@@ -4,7 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.inject.Inject;
-import nl.tudelft.ti2806.riverrush.domain.entity.RiverBanks;
+import nl.tudelft.ti2806.riverrush.graphics.entity.RiverBanksActor;
 
 /**
  * Centerstage is a custom made stage that can be used to create the middle partioning of the
@@ -23,7 +23,7 @@ public class CenterStage extends Table {
     public CenterStage(final AssetManager assets, final float width, final float height) {
         this.setBounds(0, 0, width, height);
 
-        RiverBanks background = new RiverBanks(assets, 0, 0, width, height);
+        RiverBanksActor background = new RiverBanksActor(assets, 0, 0, width, height);
         this.addActor(background);
 
     }

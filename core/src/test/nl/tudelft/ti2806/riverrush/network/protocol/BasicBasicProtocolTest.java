@@ -1,7 +1,6 @@
 package nl.tudelft.ti2806.riverrush.network.protocol;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
-import nl.tudelft.ti2806.riverrush.domain.entity.Player;
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import org.junit.Before;
 import org.junit.Test;
@@ -183,12 +182,12 @@ public class BasicBasicProtocolTest {
         }
 
         @Override
-        public void setAnimal(Animal animal) {
+        public void setAnimal(final AbstractAnimal animal) {
             // Has to be empty
         }
 
         @Override
-        public Animal getAnimal() {
+        public Integer getAnimal() {
             // Has to be empty
             return null;
         }

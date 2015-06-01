@@ -1,6 +1,6 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
@@ -10,6 +10,7 @@ import java.util.Map;
  */
 public class GameAboutToStartEvent implements Event {
 
+    //TODO: Make not hardcoded.
     private static final int FIVE_SECONDS = 5;
     private final int seconds;
 
@@ -40,12 +41,12 @@ public class GameAboutToStartEvent implements Event {
     }
 
     @Override
-    public void setAnimal(Animal aAnimal) {
+    public void setAnimal(final AbstractAnimal aAnimal) {
         // Has to be empty
     }
 
     @Override
-    public Animal getAnimal() {
+    public Integer getAnimal() {
         // Has to be empty
         return null;
     }

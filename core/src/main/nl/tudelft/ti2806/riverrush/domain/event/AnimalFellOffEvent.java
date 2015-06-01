@@ -1,17 +1,17 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
 
 /**
  * This is the event that is sent from the server to the device and the renderer to say that the animal
- * has fallen off the boat
+ * has fallen off the boat.
  */
 public class AnimalFellOffEvent implements Event {
 
-    private Animal animal;
+    private Integer id;
 
     @Override
     public String serialize(final Protocol protocol) {
@@ -24,12 +24,12 @@ public class AnimalFellOffEvent implements Event {
     }
 
     @Override
-    public void setAnimal(Animal aAnimal) {
-        this.animal = aAnimal;
+    public void setAnimal(AbstractAnimal aAnimal) {
+        this.id = aAnimal.getId();
     }
 
     @Override
-    public Animal getAnimal() {
-        return this.animal;
+    public Integer getAnimal() {
+        return this.id;
     }
 }
