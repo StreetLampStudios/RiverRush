@@ -37,7 +37,7 @@ public class AnimalOnBoat implements AnimalState {
     @Override
     public AnimalState jump() {
         Action jump = this.animal.jumpAction();
-        this.animal.addAction(jump);
+        this.animal.getActor().addAction(jump);
         return new AnimalInAir(this.animal, this.dispatcher);
     }
 
@@ -49,7 +49,7 @@ public class AnimalOnBoat implements AnimalState {
     @Override
     public AnimalState collide() {
         Action hit = this.animal.collideAction();
-        this.animal.addAction(hit);
+        this.animal.getActor().addAction(hit);
         this.dispatcher.dispatch(new AnimalFellOff());
         return new AnimalInWater(this.animal, this.dispatcher);
     }

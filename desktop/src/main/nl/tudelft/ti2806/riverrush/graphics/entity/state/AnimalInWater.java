@@ -58,8 +58,8 @@ public class AnimalInWater implements AnimalState {
         // this.monkey.addAction(ret);
         Action fade = this.animal.returnFade();
         Action ret = this.animal.returnMove();
-        this.animal.addAction(ret);
-        this.animal.addAction(fade);
+        this.animal.getActor().addAction(ret);
+        this.animal.getActor().addAction(fade);
 
         return new AnimalOnBoat(this.animal, this.dispatcher);
     }

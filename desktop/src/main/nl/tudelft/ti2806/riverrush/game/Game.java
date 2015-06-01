@@ -1,11 +1,11 @@
 package nl.tudelft.ti2806.riverrush.game;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
+import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Inject;
@@ -20,7 +20,7 @@ public class Game extends GdxGame {
     private final AssetManager assets;
     private final EventDispatcher dispatcher;
     private GameState currentGameState;
-    private HashMap<Integer, AbstractAnimal> map;
+    private ArrayList<Team> teams;
 
     /**
      * Creates a game class.
@@ -34,6 +34,15 @@ public class Game extends GdxGame {
     public Game(final EventDispatcher eventDispatcher, final AssetManager assetManager) {
         this.assets = assetManager;
         this.dispatcher = eventDispatcher;
+        this.teams = new ArrayList<Team>();
+    }
+
+    /**
+     * Add a new team to the current listing of teams.
+     */
+    public void addTeam() {
+        Team tm = new Team();
+        this.teams.add(tm);
     }
 
     @Override

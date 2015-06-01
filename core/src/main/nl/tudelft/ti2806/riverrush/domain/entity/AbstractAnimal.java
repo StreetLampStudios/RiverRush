@@ -5,12 +5,10 @@ import java.util.TimerTask;
 
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-
 /**
  * An abstract implementation of {@link Animal}.
  */
-public abstract class AbstractAnimal extends Actor {
+public abstract class AbstractAnimal {
   /**
    * The current state of the animal.
    */
