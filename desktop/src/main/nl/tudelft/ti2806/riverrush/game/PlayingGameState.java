@@ -2,14 +2,16 @@ package nl.tudelft.ti2806.riverrush.game;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.GameState;
 import nl.tudelft.ti2806.riverrush.domain.entity.Player;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
-import nl.tudelft.ti2806.riverrush.domain.event.PlayerJumpedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
+import nl.tudelft.ti2806.riverrush.graphics.entity.ObstacleGraphic;
 import nl.tudelft.ti2806.riverrush.screen.PlayingGameScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import sun.plugin.javascript.navig.Array;
+
+import java.util.ArrayList;
 
 /**
  * State for a game that is playing.
@@ -22,6 +24,14 @@ public class PlayingGameState implements GameState {
     private final PlayingGameScreen screen;
     private final HandlerLambda<PlayerJumpedEvent> playerJumpedEventHandlerLambda = (e) -> this
             .jump(e.getPlayer());
+    private final HandlerLambda<AddObstacleEvent> addObstacleEventHandlerLambda = (e) -> this
+        .addObstacle(e);
+
+    private final TickHandler OnTick = () -> this.tick();
+
+    private final ArrayList<ObstacleGraphic> leftObstList;
+    private final ArrayList<ObstacleGraphic> rightObstList;
+
 
     /**
      * The state of the game that indicates that the game is currently playable.
@@ -40,12 +50,16 @@ public class PlayingGameState implements GameState {
         this.assets = assetManager;
         this.dispatcher = eventDispatcher;
         this.dispatcher.attach(PlayerJumpedEvent.class, this.playerJumpedEventHandlerLambda);
+        this.dispatcher.attach(AddObstacleEvent.class, this.addObstacleEventHandlerLambda);
 
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(() -> {
-            PlayingGameState.this.screen.init();
+            PlayingGameState.this.screen.init(OnTick);
             PlayingGameState.this.gameWindow.setScreen(PlayingGameState.this.screen);
         });
+
+        this.leftObstList = new ArrayList<ObstacleGraphic>();
+        this.rightObstList = new ArrayList<ObstacleGraphic>();
 
     }
 
@@ -85,5 +99,39 @@ public class PlayingGameState implements GameState {
     @Override
     public GameState waitForPlayers() {
         return this;
+    }
+
+    /**
+     * This method is called when the game renders the screen.
+     */
+    private void tick() {
+        for (ObstacleGraphic graphic : leftObstList) {
+            //FIXME add real teams
+//            for (Player play : leftTeam) {
+//                graphic.collide(play);
+//            }
+        }
+
+        for (ObstacleGraphic graphic : rightObstList) {
+            //FIXME add real teams
+//            for (Player play : rightTeam) {
+//                graphic.collide(play);
+//            }
+        }
+    }
+
+    /**
+     * Is called when an obstacle event is received.
+     * @param e - the event
+     */
+    private void addObstacle(final AddObstacleEvent e) {
+        ObstacleGraphic graphic = new ObstacleGraphic(assets, e.getOffset());
+
+        screen.addObstacle(e.isLeft(), graphic);
+        if (e.isLeft()) {
+            leftObstList.add(graphic);
+        } else {
+            rightObstList.add(graphic);
+        }
     }
 }

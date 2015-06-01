@@ -1,9 +1,8 @@
 package nl.tudelft.ti2806.riverrush.graphics;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.game.TickHandler;
 import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
-import nl.tudelft.ti2806.riverrush.graphics.entity.MonkeyActor;
 import nl.tudelft.ti2806.riverrush.graphics.entity.ObstacleGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.RiverActor;
 
@@ -33,19 +32,17 @@ public class SideStage extends Table {
     /**
      * Creates a stage that holds the river, boats, and any player characters that reside on it, as
      * well as the obstacles that pass through it.
-     *
-     * @param assetManager
+     *  @param assetManager
      *            refers to the manager that has made all loaded assets available for use.
      * @param width
      *            is the width size that the stage will be given.
      * @param height
-     *            is the height size the stage will be given.
-     * @param eventDispatcher
-     *            is the dispatcher that handles all relevant events.
+ *            is the height size the stage will be given.
+     * @param eventDispatcher - the event dispatcher
      */
     @Inject
     public SideStage(final AssetManager assetManager, final float width, final float height,
-            final EventDispatcher eventDispatcher) {
+                     final EventDispatcher eventDispatcher) {
         this.setBounds(0, 0, width, height);
         this.assets = assetManager;
         this.river = new RiverActor(this.assets, 0, RIVER_HEIGHT, RIVER_WIDTH);
@@ -54,21 +51,20 @@ public class SideStage extends Table {
         this.addActor(this.river);
         this.addActor(this.boat);
 
-        this.spawnObstacle(OBSTACLE_OFFSET);
+        //this.spawnObstacle(OBSTACLE_OFFSET);
 
     }
 
     /**
      * Adds a new obstacle to the screen.
-     *
-     * @param offset
-     *            - double !! between 0 and 1 !!
+     * @param graphic - The obstacle that you want to add.
      */
-    public void spawnObstacle(final double offset) {
+    public void spawnObstacle(final ObstacleGraphic graphic) {
         if (this.obstacle != null) {
             this.removeActor(this.obstacle);
         }
-        this.obstacle = new ObstacleGraphic(this.assets, offset);
+        graphic.init();
+        this.obstacle = graphic;
         this.addActor(this.obstacle);
     }
 
@@ -80,17 +76,6 @@ public class SideStage extends Table {
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
         super.draw(batch, parentAlpha);
-        // We check if the current obstacle hits the only currently available
-        // player (the player parameter is currently unusued)
-        MonkeyActor monk = this.boat.getAnimal(new Player());
-        if (this.obstacle != null && this.obstacle.collide(monk)) {
-            // monk.collide();
-        }
-
-        if (this.obstacle != null && this.obstacle.isDone()) {
-            this.spawnObstacle(OBSTACLE_OFFSET);
-        }
-
     }
 
     // /**
