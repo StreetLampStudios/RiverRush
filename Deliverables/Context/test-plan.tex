@@ -1,0 +1,72 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{titling, palatino, booktabs}
+\usepackage[margin=2cm]{geometry}
+\usepackage[none]{hyphenat}
+\usepackage{listings}
+
+\begin{document}
+\pagenumbering{gobble}
+\setlength{\droptitle}{-5em}
+\title{
+Testing Strategy\\ 
+}
+\date{\today}
+\maketitle
+
+\section{Introduction}
+The goal of document is to provide a strategy for testing the RiverRush game on target audiences. We mainly describe what aspects of the game will be tested, with what goal, and when each test will take place. 
+
+\section{High-level strategy}
+In order to test and verify our initial assumptions about the game's performance with the target audience, we adopt the three stages. The stages range from very rough tests  to tests on aesthetics. During execution we will explicitly try to cover things that cannot be tested in an automated fashion (with unit tests for example).
+
+\begin{enumerate}
+\item \textbf{Functional}\\
+The first stage is to test whether the core technical aspects of the game work as intended. Functional testing is in part already done by unit tests and manual integration tests, but these can never simulate a real use-case scenario that performs on all parts of the system. 
+
+\item \textbf{User Interaction \& Usability}\\
+The goal of the next stage is to test how users discover to play the game. For developers of an application it it obvious how the game should be controlled, but it is hard to predict how people unfamiliar with our system will respond. 
+
+\item \textbf{User behaviour \& Game aesthetics}\\
+The last phase focuses on response of users and group interaction. We will test how individual people react to the game, as well as how the game stimulates interaction between people in an auditorium.
+\end{enumerate}
+
+\section{Functional stage}
+This stage answers questions like:
+\begin{itemize}
+\item Can the game be started and stopped properly in different environments?
+\item Can enough players join the game?
+\item How does the game perform in terms of speed, input latency, etc?
+\item Are there unforeseen bugs in the game?
+\end{itemize}
+In order to answer these questions, we will let 10-30 users play the game in one of the lecture halls for 15 minutes. Multiple games will be played and the test may be repeated if more information has to be gathered. This test will take place during week 8.\\
+\\
+After playing the game, we will ask the users several concrete questions about the game's technical performance. This feedback can be processed in the same week.
+
+\section{User Interaction \& Usability stage}
+This stage aims to answer questions such as:
+\begin{itemize}
+\item Can players visually identify their character easily?
+\item Is the game balanced enough or are there winning strategies?
+\item Do the users perceive the game as easy to control and understand?
+\item Do users control the game as intended?
+\item How do the game mechanics scale with a growing amount of users?
+\end{itemize}
+This stage requires two groups of subjects, both of different size. The first group will consist of around five people and will cover the first and second question posed above. This test will be executed at the end of week 8.\\
+\\
+The second group will be around ten people and will cover the remaining questions. This test will be executed at the beginning of week 9.
+\section{User behaviour \& Game aesthetics stage}
+This stage aims to answer questions such as:
+\begin{itemize}
+\item How do users react to the game when first playing it?
+\item Would users play the game again? Why / why not?
+\item What would users like to see improved?
+\item Does the game improve the 'groupieness' when played by multiple people.
+\item If so, in what way? If not, why?
+\end{itemize}
+The last stage will be completely executed in week 9. In order to receive good feedback, we will again have multiple test-moments with groups of different sizes.\\
+\\
+The first, second and third question can be answered by individuals, so we will let different individuals play the game with our team and take note of their response. Testing on individuals ensures that they give their opinion independent of any friends. This test will be done in an informal setting outside an auditorium / lecture hall because not many people are needed.\\
+\\
+The last question will be answered by letting a large group, preferably 30 or more people play the game when all bugs and inconsistencies are ironed out. This will give us the best feedback on how the game could be improved before the release and further in the future in order to let people interact with each other.
+\end{document}
