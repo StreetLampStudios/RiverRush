@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
+import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Monkey;
 import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
@@ -217,10 +218,10 @@ public class PlayingGameScreen implements Screen {
     /**
      * Tells a player that resides on this screen to jump.
      *
-     * @param player refers to the player that is commanded to jump.
+     * @param animal refers to the animal that is commanded to jump.
      */
-    public void jump(final Player player) {
-        Monkey monk = this.leftScreen.getBoat().getAnimal(player);
+    public void jump(final Animal animal) {
+        Monkey monk = this.leftScreen.getBoat().getAnimal(animal);
         monk.jump();
 
     }

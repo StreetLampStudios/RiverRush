@@ -78,15 +78,6 @@ public class SideStage extends Table {
         super.draw(batch, parentAlpha);
         // We check if the current obstacle hits the only currently available
         // player (the player parameter is currently unusued)
-        Monkey monk = this.boat.getAnimal(new Player());
-        if (this.obstacle != null && this.obstacle.collide(monk)) {
-            monk.collide();
-        }
-
-        if (this.obstacle != null && this.obstacle.isDone()) {
-            this.spawnObstacle(OBSTACLE_OFFSET);
-        }
-
     }
 
     /**

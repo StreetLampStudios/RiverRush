@@ -111,11 +111,11 @@ public class Boat extends Group {
     /**
      * Gets the animal the player corresponds to.
      *
-     * @param player whose animal needs to be retrieved. This method currently does not take in
+     * @param animal whose animal needs to be retrieved. This method currently does not take in
      *               consideration which player. Instead just takes whatever animal is on the boat.
      * @return the animal of the player
      */
-    public Monkey getAnimal(final Player player) {
+    public Monkey getAnimal(final Animal animal) {
         return this.monkey;
 
     }

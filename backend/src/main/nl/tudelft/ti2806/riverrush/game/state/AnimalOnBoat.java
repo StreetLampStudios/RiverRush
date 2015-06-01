@@ -16,7 +16,7 @@ public class AnimalOnBoat extends AbstractAnimalState {
      * Constructor.
      *
      * @param aAnimal         - The animal that is on the boat
-     * @param eventDispatcher - The event disptacher
+     * @param eventDispatcher - The event distpacher
      */
     public AnimalOnBoat(final AbstractAnimal aAnimal, final EventDispatcher eventDispatcher) {
         super(aAnimal, eventDispatcher);
@@ -36,8 +36,8 @@ public class AnimalOnBoat extends AbstractAnimalState {
 
     @Override
     public AnimalState collide() {
-        Action hit = this.getAnimal().collideAction();
-        this.getAnimal().addAction(hit);
+        //Action hit = this.getAnimal().collideAction();
+        //this.getAnimal().addAction(hit);
         this.getDispatcher().dispatch(new AnimalFellOffEvent());
         return new AnimalInWater(this.getAnimal(), this.getDispatcher());
     }

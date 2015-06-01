@@ -235,10 +235,4 @@ public class Monkey extends AbstractAnimal {
         }, time, time);
         return jump;
     }
-
-    @Override
-    public void leave() {
-        // Not yet implemented
-    }
-
 }

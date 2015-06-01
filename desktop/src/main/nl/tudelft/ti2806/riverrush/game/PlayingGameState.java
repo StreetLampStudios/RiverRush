@@ -2,6 +2,7 @@ package nl.tudelft.ti2806.riverrush.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.GameState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
@@ -20,7 +21,7 @@ public class PlayingGameState implements GameState {
     private final GdxGame gameWindow;
     private final PlayingGameScreen screen;
     private final HandlerLambda<AnimalJumpedEvent> playerJumpedEventHandlerLambda =
-        (e) -> this.jump(e.getPlayer());
+        (e) -> this.jump(e.getAnimal());
 
     /**
      * The state of the game that indicates that the game is currently playable.
@@ -51,10 +52,10 @@ public class PlayingGameState implements GameState {
     /**
      * Tells a given player to perform the jump action.
      *
-     * @param player refers to the player character that has to jump.
+     * @param animal refers to the animal character that has to jump.
      */
-    public void jump(final Player player) {
-        this.screen.jump(player);
+    public void jump(final Animal animal) {
+        this.screen.jump(animal);
     }
 
     @Override

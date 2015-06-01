@@ -8,18 +8,18 @@ import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.verify;
 
 /**
- * Conctrete test class for PlayerController.
+ * Conctrete test class for UserController.
  */
-public class PlayerControllerTest extends ControllerTest {
+public class UserControllerTest extends ControllerTest {
 
     @Override
     public void setup() {
         super.setup();
-        controller = new PlayerController(this.dispatcherMock, this.serverMock);
+        controller = new UserController(this.dispatcherMock, this.serverMock);
     }
 
     /**
-     * When a PlayerController initialized,
+     * When a UserController initialized,
      * it should send an event to the player
      * to indicate to the user that she joined the game.
      */

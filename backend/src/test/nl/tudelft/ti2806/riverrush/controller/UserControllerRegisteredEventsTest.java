@@ -20,13 +20,13 @@ import java.util.Collection;
  * Tests whether controllers register the right events.
  */
 @RunWith(Parameterized.class)
-public class PlayerControllerRegisteredEventsTest extends RegisteredEventsTest {
+public class UserControllerRegisteredEventsTest extends RegisteredEventsTest {
 
     @Mock
     protected UserServer serverMock;
 
     /**
-     * PlayerController should attach handlers for at least
+     * UserController should attach handlers for at least
      * these events to notify the player of game state changes.
      *
      * @return The collection of events that have to be registered.
@@ -48,7 +48,7 @@ public class PlayerControllerRegisteredEventsTest extends RegisteredEventsTest {
     @Override
     public void setup() {
         super.setup();
-        this.controller = new PlayerController(this.dispatcherMock, this.serverMock);
+        this.controller = new UserController(this.dispatcherMock, this.serverMock);
     }
 
     /**
@@ -56,7 +56,7 @@ public class PlayerControllerRegisteredEventsTest extends RegisteredEventsTest {
      *
      * @param eventClass The collection of events that have to be registered.
      */
-    public PlayerControllerRegisteredEventsTest(final Class<?> eventClass) {
+    public UserControllerRegisteredEventsTest(final Class<?> eventClass) {
         super(eventClass);
     }
 }
