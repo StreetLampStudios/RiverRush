@@ -1,28 +1,27 @@
 package nl.tudelft.ti2806.riverrush.domain.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public abstract class AbstractTeam {
 
-    private int id;
+  private int id;
 
-    private final List<AbstractAnimal> animals;
+  private final HashMap<Integer, AbstractAnimal> animals;
 
-    public AbstractTeam(final int aId) {
-        this.id = aId;
-        this.animals = new ArrayList<>();
-    }
+  public AbstractTeam(final int aId) {
+    this.id = aId;
+    this.animals = new HashMap<Integer, AbstractAnimal>();
+  }
 
-    public List<AbstractAnimal> getAnimals() {
-        return animals;
-    }
+  public HashMap<Integer, AbstractAnimal> getAnimals() {
+    return this.animals;
+  }
 
-    public void addAnimal(AbstractAnimal animal) {
-        this.animals.add(animal);
-    }
+  public void addAnimal(AbstractAnimal animal) {
+    this.animals.put(animal.getId(), animal);
+  }
 
-    public Integer getId() {
-        return this.id;
-    }
+  public Integer getId() {
+    return this.id;
+  }
 }

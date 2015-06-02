@@ -35,6 +35,16 @@ public abstract class AbstractAnimal {
   }
 
   /**
+   * Create an animal in desktop.
+   * @param dispatch
+   * @param ID
+   */
+  public AbstractAnimal(final EventDispatcher dispatch, Integer ID) {
+    this.dispatcher = dispatch;
+    this.id = ID;
+  }
+
+  /**
    * Get the current state of the animal.
    *
    * @return {@link AnimalState}, never null.

@@ -2,7 +2,6 @@ package nl.tudelft.ti2806.riverrush.domain.event;
 
 import java.util.Map;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.AbstractTeam;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 /**
@@ -43,7 +42,7 @@ public class AddObstacleEvent implements Event {
     return this.teamId;
   }
 
-  public void setTeam(AbstractTeam team) {
-    this.teamId = team.getId();
+  public void setTeam(Integer teamID) {
+    this.teamId = teamID;
   }
 }
