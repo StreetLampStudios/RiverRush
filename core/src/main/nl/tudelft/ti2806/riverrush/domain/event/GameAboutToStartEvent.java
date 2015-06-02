@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Map;
  */
 public class GameAboutToStartEvent implements Event {
 
+    //TODO: Make not hardcoded.
     private static final int FIVE_SECONDS = 5;
     private final int seconds;
 
@@ -20,14 +22,10 @@ public class GameAboutToStartEvent implements Event {
     }
 
     /**
-     * Construct the event.
+     * Return the number of seconds to wait.
      *
-     * @param timeToWait The amount of seconds to wait before the game starts.
+     * @return seconds to wait
      */
-    public GameAboutToStartEvent(final int timeToWait) {
-        this.seconds = timeToWait;
-    }
-
     public int getSeconds() {
         return seconds;
     }
@@ -40,5 +38,16 @@ public class GameAboutToStartEvent implements Event {
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
         return this;
+    }
+
+    @Override
+    public void setAnimal(final AbstractAnimal aAnimal) {
+        // Has to be empty
+    }
+
+    @Override
+    public Integer getAnimal() {
+        // Has to be empty
+        return null;
     }
 }

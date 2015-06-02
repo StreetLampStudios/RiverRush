@@ -13,11 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
-import nl.tudelft.ti2806.riverrush.domain.entity.Monkey;
-import nl.tudelft.ti2806.riverrush.domain.entity.Player;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.game.TickHandler;
 import nl.tudelft.ti2806.riverrush.graphics.CenterStage;
 import nl.tudelft.ti2806.riverrush.graphics.SideStage;
+import nl.tudelft.ti2806.riverrush.graphics.entity.ObstacleGraphic;
 
 /**
  * The playing game screen constructs and displays all the visuals that are required during game
@@ -54,6 +54,10 @@ public class PlayingGameScreen implements Screen {
     private OrthographicCamera camera;
     private final AssetManager assets;
     private SpriteBatch spriteBatch;
+    private TickHandler rightTickHandler;
+    private TickHandler leftTickHandler;
+    private TickHandler onTick;
+
 
     /**
      * Creates the graphical representation of the playing game screen. The playing game screen
@@ -71,8 +75,11 @@ public class PlayingGameScreen implements Screen {
 
     /**
      * Initialises the stages, screens, and cameras.
+     *
+     * @param onTick - tickHandler for the screens
      */
-    public void init() {
+    public void init(final TickHandler onTick) {
+        this.onTick = onTick;
         this.banksLeft = new Stage();
 
         this.leftScreen = new SideStage(this.assets, WIDTH, HEIGHT, this.dispatcher);
@@ -108,6 +115,8 @@ public class PlayingGameScreen implements Screen {
         this.drawMidStage();
         this.drawRightStage();
         this.drawRightBanks();
+
+        this.onTick.handle();
 
         Gdx.gl.glDisable(GL20.GL_BLEND);
     }
@@ -214,14 +223,18 @@ public class PlayingGameScreen implements Screen {
         this.spriteBatch.dispose();
     }
 
-    /**
-     * Tells a player that resides on this screen to jump.
-     *
-     * @param player refers to the player that is commanded to jump.
-     */
-    public void jump(final Player player) {
-        Monkey monk = this.leftScreen.getBoat().getAnimal(player);
-        monk.jump();
 
+    /**
+     * adds an obstacle on the..
+     *
+     * @param isLeft  - left or right side
+     * @param graphic - where the obstacle is the graphic
+     */
+    public void addObstacle(boolean isLeft, ObstacleGraphic graphic) {
+        if (isLeft) {
+            leftScreen.spawnObstacle(graphic);
+        } else {
+            rightScreen.spawnObstacle(graphic);
+        }
     }
 }

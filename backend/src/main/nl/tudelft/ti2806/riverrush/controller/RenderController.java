@@ -35,15 +35,21 @@ public class RenderController extends AbstractController {
     public void initialize() {
         HandlerLambda<Event> onGameStateChangedLambda = (e) -> this.server.sendEvent(e, this);
 
-        this.listenTo(PlayerAddedEvent.class, onGameStateChangedLambda);
         this.listenTo(GameWaitingEvent.class, onGameStateChangedLambda);
         this.listenTo(GameAboutToStartEvent.class, onGameStateChangedLambda);
         this.listenTo(GameStartedEvent.class, onGameStateChangedLambda);
-        this.listenTo(GameFinishedEvent.class, onGameStateChangedLambda);
         this.listenTo(GameStoppedEvent.class, onGameStateChangedLambda);
-        this.listenTo(PlayerJumpedEvent.class, onGameStateChangedLambda);
-        this.listenTo(AnimalFellOff.class, onGameStateChangedLambda);
+        this.listenTo(GameFinishedEvent.class, onGameStateChangedLambda);
+        this.listenTo(AnimalAddedEvent.class, onGameStateChangedLambda);
+        this.listenTo(AnimalJumpedEvent.class, onGameStateChangedLambda);
+        this.listenTo(AnimalFellOffEvent.class, onGameStateChangedLambda);
+        this.listenTo(AnimalReturnedToBoatEvent.class, onGameStateChangedLambda);
 
         this.game.waitForPlayers();
+    }
+
+    @Override
+    public void onSocketMessage(final Event event) {
+        this.dispatcher.dispatch(event);
     }
 }

@@ -1,6 +1,6 @@
 package nl.tudelft.ti2806.riverrush.network.event;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Player;
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
@@ -12,24 +12,23 @@ import java.util.Map;
 public class JumpCommand implements Event {
 
 
-    private Player player;
+    private Integer id;
 
     @Override
     public String serialize(final Protocol protocol) {
-        return "player" + protocol.getKeyValueSeperator() + player.getId();
+        return "[Serialized string van een CollidedEvent]";
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
-        this.player = new Player(1);
         return this;
     }
 
-    public void setPlayer(final Player aPlayer) {
-        this.player = aPlayer;
+    public void setAnimal(final AbstractAnimal aAnimal) {
+        this.id = aAnimal.getId();
     }
 
-    public Player getPlayer() {
-        return player;
+    public Integer getAnimal() {
+        return this.id;
     }
 }

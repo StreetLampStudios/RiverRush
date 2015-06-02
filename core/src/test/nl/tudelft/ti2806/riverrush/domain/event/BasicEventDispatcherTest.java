@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +11,9 @@ import org.mockito.MockitoAnnotations;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 
 /**
@@ -117,6 +120,17 @@ public class BasicEventDispatcherTest {
         @Override
         public Event deserialize(final Map<String, String> keyValuePairs) {
             return this;
+        }
+
+        @Override
+        public void setAnimal(final AbstractAnimal animal) {
+            // Has to be empty
+        }
+
+        @Override
+        public Integer getAnimal() {
+            // Has to be empty
+            return null;
         }
     }
 }

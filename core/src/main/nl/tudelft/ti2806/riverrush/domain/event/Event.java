@@ -1,6 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
 
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
@@ -26,4 +27,18 @@ public interface Event {
      * @return The fully initialized event, ready for dispatch.
      */
     Event deserialize(Map<String, String> keyValuePairs);
+
+    /**
+     * Set animal on event.
+     *
+     * @param animal The event
+     */
+    void setAnimal(AbstractAnimal animal);
+
+    /**
+     * Get the animal from the event.
+     *
+     * @return The animal
+     */
+    Integer getAnimal();
 }

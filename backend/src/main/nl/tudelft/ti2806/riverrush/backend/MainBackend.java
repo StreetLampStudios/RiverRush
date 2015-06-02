@@ -4,8 +4,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
-import nl.tudelft.ti2806.riverrush.controller.PlayerController;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
+import nl.tudelft.ti2806.riverrush.controller.UserController;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.AbstractServer;
 import nl.tudelft.ti2806.riverrush.network.RenderServer;
@@ -47,7 +47,7 @@ public final class MainBackend extends CoreModule {
         super.configure();
         this.bind(Controller.class)
             .annotatedWith(named("clientController"))
-            .to(PlayerController.class);
+            .to(UserController.class);
 
         this.bind(Controller.class)
             .annotatedWith(named("renderController"))

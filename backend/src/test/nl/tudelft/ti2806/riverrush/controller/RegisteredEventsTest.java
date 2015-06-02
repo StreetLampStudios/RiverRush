@@ -61,7 +61,7 @@ public abstract class RegisteredEventsTest {
     }
 
     /**
-     * PlayerController should attach handlers for at least
+     * UserController should attach handlers for at least
      * some events to notify the player of game state changes.
      */
     @Test

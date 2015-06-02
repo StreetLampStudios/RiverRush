@@ -1,6 +1,8 @@
 package nl.tudelft.ti2806.riverrush;
 
 import com.google.inject.AbstractModule;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
@@ -8,8 +10,6 @@ import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStoppedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.PlayerAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.PlayerJumpedEvent;
 import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
 import nl.tudelft.ti2806.riverrush.network.protocol.BasicProtocol;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
@@ -71,8 +71,8 @@ public abstract class CoreModule extends AbstractModule {
         protocol.registerNetworkMessage(GameStartedEvent.class, GameStartedEvent::new);
         protocol.registerNetworkMessage(GameFinishedEvent.class, GameFinishedEvent::new);
         protocol.registerNetworkMessage(GameStoppedEvent.class, GameStoppedEvent::new);
-        protocol.registerNetworkMessage(PlayerAddedEvent.class, PlayerAddedEvent::new);
-        protocol.registerNetworkMessage(PlayerJumpedEvent.class, PlayerJumpedEvent::new);
+        protocol.registerNetworkMessage(AnimalAddedEvent.class, AnimalAddedEvent::new);
+        protocol.registerNetworkMessage(AnimalJumpedEvent.class, AnimalJumpedEvent::new);
     }
 
     /**

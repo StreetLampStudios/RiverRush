@@ -15,6 +15,7 @@ import nl.tudelft.ti2806.riverrush.game.Game;
  */
 @Singleton
 public class RenderController implements Controller {
+
     private final EventDispatcher dispatcher;
     private final HandlerLambda<GameStartedEvent> onGameStartedLambda;
     private final HandlerLambda<AssetsLoadedEvent> onAssetsLoadedLambda;
