@@ -1,13 +1,14 @@
 package nl.tudelft.ti2806.riverrush.graphics;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
 import nl.tudelft.ti2806.riverrush.graphics.entity.ObstacleGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.RiverActor;
+
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.google.inject.Inject;
 
 /**
  * This class defined the side stage. The side stage always holds a river and a boat as well as
@@ -15,7 +16,7 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.RiverActor;
  */
 public class SideStage extends Table {
 
-    private final BoatGroup boat;
+    private BoatGroup boat;
     private final RiverActor river;
     private ObstacleGraphic obstacle;
     private final AssetManager assets;
@@ -31,27 +32,29 @@ public class SideStage extends Table {
      * Creates a stage that holds the river, boats, and any player characters that reside on it, as
      * well as the obstacles that pass through it.
      *
-     * @param assetManager    refers to the manager that has made all loaded assets available for use.
-     * @param width           is the width size that the stage will be given.
-     * @param height          is the height size the stage will be given.
-     * @param eventDispatcher - the event dispatcher
+     * @param assetManager
+     *            refers to the manager that has made all loaded assets available for use.
+     * @param width
+     *            is the width size that the stage will be given.
+     * @param height
+     *            is the height size the stage will be given.
+     * @param eventDispatcher
+     *            - the event dispatcher
      */
     @Inject
     public SideStage(final AssetManager assetManager, final float width, final float height,
-                     final EventDispatcher eventDispatcher) {
+            final EventDispatcher eventDispatcher) {
         this.setBounds(0, 0, width, height);
         this.assets = assetManager;
         this.river = new RiverActor(this.assets, 0, RIVER_HEIGHT, RIVER_WIDTH);
-        this.boat = new BoatGroup(this.assets, this.river.getMid() - BOAT_OFFSET, BOAT_POSITION,
-            BOAT_SIZE, BOAT_SIZE);
         this.addActor(this.river);
-        this.addActor(this.boat);
     }
 
     /**
      * Adds a new obstacle to the screen.
      *
-     * @param graphic - The obstacle that you want to add.
+     * @param graphic
+     *            - The obstacle that you want to add.
      */
     public void spawnObstacle(final ObstacleGraphic graphic) {
         if (this.obstacle != null) {
