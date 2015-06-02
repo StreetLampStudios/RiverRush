@@ -78,7 +78,7 @@ public class ObstacleGraphic extends Actor {
      * @param monk refers to the monkey for which the collision has to be calculated
      * @return true if collision occurs, false if it doesn't.
      */
-    public boolean collide(final MonkeyActor monk) {
+    public boolean calculateCollision(final MonkeyActor monk) {
         float monkx = monk.getX();
         float monkxedge = monk.getX() + monk.getWidth();
         float monky = monk.getY();

@@ -111,7 +111,7 @@ public class PlayingGameState extends AbstractGameState {
     for (ObstacleGraphic graphic : this.leftObstList) {
       for (AbstractAnimal animal : this.game.getTeam(0).getAnimals().values()) { // TODO
         Animal animal1 = (Animal) animal;
-        if (graphic.collide(animal1.getActor())) {
+        if (graphic.calculateCollision(animal1.getActor())) {
           this.dispatcher.dispatch(new AnimalCollidedEvent());
         }
       }
@@ -120,7 +120,7 @@ public class PlayingGameState extends AbstractGameState {
     for (ObstacleGraphic graphic : this.rightObstList) {
       for (AbstractAnimal animal : this.game.getTeam(1).getAnimals().values()) {
         Animal animal1 = (Animal) animal;
-        if (graphic.collide(animal1.getActor())) {
+        if (graphic.calculateCollision(animal1.getActor())) {
           this.dispatcher.dispatch(new AnimalCollidedEvent());
         }
       }

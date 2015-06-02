@@ -74,11 +74,11 @@ public class MainDesktop extends CoreModule {
     }
     AnimalAddedEvent ev = new AnimalAddedEvent();
     ev.setAnimal(1);
-    ev.setTeam(1);
+    ev.setTeam(0);
     this.injector.getInstance(EventDispatcher.class).dispatch(ev);
     AnimalAddedEvent ev2 = new AnimalAddedEvent();
     ev2.setAnimal(-1);
-    ev2.setTeam(1);
+    ev2.setTeam(0);
     this.injector.getInstance(EventDispatcher.class).dispatch(ev2);
     try {
       Thread.sleep(2000);
@@ -86,8 +86,8 @@ public class MainDesktop extends CoreModule {
       e.printStackTrace();
     }
     AddObstacleEvent ev3 = new AddObstacleEvent();
-    ev3.setTeam(1);
-    this.injector.getInstance(EventDispatcher.class).dispatch(new AddObstacleEvent());
+    ev3.setTeam(0);
+    this.injector.getInstance(EventDispatcher.class).dispatch(ev3);
 
   }
 
