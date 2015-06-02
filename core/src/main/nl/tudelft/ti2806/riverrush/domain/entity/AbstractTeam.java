@@ -5,13 +5,23 @@ import java.util.List;
 
 public abstract class AbstractTeam {
 
-    private int id;
+    private static Integer highestId = 0;
+    private final Integer id;
 
     private final List<AbstractAnimal> animals;
 
-    public AbstractTeam(final int aId) {
-        this.id = aId;
+    public AbstractTeam() {
         this.animals = new ArrayList<>();
+        this.id = highestId + 1;
+        highestId++;
+    }
+
+    public AbstractTeam(Integer teamId) {
+        this.animals = new ArrayList<>();
+        this.id = teamId;
+        if (teamId > highestId) {
+            highestId = teamId;
+        }
     }
 
     public List<AbstractAnimal> getAnimals() {

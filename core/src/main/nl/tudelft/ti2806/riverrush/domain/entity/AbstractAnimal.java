@@ -31,12 +31,12 @@ public abstract class AbstractAnimal {
         highestId++;
     }
 
-//    public AbstractAnimal(final long uid) {
-//        this.id = uid;
-//        if (uid > highestId) {
-//            highestId = uid;
-//        }
-//    }
+    public AbstractAnimal(final Integer animalId) {
+        this.id = animalId;
+        if (animalId > highestId) {
+            highestId = animalId;
+        }
+    }
 
     /**
      * Get the current state of the animal.
