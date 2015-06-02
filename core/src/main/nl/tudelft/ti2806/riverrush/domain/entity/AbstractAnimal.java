@@ -118,6 +118,7 @@ public abstract class AbstractAnimal {
   public boolean equals(final Object o) {
     if (this == o) {
       return true;
+
     }
     if (o == null || this.getClass() != o.getClass()) {
       return false;

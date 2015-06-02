@@ -3,6 +3,7 @@ package nl.tudelft.ti2806.riverrush.domain.event;
 import java.util.Map;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractTeam;
+import nl.tudelft.ti2806.riverrush.network.protocol.InvalidProtocolException;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 /**
@@ -17,11 +18,23 @@ public class AnimalCollidedEvent implements Event {
 
   @Override
   public String serialize(final Protocol protocol) {
-    return "[Serialized string van een CollidedEvent]";
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append("animal").append(protocol.getKeyValueSeperator())
+        .append(this.animalId.toString());
+    stringBuilder.append(protocol.getPairSeperator());
+    stringBuilder.append("team").append(protocol.getKeyValueSeperator())
+        .append(this.teamId.toString());
+    return stringBuilder.toString();
   }
 
   @Override
   public Event deserialize(final Map<String, String> keyValuePairs) {
+    if (keyValuePairs.containsKey("animal") && keyValuePairs.containsKey("team")) {
+      this.animalId = Integer.parseInt(keyValuePairs.get("animal"));
+      this.teamId = Integer.parseInt(keyValuePairs.get("team"));
+    } else {
+      throw new InvalidProtocolException("Does not contain all the keys");
+    }
     return this;
   }
 

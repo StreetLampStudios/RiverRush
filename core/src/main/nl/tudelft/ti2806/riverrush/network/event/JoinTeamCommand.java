@@ -1,19 +1,17 @@
-package nl.tudelft.ti2806.riverrush.domain.event;
+package nl.tudelft.ti2806.riverrush.network.event;
 
 import java.util.Map;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.AbstractTeam;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.network.protocol.InvalidProtocolException;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 /**
- * This is the event that is sent from the server to the device and the renderer to say that the
- * animal has fallen off the boat.
+ * This event is sent from the device to the server.
  */
-public class AnimalFellOffEvent implements Event {
+public class JoinTeamCommand implements Event {
 
   private Integer animalId;
-
   private Integer teamId;
 
   @Override
@@ -39,8 +37,8 @@ public class AnimalFellOffEvent implements Event {
   }
 
   @Override
-  public void setAnimal(final Integer anAnimalID) {
-    this.animalId = anAnimalID;
+  public void setAnimal(final Integer aAnimal) {
+    this.animalId = aAnimal;
   }
 
   @Override
@@ -48,11 +46,11 @@ public class AnimalFellOffEvent implements Event {
     return this.animalId;
   }
 
-  public Integer getTeam() {
-    return this.teamId;
+  public void setTeam(final Integer team) {
+    this.teamId = team;
   }
 
-  public void setTeam(AbstractTeam team) {
-    this.teamId = team.getId();
+  public Integer getTeam() {
+    return this.teamId;
   }
 }

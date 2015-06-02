@@ -87,6 +87,7 @@ public class MainDesktop extends CoreModule {
     }
     AddObstacleEvent ev3 = new AddObstacleEvent();
     ev3.setTeam(0);
+    ev3.setLocation(0.5);
     this.injector.getInstance(EventDispatcher.class).dispatch(ev3);
 
   }

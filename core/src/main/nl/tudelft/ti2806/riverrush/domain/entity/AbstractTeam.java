@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public abstract class AbstractTeam {
 
-  private int id;
+  private final Integer id;
 
   private final HashMap<Integer, AbstractAnimal> animals;
 
