@@ -22,7 +22,12 @@ public class PlayingGameState implements GameState {
     public PlayingGameState(final EventDispatcher dispatcher) {
         this.eventDispatcher = dispatcher;
 
-        this.jumpCommandHandler = (e) -> this.eventDispatcher.dispatch(new AnimalJumpedEvent());
+        this.jumpCommandHandler = (e) -> {
+            AnimalJumpedEvent event = new AnimalJumpedEvent();
+            event.setAnimal(e.getAnimal());
+            //TODO: Add team
+            this.eventDispatcher.dispatch(event);
+        };
         this.eventDispatcher.attach(JumpCommand.class, this.jumpCommandHandler);
 
         dispatcher.dispatch(new GameStartedEvent());
