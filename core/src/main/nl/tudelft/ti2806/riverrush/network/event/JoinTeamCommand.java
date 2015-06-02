@@ -1,19 +1,19 @@
-package nl.tudelft.ti2806.riverrush.domain.event;
+package nl.tudelft.ti2806.riverrush.network.event;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractTeam;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.network.protocol.InvalidProtocolException;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
 
 /**
- * Domain event for a jumping player.
+ * This event is sent from the device to the server.
  */
-public class AnimalJumpedEvent implements Event {
+public class JoinTeamCommand implements Event {
 
     private Integer animalId;
-
     private Integer teamId;
 
     @Override
@@ -36,21 +36,19 @@ public class AnimalJumpedEvent implements Event {
         return this;
     }
 
-    @Override
     public void setAnimal(final AbstractAnimal aAnimal) {
         this.animalId = aAnimal.getId();
     }
 
-    @Override
     public Integer getAnimal() {
         return this.animalId;
     }
 
-    public Integer getTeam() {
-        return this.teamId;
+    public void setTeam(final AbstractTeam team) {
+        this.teamId = team.getId();
     }
 
-    public void setTeam(AbstractTeam team) {
-        this.teamId = team.getId();
+    public Integer getTeam() {
+        return this.teamId;
     }
 }

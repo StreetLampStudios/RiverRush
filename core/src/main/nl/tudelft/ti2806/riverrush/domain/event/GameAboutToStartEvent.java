@@ -1,6 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
+import nl.tudelft.ti2806.riverrush.network.protocol.InvalidProtocolException;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
@@ -12,7 +13,7 @@ public class GameAboutToStartEvent implements Event {
 
     //TODO: Make not hardcoded.
     private static final int FIVE_SECONDS = 5;
-    private final int seconds;
+    private Integer seconds;
 
     /**
      * Constructs the event with a default waiting time of 5 seconds.
@@ -32,11 +33,18 @@ public class GameAboutToStartEvent implements Event {
 
     @Override
     public String serialize(final Protocol protocol) {
-        return "";
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("seconds").append(protocol.getKeyValueSeperator()).append(this.seconds.toString());
+        return stringBuilder.toString();
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
+        if (keyValuePairs.containsKey("seconds")) {
+            this.seconds = Integer.parseInt(keyValuePairs.get("seconds"));
+        } else {
+            throw new InvalidProtocolException("Does not contain all the keys");
+        }
         return this;
     }
 
