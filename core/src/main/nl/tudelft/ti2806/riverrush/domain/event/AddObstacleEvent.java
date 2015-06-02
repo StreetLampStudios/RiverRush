@@ -35,7 +35,7 @@ public class AddObstacleEvent implements Event {
     }
 
     @Override
-    public void setAnimal(AbstractAnimal animal) {
+    public void setAnimal(final Integer animal) {
         // Has to be empty
     }
 
@@ -52,7 +52,7 @@ public class AddObstacleEvent implements Event {
         return this.teamId;
     }
 
-    public void setTeam(AbstractTeam team) {
-        this.teamId = team.getId();
+    public void setTeam(final Integer team) {
+        this.teamId = team;
     }
 }

@@ -33,7 +33,7 @@ public interface Event {
      *
      * @param animal The event
      */
-    void setAnimal(AbstractAnimal animal);
+    void setAnimal(Integer animal);
 
     /**
      * Get the animal from the event.

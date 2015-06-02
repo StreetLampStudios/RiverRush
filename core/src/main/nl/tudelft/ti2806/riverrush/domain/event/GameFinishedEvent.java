@@ -21,7 +21,7 @@ public class GameFinishedEvent implements Event {
     }
 
     @Override
-    public void setAnimal(final AbstractAnimal aAnimal) {
+    public void setAnimal(final Integer aAnimal) {
         // Has to be empty
     }
 

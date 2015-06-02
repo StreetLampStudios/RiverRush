@@ -36,16 +36,16 @@ public class JoinTeamCommand implements Event {
         return this;
     }
 
-    public void setAnimal(final AbstractAnimal aAnimal) {
-        this.animalId = aAnimal.getId();
+    public void setAnimal(final Integer aAnimal) {
+        this.animalId = aAnimal;
     }
 
     public Integer getAnimal() {
         return this.animalId;
     }
 
-    public void setTeam(final AbstractTeam team) {
-        this.teamId = team.getId();
+    public void setTeam(final Integer team) {
+        this.teamId = team;
     }
 
     public Integer getTeam() {

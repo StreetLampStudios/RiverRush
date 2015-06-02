@@ -182,7 +182,7 @@ public class BasicBasicProtocolTest {
         }
 
         @Override
-        public void setAnimal(final AbstractAnimal animal) {
+        public void setAnimal(final Integer animal) {
             // Has to be empty
         }
 

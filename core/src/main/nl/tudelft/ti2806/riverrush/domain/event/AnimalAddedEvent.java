@@ -37,8 +37,8 @@ public class AnimalAddedEvent implements Event {
     }
 
     @Override
-    public void setAnimal(final AbstractAnimal aAnimal) {
-        this.animalId = aAnimal.getId();
+    public void setAnimal(final Integer aAnimal) {
+        this.animalId = aAnimal;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class AnimalAddedEvent implements Event {
         return this.teamId;
     }
 
-    public void setTeam(AbstractTeam team) {
-        this.teamId = team.getId();
+    public void setTeam(final Integer team) {
+        this.teamId = team;
     }
 }

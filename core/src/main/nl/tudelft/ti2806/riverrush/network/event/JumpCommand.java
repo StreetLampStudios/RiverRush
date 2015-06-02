@@ -32,8 +32,8 @@ public class JumpCommand implements Event {
         return this;
     }
 
-    public void setAnimal(final AbstractAnimal aAnimal) {
-        this.animalId = aAnimal.getId();
+    public void setAnimal(final Integer aAnimal) {
+        this.animalId = aAnimal;
     }
 
     public Integer getAnimal() {
