@@ -32,6 +32,7 @@ public class AnimalOnBoat extends AbstractAnimalState {
     public AnimalState collide() {
         //Action hit = this.getAnimal().collideAction();
         //this.getAnimal().addAction(hit);
+        //TODO: add animal and team
         this.getDispatcher().dispatch(new AnimalFellOffEvent());
         return new AnimalInWater(this.getDispatcher());
     }
