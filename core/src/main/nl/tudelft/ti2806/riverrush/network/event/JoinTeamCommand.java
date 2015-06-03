@@ -1,18 +1,17 @@
-package nl.tudelft.ti2806.riverrush.domain.event;
+package nl.tudelft.ti2806.riverrush.network.event;
 
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.network.protocol.InvalidProtocolException;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
 
 /**
- * This is the event that is sent from the renderer to the server to say that the animal
- * has collided.
+ * This event is sent from the device to the server.
  */
-public class AnimalCollidedEvent implements Event {
+public class JoinTeamCommand implements Event {
 
     private Integer animalId;
-
     private Integer teamId;
 
     @Override
@@ -35,12 +34,10 @@ public class AnimalCollidedEvent implements Event {
         return this;
     }
 
-    @Override
     public Integer getAnimal() {
         return this.animalId;
     }
 
-    @Override
     public void setAnimal(final Integer aAnimal) {
         this.animalId = aAnimal;
     }

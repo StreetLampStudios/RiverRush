@@ -7,6 +7,7 @@ import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStoppedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
+import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.UserServer;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -15,6 +16,8 @@ import org.mockito.Mock;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import static org.mockito.Mockito.mock;
 
 /**
  * Tests whether controllers register the right events.
@@ -48,7 +51,7 @@ public class UserControllerRegisteredEventsTest extends RegisteredEventsTest {
     @Override
     public void setup() {
         super.setup();
-        this.controller = new UserController(this.dispatcherMock, this.serverMock);
+        this.controller = new UserController(this.dispatcherMock, this.serverMock, mock(Game.class));
     }
 
     /**

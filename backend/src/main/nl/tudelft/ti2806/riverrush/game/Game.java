@@ -2,6 +2,7 @@ package nl.tudelft.ti2806.riverrush.game;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
@@ -28,6 +29,7 @@ public class Game {
      * The current state of the game.
      */
     private GameState gameState;
+    private GameTrack gameTrack;
     private int playerCount = 0;
     private final EventDispatcher eventDispatcher;
 
@@ -39,19 +41,23 @@ public class Game {
     @Inject
     public Game(final EventDispatcher dispatcher) {
         this.gameState = new WaitingForRendererState(dispatcher);
+        this.gameTrack = new BasicGameTrack(dispatcher);
         this.eventDispatcher = dispatcher;
 
-        HandlerLambda<AnimalAddedEvent> addPlayer = (e) -> this.addPlayerHandler();
+        HandlerLambda<AnimalAddedEvent> addPlayer = (e) -> this.addAnimalHandler();
         this.eventDispatcher.attach(AnimalAddedEvent.class, addPlayer);
     }
 
     /**
      * Handler that adds a player to the game.
      */
-    private void addPlayerHandler() {
+    private void addAnimalHandler() {
         this.playerCount++;
-        if (this.playerCount > 0) {
-            this.eventDispatcher.dispatch(new GameAboutToStartEvent());
+        if (this.playerCount >= 2) {
+            GameAboutToStartEvent event = new GameAboutToStartEvent();
+            event.setSeconds(DELAY);
+            this.eventDispatcher.dispatch(event);
+
             final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
             scheduler.schedule(this::start, DELAY, TimeUnit.SECONDS);
         }
@@ -83,5 +89,32 @@ public class Game {
      */
     public void waitForPlayers() {
         this.gameState = this.gameState.waitForPlayers();
+    }
+
+    /**
+     * Add the player to the team.
+     *
+     * @param animal The animal
+     * @param team   The team
+     */
+    public void addPlayerToTeam(final AbstractAnimal animal, final Integer team) {
+        try {
+            this.gameTrack.addAnimal(team, animal);
+
+            AnimalAddedEvent event = new AnimalAddedEvent();
+            event.setAnimal(animal.getId());
+            event.setTeam(team);
+            this.eventDispatcher.dispatch(new AnimalAddedEvent());
+        } catch (NoSuchTeamException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Jumps an animal.
+     * @param animal - the animal to jump
+     */
+    public void jumpAnimal(final AbstractAnimal animal) {
+        animal.jump();
     }
 }

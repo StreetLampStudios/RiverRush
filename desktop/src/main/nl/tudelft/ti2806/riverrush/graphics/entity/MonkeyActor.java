@@ -26,11 +26,11 @@ public class MonkeyActor extends Actor {
     /**
      * Specifies the animal's width.
      */
-    private static final float MONKEY_WIDTH = 144;
+    private static final float MONKEY_WIDTH = 90; // 144
     /**
      * Specifies the animal's height.
      */
-    private static final float MONKEY_HEIGHT = 81;
+    private static final float MONKEY_HEIGHT = 50; // 81
 
     private static final float JUMP_HEIGHT = 100;
     private static final int END_REGIONX = 432;
@@ -59,28 +59,16 @@ public class MonkeyActor extends Actor {
     /**
      * Creates a monkey object that represents player characters.
      *
-     * @param assetManager
-     *            enables the object to retrieve its assets
-     * @param xpos
-     *            represents the position of the monkey on the x axis
-     * @param ypos
-     *            represents the position of the monkey on the y axis
-     * @param dispatcher
-     *            Event dispatcher for dispatching events
+     * @param assetManager enables the object to retrieve its assets
+     * @param xpos represents the position of the monkey on the x axis
+     * @param ypos represents the position of the monkey on the y axis
+     * @param dispatcher Event dispatcher for dispatching events
      */
     @Inject
-    public MonkeyActor(final AssetManager assetManager, final float xpos, final float ypos,
-            final EventDispatcher dispatcher) {
+    public MonkeyActor(final AssetManager assetManager, final EventDispatcher dispatcher) {
         this.manager = assetManager;
-        this.setX(xpos);
-        this.setY(ypos);
         this.setWidth(MONKEY_WIDTH);
         this.setHeight(MONKEY_HEIGHT);
-        // this.setWidth(width);
-        // this.setHeight(height);
-
-        this.origX = xpos;
-        this.origY = ypos;
     }
 
     @Override
@@ -177,5 +165,12 @@ public class MonkeyActor extends Actor {
         Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
 
         return jump;
+    }
+
+    @Override
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
+        this.origX = x;
+        this.origY = y;
     }
 }

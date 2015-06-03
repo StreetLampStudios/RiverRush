@@ -2,6 +2,7 @@ package nl.tudelft.ti2806.riverrush.game.state;
 
 import java.util.ArrayList;
 
+import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
@@ -29,7 +30,7 @@ public class PlayingGameState extends AbstractGameState {
 
     private final PlayingGameScreen screen;
     private final HandlerLambda<AnimalJumpedEvent> playerJumpedEventHandlerLambda = (e) -> this
-            .jump(e.getAnimal());
+            .jumpHandler(e);
     private final HandlerLambda<AddObstacleEvent> addObstacleEventHandlerLambda = this::addObstacle;
     private final HandlerLambda<AnimalAddedEvent> addAnimalHandlerLambda = (e) -> this
             .addAnimalHandler(e);
@@ -43,13 +44,10 @@ public class PlayingGameState extends AbstractGameState {
     /**
      * The state of the game that indicates that the game is currently playable.
      *
-     * @param eventDispatcher
-     *            the dispatcher that is used to handle any relevant events for the game in this
-     *            state.
-     * @param assetManager
-     *            has all necessary assets loaded and available for use.
-     * @param game
-     *            refers to the game that this state belongs to.
+     * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game
+     *            in this state.
+     * @param assetManager has all necessary assets loaded and available for use.
+     * @param game refers to the game that this state belongs to.
      */
     public PlayingGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
             final Game game) {
@@ -68,16 +66,6 @@ public class PlayingGameState extends AbstractGameState {
         this.leftObstList = new ArrayList<>();
         this.rightObstList = new ArrayList<>();
 
-    }
-
-    /**
-     * Tells a given animal to perform the jump action.
-     *
-     * @param animalId
-     *            refers to the animal character that has to jump.
-     */
-    public void jump(final Integer animalId) {
-        // this.screen.jump(animal);
     }
 
     @Override
@@ -115,19 +103,26 @@ public class PlayingGameState extends AbstractGameState {
      */
     private void tick() {
         for (ObstacleGraphic graphic : this.leftObstList) {
-            for (AbstractAnimal animal : this.game.getTeam(0).getAnimals()) {
+            for (AbstractAnimal animal : this.game.getTeam(0).getAnimals().values()) { // TODO
                 Animal animal1 = (Animal) animal;
-                if (graphic.collide(animal1.getActor())) {
-                    this.dispatcher.dispatch(new AnimalCollidedEvent());
+                if (graphic.calculateCollision(animal1.getActor())) {
+                    AnimalCollidedEvent ev = new AnimalCollidedEvent();
+                    ev.setAnimal(animal1.getId());
+                    ev.setTeam(animal.getTeamId());
+                    this.dispatcher.dispatch(ev);
                 }
             }
         }
 
         for (ObstacleGraphic graphic : this.rightObstList) {
-            for (AbstractAnimal animal : this.game.getTeam(1).getAnimals()) {
+            for (AbstractAnimal animal : this.game.getTeam(1).getAnimals().values()) {
                 Animal animal1 = (Animal) animal;
-                if (graphic.collide(animal1.getActor())) {
-                    this.dispatcher.dispatch(new AnimalCollidedEvent());
+                if (graphic.calculateCollision(animal1.getActor())) {
+                    // TODO: Set animal
+                    AnimalCollidedEvent ev = new AnimalCollidedEvent();
+                    ev.setAnimal(animal1.getId());
+                    ev.setTeam(animal.getTeamId());
+                    this.dispatcher.dispatch(ev);
                 }
             }
         }
@@ -136,8 +131,7 @@ public class PlayingGameState extends AbstractGameState {
     /**
      * Is called when an obstacle event is received.
      *
-     * @param e
-     *            - the event
+     * @param e - the event
      */
     private void addObstacle(final AddObstacleEvent e) {
         ObstacleGraphic graphic = new ObstacleGraphic(this.assets, e.getLocation());
@@ -152,22 +146,38 @@ public class PlayingGameState extends AbstractGameState {
 
     public void addAnimalHandler(AnimalAddedEvent event) {
         // Temporary, has to get animal from event
-        MonkeyActor actor = new MonkeyActor(this.assets, 1000, 500, this.dispatcher);
-        Animal anim = new Animal(this.dispatcher);
+
+        MonkeyActor actor = new MonkeyActor(this.assets, this.dispatcher);
+        Animal anim = new Animal(this.dispatcher, event.getAnimal(), event.getTeam());
         anim.setActor(actor);
 
         Integer tm = event.getTeam();
         Team tim = this.game.getTeam(tm);
         if (tim == null) {
-            BoatGroup group = new BoatGroup(this.assets, 200, 200);
+            BoatGroup group = new BoatGroup(this.assets, (MainDesktop.getWidth() / 2) - 450,
+                    MainDesktop.getHeight() * 0.02f);
             tim = this.game.addTeam(tm);
             tim.setBoat(group);
-            this.screen.addTeam(group);
+            this.screen.addTeam(group, tm);
             // Determine corresponding team's stage
 
         }
         tim.addAnimal(anim);
-        tim.getBoat().addActor(anim.getActor());
+        tim.getBoat().addAnimal(actor);
+    }
+
+    /**
+     * Tells a given animal to perform the jump action.
+     *
+     * @param event The jump event
+     */
+    public void jumpHandler(AnimalJumpedEvent event) {
+        Integer tm = event.getTeam();
+        Team tim = this.game.getTeam(tm);
+        Integer animalID = event.getAnimal();
+        AbstractAnimal anim = tim.getAnimals().get(animalID);
+        anim.jump();
+
     }
 
     /**

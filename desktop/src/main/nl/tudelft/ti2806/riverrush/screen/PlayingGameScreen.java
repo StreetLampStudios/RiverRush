@@ -65,10 +65,8 @@ public class PlayingGameScreen implements Screen {
      * shows the various stages that are relevant to the players including but not limited to the
      * river, boats, characters, and obstacles.
      *
-     * @param assetManager
-     *            refers to the manager that has made all loaded assets available for use.
-     * @param eventDispatcher
-     *            is the dispatcher that handles all relevant events.
+     * @param assetManager refers to the manager that has made all loaded assets available for use.
+     * @param eventDispatcher is the dispatcher that handles all relevant events.
      */
     @Inject
     public PlayingGameScreen(final AssetManager assetManager, final EventDispatcher eventDispatcher) {
@@ -79,8 +77,7 @@ public class PlayingGameScreen implements Screen {
     /**
      * Initialises the stages, screens, and cameras.
      *
-     * @param onTick
-     *            - tickHandler for the screens
+     * @param onTick - tickHandler for the screens
      */
     public void init(final TickHandler onTick) {
         this.onTick = onTick;
@@ -230,10 +227,8 @@ public class PlayingGameScreen implements Screen {
     /**
      * adds an obstacle on the..
      *
-     * @param isLeft
-     *            - left or right side
-     * @param graphic
-     *            - where the obstacle is the graphic
+     * @param isLeft - left or right side
+     * @param graphic - where the obstacle is the graphic
      */
     public void addObstacle(boolean isLeft, ObstacleGraphic graphic) {
         if (isLeft) {
@@ -243,8 +238,13 @@ public class PlayingGameScreen implements Screen {
         }
     }
 
-    public void addTeam(final BoatGroup boat) {
-        this.leftScreen.addActor(boat);
+    public void addTeam(final BoatGroup boat, final Integer teamID) {
+        if (teamID == 0) { // TODO: Temporary hard coding
+            this.leftScreen.addActor(boat);
+        } else {
+            this.rightScreen.addActor(boat);
+        }
+
     }
 
     public void updateProgress(int teamID, int progress) {

@@ -8,8 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 
 public class Animal extends AbstractAnimal {
 
-    public Animal(EventDispatcher dispatch) {
-        super(dispatch);
+    public Animal(EventDispatcher dispatch, Integer id, Integer team) {
+        super(dispatch, id);
+        this.setTeamId(team);
     }
 
     private MonkeyActor actor;

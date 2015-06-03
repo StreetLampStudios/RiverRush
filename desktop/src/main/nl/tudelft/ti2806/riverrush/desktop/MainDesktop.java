@@ -1,19 +1,23 @@
 package nl.tudelft.ti2806.riverrush.desktop;
 
-import java.net.URISyntaxException;
-
-import nl.tudelft.ti2806.riverrush.CoreModule;
-import nl.tudelft.ti2806.riverrush.controller.Controller;
-import nl.tudelft.ti2806.riverrush.controller.RenderController;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
-import nl.tudelft.ti2806.riverrush.game.Game;
-import nl.tudelft.ti2806.riverrush.network.Client;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import nl.tudelft.ti2806.riverrush.CoreModule;
+import nl.tudelft.ti2806.riverrush.controller.Controller;
+import nl.tudelft.ti2806.riverrush.controller.RenderController;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
+import nl.tudelft.ti2806.riverrush.game.Game;
+import nl.tudelft.ti2806.riverrush.network.Client;
+
+import java.net.URISyntaxException;
 
 /**
  * This class is the main class to be ran when starting the game. This class sets up the graphics
@@ -28,10 +32,8 @@ public class MainDesktop extends CoreModule {
     /**
      * Calls the main desktop constructor that starts the game.
      *
-     * @param arg
-     *            not used
-     * @throws URISyntaxException
-     *             handles the situation where the URI has the wrong syntax.
+     * @param arg not used
+     * @throws URISyntaxException handles the situation where the URI has the wrong syntax.
      */
     public static void main(final String[] arg) throws URISyntaxException {
         new MainDesktop();
@@ -41,14 +43,15 @@ public class MainDesktop extends CoreModule {
     /**
      * Constructor for main desktop. Configures the client connections and sets up the graphics.
      *
-     * @throws URISyntaxException
-     *             handles the situation where the URI has the wrong syntax.
+     * @throws URISyntaxException handles the situation where the URI has the wrong syntax.
      */
     public MainDesktop() throws URISyntaxException {
         this.injector = Guice.createInjector(this);
 
-        Client client = new Client("localhost", this.configureRendererProtocol(),
-                this.injector.getInstance(Controller.class));
+        Client client = new Client("localhost", this.configureRendererProtocol());
+        RenderController cntrl = this.injector.getInstance(RenderController.class);
+        cntrl.setClient(client);
+        client.setController(cntrl);
 
         this.setupGraphics();
         // client.connect();
@@ -71,10 +74,31 @@ public class MainDesktop extends CoreModule {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        AnimalAddedEvent ev = new AnimalAddedEvent();
-        ev.setAnimal(1);
-        ev.setTeam(1);
-        this.injector.getInstance(EventDispatcher.class).dispatch(ev);
+        AnimalAddedEvent ev;
+        for (int i = 0; i < 100; i++) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ev = new AnimalAddedEvent();
+            ev.setAnimal(i);
+            ev.setTeam(i % 2);
+            this.injector.getInstance(EventDispatcher.class).dispatch(ev);
+        }
+
+        AnimalJumpedEvent jev;
+        for (int i = 0; i < 100; i++) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            jev = new AnimalJumpedEvent();
+            jev.setAnimal(i);
+            jev.setTeam(i % 2);
+            this.injector.getInstance(EventDispatcher.class).dispatch(jev);
+        }
 
         try {
             Thread.sleep(2000);

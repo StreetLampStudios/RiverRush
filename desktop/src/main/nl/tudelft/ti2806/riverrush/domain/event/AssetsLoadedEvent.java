@@ -1,8 +1,8 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
-import java.util.Map;
-
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
+
+import java.util.Map;
 
 /**
  * This event is called from the renderer when it has loaded all the assets. This is neccesary,
