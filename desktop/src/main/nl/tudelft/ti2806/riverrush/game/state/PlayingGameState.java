@@ -105,7 +105,7 @@ public class PlayingGameState extends AbstractGameState {
                 if (graphic.calculateCollision(animal1.getActor())) {
                     AnimalCollidedEvent ev = new AnimalCollidedEvent();
                     ev.setAnimal(animal1.getId());
-                    ev.setTeam(animal.getTeamID());
+                    ev.setTeam(animal.getTeamId());
                     this.dispatcher.dispatch(ev);
                 }
             }
@@ -118,7 +118,7 @@ public class PlayingGameState extends AbstractGameState {
                     // TODO: Set animal
                     AnimalCollidedEvent ev = new AnimalCollidedEvent();
                     ev.setAnimal(animal1.getId());
-                    ev.setTeam(animal.getTeamID());
+                    ev.setTeam(animal.getTeamId());
                     this.dispatcher.dispatch(ev);
                 }
             }
@@ -166,7 +166,7 @@ public class PlayingGameState extends AbstractGameState {
     /**
      * Tells a given animal to perform the jump action.
      *
-     * @param animalId refers to the animal character that has to jump.
+     * @param event The jump event
      */
     public void jumpHandler(AnimalJumpedEvent event) {
         Integer tm = event.getTeam();

@@ -106,7 +106,7 @@ public class MainDesktop extends CoreModule {
         // }
         // AnimalJumpedEvent ev4 = new AnimalJumpedEvent();
         // ev4.setAnimal(1);
-        // ev4.setTeam(0);
+        // ev4.setTeamId(0);
         // this.injector.getInstance(EventDispatcher.class).dispatch(ev4);
         // try {
         // Thread.sleep(1000);
@@ -122,10 +122,10 @@ public class MainDesktop extends CoreModule {
         // }
         // AnimalFellOffEvent ev5 = new AnimalFellOffEvent();
         // ev5.setAnimal(-1);
-        // ev5.setTeam(0);
+        // ev5.setTeamId(0);
         // this.injector.getInstance(EventDispatcher.class).dispatch(ev5);
         // AddObstacleEvent ev3 = new AddObstacleEvent();
-        // ev3.setTeam(0);
+        // ev3.setTeamId(0);
         // ev3.setLocation(0.5);
         // this.injector.getInstance(EventDispatcher.class).dispatch(ev3);
 

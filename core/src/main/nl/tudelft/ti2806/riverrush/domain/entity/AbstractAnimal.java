@@ -36,9 +36,9 @@ public abstract class AbstractAnimal {
      * Create an animal in desktop.
      *
      * @param dispatch - See {@link EventDispatcher}
-     * @param id - Id of the animal
+     * @param animal - Id of the animal
      */
-    public AbstractAnimal(final EventDispatcher dispatch, Integer animal, Integer team) {
+    public AbstractAnimal(final EventDispatcher dispatch, Integer animal) {
         this.dispatcher = dispatch;
         this.animalID = animal;
         this.teamID = team;
@@ -112,7 +112,7 @@ public abstract class AbstractAnimal {
         return this.dispatcher;
     }
 
-    public Integer getTeamID() {
+    public Integer getTeamId() {
         return this.teamID;
     }
 
@@ -121,7 +121,7 @@ public abstract class AbstractAnimal {
      *
      * @param teamID - id of the team
      */
-    public void setTeam(final Integer teamID) {
+    public void setTeamId(final Integer teamID) {
         this.team = teamID;
     }
 

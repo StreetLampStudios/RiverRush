@@ -130,7 +130,7 @@ public class GameTrack {
         }
 
         this.getTeam(teamID).addAnimal(animal);
-        animal.setTeam(teamID);
+        animal.setTeamId(teamID);
     }
 
     public Double getDistanceTeam(final Integer team) {

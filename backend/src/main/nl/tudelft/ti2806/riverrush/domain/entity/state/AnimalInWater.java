@@ -54,7 +54,7 @@ public class AnimalInWater extends AbstractAnimalState {
     public AnimalState returnToBoat() {
         AnimalReturnedToBoatEvent event = new AnimalReturnedToBoatEvent();
         event.setAnimal(this.animal.getId());
-        event.setTeam(this.animal.getTeam());
+        event.setTeam(this.animal.getTeamId());
         this.getDispatcher().dispatch(event);
 
         return new AnimalOnBoat(animal, this.getDispatcher());
