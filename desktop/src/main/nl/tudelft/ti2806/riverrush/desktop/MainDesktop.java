@@ -9,6 +9,7 @@ import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
@@ -75,7 +76,7 @@ public class MainDesktop extends CoreModule {
             e.printStackTrace();
         }
         AnimalAddedEvent ev = new AnimalAddedEvent();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 5; i++) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -88,7 +89,7 @@ public class MainDesktop extends CoreModule {
         }
 
         AnimalJumpedEvent jev = new AnimalJumpedEvent();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 5; i++) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -99,6 +100,9 @@ public class MainDesktop extends CoreModule {
             jev.setTeam(i % 2);
             this.injector.getInstance(EventDispatcher.class).dispatch(jev);
         }
+
+        GameFinishedEvent fev = new GameFinishedEvent();
+        this.injector.getInstance(EventDispatcher.class).dispatch(fev);
         // try {
         // Thread.sleep(2000);
         // } catch (InterruptedException e) {
