@@ -75,7 +75,7 @@ public class MainDesktop extends CoreModule {
             e.printStackTrace();
         }
         AnimalAddedEvent ev = new AnimalAddedEvent();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 100; i++) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -83,11 +83,12 @@ public class MainDesktop extends CoreModule {
             }
             ev = new AnimalAddedEvent();
             ev.setAnimal(i);
-            ev.setTeam(0);
+            ev.setTeam(i % 2);
             this.injector.getInstance(EventDispatcher.class).dispatch(ev);
         }
+
         AnimalJumpedEvent jev = new AnimalJumpedEvent();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 100; i++) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -95,7 +96,7 @@ public class MainDesktop extends CoreModule {
             }
             jev = new AnimalJumpedEvent();
             jev.setAnimal(i);
-            jev.setTeam(0);
+            jev.setTeam(i % 2);
             this.injector.getInstance(EventDispatcher.class).dispatch(jev);
         }
         // try {
