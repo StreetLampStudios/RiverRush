@@ -54,6 +54,15 @@ public class GameAboutToStartEvent implements Event {
      * @return seconds to wait
      */
     public int getSeconds() {
-        return seconds;
+        return this.seconds;
+    }
+
+    /**
+     * Set seconds to start.
+     *
+     * @param seconds Number of seconds
+     */
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
     }
 }

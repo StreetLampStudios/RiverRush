@@ -55,7 +55,10 @@ public class Game {
     private void addAnimalHandler() {
         this.playerCount++;
         if (this.playerCount >= 2) {
-            this.eventDispatcher.dispatch(new GameAboutToStartEvent());
+            GameAboutToStartEvent event = new GameAboutToStartEvent();
+            event.setSeconds(DELAY);
+            this.eventDispatcher.dispatch(event);
+
             final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
             scheduler.schedule(this::start, DELAY, TimeUnit.SECONDS);
         }
@@ -98,6 +101,7 @@ public class Game {
     public void addPlayerToTeam(final AbstractAnimal animal, final Integer team) {
         try {
             this.gameTrack.addAnimal(team, animal);
+
             AnimalAddedEvent event = new AnimalAddedEvent();
             event.setAnimal(animal.getId());
             event.setTeam(team);
