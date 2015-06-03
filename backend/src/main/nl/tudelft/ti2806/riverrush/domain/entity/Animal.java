@@ -1,5 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.entity;
 
+import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalInWater;
+import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalOnBoat;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 /**
@@ -13,6 +15,7 @@ public class Animal extends AbstractAnimal {
      */
     public Animal(final EventDispatcher eventDispatcher) {
         super(eventDispatcher);
+        setState(new AnimalOnBoat(this, eventDispatcher));
     }
 
     /**
@@ -20,5 +23,10 @@ public class Animal extends AbstractAnimal {
      */
     public void drop() {
         this.setState(this.getState().drop());
+    }
+
+    public boolean isOnBoat() {
+        return !(getState() instanceof AnimalInWater);
+        //TODO Can we fix this?
     }
 }

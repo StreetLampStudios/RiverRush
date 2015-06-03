@@ -24,13 +24,12 @@ public class Game {
      * Game about to start timer delay.
      */
     public static final int DELAY = 5;
-    public static final int A_TRACK_LENGTH = 100;
 
     /**
      * The current state of the game.
      */
     private GameState gameState;
-    private AbstractGameTrack gameTrack;
+    private GameTrack gameTrack;
     private int playerCount = 0;
     private final EventDispatcher eventDispatcher;
 
@@ -42,7 +41,7 @@ public class Game {
     @Inject
     public Game(final EventDispatcher dispatcher) {
         this.gameState = new WaitingForRendererState(dispatcher);
-        this.gameTrack = new BasicGameTrack(A_TRACK_LENGTH);
+        this.gameTrack = new BasicGameTrack(dispatcher);
         this.eventDispatcher = dispatcher;
 
         HandlerLambda<AnimalAddedEvent> addPlayer = (e) -> this.addAnimalHandler();
