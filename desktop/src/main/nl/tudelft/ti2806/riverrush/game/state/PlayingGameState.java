@@ -155,7 +155,7 @@ public class PlayingGameState extends AbstractGameState {
                     MainDesktop.getHeight() * 0.02f);
             tim = this.game.addTeam(tm);
             tim.setBoat(group);
-            this.screen.addTeam(group);
+            this.screen.addTeam(group, tm);
             // Determine corresponding team's stage
 
         }

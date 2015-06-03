@@ -62,7 +62,7 @@ public class BoatGroup extends Group {
         colors.add(Color.YELLOW);
         colors.add(Color.WHITE);
 
-        for (int i = 0; i < NUM_SECTORS; i++) {
+        for (int i = NUM_SECTORS - 1; i >= 0; i--) {
             Color color = colors.get(i);
             BoatSector sec = new BoatSector(assetManager, ROW_COUNT, COL_COUNT, color);
             float secPosX = this.getX() + (this.getWidth() / 2) - (sec.getWidth() / 2);
