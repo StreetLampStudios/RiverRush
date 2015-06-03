@@ -64,6 +64,10 @@ public class LoadingScreen implements Screen {
         this.assets.load(getFileName("cannonball.png"), Texture.class);
         this.assets.load(getFileName("win.png"), Texture.class);
         this.assets.load(getFileName("lose.png"), Texture.class);
+        this.assets.load(getFileName("bootje.jpg"), Texture.class);
+        this.assets.load(getFileName("wood-floor.jpg"), Texture.class);
+        this.assets.load(getFileName("dividingLine.png"), Texture.class);
+
     }
 
     @Override

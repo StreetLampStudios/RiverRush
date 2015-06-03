@@ -5,10 +5,7 @@ import java.net.URISyntaxException;
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
 
@@ -57,7 +54,7 @@ public class MainDesktop extends CoreModule {
         // client.connect();
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -78,6 +75,13 @@ public class MainDesktop extends CoreModule {
         ev.setAnimal(1);
         ev.setTeam(1);
         this.injector.getInstance(EventDispatcher.class).dispatch(ev);
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.injector.getInstance(EventDispatcher.class).dispatch(new TeamProgressEvent());
 
     }
 

@@ -9,6 +9,7 @@ import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.game.TickHandler;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
@@ -37,6 +38,7 @@ public class PlayingGameState extends AbstractGameState {
 
     private final ArrayList<ObstacleGraphic> leftObstList;
     private final ArrayList<ObstacleGraphic> rightObstList;
+    private final HandlerLambda<? super TeamProgressEvent> TeamProgressEventHandler = this::teamProgress;
 
     /**
      * The state of the game that indicates that the game is currently playable.
@@ -55,6 +57,7 @@ public class PlayingGameState extends AbstractGameState {
         this.dispatcher.attach(AnimalJumpedEvent.class, this.playerJumpedEventHandlerLambda);
         this.dispatcher.attach(AddObstacleEvent.class, this.addObstacleEventHandlerLambda);
         this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandlerLambda);
+        this.dispatcher.attach(TeamProgressEvent.class, this.TeamProgressEventHandler);
 
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(() -> {
@@ -165,5 +168,13 @@ public class PlayingGameState extends AbstractGameState {
         }
         tim.addAnimal(anim);
         tim.getBoat().addActor(anim.getActor());
+    }
+
+    /**
+     * Is called when there is a team update on the progress.
+     * @param teamProgressEvent - the event
+     */
+    private void teamProgress(final TeamProgressEvent teamProgressEvent) {
+        screen.updateProgress(teamProgressEvent.getTeamID(), teamProgressEvent.getProgress());
     }
 }

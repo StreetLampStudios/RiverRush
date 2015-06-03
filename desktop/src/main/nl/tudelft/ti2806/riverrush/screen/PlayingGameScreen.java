@@ -246,4 +246,8 @@ public class PlayingGameScreen implements Screen {
     public void addTeam(final BoatGroup boat) {
         this.leftScreen.addActor(boat);
     }
+
+    public void updateProgress(int teamID, int progress) {
+        this.midScreen.updateProgress(teamID,progress);
+    }
 }

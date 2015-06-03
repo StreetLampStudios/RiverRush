@@ -123,8 +123,8 @@ public class BasicEventDispatcherTest {
         }
 
         @Override
-        public void setAnimal(final AbstractAnimal animal) {
-            // Has to be empty
+        public void setAnimal(Integer anPlayerID) {
+
         }
 
         @Override
