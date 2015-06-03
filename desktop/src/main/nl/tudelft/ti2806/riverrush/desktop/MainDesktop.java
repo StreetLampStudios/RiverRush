@@ -1,22 +1,23 @@
 package nl.tudelft.ti2806.riverrush.desktop;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import java.net.URISyntaxException;
+
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
-import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
 
-import java.net.URISyntaxException;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  * This class is the main class to be ran when starting the game. This class sets up the graphics
@@ -47,8 +48,10 @@ public class MainDesktop extends CoreModule {
     public MainDesktop() throws URISyntaxException {
         this.injector = Guice.createInjector(this);
 
-        Client client = new Client("localhost", this.configureRendererProtocol(),
-            this.injector.getInstance(Controller.class));
+        Client client = new Client("localhost", this.configureRendererProtocol());
+        RenderController cntrl = this.injector.getInstance(RenderController.class);
+        cntrl.setClient(client);
+        client.setController(cntrl);
 
         this.setupGraphics();
         // client.connect();
@@ -72,28 +75,64 @@ public class MainDesktop extends CoreModule {
             e.printStackTrace();
         }
         AnimalAddedEvent ev = new AnimalAddedEvent();
-        ev.setAnimal(1);
-        ev.setTeam(0);
-        this.injector.getInstance(EventDispatcher.class).dispatch(ev);
-        AnimalAddedEvent ev2 = new AnimalAddedEvent();
-        ev2.setAnimal(-1);
-        ev2.setTeam(0);
-        this.injector.getInstance(EventDispatcher.class).dispatch(ev2);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        for (int i = 0; i < 50; i++) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ev = new AnimalAddedEvent();
+            ev.setAnimal(i);
+            ev.setTeam(0);
+            this.injector.getInstance(EventDispatcher.class).dispatch(ev);
         }
-        AddObstacleEvent ev3 = new AddObstacleEvent();
-        ev3.setTeam(0);
-        ev3.setLocation(0.5);
-        this.injector.getInstance(EventDispatcher.class).dispatch(ev3);
+        AnimalJumpedEvent jev = new AnimalJumpedEvent();
+        for (int i = 0; i < 50; i++) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            jev = new AnimalJumpedEvent();
+            jev.setAnimal(i);
+            jev.setTeam(0);
+            this.injector.getInstance(EventDispatcher.class).dispatch(jev);
+        }
+        // try {
+        // Thread.sleep(2000);
+        // } catch (InterruptedException e) {
+        // e.printStackTrace();
+        // }
+        // AnimalJumpedEvent ev4 = new AnimalJumpedEvent();
+        // ev4.setAnimal(1);
+        // ev4.setTeam(0);
+        // this.injector.getInstance(EventDispatcher.class).dispatch(ev4);
+        // try {
+        // Thread.sleep(1000);
+        // } catch (InterruptedException e) {
+        // e.printStackTrace();
+        // }
+        // ev4.setAnimal(-1);
+        // this.injector.getInstance(EventDispatcher.class).dispatch(ev4);
+        // try {
+        // Thread.sleep(1000);
+        // } catch (InterruptedException e) {
+        // e.printStackTrace();
+        // }
+        // AnimalFellOffEvent ev5 = new AnimalFellOffEvent();
+        // ev5.setAnimal(-1);
+        // ev5.setTeam(0);
+        // this.injector.getInstance(EventDispatcher.class).dispatch(ev5);
+        // AddObstacleEvent ev3 = new AddObstacleEvent();
+        // ev3.setTeam(0);
+        // ev3.setLocation(0.5);
+        // this.injector.getInstance(EventDispatcher.class).dispatch(ev3);
 
     }
 
     /**
-     * Creates a Lwjgl Configurations with the given height and width. It will then get an instance of
-     * the game class and use it to create the application.
+     * Creates a Lwjgl Configurations with the given height and width. It will then get an instance
+     * of the game class and use it to create the application.
      */
     private void setupGraphics() {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
@@ -108,8 +147,8 @@ public class MainDesktop extends CoreModule {
     }
 
     /**
-     * Method is called when creating an {@link Injector}. It configures all dependencies specific to
-     * the desktop application.
+     * Method is called when creating an {@link Injector}. It configures all dependencies specific
+     * to the desktop application.
      */
     @Override
     protected void configure() {

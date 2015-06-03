@@ -16,7 +16,8 @@ public abstract class AbstractAnimal {
 
     private static final int BITS = 32;
     private static Integer highestId = 0;
-    private final Integer id;
+    private final Integer animalID;
+    private Integer teamID;
 
     private EventDispatcher dispatcher;
 
@@ -27,7 +28,7 @@ public abstract class AbstractAnimal {
      */
     public AbstractAnimal(final EventDispatcher dispatch) {
         this.dispatcher = dispatch;
-        this.id = highestId + 1;
+        this.animalID = highestId + 1;
         highestId++;
     }
 
@@ -35,11 +36,12 @@ public abstract class AbstractAnimal {
      * Create an animal in desktop.
      *
      * @param dispatch - See {@link EventDispatcher}
-     * @param id       - Id of the animal
+     * @param id - Id of the animal
      */
-    public AbstractAnimal(final EventDispatcher dispatch, Integer id) {
+    public AbstractAnimal(final EventDispatcher dispatch, Integer animal, Integer team) {
         this.dispatcher = dispatch;
-        this.id = id;
+        this.animalID = animal;
+        this.teamID = team;
     }
 
     /**
@@ -83,7 +85,7 @@ public abstract class AbstractAnimal {
     }
 
     public Integer getId() {
-        return this.id;
+        return this.animalID;
     }
 
     @Override
@@ -97,17 +99,21 @@ public abstract class AbstractAnimal {
         }
 
         AbstractAnimal animal = (AbstractAnimal) o;
-        return this.id == animal.id;
+        return this.animalID == animal.animalID;
 
     }
 
     @Override
     public int hashCode() {
-        return this.id ^ (this.id >>> BITS);
+        return this.animalID ^ (this.animalID >>> BITS);
     }
 
     protected EventDispatcher getDispatcher() {
         return this.dispatcher;
+    }
+
+    public Integer getTeamID() {
+        return this.teamID;
     }
 
     /**
@@ -119,10 +125,4 @@ public abstract class AbstractAnimal {
         this.team = teamID;
     }
 
-    /**
-     * @return the ID of the team
-     */
-    public Integer getTeam() {
-        return this.team;
-    }
 }

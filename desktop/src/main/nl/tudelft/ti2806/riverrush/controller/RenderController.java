@@ -1,13 +1,16 @@
 package nl.tudelft.ti2806.riverrush.controller;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AssetsLoadedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.game.Game;
+import nl.tudelft.ti2806.riverrush.network.Client;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 /**
  * The render controller controls handles the game started and assets loaded events through
@@ -19,12 +22,14 @@ public class RenderController implements Controller {
     private final EventDispatcher dispatcher;
     private final HandlerLambda<GameStartedEvent> onGameStartedLambda;
     private final HandlerLambda<AssetsLoadedEvent> onAssetsLoadedLambda;
+    private final HandlerLambda<AnimalCollidedEvent> onCollisionLambda;
     private final Game game;
+    private Client client;
 
     /**
      * Creates a render controller using the given game and event dispatcher.
      *
-     * @param gm              refers to the game that is to be controlled.
+     * @param gm refers to the game that is to be controlled.
      * @param eventDispatcher refers to the dispatcher that sends and receives the relevant events.
      */
     @Inject
@@ -33,8 +38,10 @@ public class RenderController implements Controller {
         this.game = gm;
         this.onGameStartedLambda = (e) -> this.onGameStarted();
         this.onAssetsLoadedLambda = (e) -> this.onAssetsLoaded();
+        this.onCollisionLambda = (e) -> this.client.sendEvent(e);
         this.dispatcher.attach(GameStartedEvent.class, this.onGameStartedLambda);
         this.dispatcher.attach(AssetsLoadedEvent.class, this.onAssetsLoadedLambda);
+        this.dispatcher.attach(AnimalCollidedEvent.class, this.onCollisionLambda);
     }
 
     @Override
@@ -65,5 +72,9 @@ public class RenderController implements Controller {
     public void dispose() {
         this.dispatcher.detach(GameStartedEvent.class, this.onGameStartedLambda);
         this.dispatcher.detach(AssetsLoadedEvent.class, this.onAssetsLoadedLambda);
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 }
