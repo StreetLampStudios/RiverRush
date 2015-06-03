@@ -42,7 +42,7 @@ public class UserController extends AbstractController {
     @Override
     public void initialize() {
         final HandlerLambda<Event> onGameStateChangedLambda = (e) -> this.server.sendEvent(e, this);
-        final HandlerLambda<JoinTeamCommand> joinTeamHandler = (e) -> this.joinTeamHandler(e);
+        final HandlerLambda<JoinTeamCommand> joinTeamHandler = this::joinTeamHandler;
 
         this.listenTo(GameWaitingEvent.class, onGameStateChangedLambda);
         this.listenTo(GameAboutToStartEvent.class, onGameStateChangedLambda);
@@ -61,7 +61,7 @@ public class UserController extends AbstractController {
      *
      * @param e The event
      */
-    private void joinTeamHandler(JoinTeamCommand e) {
+    private void joinTeamHandler(final JoinTeamCommand e) {
         if (e.getTeam() == this.animal.getId()) {
             this.game.addPlayerToTeam(this.animal, e.getTeam());
         }
