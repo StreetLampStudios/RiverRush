@@ -1,8 +1,5 @@
 package nl.tudelft.ti2806.riverrush.domain.entity;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
@@ -17,14 +14,14 @@ public abstract class AbstractAnimal {
      */
     private AnimalState currentState;
 
-    private static final int RESPAWN_DELAY = 2000;
-    private static final int DROP_DELAY = 5000;
     private static final int BITS = 32;
     private static Integer highestId = 0;
     private final Integer animalID;
     private Integer teamID;
 
     private EventDispatcher dispatcher;
+
+    private Integer team;
 
     /**
      * Create an animal.
@@ -38,8 +35,8 @@ public abstract class AbstractAnimal {
     /**
      * Create an animal in desktop.
      *
-     * @param dispatch
-     * @param id
+     * @param dispatch - See {@link EventDispatcher}
+     * @param id - Id of the animal
      */
     public AbstractAnimal(final EventDispatcher dispatch, Integer animal, Integer team) {
         this.dispatcher = dispatch;
@@ -66,10 +63,6 @@ public abstract class AbstractAnimal {
         this.currentState = newState;
     }
 
-    // public void leave() {
-    // // Does nothing yet
-    // }
-
     /**
      * Changes the state to that having been collided.
      */
@@ -82,14 +75,6 @@ public abstract class AbstractAnimal {
      */
     public void jump() {
         this.setState(this.getState().jump());
-        Timer tmr = new Timer();
-        tmr.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                AbstractAnimal.this.setState(AbstractAnimal.this.getState().drop());
-                tmr.cancel();
-            }
-        }, DROP_DELAY, DROP_DELAY);
     }
 
     /**
@@ -97,20 +82,6 @@ public abstract class AbstractAnimal {
      */
     public void returnToBoat() {
         this.setState(this.getState().returnToBoat());
-    }
-
-    /**
-     * Respawn the monkey.
-     */
-    public void respawn() {
-        Timer tmr = new Timer();
-        tmr.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                AbstractAnimal.this.returnToBoat();
-                tmr.cancel();
-            }
-        }, RESPAWN_DELAY, RESPAWN_DELAY);
     }
 
     public Integer getId() {
@@ -144,4 +115,14 @@ public abstract class AbstractAnimal {
     public Integer getTeamID() {
         return this.teamID;
     }
+
+    /**
+     * Sets the team of the animal.
+     *
+     * @param teamID - id of the team
+     */
+    public void setTeam(final Integer teamID) {
+        this.team = teamID;
+    }
+
 }

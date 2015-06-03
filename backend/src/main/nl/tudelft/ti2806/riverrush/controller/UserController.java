@@ -8,6 +8,9 @@ import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.AbstractServer;
 import nl.tudelft.ti2806.riverrush.network.event.JoinTeamCommand;
+import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
+
+import java.util.Objects;
 
 /**
  * Controller for the individual players.
@@ -42,7 +45,12 @@ public class UserController extends AbstractController {
     @Override
     public void initialize() {
         final HandlerLambda<Event> onGameStateChangedLambda = (e) -> this.server.sendEvent(e, this);
-        final HandlerLambda<JoinTeamCommand> joinTeamHandler = (e) -> this.joinTeamHandler(e);
+        final HandlerLambda<JoinTeamCommand> joinTeamHandler = this::joinTeamHandler;
+        final HandlerLambda<JumpCommand> jumpCommandHandler = (e) -> {
+            if (Objects.equals(this.animal.getId(), e.getAnimal())) {
+                this.game.jumpAnimal(this.animal);
+            }
+        };
 
         this.listenTo(GameWaitingEvent.class, onGameStateChangedLambda);
         this.listenTo(GameAboutToStartEvent.class, onGameStateChangedLambda);
@@ -54,6 +62,7 @@ public class UserController extends AbstractController {
         this.listenTo(AnimalFellOffEvent.class, onGameStateChangedLambda);
         this.listenTo(AnimalReturnedToBoatEvent.class, onGameStateChangedLambda);
         this.listenTo(JoinTeamCommand.class, joinTeamHandler);
+        this.listenTo(JumpCommand.class, jumpCommandHandler);
     }
 
     /**
@@ -61,8 +70,8 @@ public class UserController extends AbstractController {
      *
      * @param e The event
      */
-    private void joinTeamHandler(JoinTeamCommand e) {
-        if (e.getTeam() == this.animal.getId()) {
+    private void joinTeamHandler(final JoinTeamCommand e) {
+        if (Objects.equals(e.getAnimal(), this.animal.getId())) {
             this.game.addPlayerToTeam(this.animal, e.getTeam());
         }
     }
