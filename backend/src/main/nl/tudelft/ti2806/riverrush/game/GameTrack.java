@@ -5,6 +5,7 @@ import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,8 +52,7 @@ public class GameTrack {
                 finishedTeams.add(team);
             }
 
-            // dispatcher.dispatch();
-            //TODO add UpdateProgressEvent
+             dispatcher.dispatch(new TeamProgressEvent(team.getId(),currentDistance + speed));
         }
 
         Team winner = determineWinningTeam(finishedTeams);

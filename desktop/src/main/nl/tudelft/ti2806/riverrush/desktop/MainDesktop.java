@@ -8,12 +8,7 @@ import com.google.inject.Injector;
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
 
@@ -54,8 +49,16 @@ public class MainDesktop extends CoreModule {
         client.setController(cntrl);
 
         this.setupGraphics();
-        // client.connect();
+         client.connect();
 
+//        mockBackend();
+    }
+
+    /**
+     * WARING: IS ONLY USED FOR TESTING.
+     * This will send events to the desktop pretending to be the desktop
+     */
+    private void mockBackend() {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -64,7 +67,7 @@ public class MainDesktop extends CoreModule {
         this.injector.getInstance(EventDispatcher.class).dispatch(new GameAboutToStartEvent());
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -77,7 +80,7 @@ public class MainDesktop extends CoreModule {
         AnimalAddedEvent ev;
         for (int i = 0; i < 100; i++) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -86,28 +89,29 @@ public class MainDesktop extends CoreModule {
             ev.setTeam(i % 2);
             this.injector.getInstance(EventDispatcher.class).dispatch(ev);
         }
-
-        AnimalJumpedEvent jev;
-        for (int i = 0; i < 100; i++) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            jev = new AnimalJumpedEvent();
-            jev.setAnimal(i);
-            jev.setTeam(i % 2);
-            this.injector.getInstance(EventDispatcher.class).dispatch(jev);
-        }
+//
+//        AnimalJumpedEvent jev;
+//        for (int i = 0; i < 100; i++) {
+//            try {
+//                Thread.sleep(100);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            jev = new AnimalJumpedEvent();
+//            jev.setAnimal(i);
+//            jev.setTeam(i % 2);
+//            this.injector.getInstance(EventDispatcher.class).dispatch(jev);
+//        }
 
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        this.injector.getInstance(EventDispatcher.class).dispatch(new TeamProgressEvent());
 
+        this.injector.getInstance(EventDispatcher.class).dispatch(new TeamProgressEvent(0, 100));
     }
+
 
     /**
      * Creates a Lwjgl Configurations with the given height and width. It will then get an instance

@@ -247,7 +247,7 @@ public class PlayingGameScreen implements Screen {
 
     }
 
-    public void updateProgress(int teamID, int progress) {
+    public void updateProgress(int teamID, double progress) {
         this.midScreen.updateProgress(teamID,progress);
     }
 }

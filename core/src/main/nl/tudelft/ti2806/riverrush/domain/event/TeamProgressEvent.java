@@ -11,7 +11,12 @@ import java.util.Map;
 public class TeamProgressEvent implements Event {
 
     private int teamID;
-    private int progress;
+    private double progress;
+
+    public TeamProgressEvent(int team, double progres) {
+        this.teamID = team;
+        this.progress = progres;
+    }
 
     @Override
     public String serialize(final Protocol protocol) {
@@ -47,7 +52,7 @@ public class TeamProgressEvent implements Event {
     /**
      * @return the progress in an int between 0 and 100
      */
-    public int getProgress() {
+    public Double getProgress() {
         return progress;
     }
 }
