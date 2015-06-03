@@ -4,17 +4,17 @@ import nl.tudelft.ti2806.riverrush.domain.entity.AbstractTeam;
 
 public class Team extends AbstractTeam {
 
-  private BoatGroup boat;
+    private BoatGroup boat;
 
-  public Team(final int id) {
-    super(id);
-  }
+    public Team(final int id) {
+        super(id);
+    }
 
-  public BoatGroup getBoat() {
-    return this.boat;
-  }
+    public BoatGroup getBoat() {
+        return this.boat;
+    }
 
-  public void setBoat(BoatGroup boat) {
-    this.boat = boat;
-  }
+    public void setBoat(final BoatGroup boat) {
+        this.boat = boat;
+    }
 }

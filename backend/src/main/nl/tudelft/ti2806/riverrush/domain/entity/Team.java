@@ -5,7 +5,7 @@ package nl.tudelft.ti2806.riverrush.domain.entity;
  */
 public class Team extends AbstractTeam {
 
-  public Team(final int aId) {
-    super(aId);
-  }
+    public Team() {
+        super();
+    }
 }

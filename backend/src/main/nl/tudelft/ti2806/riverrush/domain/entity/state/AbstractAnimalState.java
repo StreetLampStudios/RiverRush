@@ -1,6 +1,5 @@
 package nl.tudelft.ti2806.riverrush.domain.entity.state;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 /**

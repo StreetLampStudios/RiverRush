@@ -1,8 +1,5 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -17,6 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RotateByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.inject.Inject;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
  * Game object representing a monkey.
@@ -59,18 +59,14 @@ public class MonkeyActor extends Actor {
     /**
      * Creates a monkey object that represents player characters.
      *
-     * @param assetManager
-     *            enables the object to retrieve its assets
-     * @param xpos
-     *            represents the position of the monkey on the x axis
-     * @param ypos
-     *            represents the position of the monkey on the y axis
-     * @param dispatcher
-     *            Event dispatcher for dispatching events
+     * @param assetManager enables the object to retrieve its assets
+     * @param xpos         represents the position of the monkey on the x axis
+     * @param ypos         represents the position of the monkey on the y axis
+     * @param dispatcher   Event dispatcher for dispatching events
      */
     @Inject
     public MonkeyActor(final AssetManager assetManager, final float xpos, final float ypos,
-            final EventDispatcher dispatcher) {
+                       final EventDispatcher dispatcher) {
         this.manager = assetManager;
         this.setX(xpos);
         this.setY(ypos);
@@ -95,8 +91,8 @@ public class MonkeyActor extends Actor {
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-                this.getRotation());
+            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+            this.getRotation());
 
         batch.setColor(Color.WHITE);
 
@@ -174,7 +170,7 @@ public class MonkeyActor extends Actor {
 
         SequenceAction jump = sequence(jumpUp,
 
-        Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
+            Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
 
         return jump;
     }

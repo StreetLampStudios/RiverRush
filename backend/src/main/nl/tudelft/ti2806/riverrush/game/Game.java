@@ -2,6 +2,7 @@ package nl.tudelft.ti2806.riverrush.game;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
@@ -23,11 +24,13 @@ public class Game {
      * Game about to start timer delay.
      */
     public static final int DELAY = 5;
+    public static final int A_TRACK_LENGTH = 100;
 
     /**
      * The current state of the game.
      */
     private GameState gameState;
+    private GameTrack gameTrack;
     private int playerCount = 0;
     private final EventDispatcher eventDispatcher;
 
@@ -39,16 +42,17 @@ public class Game {
     @Inject
     public Game(final EventDispatcher dispatcher) {
         this.gameState = new WaitingForRendererState(dispatcher);
+        this.gameTrack = new BasicGameTrack(A_TRACK_LENGTH);
         this.eventDispatcher = dispatcher;
 
-        HandlerLambda<AnimalAddedEvent> addPlayer = (e) -> this.addPlayerHandler();
+        HandlerLambda<AnimalAddedEvent> addPlayer = (e) -> this.addAnimalHandler();
         this.eventDispatcher.attach(AnimalAddedEvent.class, addPlayer);
     }
 
     /**
      * Handler that adds a player to the game.
      */
-    private void addPlayerHandler() {
+    private void addAnimalHandler() {
         this.playerCount++;
         if (this.playerCount > 0) {
             this.eventDispatcher.dispatch(new GameAboutToStartEvent());
@@ -83,5 +87,23 @@ public class Game {
      */
     public void waitForPlayers() {
         this.gameState = this.gameState.waitForPlayers();
+    }
+
+    /**
+     * Add the player to the team.
+     *
+     * @param animal The animal
+     * @param team   The team
+     */
+    public void addPlayerToTeam(final AbstractAnimal animal, final Integer team) {
+        if (team == 0) {
+            this.gameTrack.getLeftTeam().addAnimal(animal);
+        } else {
+            this.gameTrack.getRightReam().addAnimal(animal);
+        }
+        AnimalAddedEvent event = new AnimalAddedEvent();
+        event.setAnimal(animal.getId());
+        event.setTeam(team);
+        this.eventDispatcher.dispatch(new AnimalAddedEvent());
     }
 }

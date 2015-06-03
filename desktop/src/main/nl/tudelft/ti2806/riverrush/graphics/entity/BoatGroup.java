@@ -54,16 +54,9 @@ public class BoatGroup extends Group {
     /**
      * Creates an boat object with a given graphical representation.
      *
-     * @param assetManager
-     *            enables the object to retrieve its assets
-     * @param xpos
-     *            represents the position of the boat on the x axis
-     * @param ypos
-     *            represents the position of the boat on the y axis
-     * @param width
-     *            represents the width of the boat object
-     * @param height
-     *            represents the height of the boat object
+     * @param assetManager enables the object to retrieve its assets
+     * @param xpos         represents the position of the boat on the x axis
+     * @param ypos         represents the position of the boat on the y axis
      */
     @Inject
     public BoatGroup(final AssetManager assetManager, final float xpos, final float ypos) {
@@ -91,8 +84,8 @@ public class BoatGroup extends Group {
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
         batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-                this.getRotation());
+            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+            this.getRotation());
         batch.setColor(Color.WHITE);
         this.drawChildren(batch, parentAlpha);
         batch.disableBlending();
