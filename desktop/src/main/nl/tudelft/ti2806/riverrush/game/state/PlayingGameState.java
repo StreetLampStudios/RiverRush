@@ -121,6 +121,7 @@ public class PlayingGameState extends AbstractGameState {
       for (AbstractAnimal animal : this.game.getTeam(1).getAnimals().values()) {
         Animal animal1 = (Animal) animal;
         if (graphic.calculateCollision(animal1.getActor())) {
+          // TODO: Set animal
           this.dispatcher.dispatch(new AnimalCollidedEvent());
         }
       }
