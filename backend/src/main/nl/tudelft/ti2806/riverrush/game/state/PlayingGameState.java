@@ -1,9 +1,7 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
 
 /**
@@ -12,7 +10,6 @@ import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
 public class PlayingGameState implements GameState {
 
     private final EventDispatcher eventDispatcher;
-    private final HandlerLambda<JumpCommand> jumpCommandHandler;
 
     /**
      * The game transitions to this state when the game starts.
@@ -21,21 +18,12 @@ public class PlayingGameState implements GameState {
      */
     public PlayingGameState(final EventDispatcher dispatcher) {
         this.eventDispatcher = dispatcher;
-
-        this.jumpCommandHandler = (e) -> {
-            AnimalJumpedEvent event = new AnimalJumpedEvent();
-            event.setAnimal(e.getAnimal());
-            //TODO: Add team
-            this.eventDispatcher.dispatch(event);
-        };
-        this.eventDispatcher.attach(JumpCommand.class, this.jumpCommandHandler);
-
         dispatcher.dispatch(new GameStartedEvent());
     }
 
     @Override
     public void dispose() {
-        this.eventDispatcher.detach(JumpCommand.class, this.jumpCommandHandler);
+        //Is supposed to be empty
     }
 
     @Override

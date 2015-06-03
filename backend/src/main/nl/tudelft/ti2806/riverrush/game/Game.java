@@ -30,7 +30,7 @@ public class Game {
      * The current state of the game.
      */
     private GameState gameState;
-    private GameTrack gameTrack;
+    private AbstractGameTrack gameTrack;
     private int playerCount = 0;
     private final EventDispatcher eventDispatcher;
 
@@ -54,7 +54,7 @@ public class Game {
      */
     private void addAnimalHandler() {
         this.playerCount++;
-        if (this.playerCount > 0) {
+        if (this.playerCount >= 2) {
             this.eventDispatcher.dispatch(new GameAboutToStartEvent());
             final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
             scheduler.schedule(this::start, DELAY, TimeUnit.SECONDS);
@@ -96,14 +96,22 @@ public class Game {
      * @param team   The team
      */
     public void addPlayerToTeam(final AbstractAnimal animal, final Integer team) {
-        if (team == 0) {
-            this.gameTrack.getLeftTeam().addAnimal(animal);
-        } else {
-            this.gameTrack.getRightReam().addAnimal(animal);
+        try {
+            this.gameTrack.addAnimal(team, animal);
+            AnimalAddedEvent event = new AnimalAddedEvent();
+            event.setAnimal(animal.getId());
+            event.setTeam(team);
+            this.eventDispatcher.dispatch(new AnimalAddedEvent());
+        } catch (NoSuchTeamException e) {
+            e.printStackTrace();
         }
-        AnimalAddedEvent event = new AnimalAddedEvent();
-        event.setAnimal(animal.getId());
-        event.setTeam(team);
-        this.eventDispatcher.dispatch(new AnimalAddedEvent());
+    }
+
+    /**
+     * Jumps an animal.
+     * @param animal - the animal to jump
+     */
+    public void jumpAnimal(final AbstractAnimal animal) {
+        animal.jump();
     }
 }

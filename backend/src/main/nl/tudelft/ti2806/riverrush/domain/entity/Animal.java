@@ -9,8 +9,16 @@ public class Animal extends AbstractAnimal {
 
     /**
      * Create an animal.
+     * @param eventDispatcher - the dispatcher
      */
-    public Animal(EventDispatcher eventDispatcher) {
+    public Animal(final EventDispatcher eventDispatcher) {
         super(eventDispatcher);
+    }
+
+    /**
+     * Try to drop the animal back to the boat.
+     */
+    public void drop() {
+        this.setState(this.getState().drop());
     }
 }

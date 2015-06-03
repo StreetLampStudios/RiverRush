@@ -7,7 +7,9 @@ import nl.tudelft.ti2806.riverrush.domain.entity.Team;
  */
 public class BasicGameTrack extends AbstractGameTrack {
 
-    public BasicGameTrack(Integer aTrackLength) {
-        super(new Team(), new Team(), aTrackLength);
+    public BasicGameTrack(final Integer aTrackLength) {
+        super(aTrackLength);
+        this.addTeam(new Team());
+        this.addTeam(new Team());
     }
 }
