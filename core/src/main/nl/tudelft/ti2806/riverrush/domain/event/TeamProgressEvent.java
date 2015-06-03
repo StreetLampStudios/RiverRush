@@ -11,7 +11,7 @@ import java.util.Map;
 public class TeamProgressEvent implements Event {
 
     private int teamID;
-    private int progress;
+    private double progress;
 
     @Override
     public String serialize(final Protocol protocol) {
@@ -27,7 +27,7 @@ public class TeamProgressEvent implements Event {
     }
 
     @Override
-    public void setAnimal(Integer anPlayerID) {
+    public void setAnimal(final Integer anPlayerID) {
         //Has to be empty
     }
 
@@ -47,7 +47,15 @@ public class TeamProgressEvent implements Event {
     /**
      * @return the progress in an int between 0 and 100
      */
-    public int getProgress() {
+    public Double getProgress() {
         return progress;
+    }
+
+    public void setTeamID(final int team) {
+        this.teamID = team;
+    }
+
+    public void setProgress(final double progres) {
+        this.progress = progres;
     }
 }

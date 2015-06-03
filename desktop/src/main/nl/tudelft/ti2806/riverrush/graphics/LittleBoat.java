@@ -19,7 +19,7 @@ public class LittleBoat extends Actor {
 
     private static final int END_REGIONX = 150; // 229;
     private static final int END_REGIONY = 425; // 138;
-    private int progress;
+    private double progress;
 
     /**
      * Creates an river banks object with a given graphical representation.
@@ -64,10 +64,10 @@ public class LittleBoat extends Actor {
     /**
      * @param progres - Sets progress to this value
      */
-    public void setProgress(final int progres) {
+    public void setProgress(final double progres) {
         this.progress = progres;
         MoveToAction action = new MoveToAction();
-        action.setY(ypos + (progress/100f) * top_ypos);
+        action.setPosition(getX(), ypos + (long)(progres /100) * top_ypos);
         action.setDuration(0.5f);
         this.addAction(action);
     }

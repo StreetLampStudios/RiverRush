@@ -51,6 +51,24 @@ public class MainDesktop extends CoreModule {
     }
 
     /**
+     * Return the current width of the main screen.
+     *
+     * @return an integer value representing the width.
+     */
+    public static int getWidth() {
+        return WIDTH;
+    }
+
+    /**
+     * Return the current height of the main screen.
+     *
+     * @return an integer value representing the height.
+     */
+    public static int getHeight() {
+        return HEIGHT;
+    }
+
+    /**
      * Creates a Lwjgl Configurations with the given height and width. It will then get an instance
      * of the game class and use it to create the application.
      */
@@ -74,23 +92,5 @@ public class MainDesktop extends CoreModule {
         super.configure();
         this.bind(AssetManager.class).toInstance(new AssetManager());
         this.bind(Controller.class).to(RenderController.class);
-    }
-
-    /**
-     * Return the current width of the main screen.
-     *
-     * @return an integer value representing the width.
-     */
-    public static int getWidth() {
-        return WIDTH;
-    }
-
-    /**
-     * Return the current height of the main screen.
-     *
-     * @return an integer value representing the height.
-     */
-    public static int getHeight() {
-        return HEIGHT;
     }
 }

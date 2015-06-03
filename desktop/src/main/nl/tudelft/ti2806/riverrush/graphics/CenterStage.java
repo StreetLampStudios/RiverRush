@@ -12,6 +12,7 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.RiverBanksActor;
  */
 public class CenterStage extends Table {
 
+    public static final int BOAT_HEIGHT = 30;
     private LittleBoat leftBoat;
     private LittleBoat rightBoat;
     private final float TOTALHEIGHT;
@@ -33,10 +34,15 @@ public class CenterStage extends Table {
         RiverBanksActor background = new RiverBanksActor(assets, 0, 0, width, height);
         this.addActor(background);
 
-        WoodenBackground floor = new WoodenBackground(assets, 100, 50, width -200, height -100);
-        DividingLine line = new DividingLine(assets,300,30,width/2,height);
-        leftBoat  = new LittleBoat(assets,TOTALWIDTH / 5    ,30,TOTALHEIGHT / 5 * 4, TOTALHEIGHT / 4, TOTALWIDTH / 10);
-        rightBoat = new LittleBoat(assets,TOTALWIDTH / 5 * 3,30,TOTALHEIGHT / 5 * 4, TOTALHEIGHT / 4, TOTALWIDTH / 10);
+        WoodenBackground floor = new WoodenBackground(assets, 100, 50, width - 200, height - 100);
+        DividingLine line = new DividingLine(assets, 300, 30, width / 2, height);
+
+        float top_y = TOTALHEIGHT
+            - 2 * BOAT_HEIGHT   // At max the boat should be at the top
+            - 30;               // Minus a margin of 30
+
+        leftBoat  = new LittleBoat(assets, TOTALWIDTH / 5, BOAT_HEIGHT, top_y, TOTALHEIGHT / 4, TOTALWIDTH / 10);
+        rightBoat = new LittleBoat(assets, TOTALWIDTH / 5 * 3, BOAT_HEIGHT, top_y, TOTALHEIGHT / 4, TOTALWIDTH / 10);
 
         this.addActor(floor);
         this.addActor(line);
@@ -56,8 +62,8 @@ public class CenterStage extends Table {
         super.draw(batch, parentAlpha);
     }
 
-    public void updateProgress(int teamID, int progress) {
-        if(teamID == 0){
+    public void updateProgress(int teamID, double progress) {
+        if (teamID == 0) {
             leftBoat.setProgress(progress);
         } else {
             leftBoat.setProgress(progress);
