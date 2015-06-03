@@ -28,7 +28,7 @@ public interface Event {
   /**
    * Set animal on event.
    *
-   * @param animal The event
+   * @param anPlayerID The event
    */
   void setAnimal(Integer anPlayerID);
 

@@ -11,6 +11,6 @@ public class Animal extends AbstractAnimal {
      * Create an animal.
      */
     public Animal(EventDispatcher eventDispatcher) {
-        super(new AnimalOnBoat(eventDispatcher));
+        super(eventDispatcher);
     }
 }

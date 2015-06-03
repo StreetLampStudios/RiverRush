@@ -35,8 +35,8 @@ public class CenterStage extends Table {
 
         WoodenBackground floor = new WoodenBackground(assets, 100, 50, width -200, height -100);
         DividingLine line = new DividingLine(assets,300,30,width/2,height);
-        leftBoat = new LittleBoat(assets,TOTALWIDTH/5       ,30,TOTALHEIGHT/5*4,TOTALHEIGHT/4,TOTALWIDTH/10);
-        rightBoat = new LittleBoat(assets,TOTALWIDTH / 5 * 3,30,TOTALHEIGHT/5*4,TOTALHEIGHT/4,TOTALWIDTH/10);
+        leftBoat  = new LittleBoat(assets,TOTALWIDTH / 5    ,30,TOTALHEIGHT / 5 * 4, TOTALHEIGHT / 4, TOTALWIDTH / 10);
+        rightBoat = new LittleBoat(assets,TOTALWIDTH / 5 * 3,30,TOTALHEIGHT / 5 * 4, TOTALHEIGHT / 4, TOTALWIDTH / 10);
 
         this.addActor(floor);
         this.addActor(line);

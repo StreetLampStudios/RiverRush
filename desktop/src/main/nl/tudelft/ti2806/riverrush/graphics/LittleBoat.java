@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.google.inject.Inject;
 
 /**
@@ -65,6 +66,9 @@ public class LittleBoat extends Actor {
      */
     public void setProgress(final int progres) {
         this.progress = progres;
-        this.setY(ypos + (progress/100f) * top_ypos);
+        MoveToAction action = new MoveToAction();
+        action.setY(ypos + (progress/100f) * top_ypos);
+        action.setDuration(0.5f);
+        this.addAction(action);
     }
 }

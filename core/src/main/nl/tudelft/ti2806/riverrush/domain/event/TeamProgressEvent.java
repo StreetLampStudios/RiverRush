@@ -15,20 +15,20 @@ public class TeamProgressEvent implements Event {
 
     @Override
     public String serialize(final Protocol protocol) {
-        //TODO Add nice serialisation.
-        return "";
+        return "teamID" + protocol.getKeyValueSeperator() + teamID + protocol.getPairSeperator()
+            + "progress" + protocol.getKeyValueSeperator() + progress;
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
-        teamID = Integer.parseInt(keyValuePairs.get("team"));
+        teamID = Integer.parseInt(keyValuePairs.get("teamID"));
         progress = Integer.parseInt(keyValuePairs.get("progress"));
         return this;
     }
 
     @Override
     public void setAnimal(Integer anPlayerID) {
-
+        //Has to be empty
     }
 
     @Override
@@ -41,14 +41,13 @@ public class TeamProgressEvent implements Event {
      * @return the id of the team
      */
     public int getTeamID() {
-        return 0;
+        return teamID;
     }
 
     /**
      * @return the progress in an int between 0 and 100
      */
     public int getProgress() {
-        return 10;
-        //return progress;
+        return progress;
     }
 }

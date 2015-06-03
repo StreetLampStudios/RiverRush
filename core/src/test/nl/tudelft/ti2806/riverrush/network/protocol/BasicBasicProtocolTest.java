@@ -183,7 +183,7 @@ public class BasicBasicProtocolTest {
 
         @Override
         public void setAnimal(Integer anPlayerID) {
-         //FIXME
+         //Has to be empty
         }
 
         @Override
