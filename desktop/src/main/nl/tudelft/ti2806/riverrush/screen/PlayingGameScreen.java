@@ -218,10 +218,7 @@ public class PlayingGameScreen implements Screen {
 
     @Override
     public void dispose() {
-        this.leftStage.dispose();
-        this.rightStage.dispose();
-        this.midStage.dispose();
-        this.spriteBatch.dispose();
+        // Does not need to do anything
     }
 
     /**

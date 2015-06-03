@@ -57,6 +57,7 @@ public class LoadingScreen implements Screen {
         this.stage.addActor(image);
 
         // Load all images/textures that we will use
+        this.assets.load(getFileName("end.jpg"), Texture.class);
         this.assets.load(getFileName("sector.png"), Texture.class);
         this.assets.load(getFileName("ship.png"), Texture.class);
         this.assets.load(getFileName("raccoon.png"), Texture.class);

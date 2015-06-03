@@ -8,12 +8,6 @@ import com.google.inject.Injector;
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
 
@@ -37,7 +31,6 @@ public class MainDesktop extends CoreModule {
      */
     public static void main(final String[] arg) throws URISyntaxException {
         new MainDesktop();
-
     }
 
     /**
@@ -54,59 +47,7 @@ public class MainDesktop extends CoreModule {
         client.setController(cntrl);
 
         this.setupGraphics();
-        // client.connect();
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.injector.getInstance(EventDispatcher.class).dispatch(new GameAboutToStartEvent());
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.injector.getInstance(EventDispatcher.class).dispatch(new GameStartedEvent());
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        AnimalAddedEvent ev;
-        for (int i = 0; i < 100; i++) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            ev = new AnimalAddedEvent();
-            ev.setAnimal(i);
-            ev.setTeam(i % 2);
-            this.injector.getInstance(EventDispatcher.class).dispatch(ev);
-        }
-
-        AnimalJumpedEvent jev;
-        for (int i = 0; i < 100; i++) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            jev = new AnimalJumpedEvent();
-            jev.setAnimal(i);
-            jev.setTeam(i % 2);
-            this.injector.getInstance(EventDispatcher.class).dispatch(jev);
-        }
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.injector.getInstance(EventDispatcher.class).dispatch(new TeamProgressEvent());
-
+        client.connect();
     }
 
     /**
@@ -122,7 +63,6 @@ public class MainDesktop extends CoreModule {
 
         Game game = this.injector.getInstance(Game.class);
         new LwjglApplication(game, config);
-
     }
 
     /**
