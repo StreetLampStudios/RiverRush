@@ -52,7 +52,10 @@ public class GameTrack {
                 finishedTeams.add(team);
             }
 
-             dispatcher.dispatch(new TeamProgressEvent(team.getId(),currentDistance + speed));
+            TeamProgressEvent event = new TeamProgressEvent();
+            event.setProgress(currentDistance + speed);
+            event.setTeamID(team.getId());
+            dispatcher.dispatch(event);
         }
 
         Team winner = determineWinningTeam(finishedTeams);

@@ -13,11 +13,6 @@ public class TeamProgressEvent implements Event {
     private int teamID;
     private double progress;
 
-    public TeamProgressEvent(int team, double progres) {
-        this.teamID = team;
-        this.progress = progres;
-    }
-
     @Override
     public String serialize(final Protocol protocol) {
         return "teamID" + protocol.getKeyValueSeperator() + teamID + protocol.getPairSeperator()
@@ -32,7 +27,7 @@ public class TeamProgressEvent implements Event {
     }
 
     @Override
-    public void setAnimal(Integer anPlayerID) {
+    public void setAnimal(final Integer anPlayerID) {
         //Has to be empty
     }
 
@@ -54,5 +49,13 @@ public class TeamProgressEvent implements Event {
      */
     public Double getProgress() {
         return progress;
+    }
+
+    public void setTeamID(final int team) {
+        this.teamID = team;
+    }
+
+    public void setProgress(final double progres) {
+        this.progress = progres;
     }
 }
