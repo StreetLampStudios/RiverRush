@@ -48,7 +48,7 @@ public class GameTrack {
             Double currentDistance = distances.get(team.getId());
             distances.put(team.getId(), currentDistance + speed);
 
-            if(currentDistance + speed > 100) {
+            if(currentDistance + speed >= 100) {
                 finishedTeams.add(team);
             }
 
