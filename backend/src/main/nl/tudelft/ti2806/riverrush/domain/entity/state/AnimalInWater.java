@@ -29,7 +29,7 @@ public class AnimalInWater extends AbstractAnimalState {
         tmr.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                AnimalInWater.this.animal.returnToBoat();
+                animal.returnToBoat();
                 tmr.cancel();
             }
         }, RESPAWN_DELAY, RESPAWN_DELAY);
