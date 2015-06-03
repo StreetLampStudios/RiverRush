@@ -1,11 +1,11 @@
 package nl.tudelft.ti2806.riverrush.domain.entity;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * An abstract implementation of an animal.
@@ -21,7 +21,8 @@ public abstract class AbstractAnimal {
     private static final int DROP_DELAY = 5000;
     private static final int BITS = 32;
     private static Integer highestId = 0;
-    private final Integer id;
+    private final Integer animalID;
+    private Integer teamID;
 
     private EventDispatcher dispatcher;
 
@@ -30,7 +31,7 @@ public abstract class AbstractAnimal {
      */
     public AbstractAnimal(final EventDispatcher dispatch) {
         this.dispatcher = dispatch;
-        this.id = highestId + 1;
+        this.animalID = highestId + 1;
         highestId++;
     }
 
@@ -40,9 +41,10 @@ public abstract class AbstractAnimal {
      * @param dispatch
      * @param id
      */
-    public AbstractAnimal(final EventDispatcher dispatch, Integer id) {
+    public AbstractAnimal(final EventDispatcher dispatch, Integer animal, Integer team) {
         this.dispatcher = dispatch;
-        this.id = id;
+        this.animalID = animal;
+        this.teamID = team;
     }
 
     /**
@@ -112,7 +114,7 @@ public abstract class AbstractAnimal {
     }
 
     public Integer getId() {
-        return this.id;
+        return this.animalID;
     }
 
     @Override
@@ -126,16 +128,20 @@ public abstract class AbstractAnimal {
         }
 
         AbstractAnimal animal = (AbstractAnimal) o;
-        return this.id == animal.id;
+        return this.animalID == animal.animalID;
 
     }
 
     @Override
     public int hashCode() {
-        return this.id ^ (this.id >>> BITS);
+        return this.animalID ^ (this.animalID >>> BITS);
     }
 
     protected EventDispatcher getDispatcher() {
         return this.dispatcher;
+    }
+
+    public Integer getTeamID() {
+        return this.teamID;
     }
 }

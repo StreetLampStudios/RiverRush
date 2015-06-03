@@ -1,10 +1,10 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity.state;
 
-import com.badlogic.gdx.scenes.scene2d.Action;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalState;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.entity.MonkeyActor;
+
+import com.badlogic.gdx.scenes.scene2d.Action;
 
 /**
  * This is the standard state.
@@ -23,7 +23,7 @@ public class AnimalOnBoat implements AnimalState {
     /**
      * Constructor.
      *
-     * @param act             - The animal that is on the boat
+     * @param act - The animal that is on the boat
      * @param eventDispatcher - The event disptacher
      */
     public AnimalOnBoat(final MonkeyActor act, final EventDispatcher eventDispatcher) {
@@ -47,7 +47,6 @@ public class AnimalOnBoat implements AnimalState {
     public AnimalState collide() {
         Action hit = this.actor.collideAction();
         this.actor.addAction(hit);
-        this.dispatcher.dispatch(new AnimalFellOffEvent());
         return new AnimalInWater(this.actor, this.dispatcher);
     }
 
