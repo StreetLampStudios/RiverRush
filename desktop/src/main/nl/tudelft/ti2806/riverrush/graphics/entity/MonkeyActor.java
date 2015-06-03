@@ -26,11 +26,11 @@ public class MonkeyActor extends Actor {
     /**
      * Specifies the animal's width.
      */
-    private static final float MONKEY_WIDTH = 144;
+    private static final float MONKEY_WIDTH = 90; // 144
     /**
      * Specifies the animal's height.
      */
-    private static final float MONKEY_HEIGHT = 81;
+    private static final float MONKEY_HEIGHT = 50; // 81
 
     private static final float JUMP_HEIGHT = 100;
     private static final int END_REGIONX = 432;
@@ -165,5 +165,12 @@ public class MonkeyActor extends Actor {
         Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
 
         return jump;
+    }
+
+    @Override
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
+        this.origX = x;
+        this.origY = y;
     }
 }

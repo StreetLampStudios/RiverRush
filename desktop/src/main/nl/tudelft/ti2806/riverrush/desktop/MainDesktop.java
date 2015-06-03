@@ -6,7 +6,7 @@ import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
@@ -75,13 +75,29 @@ public class MainDesktop extends CoreModule {
             e.printStackTrace();
         }
         AnimalAddedEvent ev = new AnimalAddedEvent();
-        ev.setAnimal(1);
-        ev.setTeam(0);
-        this.injector.getInstance(EventDispatcher.class).dispatch(ev);
-        AnimalAddedEvent ev2 = new AnimalAddedEvent();
-        ev2.setAnimal(-1);
-        ev2.setTeam(0);
-        this.injector.getInstance(EventDispatcher.class).dispatch(ev2);
+        for (int i = 0; i < 50; i++) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ev = new AnimalAddedEvent();
+            ev.setAnimal(i);
+            ev.setTeam(0);
+            this.injector.getInstance(EventDispatcher.class).dispatch(ev);
+        }
+        AnimalJumpedEvent jev = new AnimalJumpedEvent();
+        for (int i = 0; i < 50; i++) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            jev = new AnimalJumpedEvent();
+            jev.setAnimal(i);
+            jev.setTeam(0);
+            this.injector.getInstance(EventDispatcher.class).dispatch(jev);
+        }
         // try {
         // Thread.sleep(2000);
         // } catch (InterruptedException e) {
@@ -98,15 +114,15 @@ public class MainDesktop extends CoreModule {
         // }
         // ev4.setAnimal(-1);
         // this.injector.getInstance(EventDispatcher.class).dispatch(ev4);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        AnimalFellOffEvent ev5 = new AnimalFellOffEvent();
-        ev5.setAnimal(-1);
-        ev5.setTeam(0);
-        this.injector.getInstance(EventDispatcher.class).dispatch(ev5);
+        // try {
+        // Thread.sleep(1000);
+        // } catch (InterruptedException e) {
+        // e.printStackTrace();
+        // }
+        // AnimalFellOffEvent ev5 = new AnimalFellOffEvent();
+        // ev5.setAnimal(-1);
+        // ev5.setTeam(0);
+        // this.injector.getInstance(EventDispatcher.class).dispatch(ev5);
         // AddObstacleEvent ev3 = new AddObstacleEvent();
         // ev3.setTeam(0);
         // ev3.setLocation(0.5);

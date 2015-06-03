@@ -24,8 +24,8 @@ public class BoatSector extends Group {
         this.rowCount = rows;
         this.colCount = cols;
 
-        this.setWidth(this.colCount * 144); // Monkey width
-        this.setHeight(this.rowCount * 181); // Monkey height
+        this.setWidth(this.colCount * 90); // Monkey width
+        this.setHeight(this.rowCount * 50); // Monkey height
 
         this.setColor(color);
 
@@ -81,7 +81,6 @@ public class BoatSector extends Group {
         float yPos = this.getY()
                 + ((this.currentAnimalPosition / this.colCount) * actor.getHeight());
         actor.setPosition(xPos, yPos);
-
         this.currentAnimalPosition = (this.currentAnimalPosition + 2)
                 % (this.rowCount * this.colCount);
 

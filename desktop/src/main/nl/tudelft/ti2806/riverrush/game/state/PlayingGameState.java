@@ -151,8 +151,8 @@ public class PlayingGameState extends AbstractGameState {
         Integer tm = event.getTeam();
         Team tim = this.game.getTeam(tm);
         if (tim == null) {
-            BoatGroup group = new BoatGroup(this.assets, (MainDesktop.getWidth() / 2) - 300,
-                    (MainDesktop.getHeight() / 2) - 300); // Temporary fix
+            BoatGroup group = new BoatGroup(this.assets, (MainDesktop.getWidth() / 2) - 450,
+                    MainDesktop.getHeight() * 0.02f);
             tim = this.game.addTeam(tm);
             tim.setBoat(group);
             this.screen.addTeam(group);
@@ -161,7 +161,6 @@ public class PlayingGameState extends AbstractGameState {
         }
         tim.addAnimal(anim);
         tim.getBoat().addAnimal(actor);
-        // tim.getBoat().addActor(anim.getActor());
     }
 
     /**

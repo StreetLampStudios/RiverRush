@@ -17,7 +17,7 @@ import com.google.inject.Inject;
  */
 public class BoatGroup extends Group {
 
-    private static final int SIZE = 600;
+    private final int SIZE = 900;
 
     /**
      * The asset manager.
@@ -57,16 +57,16 @@ public class BoatGroup extends Group {
         this.sectors = new ArrayList<>();
         ArrayList<Color> colors = new ArrayList<>();
         colors.add(Color.BLUE);
-        colors.add(Color.RED);
         colors.add(Color.GREEN);
+        colors.add(Color.RED);
         colors.add(Color.YELLOW);
         colors.add(Color.WHITE);
 
         for (int i = 0; i < NUM_SECTORS; i++) {
             Color color = colors.get(i);
             BoatSector sec = new BoatSector(assetManager, ROW_COUNT, COL_COUNT, color);
-            float secPosX = this.getX() + 50f;
-            float secPosY = this.getY() + 50f + ((50f + sec.getHeight()) * i);
+            float secPosX = this.getX() + (this.getWidth() / 2) - (sec.getWidth() / 2);
+            float secPosY = this.getY() + 50f + ((20f + sec.getHeight()) * i);
             sec.setPosition(secPosX, secPosY);
             this.sectors.add(sec);
             this.addActor(sec);
@@ -93,6 +93,7 @@ public class BoatGroup extends Group {
                 this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
                 this.getRotation());
         batch.setColor(Color.WHITE);
+
         this.drawChildren(batch, parentAlpha);
         batch.disableBlending();
 
