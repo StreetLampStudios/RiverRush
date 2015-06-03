@@ -1,9 +1,9 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
+import java.util.HashMap;
+
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractTeam;
-
-import java.util.HashMap;
 
 public class Team extends AbstractTeam {
 
@@ -12,5 +12,13 @@ public class Team extends AbstractTeam {
 
     public Team(final int id) {
         super(id);
+    }
+
+    public BoatGroup getBoat() {
+        return this.boat;
+    }
+
+    public void setBoat(BoatGroup boat) {
+        this.boat = boat;
     }
 }

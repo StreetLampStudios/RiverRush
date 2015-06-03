@@ -1,16 +1,23 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import com.badlogic.gdx.scenes.scene2d.Action;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
-import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalState;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.graphics.entity.state.AnimalOnBoat;
+
+import com.badlogic.gdx.scenes.scene2d.Action;
 
 public class Animal extends AbstractAnimal {
 
-    public Animal(AnimalState state) {
-        super(state);
+    public Animal(EventDispatcher dispatch) {
+        super(dispatch);
     }
 
     private MonkeyActor actor;
+
+    public void setActor(MonkeyActor act) {
+        this.actor = act;
+        this.setState(new AnimalOnBoat(this.actor, this.getDispatcher()));
+    }
 
     /**
      * Make the actor create a fadeAction.
@@ -49,7 +56,7 @@ public class Animal extends AbstractAnimal {
     }
 
     /**
-     * @return this animal's graphical component: Monkeyactor.
+     * @return this animal's graphical component: MonkeyActor.
      */
     public MonkeyActor getActor() {
         return this.actor;

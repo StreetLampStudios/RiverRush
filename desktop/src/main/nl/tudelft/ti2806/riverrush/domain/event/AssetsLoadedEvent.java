@@ -1,13 +1,12 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
-import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
-
 import java.util.Map;
 
+import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
+
 /**
- * This event is called from the renderer when it has loaded all the assets.
- * This is neccesary, because we don't want the game to begin, when the renderer has not finished loading.
+ * This event is called from the renderer when it has loaded all the assets. This is neccesary,
+ * because we don't want the game to begin, when the renderer has not finished loading.
  */
 public class AssetsLoadedEvent implements Event {
 
@@ -22,7 +21,7 @@ public class AssetsLoadedEvent implements Event {
     }
 
     @Override
-    public void setAnimal(final AbstractAnimal animal) {
+    public void setAnimal(final Integer anAnimalID) {
         // Has to be empty
     }
 
