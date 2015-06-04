@@ -1,8 +1,5 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,6 +9,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.google.inject.Inject;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Represents a boat that the animals row on.
@@ -68,8 +68,8 @@ public class BoatGroup extends Group {
         for (int i = NUM_SECTORS - 1; i >= 0; i--) {
             Color color = colors.get(i);
             BoatSector sec = new BoatSector(assetManager, ROW_COUNT, COL_COUNT, color);
-            float secPosX = this.getX() + (this.getWidth() / 2) - (sec.getWidth() / 2);
-            float secPosY = this.getY() + 50f + ((20f + sec.getHeight()) * i);
+            float secPosX = (this.getWidth() / 2) - (sec.getWidth() / 2);
+            float secPosY = 50f + ((20f + sec.getHeight()) * i);
             sec.setPosition(secPosX, secPosY);
             this.sectors.add(sec);
             this.addActor(sec);
@@ -84,6 +84,7 @@ public class BoatGroup extends Group {
 
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
+
         Texture tex = this.manager.get("data/ship.png", Texture.class);
         TextureRegion region = new TextureRegion(tex, 0, 0, REGION_ENDX, REGION_ENDY);
         batch.enableBlending();
@@ -97,7 +98,7 @@ public class BoatGroup extends Group {
                 this.getRotation());
         batch.setColor(Color.WHITE);
 
-        this.drawChildren(batch, parentAlpha);
+        super.draw(batch, parentAlpha);
         batch.disableBlending();
 
     }
@@ -125,9 +126,6 @@ public class BoatGroup extends Group {
         move.setDuration(3f);
 
         this.addAction(move);
-        for (BoatSector sec : this.sectors) {
-            sec.moveAlong(direction, MOVE_DISTANCE);
-        }
 
     }
 

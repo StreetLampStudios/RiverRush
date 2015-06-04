@@ -1,7 +1,5 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,7 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+
+import java.util.ArrayList;
 
 public class BoatSector extends Group {
 
@@ -25,7 +24,7 @@ public class BoatSector extends Group {
         this.rowCount = rows;
         this.colCount = cols;
 
-        this.setWidth(this.colCount * 90); // Monkey width
+        this.setWidth(this.colCount * 90);  // Monkey width
         this.setHeight(this.rowCount * 50); // Monkey height
 
         this.setColor(color);
@@ -42,6 +41,7 @@ public class BoatSector extends Group {
 
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
+
         Texture tex = this.assetManager.get("data/sector.png", Texture.class);
         TextureRegion region = new TextureRegion(tex, 0, 0, 700, 360);
         batch.enableBlending();
@@ -54,7 +54,8 @@ public class BoatSector extends Group {
                 this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
                 this.getRotation());
         batch.setColor(Color.WHITE);
-        this.drawChildren(batch, parentAlpha);
+
+        super.draw(batch, parentAlpha);
         batch.disableBlending();
 
         // batch.enableBlending();
@@ -79,10 +80,8 @@ public class BoatSector extends Group {
 
     public void addAnimal(MonkeyActor actor) {
         this.animals.set(this.currentAnimalPosition, actor);
-        float xPos = this.getX()
-                + ((this.currentAnimalPosition % this.colCount) * actor.getWidth());
-        float yPos = this.getY()
-                + ((this.currentAnimalPosition / this.colCount) * actor.getHeight());
+        float xPos = ((this.currentAnimalPosition % this.colCount) * actor.getWidth());
+        float yPos = ((this.currentAnimalPosition / this.colCount) * actor.getHeight());
         actor.setPosition(xPos, yPos);
         this.currentAnimalPosition = (this.currentAnimalPosition + 2)
                 % (this.rowCount * this.colCount);
@@ -91,23 +90,6 @@ public class BoatSector extends Group {
             this.currentAnimalPosition--;
         }
         this.addActor(actor);
-    }
-
-    /**
-     * Move to dodge an obstacle. Can dodge left or right based on direction.
-     * @param direction this parameter determines direction. 1 is to the right, -1 is to the left.
-     */
-    public void moveAlong(float direction, float distance) {
-        MoveToAction move2 = new MoveToAction();
-        move2.setPosition(this.getX() + (direction * distance), this.getY());
-        move2.setDuration(3f);
-        this.addAction(move2);
-        for (MonkeyActor ac : this.animals) {
-            if (ac != null) {
-                ac.moveAlong(direction, distance);
-            }
-        }
-
     }
 
     public ArrayList<MonkeyActor> getAnimals() {
