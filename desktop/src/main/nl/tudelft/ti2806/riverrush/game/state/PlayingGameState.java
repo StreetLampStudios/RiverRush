@@ -177,7 +177,6 @@ public class PlayingGameState extends AbstractGameState {
         Integer animalID = event.getAnimal();
         AbstractAnimal anim = tim.getAnimals().get(animalID);
         anim.jump();
-
     }
 
     /**
