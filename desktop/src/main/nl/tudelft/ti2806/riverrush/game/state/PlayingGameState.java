@@ -63,7 +63,6 @@ public class PlayingGameState extends AbstractGameState {
 
         this.leftObstList = new ArrayList<>();
         this.rightObstList = new ArrayList<>();
-
     }
 
     @Override
