@@ -34,7 +34,7 @@ public class BasicEventDispatcher implements EventDispatcher {
 
         handlers.add(handler);
         this.registeredLambdas.put(eventType, handlers);
-        log.debug("Attached handler: " + handler + " for: " + eventType);
+        log.debug("Attached handler: " + handler.getClass().getSimpleName() + " for: " + eventType.getSimpleName());
     }
 
     @Override
@@ -44,9 +44,9 @@ public class BasicEventDispatcher implements EventDispatcher {
 
         if (handlers != null) {
             handlers.remove(handlerLambda);
-            log.debug("Detached handler: " + handlerLambda + " for: " + eventType);
+            log.debug("Detached handler: " + handlerLambda.getClass().getSimpleName() + " for: " + eventType.getSimpleName());
         } else {
-            log.warn("Could not detach unregistered handler for: " + eventType);
+            log.warn("Could not detach unregistered handler for: " + eventType.getSimpleName());
         }
     }
 
@@ -68,7 +68,7 @@ public class BasicEventDispatcher implements EventDispatcher {
         if (handlers != null) {
             handlers.forEach(
                 (f) -> {
-                    log.debug("Dispatching event: " + event.getClass().getSimpleName() + " to handler: " + f);
+                    log.debug("Dispatching event: " + event.getClass().getSimpleName() + " to handler: " + f.getClass().getSimpleName());
                     f.handle(event);
                 }
             );
