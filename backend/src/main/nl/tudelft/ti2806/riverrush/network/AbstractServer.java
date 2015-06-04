@@ -75,6 +75,7 @@ public abstract class AbstractServer extends WebSocketServer {
     @Override
     public void onOpen(final WebSocket conn, final ClientHandshake handshake) {
         FailIf.isNull(conn);
+
         createController(conn);
     }
 
