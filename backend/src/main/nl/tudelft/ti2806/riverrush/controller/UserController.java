@@ -44,7 +44,7 @@ public class UserController extends AbstractController {
 
     @Override
     public void initialize() {
-        final HandlerLambda<Event> onGameStateChangedLambda = (e) -> this.server.sendEvent(e, this);
+        final HandlerLambda<Event> sendOverNetworkLambda = (e) -> this.server.sendEvent(e, this);
         final HandlerLambda<JoinTeamCommand> joinTeamHandler = this::joinTeamHandler;
         final HandlerLambda<JumpCommand> jumpCommandHandler = (e) -> {
             if (Objects.equals(this.animal.getId(), e.getAnimal())) {
@@ -52,15 +52,16 @@ public class UserController extends AbstractController {
             }
         };
 
-        this.listenTo(GameWaitingEvent.class, onGameStateChangedLambda);
-        this.listenTo(GameAboutToStartEvent.class, onGameStateChangedLambda);
-        this.listenTo(GameStartedEvent.class, onGameStateChangedLambda);
-        this.listenTo(GameStoppedEvent.class, onGameStateChangedLambda);
-        this.listenTo(GameFinishedEvent.class, onGameStateChangedLambda);
-        this.listenTo(AnimalAddedEvent.class, onGameStateChangedLambda);
-        this.listenTo(AnimalJumpedEvent.class, onGameStateChangedLambda);
-        this.listenTo(AnimalFellOffEvent.class, onGameStateChangedLambda);
-        this.listenTo(AnimalReturnedToBoatEvent.class, onGameStateChangedLambda);
+        this.listenTo(GameWaitingEvent.class, sendOverNetworkLambda);
+        this.listenTo(GameAboutToStartEvent.class, sendOverNetworkLambda);
+        this.listenTo(GameStartedEvent.class, sendOverNetworkLambda);
+        this.listenTo(GameStoppedEvent.class, sendOverNetworkLambda);
+        this.listenTo(GameFinishedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalAddedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalJumpedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalFellOffEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalReturnedToBoatEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalDroppedEvent.class, sendOverNetworkLambda);
         this.listenTo(JoinTeamCommand.class, joinTeamHandler);
         this.listenTo(JumpCommand.class, jumpCommandHandler);
     }

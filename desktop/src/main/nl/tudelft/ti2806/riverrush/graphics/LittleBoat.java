@@ -66,8 +66,9 @@ public class LittleBoat extends Actor {
      */
     public void setProgress(final double progres) {
         this.progress = progres;
+        float newY = new Double(progres / 100).floatValue();
         MoveToAction action = new MoveToAction();
-        action.setPosition(getX(), ypos + (long)(progres /100) * top_ypos);
+        action.setPosition(getX(), ypos + newY * (top_ypos - ypos));
         action.setDuration(0.5f);
         this.addAction(action);
     }

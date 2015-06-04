@@ -70,6 +70,8 @@ public abstract class CoreModule extends AbstractModule {
         protocol.registerNetworkMessage(AnimalFellOffEvent.class, AnimalFellOffEvent::new);
         protocol.registerNetworkMessage(AnimalJumpedEvent.class, AnimalJumpedEvent::new);
         protocol.registerNetworkMessage(AnimalReturnedToBoatEvent.class, AnimalReturnedToBoatEvent::new);
+        protocol.registerNetworkMessage(AnimalDroppedEvent.class, AnimalDroppedEvent::new);
+        protocol.registerNetworkMessage(TeamProgressEvent.class, TeamProgressEvent::new);
     }
 
     /**

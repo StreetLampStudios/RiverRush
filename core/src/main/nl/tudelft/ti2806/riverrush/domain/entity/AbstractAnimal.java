@@ -34,7 +34,7 @@ public abstract class AbstractAnimal {
      * Create an animal in desktop.
      *
      * @param dispatch - See {@link EventDispatcher}
-     * @param animal - Id of the animal
+     * @param animal   - Id of the animal
      */
     public AbstractAnimal(final EventDispatcher dispatch, Integer animal) {
         this.dispatcher = dispatch;
@@ -72,6 +72,13 @@ public abstract class AbstractAnimal {
      */
     public void jump() {
         this.setState(this.getState().jump());
+    }
+
+    /**
+     * Changes the state to that being dropped.
+     */
+    public void drop() {
+        this.setState(this.getState().drop());
     }
 
     /**
@@ -113,6 +120,7 @@ public abstract class AbstractAnimal {
         return this.teamID;
     }
 
+
     /**
      * Sets the team of the animal.
      *
@@ -121,5 +129,4 @@ public abstract class AbstractAnimal {
     public void setTeamId(final Integer teamID) {
         this.teamID = teamID;
     }
-
 }

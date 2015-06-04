@@ -66,7 +66,7 @@ public class CenterStage extends Table {
         if (teamID == 0) {
             leftBoat.setProgress(progress);
         } else {
-            leftBoat.setProgress(progress);
+            rightBoat.setProgress(progress);
         }
     }
 }
