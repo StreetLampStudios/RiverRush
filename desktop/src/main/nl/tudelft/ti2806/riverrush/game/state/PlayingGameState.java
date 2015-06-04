@@ -1,16 +1,17 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
-import java.util.ArrayList;
-
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalDroppedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
+import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.game.TickHandler;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
@@ -20,8 +21,7 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.ObstacleGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 import nl.tudelft.ti2806.riverrush.screen.PlayingGameScreen;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
+import java.util.ArrayList;
 
 /**
  * State for a game that is playing.
@@ -30,35 +30,43 @@ public class PlayingGameState extends AbstractGameState {
 
     private final PlayingGameScreen screen;
     private final HandlerLambda<AnimalJumpedEvent> playerJumpedEventHandlerLambda = this::jumpHandler;
+    private final HandlerLambda<AnimalDroppedEvent> playerDroppedEventHandlerLambda = this::dropHandler;
     private final HandlerLambda<AddObstacleEvent> addObstacleEventHandlerLambda = this::addObstacle;
+    private final HandlerLambda<TeamProgressEvent> TeamProgressEventHandler = this::teamProgress;
+
     private final HandlerLambda<AnimalAddedEvent> addAnimalHandlerLambda = this::addAnimalHandler;
 
     private final TickHandler OnTick = this::tick;
-
     private final ArrayList<ObstacleGraphic> leftObstList;
     private final ArrayList<ObstacleGraphic> rightObstList;
-    private final HandlerLambda<? super TeamProgressEvent> TeamProgressEventHandler = this::teamProgress;
 
     /**
      * The state of the game that indicates that the game is currently playable.
      *
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game
-     *            in this state.
-     * @param assetManager has all necessary assets loaded and available for use.
-     * @param game refers to the game that this state belongs to.
+     *                        in this state.
+     * @param assetManager    has all necessary assets loaded and available for use.
+     * @param game            refers to the game that this state belongs to.
      */
     public PlayingGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
-            final Game game) {
+                            final Game game) {
         super(eventDispatcher, assetManager, game);
         this.dispatcher.attach(AnimalJumpedEvent.class, this.playerJumpedEventHandlerLambda);
         this.dispatcher.attach(AddObstacleEvent.class, this.addObstacleEventHandlerLambda);
         this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandlerLambda);
         this.dispatcher.attach(TeamProgressEvent.class, this.TeamProgressEventHandler);
+        this.dispatcher.attach(AnimalDroppedEvent.class, this.playerDroppedEventHandlerLambda);
 
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(() -> {
             PlayingGameState.this.screen.init(this.OnTick);
             PlayingGameState.this.game.setScreen(PlayingGameState.this.screen);
+
+            for (Team currentTeam : PlayingGameState.this.game.getTeams().values()) {
+                for (AbstractAnimal currentAnimal : currentTeam.getAnimals().values()) {
+                    PlayingGameState.this.addAnimal(currentTeam, (Animal) currentAnimal);
+                }
+            }
         });
 
         this.leftObstList = new ArrayList<>();
@@ -142,6 +150,23 @@ public class PlayingGameState extends AbstractGameState {
     }
 
     /**
+     * Adds an animal to a team.
+     *
+     * @param team   the animal
+     * @param animal the team
+     */
+    private void addAnimal(final Team team, final Animal animal) {
+        MonkeyActor actor = new MonkeyActor(this.assets, this.dispatcher);
+        animal.setActor(actor);
+
+        BoatGroup group = new BoatGroup(this.assets, (MainDesktop.getWidth() / 2) - 450,
+            MainDesktop.getHeight() * 0.02f);
+        team.setBoat(group);
+        this.screen.addTeam(group, team.getId());
+        team.getBoat().addAnimal(actor);
+    }
+
+    /**
      * Add an animal.
      *
      * @param event The add event
@@ -157,7 +182,7 @@ public class PlayingGameState extends AbstractGameState {
         Team tim = this.game.getTeam(tm);
         if (tim == null) {
             BoatGroup group = new BoatGroup(this.assets, (MainDesktop.getWidth() / 2) - 450,
-                    MainDesktop.getHeight() * 0.02f);
+                MainDesktop.getHeight() * 0.02f);
             tim = this.game.addTeam(tm);
             tim.setBoat(group);
             this.screen.addTeam(group, tm);
@@ -182,7 +207,21 @@ public class PlayingGameState extends AbstractGameState {
     }
 
     /**
+     * Tells a given animal to perform the drop action.
+     *
+     * @param event The drop event
+     */
+    public void dropHandler(AnimalDroppedEvent event) {
+        Integer tm = event.getTeam();
+        Team tim = this.game.getTeam(tm);
+        Integer animalID = event.getAnimal();
+        AbstractAnimal anim = tim.getAnimals().get(animalID);
+        anim.drop();
+    }
+
+    /**
      * Is called when there is a team update on the progress.
+     *
      * @param teamProgressEvent - the event
      */
     private void teamProgress(final TeamProgressEvent teamProgressEvent) {

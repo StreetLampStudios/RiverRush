@@ -68,6 +68,7 @@ public class Game {
      */
     public void start() {
         this.gameState = this.gameState.start();
+        this.gameTrack.startTimer();
     }
 
     /**
