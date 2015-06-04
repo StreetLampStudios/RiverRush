@@ -3,10 +3,7 @@ package nl.tudelft.ti2806.riverrush.game;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.WaitingForRendererState;
 
@@ -45,7 +42,9 @@ public class Game {
         this.eventDispatcher = dispatcher;
 
         HandlerLambda<AnimalAddedEvent> addPlayer = (e) -> this.addAnimalHandler();
+        HandlerLambda<GameFinishedEvent> gameFinished = (e) -> this.finish();
         this.eventDispatcher.attach(AnimalAddedEvent.class, addPlayer);
+        this.eventDispatcher.attach(GameFinishedEvent.class, gameFinished);
     }
 
     /**
