@@ -26,7 +26,7 @@ public abstract class AbstractAnimal {
      */
     public AbstractAnimal(final EventDispatcher dispatch) {
         this.dispatcher = dispatch;
-        this.animalID = highestId + 1;
+        this.animalID = highestId;
         highestId++;
     }
 
