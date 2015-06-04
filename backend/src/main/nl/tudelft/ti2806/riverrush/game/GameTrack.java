@@ -91,12 +91,13 @@ public class GameTrack {
             this.dispatcher.dispatch(event);
         }
 
-        Team winner = this.determineWinningTeam(finishedTeams);
-        if (winner != null) {
+        if (finishedTeams.size() > 0) {
+            Team winner = this.determineWinningTeam(finishedTeams);
             GameFinishedEvent event = new GameFinishedEvent();
             event.setWonTeam(winner.getId());
             this.dispatcher.dispatch(event);
         }
+
     }
 
     /**
