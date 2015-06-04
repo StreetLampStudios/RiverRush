@@ -145,6 +145,7 @@ public class Game extends GdxGame {
         if (tim == null) {
             tim = this.addTeam(tm);
         }
-        tim.addAnimal(new Animal(this.dispatcher, event.getAnimal(), tm));
+        String color = event.getColor();
+        tim.addAnimal(new Animal(this.dispatcher, event.getAnimal(), tm, color));
     }
 }

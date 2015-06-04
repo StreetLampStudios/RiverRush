@@ -14,20 +14,25 @@ public class AnimalAddedEvent implements Event {
 
     private Integer teamId;
 
+    private String color;
+
     @Override
     public String serialize(final Protocol protocol) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("animal").append(protocol.getKeyValueSeperator()).append(this.animalId.toString());
         stringBuilder.append(protocol.getPairSeperator());
         stringBuilder.append("team").append(protocol.getKeyValueSeperator()).append(this.teamId.toString());
+        stringBuilder.append(protocol.getPairSeperator());
+        stringBuilder.append("color").append(protocol.getKeyValueSeperator()).append(this.color);
         return stringBuilder.toString();
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
-        if (keyValuePairs.containsKey("animal") && keyValuePairs.containsKey("team")) {
+        if (keyValuePairs.containsKey("animal") && keyValuePairs.containsKey("team") && keyValuePairs.containsKey("color")) {
             this.animalId = Integer.parseInt(keyValuePairs.get("animal"));
             this.teamId = Integer.parseInt(keyValuePairs.get("team"));
+            this.color = keyValuePairs.get("color");
         } else {
             throw new InvalidProtocolException("Does not contain all the keys");
         }
@@ -48,7 +53,15 @@ public class AnimalAddedEvent implements Event {
         return this.teamId;
     }
 
+    public String getColor() {
+        return this.color;
+    }
+
     public void setTeam(final Integer team) {
         this.teamId = team;
+    }
+
+    public void setColor(final String color) {
+        this.color = color;
     }
 }

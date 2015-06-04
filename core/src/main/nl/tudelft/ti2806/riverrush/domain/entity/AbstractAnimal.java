@@ -4,6 +4,8 @@ import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 
+import java.util.Random;
+
 /**
  * An abstract implementation of an animal.
  */
@@ -18,6 +20,7 @@ public abstract class AbstractAnimal {
     private static Integer highestId = 0;
     private final Integer animalID;
     private Integer teamID;
+    private String color;
 
     private EventDispatcher dispatcher;
 
@@ -27,6 +30,7 @@ public abstract class AbstractAnimal {
     public AbstractAnimal(final EventDispatcher dispatch) {
         this.dispatcher = dispatch;
         this.animalID = highestId;
+        this.color = getRandomColor();
         highestId++;
     }
 
@@ -39,6 +43,7 @@ public abstract class AbstractAnimal {
     public AbstractAnimal(final EventDispatcher dispatch, Integer animal) {
         this.dispatcher = dispatch;
         this.animalID = animal;
+        this.color = getRandomColor();
     }
 
     /**
@@ -118,6 +123,32 @@ public abstract class AbstractAnimal {
 
     public Integer getTeamId() {
         return this.teamID;
+    }
+
+    /**
+     * Sets the color of an animal to a random color from an array
+     */
+    public String getRandomColor()
+    {
+        String[] colors = {"red","blue","orange","yellow","black","white","pink","purple","green","brown"};
+        int idx = new Random().nextInt(colors.length);
+        return (colors[idx]);
+    }
+
+    /**
+     * Returns the color of an animal.
+     * @return the animal's color
+     */
+    public String getColor() {
+        return this.color;
+    }
+
+    /**
+     * Sets the color of this animal.
+     * @param color the color
+     */
+    public void setColor(String color) {
+        this.color = color;
     }
 
 
