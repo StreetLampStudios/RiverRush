@@ -3,6 +3,7 @@ package nl.tudelft.ti2806.riverrush.game;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
+import nl.tudelft.ti2806.riverrush.domain.entity.Team;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
@@ -40,7 +41,7 @@ public class Game {
      */
     @Inject
     public Game(final EventDispatcher dispatcher) {
-        this.gameState = new WaitingForRendererState(dispatcher);
+        this.gameState = new WaitingForRendererState(dispatcher, this);
         this.gameTrack = new BasicGameTrack(dispatcher);
         this.eventDispatcher = dispatcher;
 
@@ -117,5 +118,16 @@ public class Game {
      */
     public void jumpAnimal(final AbstractAnimal animal) {
         animal.jump();
+    }
+
+    /**
+     * kick an animal off the boat
+     * @param animal - integer that represents the animal
+     * @param team - integer that represents the team
+     */
+    public void collideAnimal(final Integer animal, final Integer team) {
+        Team team1 = this.gameTrack.getTeam(team);
+        AbstractAnimal animal1 = team1.getAnimals().get(animal);
+        animal1.collide();
     }
 }

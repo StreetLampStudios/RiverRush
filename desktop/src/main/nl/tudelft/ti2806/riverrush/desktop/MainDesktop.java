@@ -54,36 +54,36 @@ public class MainDesktop extends CoreModule {
         this.setupGraphics();
         client.connect();
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.injector.getInstance(EventDispatcher.class).dispatch(new GameAboutToStartEvent());
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.injector.getInstance(EventDispatcher.class).dispatch(new GameStartedEvent());
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        AnimalAddedEvent ev = new AnimalAddedEvent();
-        for (int i = 0; i < 5; i++) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            ev = new AnimalAddedEvent();
-            ev.setAnimal(i);
-            ev.setTeam(i % 2);
-            this.injector.getInstance(EventDispatcher.class).dispatch(ev);
-        }
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        this.injector.getInstance(EventDispatcher.class).dispatch(new GameAboutToStartEvent());
+//
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        this.injector.getInstance(EventDispatcher.class).dispatch(new GameStartedEvent());
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        AnimalAddedEvent ev = new AnimalAddedEvent();
+//        for (int i = 0; i < 5; i++) {
+//            try {
+//                Thread.sleep(100);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            ev = new AnimalAddedEvent();
+//            ev.setAnimal(i);
+//            ev.setTeam(i % 2);
+//            this.injector.getInstance(EventDispatcher.class).dispatch(ev);
+//        }
     }
 
     /**

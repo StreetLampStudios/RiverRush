@@ -8,6 +8,7 @@ import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalDroppedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
@@ -33,6 +34,11 @@ public class PlayingGameState extends AbstractGameState {
     private final HandlerLambda<AnimalDroppedEvent> playerDroppedEventHandlerLambda = this::dropHandler;
     private final HandlerLambda<AddObstacleEvent> addObstacleEventHandlerLambda = this::addObstacle;
     private final HandlerLambda<TeamProgressEvent> TeamProgressEventHandler = this::teamProgress;
+    private final HandlerLambda<AnimalFellOffEvent>  animalFellOffEventHandlerLambda = this::fellOff;
+
+    private void fellOff(AnimalFellOffEvent event) {
+        this.game.getTeam(event.getTeam()).getAnimals().get(event.getAnimal()).collide();
+    }
 
     private final HandlerLambda<AnimalAddedEvent> addAnimalHandlerLambda = this::addAnimalHandler;
 
@@ -56,6 +62,7 @@ public class PlayingGameState extends AbstractGameState {
         this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandlerLambda);
         this.dispatcher.attach(TeamProgressEvent.class, this.TeamProgressEventHandler);
         this.dispatcher.attach(AnimalDroppedEvent.class, this.playerDroppedEventHandlerLambda);
+        this.dispatcher.attach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
 
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(() -> {

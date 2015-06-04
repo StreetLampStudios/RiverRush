@@ -46,6 +46,7 @@ public class RenderController extends AbstractController {
         this.listenTo(AnimalDroppedEvent.class, sendOverNetworkLambda);
         this.listenTo(AnimalReturnedToBoatEvent.class, sendOverNetworkLambda);
         this.listenTo(TeamProgressEvent.class, sendOverNetworkLambda);
+        this.listenTo(AddObstacleEvent.class, sendOverNetworkLambda);
 
         this.game.waitForPlayers();
     }
