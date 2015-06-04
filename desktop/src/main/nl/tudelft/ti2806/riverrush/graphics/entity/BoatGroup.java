@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RotateToAction;
 import com.google.inject.Inject;
 
 /**
@@ -57,6 +59,14 @@ public class BoatGroup extends Group {
         this.setY(ypos);
         this.setWidth(this.SIZE);
         this.setHeight(this.SIZE);
+
+        this.setOriginX((this.getWidth() / 2));
+        this.setOriginY((this.getHeight() / 2));
+
+        System.out.println("X: " + this.getX() + " Y: " + this.getY() + " width: "
+                + this.getWidth() + " height: " + this.getHeight());
+        System.out.println("origx: " + this.getOriginX() + " origy: " + this.getOriginY());
+
         this.sectors = new ArrayList<>();
         ArrayList<Color> colors = new ArrayList<>();
         colors.add(Color.BLUE);
@@ -86,6 +96,7 @@ public class BoatGroup extends Group {
     public void draw(final Batch batch, final float parentAlpha) {
         Texture tex = this.manager.get("data/ship.png", Texture.class);
         TextureRegion region = new TextureRegion(tex, 0, 0, REGION_ENDX, REGION_ENDY);
+
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -124,10 +135,18 @@ public class BoatGroup extends Group {
         move.setPosition(this.getX() + (MOVE_DISTANCE * direction), this.getY());
         move.setDuration(3f);
 
-        this.addAction(move);
-        for (BoatSector sec : this.sectors) {
-            sec.moveAlong(direction, MOVE_DISTANCE);
-        }
+        RotateToAction rot = new RotateToAction();
+        rot.setRotation(30f);
+        rot.setDuration(3f);
+
+        ParallelAction par = new ParallelAction();
+        // par.addAction(move);
+        par.addAction(rot);
+
+        this.addAction(par);
+        // for (BoatSector sec : this.sectors) {
+        // sec.moveAlong(direction, MOVE_DISTANCE);
+        // }
 
     }
 

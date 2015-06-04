@@ -68,33 +68,7 @@ public class SideStage extends Table {
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
         super.draw(batch, parentAlpha);
-        // We check if the current obstacle hits the only currently available
-        // player (the player parameter is currently unusued)
-        // MonkeyActor monk = this.boat.getAnimal(new Player());
-        // if (this.obstacle != null && this.obstacle.collide(monk)) {
-        // monk.collide();
-        // }
-        //
-        // if (this.obstacle != null && this.obstacle.isDone()) {
-        // this.spawnObstacle(OBSTACLE_OFFSET);
-        // }
     }
-
-    // /**
-    // * Is called when the team on this stage has won.
-    // */
-    // public void win() {
-    // this.addActor(new WinActor(this.assets));
-    // this.boat.addAction(Actions.fadeOut(1f));
-    // }
-    //
-    // /**
-    // * Is called when the team on this stage has lost.
-    // */
-    // public void lose() {
-    // this.addActor(new LoseActor(this.assets));
-    // this.boat.addAction(Actions.fadeOut(1f));
-    // }
 
     /**
      * @return the boat that is on this stage.

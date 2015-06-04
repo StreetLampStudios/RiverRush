@@ -57,19 +57,6 @@ public class BoatSector extends Group {
         this.drawChildren(batch, parentAlpha);
         batch.disableBlending();
 
-        // batch.enableBlending();
-        // batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        //
-        // ShapeRenderer shapes = new ShapeRenderer();
-        // shapes.begin(ShapeType.Line);
-        // shapes.setColor(1, 1, 0, 1);
-        // shapes.rect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
-        // shapes.end();
-        //
-        // batch.setColor(Color.WHITE);
-        // this.drawChildren(batch, parentAlpha);
-        // batch.disableBlending();
-
     }
 
     @Override
@@ -98,10 +85,10 @@ public class BoatSector extends Group {
      * @param direction this parameter determines direction. 1 is to the right, -1 is to the left.
      */
     public void moveAlong(float direction, float distance) {
-        MoveToAction move2 = new MoveToAction();
-        move2.setPosition(this.getX() + (direction * distance), this.getY());
-        move2.setDuration(3f);
-        this.addAction(move2);
+        MoveToAction move = new MoveToAction();
+        move.setPosition(this.getX() + (direction * distance), this.getY());
+        move.setDuration(3f);
+        this.addAction(move);
         for (MonkeyActor ac : this.animals) {
             if (ac != null) {
                 ac.moveAlong(direction, distance);
