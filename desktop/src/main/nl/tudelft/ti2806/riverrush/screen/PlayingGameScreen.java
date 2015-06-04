@@ -6,7 +6,7 @@ import nl.tudelft.ti2806.riverrush.game.TickHandler;
 import nl.tudelft.ti2806.riverrush.graphics.CenterStage;
 import nl.tudelft.ti2806.riverrush.graphics.SideStage;
 import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
-import nl.tudelft.ti2806.riverrush.graphics.entity.ObstacleGraphic;
+import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -227,7 +227,7 @@ public class PlayingGameScreen implements Screen {
      * @param isLeft - left or right side
      * @param graphic - where the obstacle is the graphic
      */
-    public void addObstacle(boolean isLeft, ObstacleGraphic graphic) {
+    public void addObstacle(boolean isLeft, CannonBallGraphic graphic) {
         if (isLeft) {
             this.leftScreen.spawnObstacle(graphic);
         } else {
@@ -245,6 +245,6 @@ public class PlayingGameScreen implements Screen {
     }
 
     public void updateProgress(int teamID, double progress) {
-        this.midScreen.updateProgress(teamID,progress);
+        this.midScreen.updateProgress(teamID, progress);
     }
 }

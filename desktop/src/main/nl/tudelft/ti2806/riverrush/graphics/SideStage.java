@@ -1,13 +1,14 @@
 package nl.tudelft.ti2806.riverrush.graphics;
 
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
+import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
+import nl.tudelft.ti2806.riverrush.graphics.entity.RiverActor;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.inject.Inject;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
-import nl.tudelft.ti2806.riverrush.graphics.entity.ObstacleGraphic;
-import nl.tudelft.ti2806.riverrush.graphics.entity.RiverActor;
 
 /**
  * This class defined the side stage. The side stage always holds a river and a boat as well as
@@ -17,7 +18,7 @@ public class SideStage extends Table {
 
     private BoatGroup boat;
     private final RiverActor river;
-    private ObstacleGraphic obstacle;
+    private CannonBallGraphic obstacle;
     private final AssetManager assets;
 
     private static final int RIVER_HEIGHT = 1920;
@@ -31,14 +32,14 @@ public class SideStage extends Table {
      * Creates a stage that holds the river, boats, and any player characters that reside on it, as
      * well as the obstacles that pass through it.
      *
-     * @param assetManager    refers to the manager that has made all loaded assets available for use.
-     * @param width           is the width size that the stage will be given.
-     * @param height          is the height size the stage will be given.
+     * @param assetManager refers to the manager that has made all loaded assets available for use.
+     * @param width is the width size that the stage will be given.
+     * @param height is the height size the stage will be given.
      * @param eventDispatcher - the event dispatcher
      */
     @Inject
     public SideStage(final AssetManager assetManager, final float width, final float height,
-                     final EventDispatcher eventDispatcher) {
+            final EventDispatcher eventDispatcher) {
         this.setBounds(0, 0, width, height);
         this.assets = assetManager;
         this.river = new RiverActor(this.assets, 0, RIVER_HEIGHT, RIVER_WIDTH);
@@ -50,7 +51,7 @@ public class SideStage extends Table {
      *
      * @param graphic - The obstacle that you want to add.
      */
-    public void spawnObstacle(final ObstacleGraphic graphic) {
+    public void spawnObstacle(final CannonBallGraphic graphic) {
         if (this.obstacle != null) {
             this.removeActor(this.obstacle);
         }

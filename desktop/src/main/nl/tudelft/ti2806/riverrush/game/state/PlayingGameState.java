@@ -10,13 +10,13 @@ import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
+import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.game.TickHandler;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
 import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
+import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.MonkeyActor;
-import nl.tudelft.ti2806.riverrush.graphics.entity.ObstacleGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 import nl.tudelft.ti2806.riverrush.screen.PlayingGameScreen;
 
@@ -35,8 +35,8 @@ public class PlayingGameState extends AbstractGameState {
 
     private final TickHandler OnTick = this::tick;
 
-    private final ArrayList<ObstacleGraphic> leftObstList;
-    private final ArrayList<ObstacleGraphic> rightObstList;
+    private final ArrayList<CannonBallGraphic> leftObstList;
+    private final ArrayList<CannonBallGraphic> rightObstList;
     private final HandlerLambda<? super TeamProgressEvent> TeamProgressEventHandler = this::teamProgress;
 
     /**
@@ -99,7 +99,7 @@ public class PlayingGameState extends AbstractGameState {
      * This method is called when the game renders the screen.
      */
     private void tick() {
-        for (ObstacleGraphic graphic : this.leftObstList) {
+        for (CannonBallGraphic graphic : this.leftObstList) {
             for (AbstractAnimal animal : this.game.getTeam(0).getAnimals().values()) { // TODO
                 Animal animal1 = (Animal) animal;
                 if (graphic.calculateCollision(animal1.getActor())) {
@@ -111,7 +111,7 @@ public class PlayingGameState extends AbstractGameState {
             }
         }
 
-        for (ObstacleGraphic graphic : this.rightObstList) {
+        for (CannonBallGraphic graphic : this.rightObstList) {
             for (AbstractAnimal animal : this.game.getTeam(1).getAnimals().values()) {
                 Animal animal1 = (Animal) animal;
                 if (graphic.calculateCollision(animal1.getActor())) {
@@ -131,7 +131,7 @@ public class PlayingGameState extends AbstractGameState {
      * @param e - the event
      */
     private void addObstacle(final AddObstacleEvent e) {
-        ObstacleGraphic graphic = new ObstacleGraphic(this.assets, e.getLocation());
+        CannonBallGraphic graphic = new CannonBallGraphic(this.assets, e.getLocation());
         // TODO: FIX This
         this.screen.addObstacle(e.getTeam() == 0, graphic);
         if (e.getTeam() == 0) {
@@ -162,7 +162,6 @@ public class PlayingGameState extends AbstractGameState {
             tim.setBoat(group);
             this.screen.addTeam(group, tm);
             // Determine corresponding team's stage
-
         }
         tim.addAnimal(anim);
         tim.getBoat().addAnimal(actor);
@@ -174,11 +173,14 @@ public class PlayingGameState extends AbstractGameState {
      * @param event The jump event
      */
     public void jumpHandler(AnimalJumpedEvent event) {
+        /*
+         * Integer tm = event.getTeam(); Team tim = this.game.getTeam(tm); Integer animalID =
+         * event.getAnimal(); AbstractAnimal anim = tim.getAnimals().get(animalID); anim.jump();
+         */
         Integer tm = event.getTeam();
         Team tim = this.game.getTeam(tm);
-        Integer animalID = event.getAnimal();
-        AbstractAnimal anim = tim.getAnimals().get(animalID);
-        anim.jump();
+        tim.getBoat().move(1);
+
     }
 
     /**
@@ -186,6 +188,6 @@ public class PlayingGameState extends AbstractGameState {
      * @param teamProgressEvent - the event
      */
     private void teamProgress(final TeamProgressEvent teamProgressEvent) {
-        screen.updateProgress(teamProgressEvent.getTeamID(), teamProgressEvent.getProgress());
+        this.screen.updateProgress(teamProgressEvent.getTeamID(), teamProgressEvent.getProgress());
     }
 }

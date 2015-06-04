@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 
 public class BoatSector extends Group {
 
@@ -35,6 +36,8 @@ public class BoatSector extends Group {
         for (int i = 0; i < (this.colCount * this.rowCount); i++) {
             this.animals.add(null);
         }
+
+        // this.addAction(Actions.moveTo(this.getX() + 100, this.getY() + 100, 3f));
     }
 
     @Override
@@ -88,6 +91,27 @@ public class BoatSector extends Group {
             this.currentAnimalPosition--;
         }
         this.addActor(actor);
+    }
+
+    /**
+     * Move to dodge an obstacle. Can dodge left or right based on direction.
+     * @param direction this parameter determines direction. 1 is to the right, -1 is to the left.
+     */
+    public void moveAlong(float direction, float distance) {
+        MoveToAction move2 = new MoveToAction();
+        move2.setPosition(this.getX() + (direction * distance), this.getY());
+        move2.setDuration(3f);
+        this.addAction(move2);
+        for (MonkeyActor ac : this.animals) {
+            if (ac != null) {
+                ac.moveAlong(direction, distance);
+            }
+        }
+
+    }
+
+    public ArrayList<MonkeyActor> getAnimals() {
+        return this.animals;
     }
 
 }

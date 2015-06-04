@@ -173,4 +173,11 @@ public class MonkeyActor extends Actor {
         this.origX = x;
         this.origY = y;
     }
+
+    public void moveAlong(float direction, float distance) {
+        MoveToAction move = new MoveToAction();
+        move.setPosition(this.getX() + (distance * direction), this.getY());
+        move.setDuration(3f);
+        this.addAction(move);
+    }
 }

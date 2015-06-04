@@ -1,16 +1,16 @@
 package nl.tudelft.ti2806.riverrush.game;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Abstract representation of a game track.
@@ -22,11 +22,10 @@ public class GameTrack {
     private HashMap<Integer, Team> teams;
     private HashMap<Integer, Double> distances;
 
-
     private EventDispatcher dispatcher;
 
     public GameTrack(final EventDispatcher dispatch) {
-        dispatcher = dispatch;
+        this.dispatcher = dispatch;
         this.teams = new HashMap<>();
         this.distances = new HashMap<>();
     }
@@ -36,33 +35,33 @@ public class GameTrack {
         tmr.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                updateProgress();
+                GameTrack.this.updateProgress();
             }
         }, UPDATE_DELAY, UPDATE_DELAY);
     }
 
     protected void updateProgress() {
         ArrayList<Team> finishedTeams = new ArrayList<>();
-        for (Team team : teams.values()) {
-            Double speed = getSpeed(team);
-            Double currentDistance = distances.get(team.getId());
-            distances.put(team.getId(), currentDistance + speed);
+        for (Team team : this.teams.values()) {
+            Double speed = this.getSpeed(team);
+            Double currentDistance = this.distances.get(team.getId());
+            this.distances.put(team.getId(), currentDistance + speed);
 
-            if(currentDistance + speed >= 100) {
+            if (currentDistance + speed >= 100) {
                 finishedTeams.add(team);
             }
 
             TeamProgressEvent event = new TeamProgressEvent();
             event.setProgress(currentDistance + speed);
             event.setTeamID(team.getId());
-            dispatcher.dispatch(event);
+            this.dispatcher.dispatch(event);
         }
 
-        Team winner = determineWinningTeam(finishedTeams);
+        Team winner = this.determineWinningTeam(finishedTeams);
         if (winner != null) {
             GameFinishedEvent event = new GameFinishedEvent();
             event.setWonTeam(winner.getId());
-            dispatcher.dispatch(event);
+            this.dispatcher.dispatch(event);
         }
     }
 
@@ -110,7 +109,6 @@ public class GameTrack {
         return (double) amountOnBoat / (double) total;
     }
 
-
     /**
      * Adds a team to the gametrack.
      *
@@ -128,7 +126,8 @@ public class GameTrack {
      * @param animal - The animal to add
      * @throws NoSuchTeamException - if team is not found
      */
-    public void addAnimal(final Integer teamID, final AbstractAnimal animal) throws NoSuchTeamException {
+    public void addAnimal(final Integer teamID, final AbstractAnimal animal)
+            throws NoSuchTeamException {
         if (!this.teams.containsKey(teamID)) {
             throw new NoSuchTeamException();
         }

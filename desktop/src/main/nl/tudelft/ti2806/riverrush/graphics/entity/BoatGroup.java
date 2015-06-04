@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.google.inject.Inject;
 
 /**
@@ -35,6 +36,8 @@ public class BoatGroup extends Group {
     private final ArrayList<BoatSector> sectors;
 
     private Iterator<BoatSector> iterator;
+
+    private static final float MOVE_DISTANCE = 200;
 
     private static final int NUM_SECTORS = 5;
     private static final int COL_COUNT = 5;
@@ -110,6 +113,22 @@ public class BoatGroup extends Group {
         }
         BoatSector sec = this.iterator.next();
         sec.addAnimal(actor);
+    }
+
+    /**
+     * Move to dodge an obstacle. Can dodge left or right based on direction.
+     * @param direction this parameter determines direction. 1 is to the right, -1 is to the left.
+     */
+    public void move(float direction) {
+        MoveToAction move = new MoveToAction();
+        move.setPosition(this.getX() + (MOVE_DISTANCE * direction), this.getY());
+        move.setDuration(3f);
+
+        this.addAction(move);
+        for (BoatSector sec : this.sectors) {
+            sec.moveAlong(direction, MOVE_DISTANCE);
+        }
+
     }
 
 }
