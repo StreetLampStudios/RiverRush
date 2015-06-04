@@ -3,8 +3,10 @@ package nl.tudelft.ti2806.riverrush.game;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -76,21 +78,20 @@ public class GameTrackTest {
         team.addAnimal(animal);
         track.updateProgress();
         assertEquals(1.0, track.getDistanceTeam(team.getId()), delta);
-//        Mockito.verify(dispatcher, Mockito.calls(1)).dispatch(Mockito.any(TeamProgressUpdateEvent.class));
-        //FIXME when merging to desktop
+        Mockito.verify(dispatcher, Mockito.times(1)).dispatch(Mockito.any(TeamProgressEvent.class));
     }
 
     @Test
     public void testUpdateProgressOneHundredCycles() {
         Animal animal = new Animal(dispatcher);
         team.addAnimal(animal);
-        for (int i = 0; i <= GameTrack.trackLength; i++) {
+        for (int i = 0; i < GameTrack.trackLength; i++) {
             track.updateProgress();
         }
 
-        Mockito.verify(dispatcher, Mockito.times(1)).dispatch(Mockito.any(GameFinishedEvent.class));
+        Mockito.verify(dispatcher, Mockito.times(1)).dispatch(Mockito.isA(GameFinishedEvent.class));
 
-        assertEquals(GameTrack.trackLength + 1, track.getDistanceTeam(team.getId()), delta);
+        assertEquals(GameTrack.trackLength, track.getDistanceTeam(team.getId()), delta);
     }
 
     @Test

@@ -15,18 +15,11 @@ public class JumpCommand implements Event {
 
     @Override
     public String serialize(final Protocol protocol) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("animal").append(protocol.getKeyValueSeperator()).append(this.animalId.toString());
-        return stringBuilder.toString();
+        return "";
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
-        if (keyValuePairs.containsKey("animal")) {
-            this.animalId = Integer.parseInt(keyValuePairs.get("animal"));
-        } else {
-            throw new InvalidProtocolException("Does not contain all the keys");
-        }
         return this;
     }
 

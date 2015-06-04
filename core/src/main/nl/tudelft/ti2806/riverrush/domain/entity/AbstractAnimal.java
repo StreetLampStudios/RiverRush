@@ -21,14 +21,12 @@ public abstract class AbstractAnimal {
 
     private EventDispatcher dispatcher;
 
-    private Integer team;
-
     /**
      * Create an animal.
      */
     public AbstractAnimal(final EventDispatcher dispatch) {
         this.dispatcher = dispatch;
-        this.animalID = highestId + 1;
+        this.animalID = highestId;
         highestId++;
     }
 
@@ -41,7 +39,6 @@ public abstract class AbstractAnimal {
     public AbstractAnimal(final EventDispatcher dispatch, Integer animal) {
         this.dispatcher = dispatch;
         this.animalID = animal;
-        this.teamID = team;
     }
 
     /**
@@ -122,7 +119,7 @@ public abstract class AbstractAnimal {
      * @param teamID - id of the team
      */
     public void setTeamId(final Integer teamID) {
-        this.team = teamID;
+        this.teamID = teamID;
     }
 
 }

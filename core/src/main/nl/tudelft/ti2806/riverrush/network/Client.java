@@ -33,7 +33,6 @@ public class Client extends WebSocketClient {
      *
      * @param host - The remote hostname of the server.
      * @param prot - what protocol to use
-     * @param ctrl - the controller to use.
      * @throws URISyntaxException URI is invalid
      */
     public Client(final String host, final Protocol prot) throws URISyntaxException {

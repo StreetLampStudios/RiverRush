@@ -11,7 +11,7 @@ public abstract class AbstractTeam {
 
     public AbstractTeam() {
         this.animals = new HashMap<>();
-        this.id = highestId + 1;
+        this.id = highestId;
         highestId++;
     }
 

@@ -17,16 +17,13 @@ public class JoinTeamCommand implements Event {
     @Override
     public String serialize(final Protocol protocol) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("animal").append(protocol.getKeyValueSeperator()).append(this.animalId.toString());
-        stringBuilder.append(protocol.getPairSeperator());
         stringBuilder.append("team").append(protocol.getKeyValueSeperator()).append(this.teamId.toString());
         return stringBuilder.toString();
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
-        if (keyValuePairs.containsKey("animal") && keyValuePairs.containsKey("team")) {
-            this.animalId = Integer.parseInt(keyValuePairs.get("animal"));
+        if (keyValuePairs.containsKey("team")) {
             this.teamId = Integer.parseInt(keyValuePairs.get("team"));
         } else {
             throw new InvalidProtocolException("Does not contain all the keys");

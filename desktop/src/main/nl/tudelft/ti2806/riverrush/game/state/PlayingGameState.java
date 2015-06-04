@@ -29,11 +29,9 @@ import com.badlogic.gdx.assets.AssetManager;
 public class PlayingGameState extends AbstractGameState {
 
     private final PlayingGameScreen screen;
-    private final HandlerLambda<AnimalJumpedEvent> playerJumpedEventHandlerLambda = (e) -> this
-            .jumpHandler(e);
+    private final HandlerLambda<AnimalJumpedEvent> playerJumpedEventHandlerLambda = this::jumpHandler;
     private final HandlerLambda<AddObstacleEvent> addObstacleEventHandlerLambda = this::addObstacle;
-    private final HandlerLambda<AnimalAddedEvent> addAnimalHandlerLambda = (e) -> this
-            .addAnimalHandler(e);
+    private final HandlerLambda<AnimalAddedEvent> addAnimalHandlerLambda = this::addAnimalHandler;
 
     private final TickHandler OnTick = this::tick;
 
@@ -65,7 +63,6 @@ public class PlayingGameState extends AbstractGameState {
 
         this.leftObstList = new ArrayList<>();
         this.rightObstList = new ArrayList<>();
-
     }
 
     @Override
@@ -144,7 +141,12 @@ public class PlayingGameState extends AbstractGameState {
         }
     }
 
-    public void addAnimalHandler(AnimalAddedEvent event) {
+    /**
+     * Add an animal.
+     *
+     * @param event The add event
+     */
+    public void addAnimalHandler(final AnimalAddedEvent event) {
         // Temporary, has to get animal from event
 
         MonkeyActor actor = new MonkeyActor(this.assets, this.dispatcher);
@@ -177,7 +179,6 @@ public class PlayingGameState extends AbstractGameState {
         Integer animalID = event.getAnimal();
         AbstractAnimal anim = tim.getAnimals().get(animalID);
         anim.jump();
-
     }
 
     /**
