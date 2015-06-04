@@ -49,7 +49,7 @@ public class UserController extends AbstractController {
             if(Objects.equals(e.getAnimal(), this.animal.getId())) {
                 this.server.sendEvent(e, this);
             }
-        }
+        };
         final HandlerLambda<JumpCommand> jumpCommandHandler = (e) -> {
             if (Objects.equals(this.animal.getId(), e.getAnimal())) {
                 this.game.jumpAnimal(this.animal);
@@ -85,6 +85,15 @@ public class UserController extends AbstractController {
     @Override
     public void onSocketMessage(final Event event) {
         event.setAnimal(this.animal.getId());
+        this.dispatcher.dispatch(event);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        AnimalRemovedEvent event = new AnimalRemovedEvent();
+        event.setAnimal(this.animal.getId());
+        event.setTeam(this.animal.getTeamId());
         this.dispatcher.dispatch(event);
     }
 }

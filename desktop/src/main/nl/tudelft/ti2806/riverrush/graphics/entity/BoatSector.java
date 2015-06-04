@@ -18,6 +18,7 @@ public class BoatSector extends Group {
     private final int colCount;
     private final AssetManager assetManager;
     private int currentAnimalPosition;
+
     private ArrayList<MonkeyActor> animals;
 
     public BoatSector(AssetManager assets, int rows, int cols, Color color) {
@@ -53,20 +54,6 @@ public class BoatSector extends Group {
         batch.setColor(Color.WHITE);
         this.drawChildren(batch, parentAlpha);
         batch.disableBlending();
-
-        // batch.enableBlending();
-        // batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        //
-        // ShapeRenderer shapes = new ShapeRenderer();
-        // shapes.begin(ShapeType.Line);
-        // shapes.setColor(1, 1, 0, 1);
-        // shapes.rect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
-        // shapes.end();
-        //
-        // batch.setColor(Color.WHITE);
-        // this.drawChildren(batch, parentAlpha);
-        // batch.disableBlending();
-
     }
 
     @Override
@@ -88,6 +75,14 @@ public class BoatSector extends Group {
             this.currentAnimalPosition--;
         }
         this.addActor(actor);
+    }
+
+    /**
+     * Returns the animals in this sector.
+     * @return the animals
+     */
+    public ArrayList<MonkeyActor> getAnimals() {
+        return animals;
     }
 
 }
