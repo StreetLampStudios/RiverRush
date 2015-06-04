@@ -44,8 +44,12 @@ public class UserController extends AbstractController {
 
     @Override
     public void initialize() {
-        final HandlerLambda<Event> onGameStateChangedLambda = (e) -> this.server.sendEvent(e, this);
         final HandlerLambda<JoinTeamCommand> joinTeamHandler = this::joinTeamHandler;
+        final HandlerLambda<Event> onGameStateChangedLambda = (e) -> {
+            if(Objects.equals(e.getAnimal(), this.animal.getId())) {
+                this.server.sendEvent(e, this);
+            }
+        }
         final HandlerLambda<JumpCommand> jumpCommandHandler = (e) -> {
             if (Objects.equals(this.animal.getId(), e.getAnimal())) {
                 this.game.jumpAnimal(this.animal);
