@@ -49,7 +49,7 @@ public class UserController extends AbstractController {
             if(Objects.equals(e.getAnimal(), this.animal.getId())) {
                 this.server.sendEvent(e, this);
             }
-        }
+        };
         final HandlerLambda<JumpCommand> jumpCommandHandler = (e) -> {
             if (Objects.equals(this.animal.getId(), e.getAnimal())) {
                 this.game.jumpAnimal(this.animal);
