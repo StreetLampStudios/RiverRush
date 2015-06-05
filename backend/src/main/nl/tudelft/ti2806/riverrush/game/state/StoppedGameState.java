@@ -2,6 +2,7 @@ package nl.tudelft.ti2806.riverrush.game.state;
 
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStoppedEvent;
+import nl.tudelft.ti2806.riverrush.game.Game;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -21,8 +22,9 @@ public class StoppedGameState implements GameState {
      * Create the stopped game state.
      *
      * @param dispatcher The event dispatcher for dispatching events
+     * @param game
      */
-    public StoppedGameState(final EventDispatcher dispatcher) {
+    public StoppedGameState(final EventDispatcher dispatcher, Game game) {
         dispatcher.dispatch(new GameStoppedEvent());
 
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);

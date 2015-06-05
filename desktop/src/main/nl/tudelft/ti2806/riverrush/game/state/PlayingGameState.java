@@ -1,16 +1,29 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
+import java.util.ArrayList;
+
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
+import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalDroppedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
+import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.game.TickHandler;
-import nl.tudelft.ti2806.riverrush.graphics.entity.*;
+import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
+import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
+import nl.tudelft.ti2806.riverrush.graphics.entity.MonkeyActor;
+import nl.tudelft.ti2806.riverrush.graphics.entity.ObstacleGraphic;
+import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 import nl.tudelft.ti2806.riverrush.screen.PlayingGameScreen;
 
-import java.util.ArrayList;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 
 /**
  * State for a game that is playing.
@@ -22,6 +35,11 @@ public class PlayingGameState extends AbstractGameState {
     private final HandlerLambda<AnimalDroppedEvent> playerDroppedEventHandlerLambda = this::dropHandler;
     private final HandlerLambda<AddObstacleEvent> addObstacleEventHandlerLambda = this::addObstacle;
     private final HandlerLambda<TeamProgressEvent> TeamProgressEventHandler = this::teamProgress;
+    private final HandlerLambda<AnimalFellOffEvent> animalFellOffEventHandlerLambda = this::fellOff;
+
+    private void fellOff(AnimalFellOffEvent event) {
+        this.game.getTeam(event.getTeam()).getAnimals().get(event.getAnimal()).collide();
+    }
 
     private final HandlerLambda<AnimalAddedEvent> addAnimalHandlerLambda = this::addAnimalHandler;
 
@@ -33,18 +51,19 @@ public class PlayingGameState extends AbstractGameState {
      * The state of the game that indicates that the game is currently playable.
      *
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game
-     *                        in this state.
-     * @param assetManager    has all necessary assets loaded and available for use.
-     * @param game            refers to the game that this state belongs to.
+     *            in this state.
+     * @param assetManager has all necessary assets loaded and available for use.
+     * @param game refers to the game that this state belongs to.
      */
     public PlayingGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
-                            final Game game) {
+            final Game game) {
         super(eventDispatcher, assetManager, game);
         this.dispatcher.attach(AnimalJumpedEvent.class, this.playerJumpedEventHandlerLambda);
         this.dispatcher.attach(AddObstacleEvent.class, this.addObstacleEventHandlerLambda);
         this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandlerLambda);
         this.dispatcher.attach(TeamProgressEvent.class, this.TeamProgressEventHandler);
         this.dispatcher.attach(AnimalDroppedEvent.class, this.playerDroppedEventHandlerLambda);
+        this.dispatcher.attach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
 
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(() -> {
@@ -141,7 +160,7 @@ public class PlayingGameState extends AbstractGameState {
     /**
      * Adds an animal to a team.
      *
-     * @param team   the animal
+     * @param team the animal
      * @param animal the team
      */
     private void addAnimal(final Team team, final Animal animal) {
@@ -149,7 +168,7 @@ public class PlayingGameState extends AbstractGameState {
         animal.setActor(actor);
 
         BoatGroup group = new BoatGroup(this.assets, (MainDesktop.getWidth() / 2) - 450,
-            MainDesktop.getHeight() * 0.02f);
+                MainDesktop.getHeight() * 0.02f);
         team.setBoat(group);
         this.screen.addTeam(group, team.getId());
         team.getBoat().addAnimal(actor);
@@ -164,14 +183,15 @@ public class PlayingGameState extends AbstractGameState {
         // Temporary, has to get animal from event
 
         MonkeyActor actor = new MonkeyActor(this.assets, this.dispatcher);
-        Animal anim = new Animal(this.dispatcher, event.getAnimal(), event.getTeam(), event.getVariation());
+        Animal anim = new Animal(this.dispatcher, event.getAnimal(), event.getTeam(),
+                event.getVariation());
         anim.setActor(actor);
 
         Integer tm = event.getTeam();
         Team tim = this.game.getTeam(tm);
         if (tim == null) {
             BoatGroup group = new BoatGroup(this.assets, (MainDesktop.getWidth() / 2) - 450,
-                MainDesktop.getHeight() * 0.02f);
+                    MainDesktop.getHeight() * 0.02f);
             tim = this.game.addTeam(tm);
             tim.setBoat(group);
             this.screen.addTeam(group, tm);

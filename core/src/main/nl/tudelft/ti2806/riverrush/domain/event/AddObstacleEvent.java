@@ -17,6 +17,7 @@ public class AddObstacleEvent implements Event {
     public String serialize(final Protocol protocol) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("team").append(protocol.getKeyValueSeperator()).append(this.teamId.toString());
+        stringBuilder.append(protocol.getPairSeperator());
         stringBuilder.append("location").append(protocol.getKeyValueSeperator()).append(this.location.toString());
         return stringBuilder.toString();
     }

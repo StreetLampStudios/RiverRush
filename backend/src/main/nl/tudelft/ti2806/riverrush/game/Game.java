@@ -1,15 +1,21 @@
 package nl.tudelft.ti2806.riverrush.game;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
-import nl.tudelft.ti2806.riverrush.game.state.GameState;
-import nl.tudelft.ti2806.riverrush.game.state.WaitingForRendererState;
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
+import nl.tudelft.ti2806.riverrush.domain.entity.Team;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
+import nl.tudelft.ti2806.riverrush.game.state.GameState;
+import nl.tudelft.ti2806.riverrush.game.state.WaitingForRendererState;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 /**
  * Represents an ongoing or waiting game.
@@ -37,7 +43,7 @@ public class Game {
      */
     @Inject
     public Game(final EventDispatcher dispatcher) {
-        this.gameState = new WaitingForRendererState(dispatcher);
+        this.gameState = new WaitingForRendererState(dispatcher, this);
         this.gameTrack = new BasicGameTrack(dispatcher);
         this.eventDispatcher = dispatcher;
 
@@ -105,7 +111,7 @@ public class Game {
      * Add the player to the team.
      *
      * @param animal The animal
-     * @param team   The team
+     * @param team The team
      */
     public void addPlayerToTeam(final AbstractAnimal animal, final Integer team) {
         try {
@@ -128,5 +134,16 @@ public class Game {
      */
     public void jumpAnimal(final AbstractAnimal animal) {
         animal.jump();
+    }
+
+    /**
+     * kick an animal off the boat
+     * @param animal - integer that represents the animal
+     * @param team - integer that represents the team
+     */
+    public void collideAnimal(final Integer animal, final Integer team) {
+        Team team1 = this.gameTrack.getTeam(team);
+        AbstractAnimal animal1 = team1.getAnimals().get(animal);
+        animal1.collide();
     }
 }
