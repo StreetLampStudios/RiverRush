@@ -84,5 +84,4 @@ public class BoatSector extends Group {
     public ArrayList<MonkeyActor> getAnimals() {
         return animals;
     }
-
 }
