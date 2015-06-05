@@ -87,4 +87,13 @@ public class UserController extends AbstractController {
         event.setAnimal(this.animal.getId());
         this.dispatcher.dispatch(event);
     }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        AnimalRemovedEvent event = new AnimalRemovedEvent();
+        event.setAnimal(this.animal.getId());
+        event.setTeam(this.animal.getTeamId());
+        this.dispatcher.dispatch(event);
+    }
 }

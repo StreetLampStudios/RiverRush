@@ -5,10 +5,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.LoadingGameState;
@@ -30,6 +27,7 @@ public class Game extends GdxGame {
     private final EventDispatcher dispatcher;
     private final HandlerLambda<AnimalFellOffEvent> animalFellOffEventHandlerLambda;
     private final HandlerLambda<AnimalAddedEvent> addAnimalHandlerLambda = this::addAnimalHandler;
+    private final HandlerLambda<AnimalRemovedEvent> removeAnimalHandlerLambda = this::removeAnimalHandler;
     private GameState currentGameState;
 
     private HashMap<Integer, Team> teams;
@@ -51,6 +49,7 @@ public class Game extends GdxGame {
 
         this.dispatcher.attach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
         this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandlerLambda);
+        this.dispatcher.attach(AnimalRemovedEvent.class, this.removeAnimalHandlerLambda);
     }
 
     /**
@@ -146,5 +145,19 @@ public class Game extends GdxGame {
             tim = this.addTeam(tm);
         }
         tim.addAnimal(new Animal(this.dispatcher, event.getAnimal(), tm));
+    }
+
+    /**
+     * Removed an animal.
+     *
+     * @param event The remove event
+     */
+    public void removeAnimalHandler(final AnimalRemovedEvent event) {
+        Integer teamId = event.getTeam();
+        Integer animal = event.getAnimal();
+        Team team = this.getTeam(teamId);
+        Animal removeAnimal = (Animal) team.getAnimals().get(animal);
+        team.getBoat().removeAnimal(removeAnimal.getActor());
+        team.getAnimals().remove(animal);
     }
 }

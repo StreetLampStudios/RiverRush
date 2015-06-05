@@ -41,9 +41,11 @@ public class Game {
         this.gameTrack = new BasicGameTrack(dispatcher);
         this.eventDispatcher = dispatcher;
 
-        HandlerLambda<AnimalAddedEvent> addPlayer = (e) -> this.addAnimalHandler();
-        HandlerLambda<GameFinishedEvent> gameFinished = (e) -> this.finish();
-        this.eventDispatcher.attach(AnimalAddedEvent.class, addPlayer);
+        HandlerLambda<AnimalAddedEvent> addAnimal       = (e) -> this.addAnimalHandler();
+        HandlerLambda<AnimalRemovedEvent> removeAnimal  = (e) -> this.removeAnimalHandler(e);
+        HandlerLambda<GameFinishedEvent> gameFinished   = (e) -> this.finish();
+        this.eventDispatcher.attach(AnimalAddedEvent.class, addAnimal);
+        this.eventDispatcher.attach(AnimalRemovedEvent.class, removeAnimal);
         this.eventDispatcher.attach(GameFinishedEvent.class, gameFinished);
     }
 
@@ -60,6 +62,16 @@ public class Game {
             final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
             scheduler.schedule(this::start, DELAY, TimeUnit.SECONDS);
         }
+    }
+
+    /**
+     * Handler that adds a player to the game.
+     */
+    private void removeAnimalHandler(AnimalRemovedEvent event) {
+        this.playerCount--;
+        Integer team = event.getTeam();
+        Integer animal = event.getAnimal();
+        this.gameTrack.getTeam(team).getAnimals().remove(animal);
     }
 
     /**
