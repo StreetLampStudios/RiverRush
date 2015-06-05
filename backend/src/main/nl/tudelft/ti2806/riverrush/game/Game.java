@@ -104,6 +104,7 @@ public class Game {
             AnimalAddedEvent event = new AnimalAddedEvent();
             event.setAnimal(animal.getId());
             event.setTeam(team);
+            event.setVariation(animal.getVariation());
             this.eventDispatcher.dispatch(event);
         } catch (NoSuchTeamException e) {
             e.printStackTrace();

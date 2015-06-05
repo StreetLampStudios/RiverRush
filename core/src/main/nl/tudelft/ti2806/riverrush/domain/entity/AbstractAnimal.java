@@ -160,4 +160,8 @@ public abstract class AbstractAnimal {
     public void setTeamId(final Integer teamID) {
         this.teamID = teamID;
     }
+
+    public Integer getVariation() {
+        return variation;
+    }
 }
