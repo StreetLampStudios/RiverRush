@@ -4,15 +4,7 @@ import java.util.ArrayList;
 
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
-import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalDroppedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
-import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.game.TickHandler;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
@@ -36,10 +28,8 @@ public class PlayingGameState extends AbstractGameState {
     private final HandlerLambda<AddObstacleEvent> addObstacleEventHandlerLambda = this::addObstacle;
     private final HandlerLambda<TeamProgressEvent> TeamProgressEventHandler = this::teamProgress;
     private final HandlerLambda<AnimalFellOffEvent> animalFellOffEventHandlerLambda = this::fellOff;
+    private final HandlerLambda<AnimalReturnedToBoatEvent> animalReturnedToBoatEventHandlerLambda = this::returnToBoat;
 
-    private void fellOff(AnimalFellOffEvent event) {
-        this.game.getTeam(event.getTeam()).getAnimals().get(event.getAnimal()).collide();
-    }
 
     private final HandlerLambda<AnimalAddedEvent> addAnimalHandlerLambda = this::addAnimalHandler;
 
@@ -64,6 +54,7 @@ public class PlayingGameState extends AbstractGameState {
         this.dispatcher.attach(TeamProgressEvent.class, this.TeamProgressEventHandler);
         this.dispatcher.attach(AnimalDroppedEvent.class, this.playerDroppedEventHandlerLambda);
         this.dispatcher.attach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
+        this.dispatcher.attach(AnimalReturnedToBoatEvent.class, this.animalReturnedToBoatEventHandlerLambda);
 
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(() -> {
@@ -220,7 +211,7 @@ public class PlayingGameState extends AbstractGameState {
      *
      * @param event The drop event
      */
-    public void dropHandler(AnimalDroppedEvent event) {
+    public void dropHandler(final AnimalDroppedEvent event) {
         Integer tm = event.getTeam();
         Team tim = this.game.getTeam(tm);
         Integer animalID = event.getAnimal();
@@ -235,5 +226,23 @@ public class PlayingGameState extends AbstractGameState {
      */
     private void teamProgress(final TeamProgressEvent teamProgressEvent) {
         this.screen.updateProgress(teamProgressEvent.getTeamID(), teamProgressEvent.getProgress());
+    }
+
+    /**
+     * Kicks the animal off the boat.
+     * @param event - The event
+     */
+    private void fellOff(final AnimalFellOffEvent event) {
+        this.game.getTeam(event.getTeam()).getAnimals().get(event.getAnimal()).collide();
+    }
+
+    /**
+     * Moves the animal bakc to the boat.
+     * @param event - the event
+     */
+    private void returnToBoat(final AnimalReturnedToBoatEvent event) {
+        Team t = this.game.getTeam(event.getTeam());
+        AbstractAnimal a  = t.getAnimals().get(event.getAnimal());
+        a.returnToBoat();
     }
 }

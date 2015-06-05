@@ -22,7 +22,6 @@ public class Game extends GdxGame {
 
     private final AssetManager assets;
     private final EventDispatcher dispatcher;
-    private final HandlerLambda<AnimalFellOffEvent> animalFellOffEventHandlerLambda;
     private final HandlerLambda<AnimalAddedEvent> addAnimalHandlerLambda = this::addAnimalHandler;
     private final HandlerLambda<AnimalRemovedEvent> removeAnimalHandlerLambda = this::removeAnimalHandler;
     private GameState currentGameState;
@@ -41,10 +40,6 @@ public class Game extends GdxGame {
         this.assets = assetManager;
         this.teams = new HashMap<>();
 
-        this.animalFellOffEventHandlerLambda = (e) -> this.getTeam(e.getTeam()).getAnimals()
-            .get(e.getAnimal()).collide();
-
-        this.dispatcher.attach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
         this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandlerLambda);
         this.dispatcher.attach(AnimalRemovedEvent.class, this.removeAnimalHandlerLambda);
     }
@@ -97,7 +92,6 @@ public class Game extends GdxGame {
 
     @Override
     public void dispose() {
-        this.dispatcher.detach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
         this.currentGameState = this.currentGameState.stop();
     }
 
