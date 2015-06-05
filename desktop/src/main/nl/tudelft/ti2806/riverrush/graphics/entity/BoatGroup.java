@@ -1,8 +1,5 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.google.inject.Inject;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Represents a boat that the animals row on.

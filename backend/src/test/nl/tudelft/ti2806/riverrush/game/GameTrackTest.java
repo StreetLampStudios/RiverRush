@@ -35,7 +35,7 @@ public class GameTrackTest {
     }
 
     @Test
-     public void testAddTeam() throws Exception {
+    public void testAddTeam() throws Exception {
         assertEquals(track.getTeam(team.getId()), team);
     }
 
@@ -127,7 +127,6 @@ public class GameTrackTest {
         animal2.collide();
 
         track.updateProgress();
-
 
 
         assertEquals("Distance of team 1 is not equal", GameTrack.TRACK_LENGTH + 1, track.getDistanceTeam(team.getId()), delta);

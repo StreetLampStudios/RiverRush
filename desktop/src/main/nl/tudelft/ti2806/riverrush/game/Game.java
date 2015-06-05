@@ -60,6 +60,7 @@ public class Game extends GdxGame {
 
     /**
      * Returns the teams.
+     *
      * @return the teams
      */
     public HashMap<Integer, Team> getTeams() {

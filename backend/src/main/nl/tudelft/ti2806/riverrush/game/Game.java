@@ -41,9 +41,9 @@ public class Game {
         this.gameTrack = new BasicGameTrack(dispatcher);
         this.eventDispatcher = dispatcher;
 
-        HandlerLambda<AnimalAddedEvent> addAnimal       = (e) -> this.addAnimalHandler();
-        HandlerLambda<AnimalRemovedEvent> removeAnimal  = (e) -> this.removeAnimalHandler(e);
-        HandlerLambda<GameFinishedEvent> gameFinished   = (e) -> this.finish();
+        HandlerLambda<AnimalAddedEvent> addAnimal = (e) -> this.addAnimalHandler();
+        HandlerLambda<AnimalRemovedEvent> removeAnimal = (e) -> this.removeAnimalHandler(e);
+        HandlerLambda<GameFinishedEvent> gameFinished = (e) -> this.finish();
         this.eventDispatcher.attach(AnimalAddedEvent.class, addAnimal);
         this.eventDispatcher.attach(AnimalRemovedEvent.class, removeAnimal);
         this.eventDispatcher.attach(GameFinishedEvent.class, gameFinished);
@@ -107,7 +107,7 @@ public class Game {
      * Add the player to the team.
      *
      * @param animal The animal
-     * @param team The team
+     * @param team   The team
      */
     public void addPlayerToTeam(final AbstractAnimal animal, final Integer team) {
         try {
@@ -125,6 +125,7 @@ public class Game {
 
     /**
      * Jumps an animal.
+     *
      * @param animal - the animal to jump
      */
     public void jumpAnimal(final AbstractAnimal animal) {

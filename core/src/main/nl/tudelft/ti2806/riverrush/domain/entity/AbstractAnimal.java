@@ -120,9 +120,8 @@ public abstract class AbstractAnimal {
     /**
      * Sets the color of an animal to a random color from an array
      */
-    public Integer getRandomVariation()
-    {
-        int[] variations = {1,2,3,4,5,6,7,8,9,10};
+    public Integer getRandomVariation() {
+        int[] variations = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         int idx = new Random().nextInt(variations.length);
         return (variations[idx]);
     }
@@ -134,6 +133,7 @@ public abstract class AbstractAnimal {
 
     /**
      * Sets the variation of this animal.
+     *
      * @param variation the variation
      */
     public void setVariation(Integer variation) {
@@ -142,6 +142,7 @@ public abstract class AbstractAnimal {
 
     /**
      * Returns the variation of the animal.
+     *
      * @return the variation
      */
     public Integer getVariation() {
@@ -160,6 +161,7 @@ public abstract class AbstractAnimal {
 
     /**
      * Returns the team ID of the animal.
+     *
      * @return the team ID
      */
     public Integer getTeamId() {

@@ -10,6 +10,7 @@ public class BasicGameTrack extends GameTrack {
 
     /**
      * Create a basic level.
+     *
      * @param dispatcher - See {@link EventDispatcher}
      */
     public BasicGameTrack(final EventDispatcher dispatcher) {

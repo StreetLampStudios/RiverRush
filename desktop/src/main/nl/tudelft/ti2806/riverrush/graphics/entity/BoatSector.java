@@ -1,7 +1,5 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,6 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
+
+import java.util.ArrayList;
 
 public class BoatSector extends Group {
 
@@ -49,8 +49,8 @@ public class BoatSector extends Group {
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
         batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-                this.getRotation());
+            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+            this.getRotation());
         batch.setColor(Color.WHITE);
         this.drawChildren(batch, parentAlpha);
         batch.disableBlending();
@@ -64,12 +64,12 @@ public class BoatSector extends Group {
     public void addAnimal(MonkeyActor actor) {
         this.animals.set(this.currentAnimalPosition, actor);
         float xPos = this.getX()
-                + ((this.currentAnimalPosition % this.colCount) * actor.getWidth());
+            + ((this.currentAnimalPosition % this.colCount) * actor.getWidth());
         float yPos = this.getY()
-                + ((this.currentAnimalPosition / this.colCount) * actor.getHeight());
+            + ((this.currentAnimalPosition / this.colCount) * actor.getHeight());
         actor.setPosition(xPos, yPos);
         this.currentAnimalPosition = (this.currentAnimalPosition + 2)
-                % (this.rowCount * this.colCount);
+            % (this.rowCount * this.colCount);
 
         if (this.animals.get(this.currentAnimalPosition) != null) {
             this.currentAnimalPosition--;
@@ -79,6 +79,7 @@ public class BoatSector extends Group {
 
     /**
      * Returns the animals in this sector.
+     *
      * @return the animals
      */
     public ArrayList<MonkeyActor> getAnimals() {

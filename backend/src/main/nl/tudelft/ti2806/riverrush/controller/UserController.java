@@ -46,7 +46,7 @@ public class UserController extends AbstractController {
     public void initialize() {
         final HandlerLambda<JoinTeamCommand> joinTeamHandler = this::joinTeamHandler;
         final HandlerLambda<Event> sendOverNetworkLambda = (e) -> {
-            if(Objects.equals(e.getAnimal(), this.animal.getId())) {
+            if (Objects.equals(e.getAnimal(), this.animal.getId())) {
                 this.server.sendEvent(e, this);
             }
         };

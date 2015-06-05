@@ -1,8 +1,5 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.forever;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -12,6 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.inject.Inject;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.forever;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
  * Game class representing a river.
@@ -29,13 +29,13 @@ public class RiverActor extends Actor {
      * Creates an river object with a given graphical representation.
      *
      * @param assetManager enables the object to retrieve its assets
-     * @param ypos represents the position of the river on the y axis
-     * @param width represents the width of the river object
-     * @param height represents the height of the river object
+     * @param ypos         represents the position of the river on the y axis
+     * @param width        represents the width of the river object
+     * @param height       represents the height of the river object
      */
     @Inject
     public RiverActor(final AssetManager assetManager, final float ypos, final float width,
-            final float height) {
+                      final float height) {
         this.manager = assetManager;
         this.setPosition(0, height);
         this.setWidth(width);
@@ -64,8 +64,8 @@ public class RiverActor extends Actor {
         Texture tex = this.manager.get("data/river.png", Texture.class);
         TextureRegion region = new TextureRegion(tex, 0, 0, END_REGIONX, END_REGIONY);
         batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-                this.getWidth(), this.getHeight() * 2, this.getScaleX(), this.getScaleY(),
-                this.getRotation());
+            this.getWidth(), this.getHeight() * 2, this.getScaleX(), this.getScaleY(),
+            this.getRotation());
     }
 
     @Override
