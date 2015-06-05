@@ -115,6 +115,7 @@ public class BoatGroup extends Group {
     public void removeAnimal(MonkeyActor actor) {
         for (BoatSector sec : this.sectors) {
             if (sec.getAnimals().contains(actor)) {
+                sec.removeActor(actor);
                 sec.getAnimals().remove(actor);
             }
         }

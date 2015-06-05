@@ -138,6 +138,8 @@ public class GameTrack {
     }
 
     /**
+     * Get the speed.
+     *
      * @param t - the team you want the speed of
      * @return the speed of your team between 0 and 1
      */
@@ -153,11 +155,15 @@ public class GameTrack {
             total++;
         }
 
+        if (total == 0) {
+            return 0.0;
+        }
+
         return (double) amountOnBoat / (double) total;
     }
 
     /**
-     * Adds a team to the gametrack.
+     * Adds a team to the game track.
      *
      * @param team - the team you want to add
      */
