@@ -5,8 +5,9 @@ import java.net.URISyntaxException;
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
+import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
@@ -28,6 +29,7 @@ public class MainDesktop extends CoreModule {
     private static final int WIDTH = 1920;
     private static final int HEIGHT = 1080;
     private final Injector injector;
+    private final EventDispatcher eventDispatcher;
 
     /**
      * Calls the main desktop constructor that starts the game.
@@ -52,28 +54,25 @@ public class MainDesktop extends CoreModule {
         cntrl.setClient(client);
         client.setController(cntrl);
 
+        this.eventDispatcher = this.injector.getInstance(EventDispatcher.class);
+
         this.setupGraphics();
-        client.connect();
+        // client.connect();
 
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        this.injector.getInstance(EventDispatcher.class).dispatch(new GameAboutToStartEvent());
+        this.eventDispatcher.dispatch(new GameAboutToStartEvent());
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.injector.getInstance(EventDispatcher.class).dispatch(new GameStartedEvent());
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        AnimalAddedEvent ev = new AnimalAddedEvent();
+        this.eventDispatcher.dispatch(new GameStartedEvent());
+        // try {
+        // Thread.sleep(2000);
+        // } catch (InterruptedException e) {
+        // e.printStackTrace();
+        // }
+        AnimalAddedEvent ev;
         for (int i = 0; i < 5; i++) {
             try {
                 Thread.sleep(100);
@@ -83,21 +82,42 @@ public class MainDesktop extends CoreModule {
             ev = new AnimalAddedEvent();
             ev.setAnimal(i);
             ev.setTeam(i % 2);
-            this.injector.getInstance(EventDispatcher.class).dispatch(ev);
-        }
-        AnimalJumpedEvent jev = new AnimalJumpedEvent();
-        for (int i = 0; i < 1; i++) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            jev = new AnimalJumpedEvent();
-            jev.setAnimal(i);
-            jev.setTeam(i % 2);
-            this.injector.getInstance(EventDispatcher.class).dispatch(jev);
+
+            this.eventDispatcher.dispatch(ev);
         }
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        AnimalMovedEvent event = new AnimalMovedEvent();
+        event.setAnimal(1);
+        event.setDirection(AnimalMovedEvent.Direction.LEFT);
+        event.setTeam(1);
+        this.eventDispatcher.dispatch(event);
+
+        event = new AnimalMovedEvent();
+        event.setAnimal(0);
+        event.setDirection(AnimalMovedEvent.Direction.RIGHT);
+        event.setTeam(0);
+        this.eventDispatcher.dispatch(event);
+        event = new AnimalMovedEvent();
+        event.setAnimal(1);
+        event.setDirection(AnimalMovedEvent.Direction.RIGHT);
+        event.setTeam(0);
+        this.eventDispatcher.dispatch(event);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        AddRockEvent evie = new AddRockEvent();
+        evie.setTeam(1);
+        evie.setLocation(0.5);
+        evie.setAnimal(1);
+        this.eventDispatcher.dispatch(evie);
     }
 
     /**

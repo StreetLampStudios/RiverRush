@@ -68,12 +68,12 @@ public class SideStage extends Table {
      * @param graphic - The obstacle that you want to add.
      */
     public void spawnRock(final RockGraphic graphic) {
-        if (this.obstacle != null) {
-            this.removeActor(this.obstacle);
+        if (this.rock != null) {
+            this.removeActor(this.rock);
         }
         graphic.init();
         this.rock = graphic;
-        this.addActor(this.obstacle);
+        this.addActor(this.rock);
     }
 
     @Override

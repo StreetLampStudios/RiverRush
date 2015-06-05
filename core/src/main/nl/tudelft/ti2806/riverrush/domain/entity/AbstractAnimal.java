@@ -18,6 +18,7 @@ public abstract class AbstractAnimal {
     private static Integer highestId = 0;
     private final Integer animalID;
     private Integer teamID;
+    private Integer voteDirection = 0;
 
     private EventDispatcher dispatcher;
 
@@ -120,6 +121,20 @@ public abstract class AbstractAnimal {
      */
     public void setTeamId(final Integer teamID) {
         this.teamID = teamID;
+    }
+
+    /**
+     * @return the direction the animal voted on.
+     */
+    public Integer getVoteDirection() {
+        return this.voteDirection;
+    }
+
+    /**
+     * Sets the direction of the animal's vote.
+     */
+    public void setVoteDirection(Integer voteDirection) {
+        this.voteDirection = voteDirection;
     }
 
 }

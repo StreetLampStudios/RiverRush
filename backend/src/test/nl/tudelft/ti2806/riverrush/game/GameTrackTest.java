@@ -1,10 +1,5 @@
 package nl.tudelft.ti2806.riverrush.game;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
@@ -15,6 +10,11 @@ import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by m.olsthoorn on 6/3/2015.
@@ -95,7 +95,6 @@ public class GameTrackTest {
                 Mockito.isA(GameFinishedEvent.class));
 
         assertEquals(GameTrack.trackLength, this.track.getDistanceTeam(this.team.getId()), delta);
-
     }
 
     @Test
@@ -142,11 +141,5 @@ public class GameTrackTest {
         list.add(team2);
 
         assertEquals(this.team, this.track.determineWinningTeam(list));
-
-    }
-
-    @Test
-    public void testGetTeam() throws Exception {
-
     }
 }
