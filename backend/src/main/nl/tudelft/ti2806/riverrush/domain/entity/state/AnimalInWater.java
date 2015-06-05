@@ -1,11 +1,12 @@
 package nl.tudelft.ti2806.riverrush.domain.entity.state;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalReturnedToBoatEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * This state means that the animal is not on the boat.
@@ -58,6 +59,11 @@ public class AnimalInWater extends AbstractAnimalState {
         this.getDispatcher().dispatch(event);
 
         return new AnimalOnBoat(this.animal, this.getDispatcher());
+    }
+
+    @Override
+    public AnimalState voteDirection(final AnimalMovedEvent.Direction direction) {
+        return this;
     }
 
 }

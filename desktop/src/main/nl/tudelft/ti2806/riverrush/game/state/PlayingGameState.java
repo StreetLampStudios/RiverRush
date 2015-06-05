@@ -1,7 +1,7 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
-import java.util.ArrayList;
-
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
@@ -24,8 +24,7 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 import nl.tudelft.ti2806.riverrush.screen.PlayingGameScreen;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
+import java.util.ArrayList;
 
 /**
  * State for a game that is playing.

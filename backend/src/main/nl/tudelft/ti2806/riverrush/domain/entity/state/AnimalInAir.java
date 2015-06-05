@@ -1,6 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.entity.state;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 import java.util.Timer;
@@ -50,6 +51,11 @@ public class AnimalInAir extends AbstractAnimalState {
 
     @Override
     public AnimalState returnToBoat() {
+        return this;
+    }
+
+    @Override
+    public AnimalState voteDirection(AnimalMovedEvent.Direction direction) {
         return this;
     }
 }

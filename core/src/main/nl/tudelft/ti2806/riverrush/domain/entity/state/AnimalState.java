@@ -1,5 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.entity.state;
 
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
+
 /**
  * Represents the state of an animal.
  */
@@ -32,4 +34,6 @@ public interface AnimalState {
      * @return the new state after returned to boat.
      */
     AnimalState returnToBoat();
+
+    AnimalState voteDirection(AnimalMovedEvent.Direction direction);
 }

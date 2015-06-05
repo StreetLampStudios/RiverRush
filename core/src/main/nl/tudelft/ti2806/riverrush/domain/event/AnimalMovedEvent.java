@@ -13,7 +13,7 @@ public class AnimalMovedEvent extends AnimalJumpedEvent {
 
 
     public enum Direction {
-        LEFT, Direction, RIGHT;
+        LEFT, RIGHT, NEUTRAL;
     }
     private Direction direction;
 

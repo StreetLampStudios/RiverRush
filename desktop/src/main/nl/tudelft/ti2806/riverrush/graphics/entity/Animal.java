@@ -17,7 +17,7 @@ public class Animal extends AbstractAnimal {
 
     public void setActor(MonkeyActor act) {
         this.actor = act;
-        this.setState(new AnimalOnBoat(this.actor, this.getDispatcher()));
+        this.setState(new AnimalOnBoat(this, this.getDispatcher()));
     }
 
     /**

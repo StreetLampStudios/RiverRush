@@ -1,8 +1,9 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity.state;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalState;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.graphics.entity.MonkeyActor;
+import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
 
 /**
  * State in which the animal is in mid-air. This means the player can't control the animal while in
@@ -13,7 +14,7 @@ public class AnimalInAir implements AnimalState {
     /**
      * The animal that is in the air.
      */
-    private final MonkeyActor actor;
+    private final Animal animal;
 
     /**
      * The eventdispatcher of this event.
@@ -23,11 +24,11 @@ public class AnimalInAir implements AnimalState {
     /**
      * Constructor.
      *
-     * @param act             - The monkey that is in the air
+     * @param anAnimal             - The monkey that is in the air
      * @param eventDispatcher - The event dispatcher of this event
      */
-    public AnimalInAir(final MonkeyActor act, final EventDispatcher eventDispatcher) {
-        this.actor = act;
+    public AnimalInAir(final Animal anAnimal, final EventDispatcher eventDispatcher) {
+        this.animal = anAnimal;
         this.dispatcher = eventDispatcher;
     }
 
@@ -38,7 +39,7 @@ public class AnimalInAir implements AnimalState {
 
     @Override
     public AnimalState drop() {
-        return new AnimalOnBoat(this.actor, this.dispatcher);
+        return new AnimalOnBoat(this.animal, this.dispatcher);
     }
 
     @Override
@@ -48,6 +49,11 @@ public class AnimalInAir implements AnimalState {
 
     @Override
     public AnimalState returnToBoat() {
+        return this;
+    }
+
+    @Override
+    public AnimalState voteDirection(final AnimalMovedEvent.Direction direction) {
         return this;
     }
 }

@@ -9,6 +9,7 @@ import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.AbstractServer;
 import nl.tudelft.ti2806.riverrush.network.event.JoinTeamCommand;
 import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
+import nl.tudelft.ti2806.riverrush.network.event.VoteBoatMoveCommand;
 
 import java.util.Objects;
 
@@ -47,8 +48,14 @@ public class UserController extends AbstractController {
         final HandlerLambda<Event> onGameStateChangedLambda = (e) -> this.server.sendEvent(e, this);
         final HandlerLambda<JoinTeamCommand> joinTeamHandler = this::joinTeamHandler;
         final HandlerLambda<JumpCommand> jumpCommandHandler = (e) -> {
-            if (Objects.equals(this.animal.getId(), e.getAnimal())) {
+            if (this.animal.getId().equals(e.getAnimal())) {
                 this.game.jumpAnimal(this.animal);
+            }
+        };
+
+        final HandlerLambda<VoteBoatMoveCommand> voteCommandHandler = (e) -> {
+            if (this.animal.getId().equals(e.getAnimal())) {
+                this.game.voteMove(this.animal, e.getDirection());
             }
         };
 
@@ -61,8 +68,10 @@ public class UserController extends AbstractController {
         this.listenTo(AnimalJumpedEvent.class, onGameStateChangedLambda);
         this.listenTo(AnimalFellOffEvent.class, onGameStateChangedLambda);
         this.listenTo(AnimalReturnedToBoatEvent.class, onGameStateChangedLambda);
+        this.listenTo(AnimalMovedEvent.class, onGameStateChangedLambda);
         this.listenTo(JoinTeamCommand.class, joinTeamHandler);
         this.listenTo(JumpCommand.class, jumpCommandHandler);
+        this.listenTo(VoteBoatMoveCommand.class, voteCommandHandler);
     }
 
     /**

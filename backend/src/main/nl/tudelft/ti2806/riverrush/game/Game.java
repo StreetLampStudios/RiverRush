@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
@@ -116,5 +117,9 @@ public class Game {
      */
     public void jumpAnimal(final AbstractAnimal animal) {
         animal.jump();
+    }
+
+    public void voteMove(final AbstractAnimal animal, final AnimalMovedEvent.Direction direction) {
+        animal.voteOneDirection(direction);
     }
 }
