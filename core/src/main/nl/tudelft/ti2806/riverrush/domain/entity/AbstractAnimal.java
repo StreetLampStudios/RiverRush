@@ -93,10 +93,6 @@ public abstract class AbstractAnimal {
         this.setState(this.getState().returnToBoat());
     }
 
-    public Integer getId() {
-        return this.animalID;
-    }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -121,10 +117,6 @@ public abstract class AbstractAnimal {
         return this.dispatcher;
     }
 
-    public Integer getTeamId() {
-        return this.teamID;
-    }
-
     /**
      * Sets the color of an animal to a random color from an array
      */
@@ -135,20 +127,25 @@ public abstract class AbstractAnimal {
         return (variations[idx]);
     }
 
+    public Integer getId() {
+        return this.animalID;
+    }
+
+
     /**
-     * Returns the color of an animal.
-     * @return the animal's color
+     * Sets the variation of this animal.
+     * @param variation the variation
      */
-    public Integer getColor() {
-        return this.variation;
+    public void setVariation(Integer variation) {
+        this.variation = variation;
     }
 
     /**
-     * Sets the color of this animal.
-     * @param variation the color
+     * Returns the variation of the animal.
+     * @return the variation
      */
-    public void setColor(Integer variation) {
-        this.variation = variation;
+    public Integer getVariation() {
+        return variation;
     }
 
 
@@ -161,7 +158,11 @@ public abstract class AbstractAnimal {
         this.teamID = teamID;
     }
 
-    public Integer getVariation() {
-        return variation;
+    /**
+     * Returns the team ID of the animal.
+     * @return the team ID
+     */
+    public Integer getTeamId() {
+        return this.teamID;
     }
 }

@@ -44,8 +44,8 @@
                     margin-left: 10;
                     margin-right: 10;
                     font:normal 80% arial,helvetica,sanserif;
-                    background-variation:#FFFFFF;
-                    variation:#000000;
+                    background-color:#FFFFFF;
+                    color:#000000;
                     }
                     .a td {
                     background: #efefef;
@@ -60,7 +60,7 @@
                     th {
                     font-weight:bold;
                     background: #ccc;
-                    variation: black;
+                    color: black;
                     }
                     table, th, td {
                     font-size:100%;
@@ -78,7 +78,7 @@
                     font-size:100%;
                     font-weight:bold;
                     background: #525D76;
-                    variation: white;
+                    color: white;
                     text-decoration: none;
                     padding: 5px;
                     margin-right: 2px;

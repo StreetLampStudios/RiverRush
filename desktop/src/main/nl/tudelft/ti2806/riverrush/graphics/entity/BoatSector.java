@@ -53,20 +53,6 @@ public class BoatSector extends Group {
         batch.setColor(Color.WHITE);
         this.drawChildren(batch, parentAlpha);
         batch.disableBlending();
-
-        // batch.enableBlending();
-        // batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        //
-        // ShapeRenderer shapes = new ShapeRenderer();
-        // shapes.begin(ShapeType.Line);
-        // shapes.setVariation(1, 1, 0, 1);
-        // shapes.rect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
-        // shapes.end();
-        //
-        // batch.setVariation(Color.WHITE);
-        // this.drawChildren(batch, parentAlpha);
-        // batch.disableBlending();
-
     }
 
     @Override
@@ -89,5 +75,4 @@ public class BoatSector extends Group {
         }
         this.addActor(actor);
     }
-
 }

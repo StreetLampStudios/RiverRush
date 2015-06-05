@@ -11,7 +11,7 @@ public class Animal extends AbstractAnimal {
     public Animal(EventDispatcher dispatch, Integer id, Integer team, Integer variation) {
         super(dispatch, id);
         this.setTeamId(team);
-        this.setColor(variation);
+        this.setVariation(variation);
     }
 
     private MonkeyActor actor;

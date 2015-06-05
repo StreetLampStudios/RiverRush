@@ -40,28 +40,28 @@ public class AnimalAddedEvent implements Event {
     }
 
     @Override
-    public Integer getAnimal() {
-        return this.animalId;
-    }
-
-    @Override
     public void setAnimal(final Integer aAnimal) {
         this.animalId = aAnimal;
     }
 
-    public Integer getTeam() {
-        return this.teamId;
-    }
-
-    public Integer getVariation() {
-        return this.variation;
+    @Override
+    public Integer getAnimal() {
+        return this.animalId;
     }
 
     public void setTeam(final Integer team) {
         this.teamId = team;
     }
 
+    public Integer getTeam() {
+        return this.teamId;
+    }
+
     public void setVariation(final Integer variation) {
         this.variation = variation;
+    }
+
+    public Integer getVariation() {
+        return this.variation;
     }
 }
