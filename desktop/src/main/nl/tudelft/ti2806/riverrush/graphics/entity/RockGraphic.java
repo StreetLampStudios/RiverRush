@@ -24,6 +24,9 @@ public class RockGraphic extends AbstractObstacle {
     private static final int NEGATIVE_MULTIPLIER = -2;
     private static final int TEXTURE_SIZE_X = 679;
     private static final int TEXTURE_SIZE_Y = 436;
+    private static final float HITBOX_OFFSET_X = 0.1f;
+    private static final float HITBOX_OFFSET_Y = 0.1f;
+
     private final double offset;
 
     /**
@@ -67,6 +70,26 @@ public class RockGraphic extends AbstractObstacle {
      */
     public boolean isDone() {
         return this.getY() == NEGATIVE_MULTIPLIER * SIZE;
+    }
+
+    public boolean calculateCollision(final BoatGroup boat) {
+        float boatx = boat.getX() + (boat.getWidth() * HITBOX_OFFSET_X);
+        float boatxedge = boat.getX() + boat.getWidth() - (boat.getWidth() * HITBOX_OFFSET_X);
+        float boaty = boat.getY() + (boat.getHeight() * HITBOX_OFFSET_Y);
+        float boatyedge = boat.getY() + boat.getHeight() - (boat.getHeight() * HITBOX_OFFSET_Y);
+        float[] x = {boatx, boatxedge};
+        float[] y = {boaty, boatyedge};
+
+        for (float edgex : x) {
+            for (float edgey : y) {
+                if (edgex < this.getX() + this.getWidth() && edgex > this.getX()
+                        && edgey < this.getY() + this.getHeight() && edgey > this.getY()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
     }
 
 }

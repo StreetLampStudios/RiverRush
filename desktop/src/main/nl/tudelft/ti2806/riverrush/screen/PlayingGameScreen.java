@@ -7,6 +7,7 @@ import nl.tudelft.ti2806.riverrush.graphics.CenterStage;
 import nl.tudelft.ti2806.riverrush.graphics.SideStage;
 import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
 import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
+import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -232,6 +233,20 @@ public class PlayingGameScreen implements Screen {
             this.leftScreen.spawnObstacle(graphic);
         } else {
             this.rightScreen.spawnObstacle(graphic);
+        }
+    }
+
+    /**
+     * adds an rock on the..
+     *
+     * @param isLeft - left or right side
+     * @param graphic - where the rock is the graphic
+     */
+    public void addRock(boolean isLeft, RockGraphic graphic) {
+        if (isLeft) {
+            this.leftScreen.spawnRock(graphic);
+        } else {
+            this.rightScreen.spawnRock(graphic);
         }
     }
 

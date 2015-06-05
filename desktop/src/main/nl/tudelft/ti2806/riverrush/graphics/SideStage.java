@@ -4,6 +4,7 @@ import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
 import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.RiverActor;
+import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -19,6 +20,7 @@ public class SideStage extends Table {
     private BoatGroup boat;
     private final RiverActor river;
     private CannonBallGraphic obstacle;
+    private RockGraphic rock;
     private final AssetManager assets;
 
     private static final int RIVER_HEIGHT = 1920;
@@ -57,6 +59,20 @@ public class SideStage extends Table {
         }
         graphic.init();
         this.obstacle = graphic;
+        this.addActor(this.obstacle);
+    }
+
+    /**
+     * Adds a new obstacle to the screen.
+     *
+     * @param graphic - The obstacle that you want to add.
+     */
+    public void spawnRock(final RockGraphic graphic) {
+        if (this.obstacle != null) {
+            this.removeActor(this.obstacle);
+        }
+        graphic.init();
+        this.rock = graphic;
         this.addActor(this.obstacle);
     }
 

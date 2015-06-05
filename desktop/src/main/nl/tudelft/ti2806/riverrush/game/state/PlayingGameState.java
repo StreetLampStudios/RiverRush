@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.BoatCollidedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
@@ -17,6 +19,7 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
 import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
 import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.MonkeyActor;
+import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 import nl.tudelft.ti2806.riverrush.screen.PlayingGameScreen;
 
@@ -31,10 +34,13 @@ public class PlayingGameState extends AbstractGameState {
     private final PlayingGameScreen screen;
     private final HandlerLambda<AnimalJumpedEvent> playerJumpedEventHandlerLambda = this::jumpHandler;
     private final HandlerLambda<AddObstacleEvent> addObstacleEventHandlerLambda = this::addObstacle;
+    private final HandlerLambda<AddRockEvent> addRockEventHandlerLambda = this::addRock;
     private final HandlerLambda<AnimalAddedEvent> addAnimalHandlerLambda = this::addAnimalHandler;
 
     private final TickHandler OnTick = this::tick;
 
+    private final ArrayList<RockGraphic> leftRockList;
+    private final ArrayList<RockGraphic> rightRockList;
     private final ArrayList<CannonBallGraphic> leftObstList;
     private final ArrayList<CannonBallGraphic> rightObstList;
     private final HandlerLambda<? super TeamProgressEvent> TeamProgressEventHandler = this::teamProgress;
@@ -52,6 +58,7 @@ public class PlayingGameState extends AbstractGameState {
         super(eventDispatcher, assetManager, game);
         this.dispatcher.attach(AnimalJumpedEvent.class, this.playerJumpedEventHandlerLambda);
         this.dispatcher.attach(AddObstacleEvent.class, this.addObstacleEventHandlerLambda);
+        this.dispatcher.attach(AddRockEvent.class, this.addRockEventHandlerLambda);
         this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandlerLambda);
         this.dispatcher.attach(TeamProgressEvent.class, this.TeamProgressEventHandler);
 
@@ -63,6 +70,8 @@ public class PlayingGameState extends AbstractGameState {
 
         this.leftObstList = new ArrayList<>();
         this.rightObstList = new ArrayList<>();
+        this.rightRockList = new ArrayList<>();
+        this.leftRockList = new ArrayList<>();
     }
 
     @Override
@@ -99,8 +108,27 @@ public class PlayingGameState extends AbstractGameState {
      * This method is called when the game renders the screen.
      */
     private void tick() {
-        for (CannonBallGraphic graphic : this.leftObstList) {
-            for (AbstractAnimal animal : this.game.getTeam(0).getAnimals().values()) { // TODO
+        for (RockGraphic graphic : this.rightRockList) {
+            Team team = this.game.getTeam(0);
+            BoatGroup boat = team.getBoat();
+            if (graphic.calculateCollision(boat)) {
+                BoatCollidedEvent ev = new BoatCollidedEvent();
+                ev.setTeam(team.getId());
+                this.dispatcher.dispatch(ev);
+            }
+        }
+        for (RockGraphic graphic : this.leftRockList) {
+            Team team = this.game.getTeam(1);
+            BoatGroup boat = team.getBoat();
+            if (graphic.calculateCollision(boat)) {
+                BoatCollidedEvent ev = new BoatCollidedEvent();
+                ev.setTeam(team.getId());
+                this.dispatcher.dispatch(ev);
+            }
+        }
+
+        for (AbstractAnimal animal : this.game.getTeam(0).getAnimals().values()) { // TODO
+            for (CannonBallGraphic graphic : this.leftObstList) {
                 Animal animal1 = (Animal) animal;
                 if (graphic.calculateCollision(animal1.getActor())) {
                     AnimalCollidedEvent ev = new AnimalCollidedEvent();
@@ -111,8 +139,8 @@ public class PlayingGameState extends AbstractGameState {
             }
         }
 
-        for (CannonBallGraphic graphic : this.rightObstList) {
-            for (AbstractAnimal animal : this.game.getTeam(1).getAnimals().values()) {
+        for (AbstractAnimal animal : this.game.getTeam(1).getAnimals().values()) {
+            for (CannonBallGraphic graphic : this.rightObstList) {
                 Animal animal1 = (Animal) animal;
                 if (graphic.calculateCollision(animal1.getActor())) {
                     // TODO: Set animal
@@ -123,6 +151,7 @@ public class PlayingGameState extends AbstractGameState {
                 }
             }
         }
+
     }
 
     /**
@@ -138,6 +167,22 @@ public class PlayingGameState extends AbstractGameState {
             this.leftObstList.add(graphic);
         } else {
             this.rightObstList.add(graphic);
+        }
+    }
+
+    /**
+     * Is called when an obstacle event is received.
+     *
+     * @param e - the event
+     */
+    private void addRock(final AddRockEvent e) {
+        RockGraphic graphic = new RockGraphic(this.assets, e.getLocation());
+        // TODO: FIX This
+        this.screen.addRock(e.getTeam() == 0, graphic);
+        if (e.getTeam() == 0) {
+            this.leftRockList.add(graphic);
+        } else {
+            this.rightRockList.add(graphic);
         }
     }
 
@@ -173,15 +218,12 @@ public class PlayingGameState extends AbstractGameState {
      * @param event The jump event
      */
     public void jumpHandler(AnimalJumpedEvent event) {
-        /*
-         * Integer tm = event.getTeam(); Team tim = this.game.getTeam(tm); Integer animalID =
-         * event.getAnimal(); AbstractAnimal anim = tim.getAnimals().get(animalID); anim.jump();
-         */
-        // TODO: revert
 
         Integer tm = event.getTeam();
         Team tim = this.game.getTeam(tm);
-        tim.getBoat().move(1);
+        Integer animalID = event.getAnimal();
+        AbstractAnimal anim = tim.getAnimals().get(animalID);
+        anim.jump();
 
     }
 
