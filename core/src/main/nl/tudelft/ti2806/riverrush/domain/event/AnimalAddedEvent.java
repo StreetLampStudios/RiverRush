@@ -14,7 +14,7 @@ public class AnimalAddedEvent implements Event {
 
     private Integer teamId;
 
-    private String color;
+    private Integer variation;
 
     @Override
     public String serialize(final Protocol protocol) {
@@ -23,16 +23,16 @@ public class AnimalAddedEvent implements Event {
         stringBuilder.append(protocol.getPairSeperator());
         stringBuilder.append("team").append(protocol.getKeyValueSeperator()).append(this.teamId.toString());
         stringBuilder.append(protocol.getPairSeperator());
-        stringBuilder.append("color").append(protocol.getKeyValueSeperator()).append(this.color);
+        stringBuilder.append("variation").append(protocol.getKeyValueSeperator()).append(this.variation.toString());
         return stringBuilder.toString();
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
-        if (keyValuePairs.containsKey("animal") && keyValuePairs.containsKey("team") && keyValuePairs.containsKey("color")) {
+        if (keyValuePairs.containsKey("animal") && keyValuePairs.containsKey("team") && keyValuePairs.containsKey("variation")) {
             this.animalId = Integer.parseInt(keyValuePairs.get("animal"));
             this.teamId = Integer.parseInt(keyValuePairs.get("team"));
-            this.color = keyValuePairs.get("color");
+            this.variation = Integer.parseInt(keyValuePairs.get("variation"));
         } else {
             throw new InvalidProtocolException("Does not contain all the keys");
         }
@@ -53,15 +53,15 @@ public class AnimalAddedEvent implements Event {
         return this.teamId;
     }
 
-    public String getColor() {
-        return this.color;
+    public Integer getVariation() {
+        return this.variation;
     }
 
     public void setTeam(final Integer team) {
         this.teamId = team;
     }
 
-    public void setColor(final String color) {
-        this.color = color;
+    public void setVariation(final Integer variation) {
+        this.variation = variation;
     }
 }

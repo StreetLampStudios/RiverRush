@@ -3,7 +3,6 @@ package nl.tudelft.ti2806.riverrush.game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
@@ -14,8 +13,6 @@ import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.LoadingGameState;
 import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
-import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
-import nl.tudelft.ti2806.riverrush.graphics.entity.MonkeyActor;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 
 import java.util.HashMap;
@@ -145,7 +142,7 @@ public class Game extends GdxGame {
         if (tim == null) {
             tim = this.addTeam(tm);
         }
-        String color = event.getColor();
-        tim.addAnimal(new Animal(this.dispatcher, event.getAnimal(), tm, color));
+        Integer variation = event.getVariation();
+        tim.addAnimal(new Animal(this.dispatcher, event.getAnimal(), tm, variation));
     }
 }

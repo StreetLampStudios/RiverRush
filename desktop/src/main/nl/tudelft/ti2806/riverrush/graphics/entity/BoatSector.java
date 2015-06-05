@@ -59,11 +59,11 @@ public class BoatSector extends Group {
         //
         // ShapeRenderer shapes = new ShapeRenderer();
         // shapes.begin(ShapeType.Line);
-        // shapes.setColor(1, 1, 0, 1);
+        // shapes.setVariation(1, 1, 0, 1);
         // shapes.rect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
         // shapes.end();
         //
-        // batch.setColor(Color.WHITE);
+        // batch.setVariation(Color.WHITE);
         // this.drawChildren(batch, parentAlpha);
         // batch.disableBlending();
 

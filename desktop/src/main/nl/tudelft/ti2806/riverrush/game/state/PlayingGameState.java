@@ -175,7 +175,7 @@ public class PlayingGameState extends AbstractGameState {
         // Temporary, has to get animal from event
 
         MonkeyActor actor = new MonkeyActor(this.assets, this.dispatcher);
-        Animal anim = new Animal(this.dispatcher, event.getAnimal(), event.getTeam(), event.getColor());
+        Animal anim = new Animal(this.dispatcher, event.getAnimal(), event.getTeam(), event.getVariation());
         anim.setActor(actor);
 
         Integer tm = event.getTeam();

@@ -20,7 +20,7 @@ public abstract class AbstractAnimal {
     private static Integer highestId = 0;
     private final Integer animalID;
     private Integer teamID;
-    private String color;
+    private Integer variation;
 
     private EventDispatcher dispatcher;
 
@@ -30,7 +30,7 @@ public abstract class AbstractAnimal {
     public AbstractAnimal(final EventDispatcher dispatch) {
         this.dispatcher = dispatch;
         this.animalID = highestId;
-        this.color = getRandomColor();
+        this.variation = getRandomVariation();
         highestId++;
     }
 
@@ -43,7 +43,7 @@ public abstract class AbstractAnimal {
     public AbstractAnimal(final EventDispatcher dispatch, Integer animal) {
         this.dispatcher = dispatch;
         this.animalID = animal;
-        this.color = getRandomColor();
+        this.variation = getRandomVariation();
     }
 
     /**
@@ -128,27 +128,27 @@ public abstract class AbstractAnimal {
     /**
      * Sets the color of an animal to a random color from an array
      */
-    public String getRandomColor()
+    public Integer getRandomVariation()
     {
-        String[] colors = {"red","blue","orange","yellow","black","white","pink","purple","green","brown"};
-        int idx = new Random().nextInt(colors.length);
-        return (colors[idx]);
+        int[] variations = {1,2,3,4,5,6,7,8,9,10};
+        int idx = new Random().nextInt(variations.length);
+        return (variations[idx]);
     }
 
     /**
      * Returns the color of an animal.
      * @return the animal's color
      */
-    public String getColor() {
-        return this.color;
+    public Integer getColor() {
+        return this.variation;
     }
 
     /**
      * Sets the color of this animal.
-     * @param color the color
+     * @param variation the color
      */
-    public void setColor(String color) {
-        this.color = color;
+    public void setColor(Integer variation) {
+        this.variation = variation;
     }
 
 
