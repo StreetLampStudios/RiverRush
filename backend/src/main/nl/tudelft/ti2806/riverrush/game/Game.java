@@ -43,10 +43,8 @@ public class Game {
 
         HandlerLambda<AnimalAddedEvent> addAnimal = (e) -> this.addAnimalHandler();
         HandlerLambda<AnimalRemovedEvent> removeAnimal = (e) -> this.removeAnimalHandler(e);
-        HandlerLambda<GameFinishedEvent> gameFinished = (e) -> this.finish();
         this.eventDispatcher.attach(AnimalAddedEvent.class, addAnimal);
         this.eventDispatcher.attach(AnimalRemovedEvent.class, removeAnimal);
-        this.eventDispatcher.attach(GameFinishedEvent.class, gameFinished);
     }
 
     /**
