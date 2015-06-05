@@ -2,9 +2,8 @@ package nl.tudelft.ti2806.riverrush;
 
 import com.google.inject.AbstractModule;
 import nl.tudelft.ti2806.riverrush.domain.event.*;
-import nl.tudelft.ti2806.riverrush.network.event.JoinEvent;
-import nl.tudelft.ti2806.riverrush.network.event.JumpEvent;
-import nl.tudelft.ti2806.riverrush.network.event.RenderJoinEvent;
+import nl.tudelft.ti2806.riverrush.network.event.JoinTeamCommand;
+import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
 import nl.tudelft.ti2806.riverrush.network.protocol.BasicProtocol;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
@@ -14,7 +13,13 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 public abstract class CoreModule extends AbstractModule {
 
+    /**
+     * Specifies the render port.
+     */
     public static final int RENDER_PORT_NUMBER = 51337;
+    /**
+     * Specifies the client port.
+     */
     public static final int CLIENT_PORT_NUMBER = 41337;
 
     @Override
@@ -41,18 +46,33 @@ public abstract class CoreModule extends AbstractModule {
     protected Protocol configureRendererProtocol() {
         Protocol protocol = new BasicProtocol(RENDER_PORT_NUMBER);
         // Register available network actions
-        // protocol.registerNetworkAction(...);
+        // protocol.registerNetworkMessage(...);
 
-        protocol.registerNetworkAction(RenderJoinEvent.class, RenderJoinEvent::new);
-        protocol.registerNetworkAction(GameWaitingEvent.class, GameWaitingEvent::new);
-        protocol.registerNetworkAction(GameAboutToStartEvent.class, GameAboutToStartEvent::new);
-        protocol.registerNetworkAction(GameStartedEvent.class, GameStartedEvent::new);
-        protocol.registerNetworkAction(GameFinishedEvent.class, GameFinishedEvent::new);
-        protocol.registerNetworkAction(GameStoppedEvent.class, GameStoppedEvent::new);
-        protocol.registerNetworkAction(PlayerAddedEvent.class, PlayerAddedEvent::new);
-        protocol.registerNetworkAction(PlayerJumpedEvent.class, PlayerJumpedEvent::new);
+        this.registerStateMessages(protocol);
 
         return protocol;
+    }
+
+    /**
+     * Register all the events allowed for this protocol.
+     *
+     * @param protocol The protocol for this server
+     */
+    private void registerStateMessages(final Protocol protocol) {
+        protocol.registerNetworkMessage(GameWaitingEvent.class, GameWaitingEvent::new);
+        protocol.registerNetworkMessage(GameAboutToStartEvent.class, GameAboutToStartEvent::new);
+        protocol.registerNetworkMessage(GameStartedEvent.class, GameStartedEvent::new);
+        protocol.registerNetworkMessage(GameFinishedEvent.class, GameFinishedEvent::new);
+        protocol.registerNetworkMessage(GameStoppedEvent.class, GameStoppedEvent::new);
+        protocol.registerNetworkMessage(AddObstacleEvent.class, AddObstacleEvent::new);
+        protocol.registerNetworkMessage(AnimalAddedEvent.class, AnimalAddedEvent::new);
+        protocol.registerNetworkMessage(AnimalRemovedEvent.class, AnimalRemovedEvent::new);
+        protocol.registerNetworkMessage(AnimalCollidedEvent.class, AnimalCollidedEvent::new);
+        protocol.registerNetworkMessage(AnimalFellOffEvent.class, AnimalFellOffEvent::new);
+        protocol.registerNetworkMessage(AnimalJumpedEvent.class, AnimalJumpedEvent::new);
+        protocol.registerNetworkMessage(AnimalReturnedToBoatEvent.class, AnimalReturnedToBoatEvent::new);
+        protocol.registerNetworkMessage(AnimalDroppedEvent.class, AnimalDroppedEvent::new);
+        protocol.registerNetworkMessage(TeamProgressEvent.class, TeamProgressEvent::new);
     }
 
     /**
@@ -64,10 +84,11 @@ public abstract class CoreModule extends AbstractModule {
     protected Protocol configureClientProtocol() {
         Protocol protocol = new BasicProtocol(CLIENT_PORT_NUMBER);
         // Register available network actions
-        // protocol.registerNetworkAction(...);
+        // protocol.registerNetworkMessage(...);
 
-        protocol.registerNetworkAction(JoinEvent.class, JoinEvent::new);
-        protocol.registerNetworkAction(JumpEvent.class, JumpEvent::new);
+        protocol.registerNetworkMessage(JumpCommand.class, JumpCommand::new);
+        protocol.registerNetworkMessage(JoinTeamCommand.class, JoinTeamCommand::new);
+        registerStateMessages(protocol);
 
         return protocol;
     }

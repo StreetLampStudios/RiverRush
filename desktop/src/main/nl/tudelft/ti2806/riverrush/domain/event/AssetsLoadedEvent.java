@@ -5,8 +5,8 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import java.util.Map;
 
 /**
- * This event is called from the renderer when it has loaded all the assets.
- * This is neccesary, because we don't want the game to begin, when the renderer has not finished loading.
+ * This event is called from the renderer when it has loaded all the assets. This is neccesary,
+ * because we don't want the game to begin, when the renderer has not finished loading.
  */
 public class AssetsLoadedEvent implements Event {
 
@@ -18,5 +18,16 @@ public class AssetsLoadedEvent implements Event {
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
         return this;
+    }
+
+    @Override
+    public void setAnimal(final Integer anAnimalID) {
+        // Has to be empty
+    }
+
+    @Override
+    public Integer getAnimal() {
+        // Has to be empty
+        return null;
     }
 }

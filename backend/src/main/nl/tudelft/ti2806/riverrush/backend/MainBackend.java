@@ -4,13 +4,14 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
-import nl.tudelft.ti2806.riverrush.controller.PlayerController;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
+import nl.tudelft.ti2806.riverrush.controller.UserController;
 import nl.tudelft.ti2806.riverrush.game.Game;
+import nl.tudelft.ti2806.riverrush.network.AbstractServer;
 import nl.tudelft.ti2806.riverrush.network.RenderServer;
-import nl.tudelft.ti2806.riverrush.network.Server;
 import nl.tudelft.ti2806.riverrush.network.UserServer;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
+import org.apache.logging.log4j.LogManager;
 
 import static com.google.inject.name.Names.named;
 
@@ -18,31 +19,27 @@ import static com.google.inject.name.Names.named;
  * Entrypoint of the backend.
  */
 public final class MainBackend extends CoreModule {
-    /**
-     * A {@link Server} that fires NetworkEvents for listeners to dispatch.
-     */
-    private Server renderServer;
-
-    private Server clientServer;
-
-    private Game game;
-    private final Injector injector;
 
     /**
      * Main is a utility class.
      */
     private MainBackend() {
-        injector = Guice.createInjector(this);
+        LogManager.getLogger(MainBackend.class).info("Starting server...");
+        Injector injector = Guice.createInjector(this);
+        injector.getInstance(Game.class);
 
-        this.game = injector.getInstance(Game.class);
+        AbstractServer renderServer = injector.getInstance(RenderServer.class);
+        AbstractServer clientServer = injector.getInstance(UserServer.class);
 
-        this.renderServer = injector.getInstance(RenderServer.class);
-        this.clientServer = injector.getInstance(UserServer.class);
-
-        this.clientServer.start();
-        this.renderServer.start();
+        clientServer.start();
+        renderServer.start();
     }
 
+    /**
+     * Main entry point for the application.
+     *
+     * @param args Command line arguments are ignored.
+     */
     public static void main(final String[] args) {
         new MainBackend();
     }
@@ -52,7 +49,7 @@ public final class MainBackend extends CoreModule {
         super.configure();
         this.bind(Controller.class)
             .annotatedWith(named("clientController"))
-            .to(PlayerController.class);
+            .to(UserController.class);
 
         this.bind(Controller.class)
             .annotatedWith(named("renderController"))
@@ -65,5 +62,13 @@ public final class MainBackend extends CoreModule {
         this.bind(Protocol.class)
             .annotatedWith(named("renderProtocol"))
             .toInstance(this.configureRendererProtocol());
+
+        this.bind(AbstractServer.class)
+            .annotatedWith(named("playerServer"))
+            .to(UserServer.class);
+
+        this.bind(AbstractServer.class)
+            .annotatedWith(named("renderServer"))
+            .to(RenderServer.class);
     }
 }

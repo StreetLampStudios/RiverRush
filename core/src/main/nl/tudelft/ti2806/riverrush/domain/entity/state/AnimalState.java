@@ -25,4 +25,11 @@ public interface AnimalState {
      * @return the new state when the animal collides.
      */
     AnimalState collide();
+
+    /**
+     * Animal returns to the boast.
+     *
+     * @return the new state after returned to boat.
+     */
+    AnimalState returnToBoat();
 }

@@ -1,6 +1,8 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
 import com.google.inject.Singleton;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -15,6 +17,7 @@ import java.util.Map;
 @Singleton
 public class BasicEventDispatcher implements EventDispatcher {
 
+    static final Logger log = LogManager.getLogger(BasicEventDispatcher.class);
     /**
      * Maps event types to a list of listeners.
      */
@@ -31,14 +34,19 @@ public class BasicEventDispatcher implements EventDispatcher {
 
         handlers.add(handler);
         this.registeredLambdas.put(eventType, handlers);
+        log.debug("Attached handler: " + handler.getClass().getSimpleName() + " for: " + eventType.getSimpleName());
     }
 
     @Override
-    public <T extends Event> void detach(final Class<T> eventType, final HandlerLambda<? super T> handlerLambda) {
+    public <T extends Event> void detach(final Class<T> eventType,
+                                         final HandlerLambda<? super T> handlerLambda) {
         List<HandlerLambda> handlers = registeredLambdas.get(eventType);
 
         if (handlers != null) {
             handlers.remove(handlerLambda);
+            log.debug("Detached handler: " + handlerLambda.getClass().getSimpleName() + " for: " + eventType.getSimpleName());
+        } else {
+            log.warn("Could not detach unregistered handler for: " + eventType.getSimpleName());
         }
     }
 
@@ -59,7 +67,10 @@ public class BasicEventDispatcher implements EventDispatcher {
         List<HandlerLambda> handlers = this.registeredLambdas.get(event.getClass());
         if (handlers != null) {
             handlers.forEach(
-                (f) -> f.handle(event)
+                (f) -> {
+                    log.debug("Dispatching event: " + event.getClass().getSimpleName() + " to handler: " + f.getClass().getSimpleName());
+                    f.handle(event);
+                }
             );
         }
     }

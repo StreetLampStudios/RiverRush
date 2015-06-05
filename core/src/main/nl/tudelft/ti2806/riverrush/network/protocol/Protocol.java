@@ -13,8 +13,8 @@ public interface Protocol {
      * @param eventClass       - The type of event.
      * @param eventInstatiator - A lambda that creates such an event.
      */
-    void registerNetworkAction(Class<? extends Event> eventClass,
-                               EventInstantiator eventInstatiator);
+    void registerNetworkMessage(Class<? extends Event> eventClass,
+                                EventInstantiator eventInstatiator);
 
     /**
      * Test whether the protocol supports a certain {@link Event}.

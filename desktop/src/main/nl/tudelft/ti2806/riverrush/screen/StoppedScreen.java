@@ -5,48 +5,51 @@ import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 /**
- * Created by thomas on 19-5-15.
+ * The stopped screen is used as a final visual for the game players after the game has ended.
  */
 public class StoppedScreen implements Screen {
-    public StoppedScreen(AssetManager assetManager,
-                         EventDispatcher eventDispatcher) {
+    /**
+     * Creates the graphical representation of the loading game screen.
+     *
+     * @param assetManager    refers to the manager that has made all loaded assets available for use.
+     * @param eventDispatcher is the dispatcher that handles all relevant events.
+     */
+    public StoppedScreen(final AssetManager assetManager, final EventDispatcher eventDispatcher) {
+        // Does not need to do anything yet
     }
 
     @Override
     public void show() {
-
+        // Does not need to do anything yet
     }
 
     @Override
-    public void render(float delta) {
-
+    public void render(final float delta) {
+        // Does not need to do anything yet
     }
 
     @Override
-    public void resize(int width, int height) {
-
+    public void resize(final int width, final int height) {
+        // Does not need to do anything yet
     }
 
     @Override
     public void pause() {
-
+        // Does not need to do anything yet
     }
 
     @Override
     public void resume() {
-
+        // Does not need to do anything yet
     }
 
     @Override
     public void hide() {
-
+        // Does not need to do anything yet
     }
 
     @Override
     public void dispose() {
-
-    }
-
-    public void init() {
+        // Does not need to do anything yet
     }
 }

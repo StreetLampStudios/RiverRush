@@ -5,18 +5,27 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import java.util.Map;
 
 /**
- * Created by m.olsthoorn on 5/18/2015.
+ * Event raised when the game stops.
  */
 public class GameStoppedEvent implements Event {
 
     @Override
-    public String serialize(Protocol protocol) {
+    public String serialize(final Protocol protocol) {
         return "";
     }
 
     @Override
-    public Event deserialize(Map<String, String> keyValuePairs) {
+    public Event deserialize(final Map<String, String> keyValuePairs) {
         return this;
     }
 
+    @Override
+    public Integer getAnimal() {
+        return null;
+    }
+
+    @Override
+    public void setAnimal(final Integer aAnimal) {
+        // Has to be empty
+    }
 }

@@ -63,11 +63,19 @@ subprojects {
 
         compile group: 'com.google.inject',
             name: 'guice',
-            version: '3.0'
+            version: '4.0'
 
         compile group: 'org.reflections',
             name: 'reflections',
             version: '0.9.9'
+
+        compile group: 'org.apache.logging.log4j',
+            name: 'log4j-api',
+            version: '2.3'
+
+        compile group: 'org.apache.logging.log4j',
+            name: 'log4j-core',
+            version: '2.3'
 
         testCompile group: 'junit',
             name: 'junit',

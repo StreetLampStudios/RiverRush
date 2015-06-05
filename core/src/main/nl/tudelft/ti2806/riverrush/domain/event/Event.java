@@ -9,7 +9,6 @@ import java.util.Map;
  * Domain event.
  */
 public interface Event {
-
     /**
      * Serialize the current event to it's string representation.
      *
@@ -26,4 +25,18 @@ public interface Event {
      * @return The fully initialized event, ready for dispatch.
      */
     Event deserialize(Map<String, String> keyValuePairs);
+
+    /**
+     * Set animal on event.
+     *
+     * @param animal The event
+     */
+    void setAnimal(Integer animal);
+
+    /**
+     * Get the animal from the event.
+     *
+     * @return The animal
+     */
+    Integer getAnimal();
 }
