@@ -11,6 +11,8 @@ public class BoatCollidedEvent implements Event {
 
     private Integer teamId;
 
+    private Direction direction;
+
     @Override
     public String serialize(final Protocol protocol) {
         return "animal" + protocol.getKeyValueSeperator() + this.animalId.toString()
@@ -47,4 +49,11 @@ public class BoatCollidedEvent implements Event {
         this.teamId = team;
     }
 
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(final Direction direction) {
+        this.direction = direction;
+    }
 }

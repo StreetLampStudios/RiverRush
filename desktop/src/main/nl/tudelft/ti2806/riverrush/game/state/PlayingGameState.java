@@ -11,6 +11,7 @@ import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.BoatCollidedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
@@ -39,7 +40,7 @@ public class PlayingGameState extends AbstractGameState {
     private final HandlerLambda<AnimalAddedEvent> addAnimalHandlerLambda = this::addAnimalHandler;
     private final HandlerLambda<AnimalMovedEvent> animalMovedHandlerLambda = this::animalMoveHandler;
 
-    private final TickHandler OnTick = this::tick;
+    private final TickHandler onTick = this::tick;
 
     private final ArrayList<RockGraphic> leftRockList;
     private final ArrayList<RockGraphic> rightRockList;
@@ -66,7 +67,7 @@ public class PlayingGameState extends AbstractGameState {
 
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(() -> {
-            PlayingGameState.this.screen.init(this.OnTick);
+            PlayingGameState.this.screen.init(this.onTick);
             PlayingGameState.this.game.setScreen(PlayingGameState.this.screen);
         });
 
@@ -105,6 +106,11 @@ public class PlayingGameState extends AbstractGameState {
 
     @Override
     public GameState waitForPlayers() {
+        return this;
+    }
+
+    @Override
+    public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(final Direction rightOneDirection) {
         return this;
     }
 
@@ -232,7 +238,7 @@ public class PlayingGameState extends AbstractGameState {
         Integer tm = event.getTeam();
         Team tim = this.game.getTeam(tm);
         AbstractAnimal animal = tim.getAnimals().get(event.getAnimal());
-        if (event.getDirection() == AnimalMovedEvent.Direction.LEFT) {
+        if (event.getDirection() == Direction.LEFT) {
             tim.getBoat().voteForDirection(animal, -1);
         } else {
             tim.getBoat().voteForDirection(animal, 1);

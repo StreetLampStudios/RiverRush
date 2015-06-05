@@ -1,24 +1,24 @@
 package nl.tudelft.ti2806.riverrush.desktop;
 
-import java.net.URISyntaxException;
-
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
 import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import java.net.URISyntaxException;
 
 /**
  * This class is the main class to be ran when starting the game. This class sets up the graphics
@@ -94,18 +94,18 @@ public class MainDesktop extends CoreModule {
 
         AnimalMovedEvent event = new AnimalMovedEvent();
         event.setAnimal(1);
-        event.setDirection(AnimalMovedEvent.Direction.LEFT);
+        event.setDirection(Direction.LEFT);
         event.setTeam(1);
         this.eventDispatcher.dispatch(event);
 
         event = new AnimalMovedEvent();
         event.setAnimal(0);
-        event.setDirection(AnimalMovedEvent.Direction.RIGHT);
+        event.setDirection(Direction.RIGHT);
         event.setTeam(0);
         this.eventDispatcher.dispatch(event);
         event = new AnimalMovedEvent();
         event.setAnimal(1);
-        event.setDirection(AnimalMovedEvent.Direction.RIGHT);
+        event.setDirection(Direction.RIGHT);
         event.setTeam(0);
         this.eventDispatcher.dispatch(event);
         try {
@@ -115,7 +115,7 @@ public class MainDesktop extends CoreModule {
         }
         AddRockEvent evie = new AddRockEvent();
         evie.setTeam(1);
-        evie.setLocation(0.5);
+        evie.setLocation(Direction.NEUTRAL);
         evie.setAnimal(1);
         this.eventDispatcher.dispatch(evie);
     }

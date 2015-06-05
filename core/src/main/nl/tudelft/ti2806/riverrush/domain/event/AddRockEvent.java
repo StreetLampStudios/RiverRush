@@ -1,16 +1,16 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
-import java.util.Map;
-
 import nl.tudelft.ti2806.riverrush.network.protocol.InvalidProtocolException;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
+
+import java.util.Map;
 
 /**
  * This event is fired when an obstacle needs to be added to the screen.
  */
 public class AddRockEvent implements Event {
 
-    private Double location;
+    private Direction location;
     private Integer teamId;
 
     @Override
@@ -27,7 +27,7 @@ public class AddRockEvent implements Event {
     public Event deserialize(final Map<String, String> keyValuePairs) {
         if (keyValuePairs.containsKey("team") && keyValuePairs.containsKey("location")) {
             this.teamId = Integer.parseInt(keyValuePairs.get("team"));
-            this.location = Double.parseDouble(keyValuePairs.get("location"));
+            this.location = Direction.valueOf(keyValuePairs.get("location").toUpperCase());
         } else {
             throw new InvalidProtocolException("Does not contain all the keys");
         }
@@ -44,11 +44,11 @@ public class AddRockEvent implements Event {
         // Has to be empty
     }
 
-    public double getLocation() {
+    public Direction getLocation() {
         return this.location;
     }
 
-    public void setLocation(Double aLocation) {
+    public void setLocation(Direction aLocation) {
         this.location = aLocation;
     }
 

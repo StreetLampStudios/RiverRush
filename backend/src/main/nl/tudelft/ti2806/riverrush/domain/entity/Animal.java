@@ -3,6 +3,7 @@ package nl.tudelft.ti2806.riverrush.domain.entity;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalInWater;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalOnBoat;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 /**
@@ -32,7 +33,7 @@ public class Animal extends AbstractAnimal {
     }
 
     @Override
-    public void setVoteDirection(final AnimalMovedEvent.Direction direction) {
+    public void setVoteDirection(final Direction direction) {
         super.setVoteDirection(direction);
         AnimalMovedEvent event = new AnimalMovedEvent();
         event.setAnimal(this.getId());

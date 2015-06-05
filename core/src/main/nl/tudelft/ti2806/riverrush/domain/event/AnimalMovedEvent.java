@@ -11,10 +11,6 @@ public class AnimalMovedEvent extends AnimalJumpedEvent {
     private Integer teamId;
 
 
-
-    public enum Direction {
-        LEFT, RIGHT, NEUTRAL;
-    }
     private Direction direction;
 
     @Override

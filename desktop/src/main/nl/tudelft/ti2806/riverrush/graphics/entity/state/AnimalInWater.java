@@ -3,8 +3,8 @@ package nl.tudelft.ti2806.riverrush.graphics.entity.state;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalState;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalReturnedToBoatEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
 
@@ -62,7 +62,7 @@ public class AnimalInWater implements AnimalState {
     }
 
     @Override
-    public AnimalState voteDirection(final AnimalMovedEvent.Direction direction) {
+    public AnimalState voteDirection(final Direction direction) {
         return this;
     }
 

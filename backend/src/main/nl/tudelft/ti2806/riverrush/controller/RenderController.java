@@ -4,6 +4,7 @@ import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalReturnedToBoatEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.BoatCollidedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
@@ -43,6 +44,7 @@ public class RenderController extends AbstractController {
     @Override
     public void initialize() {
         HandlerLambda<Event> onGameStateChangedLambda = (e) -> this.server.sendEvent(e, this);
+        HandlerLambda<BoatCollidedEvent> boatRektHandler = this::onBoatCollided;
 
         this.listenTo(GameWaitingEvent.class, onGameStateChangedLambda);
         this.listenTo(GameAboutToStartEvent.class, onGameStateChangedLambda);
@@ -53,8 +55,13 @@ public class RenderController extends AbstractController {
         this.listenTo(AnimalJumpedEvent.class, onGameStateChangedLambda);
         this.listenTo(AnimalFellOffEvent.class, onGameStateChangedLambda);
         this.listenTo(AnimalReturnedToBoatEvent.class, onGameStateChangedLambda);
+        this.listenTo(BoatCollidedEvent.class, boatRektHandler);
 
         this.game.waitForPlayers();
+    }
+
+    private void onBoatCollided(final BoatCollidedEvent event) {
+        this.game.swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(event.getDirection());
     }
 
     @Override

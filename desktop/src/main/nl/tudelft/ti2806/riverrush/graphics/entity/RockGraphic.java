@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 
 public class RockGraphic extends AbstractObstacle {
 
@@ -28,6 +29,7 @@ public class RockGraphic extends AbstractObstacle {
     private static final float HITBOX_OFFSET_Y = 0.1f;
 
     private final double offset;
+    private final Direction direction;
 
     /**
      * Creates a new obstacle.
@@ -35,9 +37,17 @@ public class RockGraphic extends AbstractObstacle {
      * @param assetsManager refers to the manager that has made all loaded assets available for use.
      * @param off Configures the place from which the obstacle is fired. Must be between 0 and 1
      */
-    public RockGraphic(final AssetManager assetsManager, final double off) {
+    public RockGraphic(final AssetManager assetsManager, final Direction dir) {
         this.assets = assetsManager;
-        this.offset = off;
+
+        this.direction = dir;
+        if (dir == Direction.LEFT) {
+            this.offset = 0.2;
+        } else if (dir == Direction.RIGHT) {
+            this.offset = 0.8;
+        } else {
+            this.offset = 0.5;
+        }
     }
 
     /**
@@ -89,7 +99,10 @@ public class RockGraphic extends AbstractObstacle {
             }
         }
         return false;
+    }
 
+    public Direction getDirection() {
+        return this.direction;
     }
 
 }

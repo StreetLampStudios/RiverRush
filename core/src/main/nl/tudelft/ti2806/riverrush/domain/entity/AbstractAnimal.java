@@ -1,7 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.entity;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalState;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 
@@ -19,7 +19,7 @@ public abstract class AbstractAnimal {
     private static Integer highestId = 0;
     private final Integer animalID;
     private Integer teamID;
-    private AnimalMovedEvent.Direction voteDirection = AnimalMovedEvent.Direction.NEUTRAL;
+    private Direction voteDirection = Direction.NEUTRAL;
 
     private EventDispatcher dispatcher;
 
@@ -127,15 +127,15 @@ public abstract class AbstractAnimal {
     /**
      * @return the direction the animal voted on.
      */
-    public AnimalMovedEvent.Direction getVoteDirection() {
+    public Direction getVoteDirection() {
         return this.voteDirection;
     }
 
-    public void voteOneDirection(final AnimalMovedEvent.Direction direction) {
+    public void voteOneDirection(final Direction direction) {
         this.currentState = this.currentState.voteDirection(direction);
     }
 
-    public void setVoteDirection(final AnimalMovedEvent.Direction direction) {
+    public void setVoteDirection(final Direction direction) {
         this.voteDirection = direction;
     }
 }
