@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
@@ -45,6 +45,8 @@ public class BoatGroup extends Group {
     private static final int COL_COUNT = 5;
     private static final int ROW_COUNT = 2;
 
+    private final Texture tex;
+
     /**
      * Creates an boat object with a given graphical representation.
      *
@@ -60,12 +62,13 @@ public class BoatGroup extends Group {
         this.setWidth(this.SIZE);
         this.setHeight(this.SIZE);
 
+        this.tex = this.manager.get("data/ship.png", Texture.class);
+        // this.region = new TextureRegion(tex, 0, 0, tex.getWidth(), tex.getHeight());
+
+        this.setBounds(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+
         this.setOriginX((this.getWidth() / 2));
         this.setOriginY((this.getHeight() / 2));
-
-        System.out.println("X: " + this.getX() + " Y: " + this.getY() + " width: "
-                + this.getWidth() + " height: " + this.getHeight());
-        System.out.println("origx: " + this.getOriginX() + " origy: " + this.getOriginY());
 
         this.sectors = new ArrayList<>();
         ArrayList<Color> colors = new ArrayList<>();
@@ -78,8 +81,8 @@ public class BoatGroup extends Group {
         for (int i = NUM_SECTORS - 1; i >= 0; i--) {
             Color color = colors.get(i);
             BoatSector sec = new BoatSector(assetManager, ROW_COUNT, COL_COUNT, color);
-            float secPosX = this.getX() + (this.getWidth() / 2) - (sec.getWidth() / 2);
-            float secPosY = this.getY() + 50f + ((20f + sec.getHeight()) * i);
+            float secPosX = (this.getWidth() / 2) - (sec.getWidth() / 2);
+            float secPosY = 50f + ((20f + sec.getHeight()) * i);
             sec.setPosition(secPosX, secPosY);
             this.sectors.add(sec);
             this.addActor(sec);
@@ -87,15 +90,10 @@ public class BoatGroup extends Group {
         this.iterator = this.sectors.iterator();
         this.iterator.next(); // Start with the second sector
 
-        // Make sectors(assetManager, rows, columns)
-        // Set sector position
-
     }
 
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
-        Texture tex = this.manager.get("data/ship.png", Texture.class);
-        TextureRegion region = new TextureRegion(tex, 0, 0, REGION_ENDX, REGION_ENDY);
 
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -103,19 +101,26 @@ public class BoatGroup extends Group {
         Color color = this.getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
+        // batch.draw(this.region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
+        // this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+        // this.getRotation());
+        batch.draw(this.tex, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
                 this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-                this.getRotation());
+                this.getRotation(), 0, 0, this.tex.getWidth(), this.tex.getHeight(), false, false);
+
         batch.setColor(Color.WHITE);
 
-        this.drawChildren(batch, parentAlpha);
+        super.draw(batch, parentAlpha);
         batch.disableBlending();
 
     }
 
     @Override
     public void act(final float delta) {
-        super.act(delta);
+        // super.act(delta);
+        for (Iterator<Action> iter = this.getActions().iterator(); iter.hasNext();) {
+            iter.next().act(delta);
+        }
     }
 
     public void addAnimal(MonkeyActor actor) {
@@ -137,16 +142,12 @@ public class BoatGroup extends Group {
 
         RotateToAction rot = new RotateToAction();
         rot.setRotation(30f);
-        rot.setDuration(3f);
-
+        rot.setDuration(0f);
         ParallelAction par = new ParallelAction();
         // par.addAction(move);
         par.addAction(rot);
 
         this.addAction(par);
-        // for (BoatSector sec : this.sectors) {
-        // sec.moveAlong(direction, MOVE_DISTANCE);
-        // }
 
     }
 

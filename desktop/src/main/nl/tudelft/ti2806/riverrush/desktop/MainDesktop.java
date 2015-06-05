@@ -130,6 +130,7 @@ public class MainDesktop extends CoreModule {
         // config.fullscreen = true;
 
         Game game = this.injector.getInstance(Game.class);
+        // SceneDemo3 game = this.injector.getInstance(SceneDemo3.class);
         new LwjglApplication(game, config);
     }
 

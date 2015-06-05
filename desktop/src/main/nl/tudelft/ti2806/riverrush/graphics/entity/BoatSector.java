@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 
 public class BoatSector extends Group {
 
@@ -42,6 +41,7 @@ public class BoatSector extends Group {
 
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
+
         Texture tex = this.assetManager.get("data/sector.png", Texture.class);
         TextureRegion region = new TextureRegion(tex, 0, 0, 700, 360);
         batch.enableBlending();
@@ -54,7 +54,8 @@ public class BoatSector extends Group {
                 this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
                 this.getRotation());
         batch.setColor(Color.WHITE);
-        this.drawChildren(batch, parentAlpha);
+
+        super.draw(batch, parentAlpha);
         batch.disableBlending();
 
     }
@@ -66,10 +67,8 @@ public class BoatSector extends Group {
 
     public void addAnimal(MonkeyActor actor) {
         this.animals.set(this.currentAnimalPosition, actor);
-        float xPos = this.getX()
-                + ((this.currentAnimalPosition % this.colCount) * actor.getWidth());
-        float yPos = this.getY()
-                + ((this.currentAnimalPosition / this.colCount) * actor.getHeight());
+        float xPos = ((this.currentAnimalPosition % this.colCount) * actor.getWidth());
+        float yPos = ((this.currentAnimalPosition / this.colCount) * actor.getHeight());
         actor.setPosition(xPos, yPos);
         this.currentAnimalPosition = (this.currentAnimalPosition + 2)
                 % (this.rowCount * this.colCount);
@@ -78,23 +77,6 @@ public class BoatSector extends Group {
             this.currentAnimalPosition--;
         }
         this.addActor(actor);
-    }
-
-    /**
-     * Move to dodge an obstacle. Can dodge left or right based on direction.
-     * @param direction this parameter determines direction. 1 is to the right, -1 is to the left.
-     */
-    public void moveAlong(float direction, float distance) {
-        MoveToAction move = new MoveToAction();
-        move.setPosition(this.getX() + (direction * distance), this.getY());
-        move.setDuration(3f);
-        this.addAction(move);
-        for (MonkeyActor ac : this.animals) {
-            if (ac != null) {
-                ac.moveAlong(direction, distance);
-            }
-        }
-
     }
 
     public ArrayList<MonkeyActor> getAnimals() {

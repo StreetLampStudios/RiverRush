@@ -1,6 +1,9 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+
+import java.util.Iterator;
+
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -93,7 +96,10 @@ public class MonkeyActor extends Actor {
 
     @Override
     public void act(final float delta) {
-        super.act(delta);
+        // super.act(delta);
+        for (Iterator<Action> iter = this.getActions().iterator(); iter.hasNext();) {
+            iter.next().act(delta);
+        }
 
     }
 

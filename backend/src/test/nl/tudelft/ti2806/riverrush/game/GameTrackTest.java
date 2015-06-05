@@ -8,14 +8,10 @@ import java.util.ArrayList;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-<<<<<<< Updated upstream
 import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
-=======
 
->>>>>>> Stashed changes
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -78,47 +74,28 @@ public class GameTrackTest {
 
     @Test
     public void testUpdateProgressOneCycle() throws Exception {
-<<<<<<< Updated upstream
-        Animal animal = new Animal(dispatcher);
-        team.addAnimal(animal);
-        track.updateProgress();
-        assertEquals(1.0, track.getDistanceTeam(team.getId()), delta);
-        Mockito.verify(dispatcher, Mockito.times(1)).dispatch(Mockito.any(TeamProgressEvent.class));
-=======
         Animal animal = new Animal(this.dispatcher);
         this.team.addAnimal(animal);
         this.track.updateProgress();
         assertEquals(1.0, this.track.getDistanceTeam(this.team.getId()), delta);
-        // Mockito.verify(dispatcher,
-        // Mockito.calls(1)).dispatch(Mockito.any(TeamProgressUpdateEvent.class));
-        // FIXME when merging to desktop
->>>>>>> Stashed changes
+        Mockito.verify(this.dispatcher, Mockito.times(1)).dispatch(
+                Mockito.any(TeamProgressEvent.class));
+
     }
 
     @Test
     public void testUpdateProgressOneHundredCycles() {
-<<<<<<< Updated upstream
-        Animal animal = new Animal(dispatcher);
-        team.addAnimal(animal);
-        for (int i = 0; i < GameTrack.trackLength; i++) {
-            track.updateProgress();
-        }
-
-        Mockito.verify(dispatcher, Mockito.times(1)).dispatch(Mockito.isA(GameFinishedEvent.class));
-
-        assertEquals(GameTrack.trackLength, track.getDistanceTeam(team.getId()), delta);
-=======
         Animal animal = new Animal(this.dispatcher);
         this.team.addAnimal(animal);
-        for (int i = 0; i <= GameTrack.trackLength; i++) {
+        for (int i = 0; i < GameTrack.trackLength; i++) {
             this.track.updateProgress();
         }
 
-        // Mockito.verify(dispatcher,
-        // Mockito.times(1)).dispatch(Mockito.any(GameFinishedEvent.class));
-        //
-        // assertEquals(GameTrack.trackLength + 1, track.getDistanceTeam(team.getId()), delta);
->>>>>>> Stashed changes
+        Mockito.verify(this.dispatcher, Mockito.times(1)).dispatch(
+                Mockito.isA(GameFinishedEvent.class));
+
+        assertEquals(GameTrack.trackLength, this.track.getDistanceTeam(this.team.getId()), delta);
+
     }
 
     @Test
