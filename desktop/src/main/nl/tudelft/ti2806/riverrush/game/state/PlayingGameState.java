@@ -1,13 +1,14 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
-import java.util.ArrayList;
-
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
@@ -20,8 +21,7 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.MonkeyActor;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 import nl.tudelft.ti2806.riverrush.screen.PlayingGameScreen;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
+import java.util.ArrayList;
 
 /**
  * State for a game that is playing.
@@ -31,29 +31,30 @@ public class PlayingGameState extends AbstractGameState {
     private final PlayingGameScreen screen;
     private final HandlerLambda<AnimalJumpedEvent> playerJumpedEventHandlerLambda = this::jumpHandler;
     private final HandlerLambda<AddObstacleEvent> addObstacleEventHandlerLambda = this::addObstacle;
+    private final HandlerLambda<? super TeamProgressEvent> TeamProgressEventHandler = this::teamProgress;
     private final HandlerLambda<AnimalAddedEvent> addAnimalHandlerLambda = this::addAnimalHandler;
+    private final HandlerLambda<AnimalMovedEvent> animalMovedHandlerLambda = this::animalMoveHandler;
 
     private final TickHandler OnTick = this::tick;
-
     private final ArrayList<CannonBallGraphic> leftObstList;
     private final ArrayList<CannonBallGraphic> rightObstList;
-    private final HandlerLambda<? super TeamProgressEvent> TeamProgressEventHandler = this::teamProgress;
 
     /**
      * The state of the game that indicates that the game is currently playable.
      *
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game
-     *            in this state.
-     * @param assetManager has all necessary assets loaded and available for use.
-     * @param game refers to the game that this state belongs to.
+     *                        in this state.
+     * @param assetManager    has all necessary assets loaded and available for use.
+     * @param game            refers to the game that this state belongs to.
      */
     public PlayingGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
-            final Game game) {
+                            final Game game) {
         super(eventDispatcher, assetManager, game);
         this.dispatcher.attach(AnimalJumpedEvent.class, this.playerJumpedEventHandlerLambda);
         this.dispatcher.attach(AddObstacleEvent.class, this.addObstacleEventHandlerLambda);
         this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandlerLambda);
         this.dispatcher.attach(TeamProgressEvent.class, this.TeamProgressEventHandler);
+        this.dispatcher.attach(AnimalMovedEvent.class, animalMovedHandlerLambda);
 
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(() -> {
@@ -70,6 +71,8 @@ public class PlayingGameState extends AbstractGameState {
         this.dispatcher.detach(AnimalJumpedEvent.class, this.playerJumpedEventHandlerLambda);
         this.dispatcher.detach(AddObstacleEvent.class, this.addObstacleEventHandlerLambda);
         this.dispatcher.detach(AnimalAddedEvent.class, this.addAnimalHandlerLambda);
+        this.dispatcher.detach(TeamProgressEvent.class, this.TeamProgressEventHandler);
+        this.dispatcher.detach(AnimalMovedEvent.class, animalMovedHandlerLambda);
         this.screen.dispose();
     }
 
@@ -154,17 +157,17 @@ public class PlayingGameState extends AbstractGameState {
         anim.setActor(actor);
 
         Integer tm = event.getTeam();
-        Team tim = this.game.getTeam(tm);
-        if (tim == null) {
+        Team team = this.game.getTeam(tm);
+        if (team == null) {
             BoatGroup group = new BoatGroup(this.assets, (MainDesktop.getWidth() / 2) - 450,
-                    MainDesktop.getHeight() * 0.02f);
-            tim = this.game.addTeam(tm);
-            tim.setBoat(group);
+                MainDesktop.getHeight() * 0.02f);
+            team = this.game.addTeam(tm);
+            team.setBoat(group);
             this.screen.addTeam(group, tm);
             // Determine corresponding team's stage
         }
-        tim.addAnimal(anim);
-        tim.getBoat().addAnimal(actor);
+        team.addAnimal(anim);
+        team.getBoat().addAnimal(actor);
     }
 
     /**
@@ -172,21 +175,29 @@ public class PlayingGameState extends AbstractGameState {
      *
      * @param event The jump event
      */
-    public void jumpHandler(AnimalJumpedEvent event) {
-        /*
-         * Integer tm = event.getTeam(); Team tim = this.game.getTeam(tm); Integer animalID =
-         * event.getAnimal(); AbstractAnimal anim = tim.getAnimals().get(animalID); anim.jump();
-         */
-        // TODO: revert
 
+    public void jumpHandler(final AnimalJumpedEvent event) {
         Integer tm = event.getTeam();
         Team tim = this.game.getTeam(tm);
-        tim.getBoat().move(1);
+        Integer animalID = event.getAnimal();
+        AbstractAnimal anim = tim.getAnimals().get(animalID);
+        anim.jump();
+    }
 
+    public void animalMoveHandler(final AnimalMovedEvent event) {
+        Integer tm = event.getTeam();
+        Team tim = this.game.getTeam(tm);
+        AbstractAnimal animal = tim.getAnimals().get(event.getAnimal());
+        if (event.getDirection() == AnimalMovedEvent.Direction.LEFT) {
+            tim.getBoat().voteForDirection(animal, -1);
+        } else {
+            tim.getBoat().voteForDirection(animal, 1);
+        }
     }
 
     /**
      * Is called when there is a team update on the progress.
+     *
      * @param teamProgressEvent - the event
      */
     private void teamProgress(final TeamProgressEvent teamProgressEvent) {

@@ -1,19 +1,22 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RotateToAction;
 import com.google.inject.Inject;
+import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Represents a boat that the animals row on.
@@ -39,13 +42,17 @@ public class BoatGroup extends Group {
 
     private Iterator<BoatSector> iterator;
 
-    private static final float MOVE_DISTANCE = 200;
+    private static final float MOVE_DISTANCE = 400;
 
     private static final int NUM_SECTORS = 5;
     private static final int COL_COUNT = 5;
     private static final int ROW_COUNT = 2;
 
     private final Texture tex;
+    private static final int MOVE_VOTE_THRESHOLD = 2;
+
+    private final HashMap<AbstractAnimal, Integer> directionVotes;
+    private int votingTotal = 0;
 
     /**
      * Creates an boat object with a given graphical representation.
@@ -71,6 +78,8 @@ public class BoatGroup extends Group {
         this.setOriginY((this.getHeight() / 2));
 
         this.sectors = new ArrayList<>();
+        this.directionVotes = new HashMap<>();
+
         ArrayList<Color> colors = new ArrayList<>();
         colors.add(Color.BLUE);
         colors.add(Color.GREEN);
@@ -90,6 +99,7 @@ public class BoatGroup extends Group {
         this.iterator = this.sectors.iterator();
         this.iterator.next(); // Start with the second sector
 
+        this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
     }
 
     @Override
@@ -123,7 +133,7 @@ public class BoatGroup extends Group {
         }
     }
 
-    public void addAnimal(MonkeyActor actor) {
+    public void addAnimal(final MonkeyActor actor) {
         if (!this.iterator.hasNext()) {
             this.iterator = this.sectors.iterator();
         }
@@ -131,24 +141,31 @@ public class BoatGroup extends Group {
         sec.addAnimal(actor);
     }
 
+    public void voteForDirection(final AbstractAnimal animal, final int direction) {
+        Integer currentVote = this.directionVotes.get(animal);
+        if (currentVote == null || currentVote != direction) {
+            votingTotal += direction;
+            this.directionVotes.put(animal, direction);
+            if (votingTotal <= -MOVE_VOTE_THRESHOLD) {
+                this.move(-1);
+            } else if (votingTotal >= MOVE_VOTE_THRESHOLD) {
+                this.move(1);
+            }
+        }
+    }
+
+
     /**
      * Move to dodge an obstacle. Can dodge left or right based on direction.
      * @param direction this parameter determines direction. 1 is to the right, -1 is to the left.
      */
-    public void move(float direction) {
+    public void move(final int direction) {
         MoveToAction move = new MoveToAction();
         move.setPosition(this.getX() + (MOVE_DISTANCE * direction), this.getY());
-        move.setDuration(3f);
 
-        RotateToAction rot = new RotateToAction();
-        rot.setRotation(30f);
-        rot.setDuration(0f);
-        ParallelAction par = new ParallelAction();
-        // par.addAction(move);
-        par.addAction(rot);
-
-        this.addAction(par);
-
+        move.setDuration(0.5f);
+        move.setInterpolation(new Interpolation.Elastic(2, 1, 1, 0.3f));
+        this.addAction(move);
     }
 
 }
