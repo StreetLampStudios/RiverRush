@@ -21,7 +21,7 @@ public class TeamProgressEvent implements Event {
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
         teamID = Integer.parseInt(keyValuePairs.get("teamID"));
-        progress = Integer.parseInt(keyValuePairs.get("progress"));
+        progress = Double.parseDouble(keyValuePairs.get("progress"));
         return this;
     }
 

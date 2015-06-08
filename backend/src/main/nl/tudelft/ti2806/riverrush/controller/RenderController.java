@@ -1,8 +1,11 @@
 package nl.tudelft.ti2806.riverrush.controller;
 
+import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalDroppedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalReturnedToBoatEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.BoatCollidedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
@@ -13,6 +16,7 @@ import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStoppedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
+import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.AbstractServer;
 
@@ -45,16 +49,21 @@ public class RenderController extends AbstractController {
     public void initialize() {
         HandlerLambda<Event> onGameStateChangedLambda = (e) -> this.server.sendEvent(e, this);
         HandlerLambda<BoatCollidedEvent> boatRektHandler = this::onBoatCollided;
+        HandlerLambda<Event> sendOverNetworkLambda = (e) -> this.server.sendEvent(e, this);
 
-        this.listenTo(GameWaitingEvent.class, onGameStateChangedLambda);
-        this.listenTo(GameAboutToStartEvent.class, onGameStateChangedLambda);
-        this.listenTo(GameStartedEvent.class, onGameStateChangedLambda);
-        this.listenTo(GameStoppedEvent.class, onGameStateChangedLambda);
-        this.listenTo(GameFinishedEvent.class, onGameStateChangedLambda);
-        this.listenTo(AnimalAddedEvent.class, onGameStateChangedLambda);
-        this.listenTo(AnimalJumpedEvent.class, onGameStateChangedLambda);
-        this.listenTo(AnimalFellOffEvent.class, onGameStateChangedLambda);
-        this.listenTo(AnimalReturnedToBoatEvent.class, onGameStateChangedLambda);
+        this.listenTo(GameWaitingEvent.class, sendOverNetworkLambda);
+        this.listenTo(GameAboutToStartEvent.class, sendOverNetworkLambda);
+        this.listenTo(GameStartedEvent.class, sendOverNetworkLambda);
+        this.listenTo(GameStoppedEvent.class, sendOverNetworkLambda);
+        this.listenTo(GameFinishedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalAddedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalJumpedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalFellOffEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalDroppedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalReturnedToBoatEvent.class, sendOverNetworkLambda);
+        this.listenTo(TeamProgressEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalRemovedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AddObstacleEvent.class, sendOverNetworkLambda);
         this.listenTo(BoatCollidedEvent.class, boatRektHandler);
 
         this.game.waitForPlayers();

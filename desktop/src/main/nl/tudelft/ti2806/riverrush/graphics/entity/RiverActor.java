@@ -34,7 +34,8 @@ public class RiverActor extends Actor {
      * @param height       represents the height of the river object
      */
     @Inject
-    public RiverActor(final AssetManager assetManager, final float ypos, final float width, final float height) {
+    public RiverActor(final AssetManager assetManager, final float ypos, final float width,
+                      final float height) {
         this.manager = assetManager;
         this.setPosition(0, height);
         this.setWidth(width);
@@ -50,6 +51,10 @@ public class RiverActor extends Actor {
 
         SequenceAction seq = sequence(moveUp, moveDown);
         RepeatAction rep = forever(seq);
+
+        // SequenceAction s = (SequenceAction) rep.getAction();
+        // MoveToAction m = (MoveToAction) s.getActions().get(1);
+        // m.setDuration(FLOW_DURATION + 100f);
 
         this.addAction(rep);
     }

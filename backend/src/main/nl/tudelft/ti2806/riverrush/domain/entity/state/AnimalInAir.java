@@ -1,11 +1,12 @@
 package nl.tudelft.ti2806.riverrush.domain.entity.state;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
-import nl.tudelft.ti2806.riverrush.domain.event.Direction;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-
 import java.util.Timer;
 import java.util.TimerTask;
+
+import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalDroppedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 /**
  * State in which the animal is in mid-air. This means the player can't control the animal while in
@@ -15,6 +16,7 @@ public class AnimalInAir extends AbstractAnimalState {
 
     private static final int DROP_DELAY = 5000;
     private Animal animal;
+    private final Timer tmr;
 
     /**
      * Constructor.
@@ -24,12 +26,12 @@ public class AnimalInAir extends AbstractAnimalState {
     public AnimalInAir(final Animal anim, final EventDispatcher eventDispatcher) {
         super(eventDispatcher);
         this.animal = anim;
-        Timer tmr = new Timer();
-        tmr.scheduleAtFixedRate(new TimerTask() {
+        this.tmr = new Timer();
+        this.tmr.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                anim.drop();
-                tmr.cancel();
+                AnimalInAir.this.animal.drop();
+                AnimalInAir.this.tmr.cancel();
             }
         }, DROP_DELAY, DROP_DELAY);
     }
@@ -41,7 +43,11 @@ public class AnimalInAir extends AbstractAnimalState {
 
     @Override
     public AnimalState drop() {
-        return new AnimalOnBoat(animal, this.getDispatcher());
+        AnimalDroppedEvent event = new AnimalDroppedEvent();
+        event.setAnimal(this.animal.getId());
+        event.setTeam(this.animal.getTeamId());
+        this.getDispatcher().dispatch(event);
+        return new AnimalOnBoat(this.animal, this.getDispatcher());
     }
 
     @Override

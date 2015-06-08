@@ -13,6 +13,7 @@ public class Animal extends AbstractAnimal {
 
     /**
      * Create an animal.
+     *
      * @param eventDispatcher - the dispatcher
      */
     public Animal(final EventDispatcher eventDispatcher) {

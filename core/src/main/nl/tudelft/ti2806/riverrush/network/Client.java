@@ -1,15 +1,14 @@
 package nl.tudelft.ti2806.riverrush.network;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
-
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_17;
 import org.java_websocket.handshake.ServerHandshake;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Web socket client for connecting to the backend endpoint.

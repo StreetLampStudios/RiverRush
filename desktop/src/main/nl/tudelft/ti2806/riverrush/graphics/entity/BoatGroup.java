@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * Represents a boat that the animals row on.
  */
@@ -144,16 +147,15 @@ public class BoatGroup extends Group {
     public void voteForDirection(final AbstractAnimal animal, final int direction) {
         Integer currentVote = this.directionVotes.get(animal);
         if (currentVote == null || currentVote != direction) {
-            votingTotal += direction;
+            this.votingTotal += direction;
             this.directionVotes.put(animal, direction);
-            if (votingTotal <= -MOVE_VOTE_THRESHOLD) {
+            if (this.votingTotal <= -MOVE_VOTE_THRESHOLD) {
                 this.move(-1);
-            } else if (votingTotal >= MOVE_VOTE_THRESHOLD) {
+            } else if (this.votingTotal >= MOVE_VOTE_THRESHOLD) {
                 this.move(1);
             }
         }
     }
-
 
     /**
      * Move to dodge an obstacle. Can dodge left or right based on direction.
@@ -168,4 +170,12 @@ public class BoatGroup extends Group {
         this.addAction(move);
     }
 
+    public void removeAnimal(AnimalActor actor) {
+        for (BoatSector sec : this.sectors) {
+            if (sec.getAnimals().contains(actor)) {
+                sec.removeActor(actor);
+                sec.getAnimals().remove(actor);
+            }
+        }
+    }
 }

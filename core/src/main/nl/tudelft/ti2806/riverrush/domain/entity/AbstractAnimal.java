@@ -5,6 +5,8 @@ import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 
+import java.util.Random;
+
 /**
  * An abstract implementation of an animal.
  */
@@ -20,6 +22,7 @@ public abstract class AbstractAnimal {
     private final Integer animalID;
     private Integer teamID;
     private Direction voteDirection = Direction.NEUTRAL;
+    private Integer variation;
 
     private EventDispatcher dispatcher;
 
@@ -29,6 +32,7 @@ public abstract class AbstractAnimal {
     public AbstractAnimal(final EventDispatcher dispatch) {
         this.dispatcher = dispatch;
         this.animalID = highestId;
+        this.variation = this.getRandomVariation();
         highestId++;
     }
 
@@ -41,6 +45,7 @@ public abstract class AbstractAnimal {
     public AbstractAnimal(final EventDispatcher dispatch, Integer animal) {
         this.dispatcher = dispatch;
         this.animalID = animal;
+        this.variation = this.getRandomVariation();
     }
 
     /**
@@ -77,14 +82,17 @@ public abstract class AbstractAnimal {
     }
 
     /**
+     * Changes the state to that being dropped.
+     */
+    public void drop() {
+        this.setState(this.getState().drop());
+    }
+
+    /**
      * Changes the state to that having returned to the boat.
      */
     public void returnToBoat() {
         this.setState(this.getState().returnToBoat());
-    }
-
-    public Integer getId() {
-        return this.animalID;
     }
 
     @Override
@@ -111,8 +119,35 @@ public abstract class AbstractAnimal {
         return this.dispatcher;
     }
 
-    public Integer getTeamId() {
-        return this.teamID;
+    /**
+     * Sets the color of an animal to a random color from an array
+     */
+    public Integer getRandomVariation() {
+        int[] variations = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        int idx = new Random().nextInt(variations.length);
+        return (variations[idx]);
+    }
+
+    public Integer getId() {
+        return this.animalID;
+    }
+
+    /**
+     * Sets the variation of this animal.
+     *
+     * @param variation the variation
+     */
+    public void setVariation(Integer variation) {
+        this.variation = variation;
+    }
+
+    /**
+     * Returns the variation of the animal.
+     *
+     * @return the variation
+     */
+    public Integer getVariation() {
+        return this.variation;
     }
 
     /**
@@ -137,5 +172,14 @@ public abstract class AbstractAnimal {
 
     public void setVoteDirection(final Direction direction) {
         this.voteDirection = direction;
+    }
+
+    /**
+     * Returns the team ID of the animal.
+     *
+     * @return the team ID
+     */
+    public Integer getTeamId() {
+        return this.teamID;
     }
 }

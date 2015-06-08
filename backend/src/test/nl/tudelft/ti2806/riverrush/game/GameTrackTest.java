@@ -1,8 +1,14 @@
 package nl.tudelft.ti2806.riverrush.game;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
+import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
@@ -11,13 +17,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 /**
- * Created by m.olsthoorn on 6/3/2015.
+ * Created by MARTIJN.
  */
 public class GameTrackTest {
 
@@ -29,7 +30,7 @@ public class GameTrackTest {
     @Before
     public void setUp() throws Exception {
         this.dispatcher = Mockito.spy(EventDispatcher.class);
-        this.track = new GameTrack(this.dispatcher);
+        this.track = new GameTrack("-#--#--#--#--#-", this.dispatcher);
         this.team = new Team();
         this.track.addTeam(this.team);
     }
@@ -87,21 +88,21 @@ public class GameTrackTest {
     public void testUpdateProgressOneHundredCycles() {
         Animal animal = new Animal(this.dispatcher);
         this.team.addAnimal(animal);
-        for (int i = 0; i < GameTrack.trackLength; i++) {
+        for (int i = 0; i < GameTrack.TRACK_LENGTH; i++) {
             this.track.updateProgress();
         }
 
         Mockito.verify(this.dispatcher, Mockito.times(1)).dispatch(
                 Mockito.isA(GameFinishedEvent.class));
 
-        assertEquals(GameTrack.trackLength, this.track.getDistanceTeam(this.team.getId()), delta);
+        assertEquals(GameTrack.TRACK_LENGTH, this.track.getDistanceTeam(this.team.getId()), delta);
     }
 
     @Test
     public void testDetermineWinningTeamOneHundredCycles() throws Exception {
         Animal animal = new Animal(this.dispatcher);
         this.team.addAnimal(animal);
-        for (int i = 0; i < GameTrack.trackLength; i++) {
+        for (int i = 0; i < GameTrack.TRACK_LENGTH; i++) {
             this.track.updateProgress();
         }
 
@@ -123,17 +124,16 @@ public class GameTrackTest {
 
         this.track.addTeam(team2);
 
-        for (int i = 0; i <= GameTrack.trackLength - 1; i++) {
+        for (int i = 0; i <= GameTrack.TRACK_LENGTH - 1; i++) {
             this.track.updateProgress();
         }
 
         animal2.fall();
 
         this.track.updateProgress();
-
-        assertEquals("Distance of team 1 is not equal", GameTrack.trackLength + 1,
+        assertEquals("Distance of team 1 is not equal", GameTrack.TRACK_LENGTH + 1,
                 this.track.getDistanceTeam(this.team.getId()), delta);
-        assertEquals("Distance of team 2 is not equal", GameTrack.trackLength + 0.5,
+        assertEquals("Distance of team 2 is not equal", GameTrack.TRACK_LENGTH + 0.5,
                 this.track.getDistanceTeam(team2.getId()), delta);
 
         ArrayList<Team> list = new ArrayList<>();
@@ -141,5 +141,18 @@ public class GameTrackTest {
         list.add(team2);
 
         assertEquals(this.team, this.track.determineWinningTeam(list));
+
     }
+
+    @Test
+    public void testDispatchObstacleAt10() throws Exception {
+        Animal animal = new Animal(this.dispatcher);
+        this.team.addAnimal(animal);
+
+        this.track.updateCannonballObstacles(this.team, 10.0);
+
+        Mockito.verify(this.dispatcher, Mockito.times(1)).dispatch(
+                Mockito.isA(AddObstacleEvent.class));
+    }
+
 }

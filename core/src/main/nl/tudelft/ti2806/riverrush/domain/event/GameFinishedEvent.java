@@ -39,6 +39,7 @@ public class GameFinishedEvent implements Event {
 
     /**
      * Sets the id of the won team.
+     *
      * @param id - the id (duh)
      */
     public void setWonTeam(final Integer id) {

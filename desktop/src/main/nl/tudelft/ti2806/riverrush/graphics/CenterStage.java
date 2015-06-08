@@ -41,7 +41,7 @@ public class CenterStage extends Table {
             - 2 * BOAT_HEIGHT   // At max the boat should be at the top
             - 30;               // Minus a margin of 30
 
-        leftBoat  = new LittleBoat(assets, TOTALWIDTH / 5, BOAT_HEIGHT, top_y, TOTALHEIGHT / 4, TOTALWIDTH / 10);
+        leftBoat = new LittleBoat(assets, TOTALWIDTH / 5, BOAT_HEIGHT, top_y, TOTALHEIGHT / 4, TOTALWIDTH / 10);
         rightBoat = new LittleBoat(assets, TOTALWIDTH / 5 * 3, BOAT_HEIGHT, top_y, TOTALHEIGHT / 4, TOTALWIDTH / 10);
 
         this.addActor(floor);
@@ -66,7 +66,7 @@ public class CenterStage extends Table {
         if (teamID == 0) {
             leftBoat.setProgress(progress);
         } else {
-            leftBoat.setProgress(progress);
+            rightBoat.setProgress(progress);
         }
     }
 }

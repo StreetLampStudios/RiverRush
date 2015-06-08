@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
@@ -43,12 +44,14 @@ public class Game {
      */
     @Inject
     public Game(final EventDispatcher dispatcher) {
-        this.gameState = new WaitingForRendererState(dispatcher);
+        this.gameState = new WaitingForRendererState(dispatcher, this);
         this.gameTrack = new BasicGameTrack(dispatcher);
         this.eventDispatcher = dispatcher;
 
-        HandlerLambda<AnimalAddedEvent> addPlayer = (e) -> this.addAnimalHandler();
-        this.eventDispatcher.attach(AnimalAddedEvent.class, addPlayer);
+        HandlerLambda<AnimalAddedEvent> addAnimal = (e) -> this.addAnimalHandler();
+        HandlerLambda<AnimalRemovedEvent> removeAnimal = (e) -> this.removeAnimalHandler(e);
+        this.eventDispatcher.attach(AnimalAddedEvent.class, addAnimal);
+        this.eventDispatcher.attach(AnimalRemovedEvent.class, removeAnimal);
     }
 
     /**
@@ -67,10 +70,21 @@ public class Game {
     }
 
     /**
+     * Handler that adds a player to the game.
+     */
+    private void removeAnimalHandler(AnimalRemovedEvent event) {
+        this.playerCount--;
+        Integer team = event.getTeam();
+        Integer animal = event.getAnimal();
+        this.gameTrack.getTeam(team).getAnimals().remove(animal);
+    }
+
+    /**
      * Start the game.
      */
     public void start() {
         this.gameState = this.gameState.start();
+        this.gameTrack.startTimer();
     }
 
     /**
@@ -107,14 +121,17 @@ public class Game {
             AnimalAddedEvent event = new AnimalAddedEvent();
             event.setAnimal(animal.getId());
             event.setTeam(team);
+            event.setVariation(animal.getVariation());
             this.eventDispatcher.dispatch(event);
         } catch (NoSuchTeamException e) {
-            e.printStackTrace();
+            // Empty for now TODO
         }
+
     }
 
     /**
      * Jumps an animal.
+     *
      * @param animal - the animal to jump
      */
     public void jumpAnimal(final AbstractAnimal animal) {
@@ -139,6 +156,16 @@ public class Game {
                 anim.fall();
             }
         }
+    }
 
+    /**
+     * kick an animal off the boat
+     * @param animal - integer that represents the animal
+     * @param team - integer that represents the team
+     */
+    public void collideAnimal(final Integer animal, final Integer team) {
+        Team team1 = this.gameTrack.getTeam(team);
+        AbstractAnimal animal1 = team1.getAnimals().get(animal);
+        animal1.fall();
     }
 }

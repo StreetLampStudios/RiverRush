@@ -4,13 +4,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.LoadingGameState;
 import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
+import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 
 import java.util.HashMap;
@@ -24,7 +23,9 @@ public class Game extends GdxGame {
     private final AssetManager assets;
     private final EventDispatcher dispatcher;
     private final HandlerLambda<AnimalFellOffEvent> animalFellOffEventHandlerLambda;
+    private final HandlerLambda<AnimalRemovedEvent> removeAnimalHandlerLambda = this::removeAnimalHandler;
     private GameState currentGameState;
+
     private HashMap<Integer, Team> teams;
 
     /**
@@ -43,6 +44,7 @@ public class Game extends GdxGame {
             .get(e.getAnimal()).fall();
 
         this.dispatcher.attach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
+        this.dispatcher.attach(AnimalRemovedEvent.class, this.removeAnimalHandlerLambda);
     }
 
     /**
@@ -52,6 +54,15 @@ public class Game extends GdxGame {
      */
     public Team getTeam(final Integer teamId) {
         return this.teams.get(teamId);
+    }
+
+    /**
+     * Returns the teams.
+     *
+     * @return the teams
+     */
+    public HashMap<Integer, Team> getTeams() {
+        return teams;
     }
 
     /**
@@ -114,5 +125,20 @@ public class Game extends GdxGame {
      */
     public void waitForPlayers() {
         this.currentGameState = this.currentGameState.waitForPlayers();
+    }
+
+
+    /**
+     * Removed an animal.
+     *
+     * @param event The remove event
+     */
+    public void removeAnimalHandler(final AnimalRemovedEvent event) {
+        Integer teamId = event.getTeam();
+        Integer animal = event.getAnimal();
+        Team team = this.getTeam(teamId);
+        Animal removeAnimal = (Animal) team.getAnimals().get(animal);
+        team.getBoat().removeAnimal(removeAnimal.getActor());
+        team.getAnimals().remove(animal);
     }
 }

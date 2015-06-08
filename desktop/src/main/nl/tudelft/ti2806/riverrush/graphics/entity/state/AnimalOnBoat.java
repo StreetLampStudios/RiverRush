@@ -1,10 +1,11 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity.state;
 
-import com.badlogic.gdx.scenes.scene2d.Action;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalState;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
+
+import com.badlogic.gdx.scenes.scene2d.Action;
 
 /**
  * This is the standard state.

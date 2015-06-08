@@ -9,16 +9,14 @@ import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 import nl.tudelft.ti2806.riverrush.network.protocol.InvalidActionException;
 import nl.tudelft.ti2806.riverrush.network.protocol.InvalidProtocolException;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -29,6 +27,7 @@ import java.util.Map;
  */
 public abstract class AbstractServer extends WebSocketServer {
 
+    private static final Logger log = LogManager.getLogger(AbstractServer.class);
     /**
      * Maps a remote address to a handler for player actions.
      */
@@ -75,6 +74,7 @@ public abstract class AbstractServer extends WebSocketServer {
     @Override
     public void onOpen(final WebSocket conn, final ClientHandshake handshake) {
         FailIf.isNull(conn);
+        log.info("Connection opened");
         createController(conn);
     }
 
@@ -82,6 +82,7 @@ public abstract class AbstractServer extends WebSocketServer {
     public void onClose(final WebSocket conn, final int code,
                         final String reason, final boolean remote) {
         FailIf.isNull(conn);
+        log.info("Connection closed.");
         this.controllers.get(conn).dispose();
         this.controllers.remove(conn);
     }
@@ -103,6 +104,7 @@ public abstract class AbstractServer extends WebSocketServer {
      * @param conn - The websocket to create a controller for
      */
     protected void createController(final WebSocket conn) {
+        log.info("Creating controller via " + this.controllerProvider.getClass());
         Controller controller = this.controllerProvider.get();
         controllers.put(conn, controller);
         sockets.put(controller, conn);
@@ -123,7 +125,8 @@ public abstract class AbstractServer extends WebSocketServer {
     @Override
     public void onError(final WebSocket conn, final Exception ex) {
         FailIf.isNull(ex);
-        ex.printStackTrace();
+        log.error("Error in socket layer: ");
+        log.error(ex);
     }
 
     /**
@@ -135,6 +138,7 @@ public abstract class AbstractServer extends WebSocketServer {
     public void sendEvent(final Event event, final Controller controller) {
         WebSocket sock = sockets.get(controller);
         String serialize = protocol.serialize(event);
+        log.info("Sending event over socket: " + event.getClass());
         sock.send(serialize);
     }
 

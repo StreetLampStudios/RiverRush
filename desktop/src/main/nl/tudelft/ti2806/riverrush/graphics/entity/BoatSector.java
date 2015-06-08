@@ -1,7 +1,5 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,6 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
+
+import java.util.ArrayList;
 
 public class BoatSector extends Group {
 
@@ -54,10 +54,8 @@ public class BoatSector extends Group {
                 this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
                 this.getRotation());
         batch.setColor(Color.WHITE);
-
         super.draw(batch, parentAlpha);
         batch.disableBlending();
-
     }
 
     @Override
@@ -79,6 +77,11 @@ public class BoatSector extends Group {
         this.addActor(actor);
     }
 
+    /**
+     * Returns the animals in this sector.
+     *
+     * @return the animals
+     */
     public ArrayList<AnimalActor> getAnimals() {
         return this.animals;
     }

@@ -27,15 +27,12 @@ public class UserController extends AbstractController {
      * Create a player controller.
      *
      * @param aDispatcher The event dispatcher for dispatching the events
-     * @param aServer     The server for sending the events over the network
-     * @param aGame       The game instance
+     * @param aServer The server for sending the events over the network
+     * @param aGame The game instance
      */
     @Inject
-    public UserController(
-        final EventDispatcher aDispatcher,
-        @Named("playerServer") final AbstractServer aServer,
-        final Game aGame
-    ) {
+    public UserController(final EventDispatcher aDispatcher,
+            @Named("playerServer") final AbstractServer aServer, final Game aGame) {
         super(aDispatcher);
         this.animal = new Animal(aDispatcher);
         this.dispatcher = aDispatcher;
@@ -45,8 +42,12 @@ public class UserController extends AbstractController {
 
     @Override
     public void initialize() {
-        final HandlerLambda<Event> onGameStateChangedLambda = (e) -> this.server.sendEvent(e, this);
         final HandlerLambda<JoinTeamCommand> joinTeamHandler = this::joinTeamHandler;
+        final HandlerLambda<Event> sendOverNetworkLambda = (e) -> {
+            if (Objects.equals(e.getAnimal(), this.animal.getId())) {
+                this.server.sendEvent(e, this);
+            }
+        };
         final HandlerLambda<JumpCommand> jumpCommandHandler = (e) -> {
             if (this.animal.getId().equals(e.getAnimal())) {
                 this.game.jumpAnimal(this.animal);
@@ -58,17 +59,17 @@ public class UserController extends AbstractController {
                 this.game.voteMove(this.animal, e.getDirection());
             }
         };
-
-        this.listenTo(GameWaitingEvent.class, onGameStateChangedLambda);
-        this.listenTo(GameAboutToStartEvent.class, onGameStateChangedLambda);
-        this.listenTo(GameStartedEvent.class, onGameStateChangedLambda);
-        this.listenTo(GameStoppedEvent.class, onGameStateChangedLambda);
-        this.listenTo(GameFinishedEvent.class, onGameStateChangedLambda);
-        this.listenTo(AnimalAddedEvent.class, onGameStateChangedLambda);
-        this.listenTo(AnimalJumpedEvent.class, onGameStateChangedLambda);
-        this.listenTo(AnimalFellOffEvent.class, onGameStateChangedLambda);
-        this.listenTo(AnimalReturnedToBoatEvent.class, onGameStateChangedLambda);
-        this.listenTo(AnimalMovedEvent.class, onGameStateChangedLambda);
+        this.listenTo(GameWaitingEvent.class, sendOverNetworkLambda);
+        this.listenTo(GameAboutToStartEvent.class, sendOverNetworkLambda);
+        this.listenTo(GameStartedEvent.class, sendOverNetworkLambda);
+        this.listenTo(GameStoppedEvent.class, sendOverNetworkLambda);
+        this.listenTo(GameFinishedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalAddedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalJumpedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalFellOffEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalReturnedToBoatEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalDroppedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalMovedEvent.class, sendOverNetworkLambda);
         this.listenTo(JoinTeamCommand.class, joinTeamHandler);
         this.listenTo(JumpCommand.class, jumpCommandHandler);
         this.listenTo(VoteBoatMoveCommand.class, voteCommandHandler);
@@ -85,10 +86,18 @@ public class UserController extends AbstractController {
         }
     }
 
-
     @Override
     public void onSocketMessage(final Event event) {
         event.setAnimal(this.animal.getId());
+        this.dispatcher.dispatch(event);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        AnimalRemovedEvent event = new AnimalRemovedEvent();
+        event.setAnimal(this.animal.getId());
+        event.setTeam(this.animal.getTeamId());
         this.dispatcher.dispatch(event);
     }
 }

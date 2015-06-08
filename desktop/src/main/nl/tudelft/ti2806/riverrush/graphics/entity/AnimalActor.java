@@ -63,8 +63,6 @@ public class AnimalActor extends Actor {
      * Creates a monkey object that represents player characters.
      *
      * @param assetManager enables the object to retrieve its assets
-     * @param xpos represents the position of the monkey on the x axis
-     * @param ypos represents the position of the monkey on the y axis
      * @param dispatcher Event dispatcher for dispatching events
      */
     @Inject
