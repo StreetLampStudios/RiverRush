@@ -24,16 +24,16 @@ import com.google.inject.Inject;
 /**
  * Game object representing a monkey.
  */
-public class MonkeyActor extends Actor {
+public class AnimalActor extends Actor {
 
     /**
      * Specifies the animal's width.
      */
-    private static final float MONKEY_WIDTH = 90; // 144
+    private static final float ANIMAL_WIDTH = 90; // 144
     /**
      * Specifies the animal's height.
      */
-    private static final float MONKEY_HEIGHT = 50; // 81
+    private static final float ANIMAL_HEIGHT = 50; // 81
 
     private static final float JUMP_HEIGHT = 100;
     private static final int END_REGIONX = 432;
@@ -68,10 +68,10 @@ public class MonkeyActor extends Actor {
      * @param dispatcher Event dispatcher for dispatching events
      */
     @Inject
-    public MonkeyActor(final AssetManager assetManager, final EventDispatcher dispatcher) {
+    public AnimalActor(final AssetManager assetManager, final EventDispatcher dispatcher) {
         this.manager = assetManager;
-        this.setWidth(MONKEY_WIDTH);
-        this.setHeight(MONKEY_HEIGHT);
+        this.setWidth(ANIMAL_WIDTH);
+        this.setHeight(ANIMAL_HEIGHT);
     }
 
     @Override

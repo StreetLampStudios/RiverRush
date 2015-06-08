@@ -45,7 +45,7 @@ public class AnimalInAir extends AbstractAnimalState {
     }
 
     @Override
-    public AnimalState collide() {
+    public AnimalState fall() {
         return this;
     }
 

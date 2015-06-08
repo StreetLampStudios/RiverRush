@@ -43,8 +43,8 @@ public class RenderController implements Controller {
         this.onGameStartedLambda = (e) -> this.onGameStarted();
         this.onGameFinishedLambda = (e) -> this.onGameEnded();
         this.onAssetsLoadedLambda = (e) -> this.onAssetsLoaded();
-        this.onCollisionLambda = this.client::sendEvent;
-        this.onBoatCollisionLambda = this.client::sendEvent;
+        this.onCollisionLambda = (e) -> this.client.sendEvent(e);
+        this.onBoatCollisionLambda = (e) -> this.client.sendEvent(e);
         this.dispatcher.attach(GameStartedEvent.class, this.onGameStartedLambda);
         this.dispatcher.attach(GameFinishedEvent.class, this.onGameFinishedLambda);
         this.dispatcher.attach(AssetsLoadedEvent.class, this.onAssetsLoadedLambda);

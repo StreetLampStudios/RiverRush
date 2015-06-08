@@ -68,7 +68,7 @@ public class GameTrackTest {
     public void testSpeedWhenFallenOff() throws Exception {
         Animal animal = new Animal(this.dispatcher);
         this.team.addAnimal(animal);
-        animal.collide();
+        animal.fall();
         assertEquals(this.track.getSpeed(this.team), 0.0, delta);
     }
 
@@ -127,7 +127,7 @@ public class GameTrackTest {
             this.track.updateProgress();
         }
 
-        animal2.collide();
+        animal2.fall();
 
         this.track.updateProgress();
 

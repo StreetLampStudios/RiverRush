@@ -43,7 +43,7 @@ public class AnimalInAir implements AnimalState {
     }
 
     @Override
-    public AnimalState collide() {
+    public AnimalState fall() {
         return this;
     }
 

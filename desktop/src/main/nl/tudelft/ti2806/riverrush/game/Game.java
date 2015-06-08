@@ -40,7 +40,7 @@ public class Game extends GdxGame {
         this.teams = new HashMap<>();
 
         this.animalFellOffEventHandlerLambda = (e) -> this.getTeam(e.getTeam()).getAnimals()
-            .get(e.getAnimal()).collide();
+            .get(e.getAnimal()).fall();
 
         this.dispatcher.attach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
     }

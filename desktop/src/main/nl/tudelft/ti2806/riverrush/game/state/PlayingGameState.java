@@ -1,7 +1,7 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
+import java.util.ArrayList;
+
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
@@ -18,14 +18,15 @@ import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.game.TickHandler;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
+import nl.tudelft.ti2806.riverrush.graphics.entity.AnimalActor;
 import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
 import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
-import nl.tudelft.ti2806.riverrush.graphics.entity.MonkeyActor;
 import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 import nl.tudelft.ti2806.riverrush.screen.PlayingGameScreen;
 
-import java.util.ArrayList;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 
 /**
  * State for a game that is playing.
@@ -110,7 +111,8 @@ public class PlayingGameState extends AbstractGameState {
     }
 
     @Override
-    public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(final Direction rightOneDirection) {
+    public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(
+            final Direction rightOneDirection) {
         return this;
     }
 
@@ -124,6 +126,7 @@ public class PlayingGameState extends AbstractGameState {
             if (graphic.calculateCollision(boat)) {
                 BoatCollidedEvent ev = new BoatCollidedEvent();
                 ev.setTeam(team.getId());
+                ev.setDirection(graphic.getDirection());
                 this.dispatcher.dispatch(ev);
             }
         }
@@ -133,6 +136,7 @@ public class PlayingGameState extends AbstractGameState {
             if (graphic.calculateCollision(boat)) {
                 BoatCollidedEvent ev = new BoatCollidedEvent();
                 ev.setTeam(team.getId());
+                ev.setDirection(graphic.getDirection());
                 this.dispatcher.dispatch(ev);
             }
         }
@@ -202,7 +206,7 @@ public class PlayingGameState extends AbstractGameState {
     public void addAnimalHandler(final AnimalAddedEvent event) {
         // Temporary, has to get animal from event
 
-        MonkeyActor actor = new MonkeyActor(this.assets, this.dispatcher);
+        AnimalActor actor = new AnimalActor(this.assets, this.dispatcher);
         Animal anim = new Animal(this.dispatcher, event.getAnimal(), event.getTeam());
         anim.setActor(actor);
 

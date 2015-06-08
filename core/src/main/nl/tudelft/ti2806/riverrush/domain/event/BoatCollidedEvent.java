@@ -1,9 +1,9 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
+import java.util.Map;
+
 import nl.tudelft.ti2806.riverrush.network.protocol.InvalidProtocolException;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
-
-import java.util.Map;
 
 public class BoatCollidedEvent implements Event {
 
@@ -15,16 +15,15 @@ public class BoatCollidedEvent implements Event {
 
     @Override
     public String serialize(final Protocol protocol) {
-        return "animal" + protocol.getKeyValueSeperator() + this.animalId.toString()
-            + protocol.getPairSeperator() + "team" + protocol.getKeyValueSeperator()
-            + this.teamId.toString();
+        return "team" + protocol.getKeyValueSeperator() + this.teamId.toString()
+                + protocol.getPairSeperator() + "direction" + this.direction.toString();
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
-        if (keyValuePairs.containsKey("animal") && keyValuePairs.containsKey("team")) {
-            this.animalId = Integer.parseInt(keyValuePairs.get("animal"));
+        if (keyValuePairs.containsKey("team") && keyValuePairs.containsKey("direction")) {
             this.teamId = Integer.parseInt(keyValuePairs.get("team"));
+            this.direction = Direction.valueOf(keyValuePairs.get("direction").toUpperCase());
         } else {
             throw new InvalidProtocolException("Does not contain all the keys");
         }
@@ -50,7 +49,7 @@ public class BoatCollidedEvent implements Event {
     }
 
     public Direction getDirection() {
-        return direction;
+        return this.direction;
     }
 
     public void setDirection(final Direction direction) {

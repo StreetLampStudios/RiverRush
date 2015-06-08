@@ -133,7 +133,7 @@ public class BoatGroup extends Group {
         }
     }
 
-    public void addAnimal(final MonkeyActor actor) {
+    public void addAnimal(final AnimalActor actor) {
         if (!this.iterator.hasNext()) {
             this.iterator = this.sectors.iterator();
         }

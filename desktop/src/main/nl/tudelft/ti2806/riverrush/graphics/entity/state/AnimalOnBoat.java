@@ -45,7 +45,7 @@ public class AnimalOnBoat implements AnimalState {
     }
 
     @Override
-    public AnimalState collide() {
+    public AnimalState fall() {
         Action hit = this.animal.getActor().collideAction();
         this.animal.getActor().addAction(hit);
         return new AnimalInWater(this.animal, this.dispatcher);

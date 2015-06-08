@@ -65,8 +65,8 @@ public abstract class AbstractAnimal {
     /**
      * Changes the state to that having been collided.
      */
-    public void collide() {
-        this.setState(this.getState().collide());
+    public void fall() {
+        this.setState(this.getState().fall());
     }
 
     /**

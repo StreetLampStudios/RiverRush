@@ -24,7 +24,7 @@ public class PlayingGameState implements GameState {
 
     @Override
     public void dispose() {
-        //Is supposed to be empty
+        // Is supposed to be empty
     }
 
     @Override
@@ -50,8 +50,8 @@ public class PlayingGameState implements GameState {
     }
 
     @Override
-    public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(final Direction rightOneDirection) {
-
+    public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(
+            final Direction rightOneDirection) {
         return this;
     }
 }

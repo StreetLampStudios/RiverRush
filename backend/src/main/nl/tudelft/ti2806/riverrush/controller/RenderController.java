@@ -61,7 +61,8 @@ public class RenderController extends AbstractController {
     }
 
     private void onBoatCollided(final BoatCollidedEvent event) {
-        this.game.swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(event.getDirection());
+        this.game.swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(event.getDirection(),
+                event.getTeam());
     }
 
     @Override

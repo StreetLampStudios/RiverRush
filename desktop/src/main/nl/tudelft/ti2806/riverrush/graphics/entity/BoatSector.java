@@ -18,7 +18,7 @@ public class BoatSector extends Group {
     private final int colCount;
     private final AssetManager assetManager;
     private int currentAnimalPosition;
-    private ArrayList<MonkeyActor> animals;
+    private ArrayList<AnimalActor> animals;
 
     public BoatSector(AssetManager assets, int rows, int cols, Color color) {
         this.rowCount = rows;
@@ -65,7 +65,7 @@ public class BoatSector extends Group {
         super.act(delta);
     }
 
-    public void addAnimal(MonkeyActor actor) {
+    public void addAnimal(AnimalActor actor) {
         this.animals.set(this.currentAnimalPosition, actor);
         float xPos = ((this.currentAnimalPosition % this.colCount) * actor.getWidth());
         float yPos = ((this.currentAnimalPosition / this.colCount) * actor.getHeight());
@@ -79,7 +79,7 @@ public class BoatSector extends Group {
         this.addActor(actor);
     }
 
-    public ArrayList<MonkeyActor> getAnimals() {
+    public ArrayList<AnimalActor> getAnimals() {
         return this.animals;
     }
 

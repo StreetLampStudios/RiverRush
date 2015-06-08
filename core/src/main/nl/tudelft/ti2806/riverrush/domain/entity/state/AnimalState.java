@@ -26,7 +26,7 @@ public interface AnimalState {
      *
      * @return the new state when the animal collides.
      */
-    AnimalState collide();
+    AnimalState fall();
 
     /**
      * Animal returns to the boast.

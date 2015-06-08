@@ -78,7 +78,7 @@ public class CannonBallGraphic extends AbstractObstacle {
      * @param monk refers to the monkey for which the collision has to be calculated
      * @return true if collision occurs, false if it doesn't.
      */
-    public boolean calculateCollision(final MonkeyActor monk) {
+    public boolean calculateCollision(final AnimalActor monk) {
         float monkx = monk.getX();
         float monkxedge = monk.getX() + monk.getWidth();
         float monky = monk.getY();

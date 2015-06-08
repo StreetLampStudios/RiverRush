@@ -1,8 +1,11 @@
 package nl.tudelft.ti2806.riverrush.game;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
+import nl.tudelft.ti2806.riverrush.domain.entity.Team;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
@@ -11,9 +14,8 @@ import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.WaitingForRendererState;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 /**
  * Represents an ongoing or waiting game.
@@ -96,7 +98,7 @@ public class Game {
      * Add the player to the team.
      *
      * @param animal The animal
-     * @param team   The team
+     * @param team The team
      */
     public void addPlayerToTeam(final AbstractAnimal animal, final Integer team) {
         try {
@@ -123,7 +125,20 @@ public class Game {
         animal.voteOneDirection(direction);
     }
 
-    public void swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(final Direction rightOneDirection) {
-        this.gameState = this.gameState.swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(rightOneDirection);
+    /**
+     * Remove all the animals from a given boat that moved to the wrong direction.
+     * @param rightOneDirection the direction given by the boat collided event.
+     * @param teamID the team which the action applies to.
+     */
+    public void swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(
+            final Direction rightOneDirection, final Integer teamID) {
+        Team tm = this.gameTrack.getTeam(teamID);
+        for (AbstractAnimal anim : tm.getAnimals().values()) {
+            if (anim.getVoteDirection().equals(rightOneDirection)) {
+                // TODO: check if this equals works properly
+                anim.fall();
+            }
+        }
+
     }
 }

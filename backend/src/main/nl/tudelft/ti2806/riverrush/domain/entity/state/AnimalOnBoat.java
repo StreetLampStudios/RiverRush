@@ -39,7 +39,7 @@ public class AnimalOnBoat extends AbstractAnimalState {
     }
 
     @Override
-    public AnimalState collide() {
+    public AnimalState fall() {
         AnimalFellOffEvent event = new AnimalFellOffEvent();
         event.setTeam(this.animal.getTeamId());
         event.setAnimal(this.animal.getId());
