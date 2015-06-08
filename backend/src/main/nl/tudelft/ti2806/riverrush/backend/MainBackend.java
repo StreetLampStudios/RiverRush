@@ -47,28 +47,20 @@ public final class MainBackend extends CoreModule {
     @Override
     protected void configure() {
         super.configure();
-        this.bind(Controller.class)
-            .annotatedWith(named("clientController"))
+        this.bind(Controller.class).annotatedWith(named("clientController"))
             .to(UserController.class);
 
-        this.bind(Controller.class)
-            .annotatedWith(named("renderController"))
+        this.bind(Controller.class).annotatedWith(named("renderController"))
             .to(RenderController.class);
 
-        this.bind(Protocol.class)
-            .annotatedWith(named("clientProtocol"))
+        this.bind(Protocol.class).annotatedWith(named("clientProtocol"))
             .toInstance(this.configureClientProtocol());
 
-        this.bind(Protocol.class)
-            .annotatedWith(named("renderProtocol"))
+        this.bind(Protocol.class).annotatedWith(named("renderProtocol"))
             .toInstance(this.configureRendererProtocol());
 
-        this.bind(AbstractServer.class)
-            .annotatedWith(named("playerServer"))
-            .to(UserServer.class);
+        this.bind(AbstractServer.class).annotatedWith(named("playerServer")).to(UserServer.class);
 
-        this.bind(AbstractServer.class)
-            .annotatedWith(named("renderServer"))
-            .to(RenderServer.class);
+        this.bind(AbstractServer.class).annotatedWith(named("renderServer")).to(RenderServer.class);
     }
 }

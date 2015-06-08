@@ -2,6 +2,7 @@ package nl.tudelft.ti2806.riverrush.domain.entity.state;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalReturnedToBoatEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 import java.util.Timer;
@@ -46,7 +47,7 @@ public class AnimalInWater extends AbstractAnimalState {
     }
 
     @Override
-    public AnimalState collide() {
+    public AnimalState fall() {
         return this;
     }
 
@@ -58,6 +59,11 @@ public class AnimalInWater extends AbstractAnimalState {
         this.getDispatcher().dispatch(event);
 
         return new AnimalOnBoat(this.animal, this.getDispatcher());
+    }
+
+    @Override
+    public AnimalState voteDirection(final Direction direction) {
+        return this;
     }
 
 }

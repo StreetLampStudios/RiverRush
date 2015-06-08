@@ -2,10 +2,14 @@ package nl.tudelft.ti2806.riverrush.game.state;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.game.Game;
+import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
+import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 import nl.tudelft.ti2806.riverrush.screen.WaitingScreen;
 
 /**
@@ -18,6 +22,7 @@ public class WaitingGameState extends AbstractGameState {
     // private final HandlerLambda<AnimalAddedEvent> animalHandler = (e) ->
     // this.addAnimalHandler(e);
     private final HandlerLambda<GameAboutToStartEvent> timerHandler = (e) -> this.startTimer();
+    private final HandlerLambda<AnimalAddedEvent> addAnimalHandler = (e) -> this.addAnimalHandler(e);
 
     /**
      * The state of the game that indicates that the game is waiting for players. In this state the
@@ -32,8 +37,8 @@ public class WaitingGameState extends AbstractGameState {
                             final Game gm) {
         super(eventDispatcher, assetManager, gm);
 
+        this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandler);
         this.dispatcher.attach(GameAboutToStartEvent.class, this.timerHandler);
-        // this.dispatcher.attach(AnimalAddedEvent.class, this.animalHandler);
         this.screen = new WaitingScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(() -> WaitingGameState.this.game
             .setScreen(WaitingGameState.this.screen));
@@ -49,7 +54,7 @@ public class WaitingGameState extends AbstractGameState {
     @Override
     public void dispose() {
         this.dispatcher.detach(GameAboutToStartEvent.class, this.timerHandler);
-        // this.dispatcher.detach(AnimalAddedEvent.class, this.animalHandler);
+        this.dispatcher.detach(AnimalAddedEvent.class, this.addAnimalHandler);
         this.screen.dispose();
     }
 
@@ -73,6 +78,27 @@ public class WaitingGameState extends AbstractGameState {
     @Override
     public GameState waitForPlayers() {
         return this;
+    }
+
+    @Override
+    public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(final Direction rightOneDirection) {
+        return this;
+    }
+
+    /**
+     * Add an animal.
+     *
+     * @param event The add event
+     */
+    public void addAnimalHandler(final AnimalAddedEvent event) {
+
+        Integer tm = event.getTeam();
+        Team tim = this.game.getTeam(tm);
+        if (tim == null) {
+            tim = this.game.addTeam(tm);
+        }
+        Integer variation = event.getVariation();
+        tim.addAnimal(new Animal(this.dispatcher, event.getAnimal(), tm, variation));
     }
 
 }

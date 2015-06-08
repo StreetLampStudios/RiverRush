@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
@@ -51,5 +52,10 @@ public class FinishedGameState implements GameState {
     public GameState waitForPlayers() {
         this.dispose();
         return new WaitingGameState(this.eventDispatcher, this.game);
+    }
+
+    @Override
+    public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(Direction rightOneDirection) {
+        return this;
     }
 }

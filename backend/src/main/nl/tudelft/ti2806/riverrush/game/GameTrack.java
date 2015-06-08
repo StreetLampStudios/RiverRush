@@ -39,7 +39,7 @@ public class GameTrack {
         this.teams = new HashMap<>();
         this.teamDistances = new HashMap<>();
         this.levelMap = new HashMap<>();
-        parseLevel(level);
+        this.parseLevel(level);
     }
 
     /**
@@ -83,14 +83,13 @@ public class GameTrack {
                 finishedTeams.add(team);
             }
 
-            updateCannonballObstacles(team, currentDistance);
+            this.updateCannonballObstacles(team, currentDistance);
 
             TeamProgressEvent event = new TeamProgressEvent();
             event.setProgress(currentDistance + speed);
             event.setTeamID(team.getId());
             this.dispatcher.dispatch(event);
         }
-
         if (finishedTeams.size() > 0) {
             Team winner = this.determineWinningTeam(finishedTeams);
             GameFinishedEvent event = new GameFinishedEvent();
@@ -101,8 +100,7 @@ public class GameTrack {
     }
 
     /**
-     * This will check if it is time for the team to
-     * get a cannonball to their faces.
+     * This will check if it is time for the team to get a cannonball to their faces.
      *
      * @param team            - The team
      * @param currentDistance - The distance this team has travelled

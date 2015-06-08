@@ -2,6 +2,7 @@ package nl.tudelft.ti2806.riverrush.game.state;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.screen.FinishedGameScreen;
@@ -52,5 +53,10 @@ public class FinishedGameState extends AbstractGameState {
     @Override
     public GameState waitForPlayers() {
         return new WaitingGameState(this.dispatcher, this.assets, this.game);
+    }
+
+    @Override
+    public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(final Direction rightOneDirection) {
+        return this;
     }
 }

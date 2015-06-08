@@ -1,6 +1,7 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
@@ -28,13 +29,13 @@ public class PlayingGameState implements GameState {
 
         this.animalCollidedLambda = (e) -> this.game.collideAnimal(e.getAnimal(), e.getTeam());
 
-        eventDispatcher.dispatch(new GameStartedEvent());
-        eventDispatcher.attach(AnimalCollidedEvent.class, animalCollidedLambda);
+        this.eventDispatcher.dispatch(new GameStartedEvent());
+        this.eventDispatcher.attach(AnimalCollidedEvent.class, this.animalCollidedLambda);
     }
 
     @Override
     public void dispose() {
-        //Is supposed to be empty
+        // Is supposed to be empty
     }
 
     @Override
@@ -56,6 +57,12 @@ public class PlayingGameState implements GameState {
 
     @Override
     public GameState waitForPlayers() {
+        return this;
+    }
+
+    @Override
+    public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(
+        final Direction rightOneDirection) {
         return this;
     }
 }

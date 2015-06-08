@@ -18,8 +18,7 @@ public class BoatSector extends Group {
     private final int colCount;
     private final AssetManager assetManager;
     private int currentAnimalPosition;
-
-    private ArrayList<MonkeyActor> animals;
+    private ArrayList<AnimalActor> animals;
 
     public BoatSector(AssetManager assets, int rows, int cols, Color color) {
         this.rowCount = rows;
@@ -36,10 +35,13 @@ public class BoatSector extends Group {
         for (int i = 0; i < (this.colCount * this.rowCount); i++) {
             this.animals.add(null);
         }
+
+        // this.addAction(Actions.moveTo(this.getX() + 100, this.getY() + 100, 3f));
     }
 
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
+
         Texture tex = this.assetManager.get("data/sector.png", Texture.class);
         TextureRegion region = new TextureRegion(tex, 0, 0, 700, 360);
         batch.enableBlending();
@@ -52,7 +54,7 @@ public class BoatSector extends Group {
             this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
             this.getRotation());
         batch.setColor(Color.WHITE);
-        this.drawChildren(batch, parentAlpha);
+        super.draw(batch, parentAlpha);
         batch.disableBlending();
     }
 
@@ -61,12 +63,10 @@ public class BoatSector extends Group {
         super.act(delta);
     }
 
-    public void addAnimal(MonkeyActor actor) {
+    public void addAnimal(AnimalActor actor) {
         this.animals.set(this.currentAnimalPosition, actor);
-        float xPos = this.getX()
-            + ((this.currentAnimalPosition % this.colCount) * actor.getWidth());
-        float yPos = this.getY()
-            + ((this.currentAnimalPosition / this.colCount) * actor.getHeight());
+        float xPos = ((this.currentAnimalPosition % this.colCount) * actor.getWidth());
+        float yPos = ((this.currentAnimalPosition / this.colCount) * actor.getHeight());
         actor.setPosition(xPos, yPos);
         this.currentAnimalPosition = (this.currentAnimalPosition + 2)
             % (this.rowCount * this.colCount);
@@ -82,7 +82,8 @@ public class BoatSector extends Group {
      *
      * @return the animals
      */
-    public ArrayList<MonkeyActor> getAnimals() {
-        return animals;
+    public ArrayList<AnimalActor> getAnimals() {
+        return this.animals;
     }
+
 }

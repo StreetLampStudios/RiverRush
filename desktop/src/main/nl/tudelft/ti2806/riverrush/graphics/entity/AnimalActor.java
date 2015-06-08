@@ -8,25 +8,31 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.*;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RotateByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+
+import java.util.Iterator;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
  * Game object representing a monkey.
  */
-public class MonkeyActor extends Actor {
+public class AnimalActor extends Actor {
 
     /**
      * Specifies the animal's width.
      */
-    private static final float MONKEY_WIDTH = 90; // 144
+    private static final float ANIMAL_WIDTH = 90; // 144
     /**
      * Specifies the animal's height.
      */
-    private static final float MONKEY_HEIGHT = 50; // 81
+    private static final float ANIMAL_HEIGHT = 50; // 81
 
     private static final float JUMP_HEIGHT = 100;
     private static final int END_REGIONX = 432;
@@ -59,10 +65,10 @@ public class MonkeyActor extends Actor {
      * @param dispatcher   Event dispatcher for dispatching events
      */
     @Inject
-    public MonkeyActor(final AssetManager assetManager, final EventDispatcher dispatcher) {
+    public AnimalActor(final AssetManager assetManager, final EventDispatcher dispatcher) {
         this.manager = assetManager;
-        this.setWidth(MONKEY_WIDTH);
-        this.setHeight(MONKEY_HEIGHT);
+        this.setWidth(ANIMAL_WIDTH);
+        this.setHeight(ANIMAL_HEIGHT);
     }
 
     @Override
@@ -87,7 +93,10 @@ public class MonkeyActor extends Actor {
 
     @Override
     public void act(final float delta) {
-        super.act(delta);
+        // super.act(delta);
+        for (Iterator<Action> iter = this.getActions().iterator(); iter.hasNext(); ) {
+            iter.next().act(delta);
+        }
 
     }
 
@@ -166,5 +175,12 @@ public class MonkeyActor extends Actor {
         super.setPosition(x, y);
         this.origX = x;
         this.origY = y;
+    }
+
+    public void moveAlong(float direction, float distance) {
+        MoveToAction move = new MoveToAction();
+        move.setPosition(this.getX() + (distance * direction), this.getY());
+        move.setDuration(3f);
+        this.addAction(move);
     }
 }

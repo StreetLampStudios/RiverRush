@@ -6,8 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
-import nl.tudelft.ti2806.riverrush.graphics.entity.ObstacleGraphic;
+import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.RiverActor;
+import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
 
 /**
  * This class defined the side stage. The side stage always holds a river and a boat as well as
@@ -17,7 +18,8 @@ public class SideStage extends Table {
 
     private BoatGroup boat;
     private final RiverActor river;
-    private ObstacleGraphic obstacle;
+    private CannonBallGraphic obstacle;
+    private RockGraphic rock;
     private final AssetManager assets;
 
     private static final int RIVER_HEIGHT = 1920;
@@ -50,13 +52,27 @@ public class SideStage extends Table {
      *
      * @param graphic - The obstacle that you want to add.
      */
-    public void spawnObstacle(final ObstacleGraphic graphic) {
+    public void spawnObstacle(final CannonBallGraphic graphic) {
         if (this.obstacle != null) {
             this.removeActor(this.obstacle);
         }
         graphic.init();
         this.obstacle = graphic;
         this.addActor(this.obstacle);
+    }
+
+    /**
+     * Adds a new obstacle to the screen.
+     *
+     * @param graphic - The obstacle that you want to add.
+     */
+    public void spawnRock(final RockGraphic graphic) {
+        if (this.rock != null) {
+            this.removeActor(this.rock);
+        }
+        graphic.init();
+        this.rock = graphic;
+        this.addActor(this.rock);
     }
 
     @Override
@@ -67,33 +83,7 @@ public class SideStage extends Table {
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
         super.draw(batch, parentAlpha);
-        // We check if the current obstacle hits the only currently available
-        // player (the player parameter is currently unusued)
-        // MonkeyActor monk = this.boat.getAnimal(new Player());
-        // if (this.obstacle != null && this.obstacle.collide(monk)) {
-        // monk.collide();
-        // }
-        //
-        // if (this.obstacle != null && this.obstacle.isDone()) {
-        // this.spawnObstacle(OBSTACLE_OFFSET);
-        // }
     }
-
-    // /**
-    // * Is called when the team on this stage has won.
-    // */
-    // public void win() {
-    // this.addActor(new WinActor(this.assets));
-    // this.boat.addAction(Actions.fadeOut(1f));
-    // }
-    //
-    // /**
-    // * Is called when the team on this stage has lost.
-    // */
-    // public void lose() {
-    // this.addActor(new LoseActor(this.assets));
-    // this.boat.addAction(Actions.fadeOut(1f));
-    // }
 
     /**
      * @return the boat that is on this stage.

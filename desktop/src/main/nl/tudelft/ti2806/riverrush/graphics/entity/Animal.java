@@ -13,11 +13,11 @@ public class Animal extends AbstractAnimal {
         this.setVariation(variation);
     }
 
-    private MonkeyActor actor;
+    private AnimalActor actor;
 
-    public void setActor(MonkeyActor act) {
+    public void setActor(AnimalActor act) {
         this.actor = act;
-        this.setState(new AnimalOnBoat(this.actor, this.getDispatcher()));
+        this.setState(new AnimalOnBoat(this, this.getDispatcher()));
     }
 
     /**
@@ -59,7 +59,7 @@ public class Animal extends AbstractAnimal {
     /**
      * @return this animal's graphical component: MonkeyActor.
      */
-    public MonkeyActor getActor() {
+    public AnimalActor getActor() {
         return this.actor;
     }
 

@@ -3,6 +3,7 @@ package nl.tudelft.ti2806.riverrush.domain.entity.state;
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 /**
@@ -38,7 +39,7 @@ public class AnimalOnBoat extends AbstractAnimalState {
     }
 
     @Override
-    public AnimalState collide() {
+    public AnimalState fall() {
         AnimalFellOffEvent event = new AnimalFellOffEvent();
         event.setTeam(this.animal.getTeamId());
         event.setAnimal(this.animal.getId());
@@ -48,6 +49,12 @@ public class AnimalOnBoat extends AbstractAnimalState {
 
     @Override
     public AnimalState returnToBoat() {
+        return this;
+    }
+
+    @Override
+    public AnimalState voteDirection(final Direction direction) {
+        this.animal.setVoteDirection(direction);
         return this;
     }
 }

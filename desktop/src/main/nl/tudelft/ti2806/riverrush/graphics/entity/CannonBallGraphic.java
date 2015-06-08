@@ -4,14 +4,13 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 
 /**
  * Adds an obstacle on the screen.
  */
-public class ObstacleGraphic extends Actor {
+public class CannonBallGraphic extends AbstractObstacle {
 
     /**
      * Size of the graphic.
@@ -34,7 +33,7 @@ public class ObstacleGraphic extends Actor {
      * @param assetsManager refers to the manager that has made all loaded assets available for use.
      * @param off           Configures the place from which the obstacle is fired. Must be between 0 and 1
      */
-    public ObstacleGraphic(final AssetManager assetsManager, final double off) {
+    public CannonBallGraphic(final AssetManager assetsManager, final double off) {
         this.assets = assetsManager;
         this.offset = off;
     }
@@ -78,7 +77,7 @@ public class ObstacleGraphic extends Actor {
      * @param monk refers to the monkey for which the collision has to be calculated
      * @return true if collision occurs, false if it doesn't.
      */
-    public boolean calculateCollision(final MonkeyActor monk) {
+    public boolean calculateCollision(final AnimalActor monk) {
         float monkx = monk.getX();
         float monkxedge = monk.getX() + monk.getWidth();
         float monky = monk.getY();
@@ -96,4 +95,5 @@ public class ObstacleGraphic extends Actor {
         }
         return false;
     }
+
 }

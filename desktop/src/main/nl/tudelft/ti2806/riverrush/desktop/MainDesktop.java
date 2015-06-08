@@ -8,7 +8,10 @@ import com.google.inject.Injector;
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
+import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
@@ -26,6 +29,7 @@ public class MainDesktop extends CoreModule {
     private static final int WIDTH = 1920;
     private static final int HEIGHT = 1080;
     private final Injector injector;
+    private final EventDispatcher eventDispatcher;
 
     /**
      * Calls the main desktop constructor that starts the game.
@@ -50,8 +54,71 @@ public class MainDesktop extends CoreModule {
         cntrl.setClient(client);
         client.setController(cntrl);
 
+        this.eventDispatcher = this.injector.getInstance(EventDispatcher.class);
+
         this.setupGraphics();
         client.connect();
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        AnimalAddedEvent ev;
+        for (int i = 0; i < 5; i++) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ev = new AnimalAddedEvent();
+            ev.setAnimal(i);
+            ev.setTeam(i % 2);
+
+            this.eventDispatcher.dispatch(ev);
+        }
+        this.eventDispatcher.dispatch(new GameAboutToStartEvent());
+
+        this.eventDispatcher.dispatch(new GameStartedEvent());
+        // try {
+        // Thread.sleep(2000);
+        // } catch (InterruptedException e) {
+        // e.printStackTrace();
+
+        // }
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        AnimalMovedEvent event = new AnimalMovedEvent();
+        event.setAnimal(1);
+        event.setDirection(Direction.LEFT);
+        event.setTeam(1);
+        this.eventDispatcher.dispatch(event);
+
+        event = new AnimalMovedEvent();
+        event.setAnimal(0);
+        event.setDirection(Direction.RIGHT);
+        event.setTeam(0);
+        this.eventDispatcher.dispatch(event);
+        event = new AnimalMovedEvent();
+        event.setAnimal(1);
+        event.setDirection(Direction.RIGHT);
+        event.setTeam(0);
+        this.eventDispatcher.dispatch(event);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        AddRockEvent evie = new AddRockEvent();
+        evie.setTeam(1);
+        evie.setLocation(Direction.NEUTRAL);
+        evie.setAnimal(1);
+        this.eventDispatcher.dispatch(evie);
     }
 
     /**
@@ -84,6 +151,7 @@ public class MainDesktop extends CoreModule {
         // config.fullscreen = true;
 
         Game game = this.injector.getInstance(Game.class);
+        // SceneDemo3 game = this.injector.getInstance(SceneDemo3.class);
         new LwjglApplication(game, config);
     }
 

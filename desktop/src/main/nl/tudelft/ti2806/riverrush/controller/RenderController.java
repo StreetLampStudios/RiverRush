@@ -2,7 +2,14 @@ package nl.tudelft.ti2806.riverrush.controller;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AssetsLoadedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.BoatCollidedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
 
@@ -18,6 +25,7 @@ public class RenderController implements Controller {
     private final HandlerLambda<GameFinishedEvent> onGameFinishedLambda;
     private final HandlerLambda<AssetsLoadedEvent> onAssetsLoadedLambda;
     private final HandlerLambda<AnimalCollidedEvent> onCollisionLambda;
+    private final HandlerLambda<BoatCollidedEvent> onBoatCollisionLambda;
     private final Game game;
     private Client client;
 
@@ -35,10 +43,12 @@ public class RenderController implements Controller {
         this.onGameFinishedLambda = (e) -> this.onGameEnded();
         this.onAssetsLoadedLambda = (e) -> this.onAssetsLoaded();
         this.onCollisionLambda = (e) -> this.client.sendEvent(e);
+        this.onBoatCollisionLambda = (e) -> this.client.sendEvent(e);
         this.dispatcher.attach(GameStartedEvent.class, this.onGameStartedLambda);
         this.dispatcher.attach(GameFinishedEvent.class, this.onGameFinishedLambda);
         this.dispatcher.attach(AssetsLoadedEvent.class, this.onAssetsLoadedLambda);
         this.dispatcher.attach(AnimalCollidedEvent.class, this.onCollisionLambda);
+        this.dispatcher.attach(BoatCollidedEvent.class, this.onBoatCollisionLambda);
     }
 
     @Override
