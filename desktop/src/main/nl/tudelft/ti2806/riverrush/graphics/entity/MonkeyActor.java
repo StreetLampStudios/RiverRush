@@ -36,7 +36,7 @@ public class MonkeyActor extends Actor {
     private static final float FALL_VELOCITY = 0.5f;
     private static final float JUMP_UP_DURATION = 0.3f;
     private static final float JUMP_DOWN_DURATION = 0.15f;
-    private static final float DELAY_DURATION = 5f;
+    private static final float DELAY_DURATION = 0.5f;
     private static final float WIGGLE_DURATION = 0.5f;
     private static final float WIGGLE_BACK_DURATION = 0.125f;
     private static final float WIGGLE_RIGHT_DURATION = 0.25f;
