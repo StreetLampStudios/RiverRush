@@ -16,13 +16,14 @@ public class AddRockEvent extends AbstractTeamEvent {
     public String serialize(final Protocol protocol) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(super.serialize(protocol));
-        stringBuilder.append(protocol.getKeyValueSeperator());
+        stringBuilder.append(protocol.getPairSeperator());
         stringBuilder.append("location").append(protocol.getKeyValueSeperator()).append(this.location.toString());
         return stringBuilder.toString();
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
+        super.deserialize(keyValuePairs);
         if (keyValuePairs.containsKey("location")) {
             this.location = Direction.valueOf(keyValuePairs.get("location").toUpperCase());
         } else {
