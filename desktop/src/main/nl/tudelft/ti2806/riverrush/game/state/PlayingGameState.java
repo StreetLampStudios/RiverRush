@@ -118,7 +118,7 @@ public class PlayingGameState extends AbstractGameState {
      * This method is called when the game renders the screen.
      */
     private void tick() { // TODO: CAUSE HOLY SHIT
-        for (RockGraphic graphic : this.rightRockList) {
+        for (RockGraphic graphic : this.leftRockList) {
             Team team = this.game.getTeam(0);
             BoatGroup boat = team.getBoat();
             if (graphic.calculateCollision(boat)) {
@@ -128,7 +128,7 @@ public class PlayingGameState extends AbstractGameState {
                 this.dispatcher.dispatch(event);
             }
         }
-        for (RockGraphic graphic : this.leftRockList) {
+        for (RockGraphic graphic : this.rightRockList) {
             Team team = this.game.getTeam(1);
             BoatGroup boat = team.getBoat();
             if (graphic.calculateCollision(boat)) {
@@ -139,7 +139,7 @@ public class PlayingGameState extends AbstractGameState {
             }
         }
         for (CannonBallGraphic graphic : this.leftObstList) {
-            for (AbstractAnimal animal : this.game.getTeam(0).getAnimals().values()) { // TODO
+            for (AbstractAnimal animal : this.game.getTeam(0).getAnimals().values()) {
                 Animal animal1 = (Animal) animal;
                 if (graphic.calculateCollision(animal1.getActor())) {
                     AnimalCollidedEvent event = new AnimalCollidedEvent();
