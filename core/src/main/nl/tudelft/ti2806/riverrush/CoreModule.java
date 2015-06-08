@@ -59,19 +59,21 @@ public abstract class CoreModule extends AbstractModule {
      * @param protocol The protocol for this server
      */
     private void registerStateMessages(final Protocol protocol) {
-        protocol.registerNetworkMessage(GameWaitingEvent.class, GameWaitingEvent::new);
-        protocol.registerNetworkMessage(GameAboutToStartEvent.class, GameAboutToStartEvent::new);
-        protocol.registerNetworkMessage(GameStartedEvent.class, GameStartedEvent::new);
-        protocol.registerNetworkMessage(GameFinishedEvent.class, GameFinishedEvent::new);
-        protocol.registerNetworkMessage(GameStoppedEvent.class, GameStoppedEvent::new);
         protocol.registerNetworkMessage(AddObstacleEvent.class, AddObstacleEvent::new);
+        protocol.registerNetworkMessage(AddRockEvent.class, AddObstacleEvent::new);
         protocol.registerNetworkMessage(AnimalAddedEvent.class, AnimalAddedEvent::new);
-        protocol.registerNetworkMessage(AnimalRemovedEvent.class, AnimalRemovedEvent::new);
         protocol.registerNetworkMessage(AnimalCollidedEvent.class, AnimalCollidedEvent::new);
+        protocol.registerNetworkMessage(AnimalDroppedEvent.class, AnimalDroppedEvent::new);
         protocol.registerNetworkMessage(AnimalFellOffEvent.class, AnimalFellOffEvent::new);
         protocol.registerNetworkMessage(AnimalJumpedEvent.class, AnimalJumpedEvent::new);
+        protocol.registerNetworkMessage(AnimalMovedEvent.class, AnimalMovedEvent::new);
+        protocol.registerNetworkMessage(AnimalRemovedEvent.class, AnimalRemovedEvent::new);
         protocol.registerNetworkMessage(AnimalReturnedToBoatEvent.class, AnimalReturnedToBoatEvent::new);
-        protocol.registerNetworkMessage(AnimalDroppedEvent.class, AnimalDroppedEvent::new);
+        protocol.registerNetworkMessage(GameAboutToStartEvent.class, GameAboutToStartEvent::new);
+        protocol.registerNetworkMessage(GameFinishedEvent.class, GameFinishedEvent::new);
+        protocol.registerNetworkMessage(GameStartedEvent.class, GameStartedEvent::new);
+        protocol.registerNetworkMessage(GameStoppedEvent.class, GameStoppedEvent::new);
+        protocol.registerNetworkMessage(GameWaitingEvent.class, GameWaitingEvent::new);
         protocol.registerNetworkMessage(TeamProgressEvent.class, TeamProgressEvent::new);
     }
 
