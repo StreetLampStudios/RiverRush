@@ -43,10 +43,4 @@ public class AbstractGameState implements GameState {
     public GameState waitForPlayers() {
         return this;
     }
-
-    @Override
-    public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(final Direction rightOneDirection) {
-        return this;
-    }
-
 }
