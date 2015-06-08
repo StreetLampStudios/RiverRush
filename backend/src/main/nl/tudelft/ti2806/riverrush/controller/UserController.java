@@ -44,7 +44,7 @@ public class UserController extends AbstractController {
     public void initialize() {
         final HandlerLambda<JoinTeamCommand> joinTeamHandler = this::joinTeamHandler;
         final HandlerLambda<Event> sendOverNetworkLambda = (e) -> {
-            if (Objects.equals(e.getAnimal(), this.animal.getId())) {
+            if (Objects.equals(e.getAnimal(), this.animal.getId()) || Objects.equals(e.getAnimal(), -1)) {
                 this.server.sendEvent(e, this);
             }
         };
@@ -59,17 +59,22 @@ public class UserController extends AbstractController {
                 this.game.voteMove(this.animal, e.getDirection());
             }
         };
-        this.listenTo(GameWaitingEvent.class, sendOverNetworkLambda);
+
+        this.listenTo(AddObstacleEvent.class, sendOverNetworkLambda);
+        this.listenTo(AddRockEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalAddedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalDroppedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalFellOffEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalJumpedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalMovedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalRemovedEvent.class, sendOverNetworkLambda);
+        this.listenTo(AnimalReturnedToBoatEvent.class, sendOverNetworkLambda);
         this.listenTo(GameAboutToStartEvent.class, sendOverNetworkLambda);
+        this.listenTo(GameFinishedEvent.class, sendOverNetworkLambda);
         this.listenTo(GameStartedEvent.class, sendOverNetworkLambda);
         this.listenTo(GameStoppedEvent.class, sendOverNetworkLambda);
-        this.listenTo(GameFinishedEvent.class, sendOverNetworkLambda);
-        this.listenTo(AnimalAddedEvent.class, sendOverNetworkLambda);
-        this.listenTo(AnimalJumpedEvent.class, sendOverNetworkLambda);
-        this.listenTo(AnimalFellOffEvent.class, sendOverNetworkLambda);
-        this.listenTo(AnimalReturnedToBoatEvent.class, sendOverNetworkLambda);
-        this.listenTo(AnimalDroppedEvent.class, sendOverNetworkLambda);
-        this.listenTo(AnimalMovedEvent.class, sendOverNetworkLambda);
+        this.listenTo(GameWaitingEvent.class, sendOverNetworkLambda);
+        this.listenTo(TeamProgressEvent.class, sendOverNetworkLambda);
         this.listenTo(JoinTeamCommand.class, joinTeamHandler);
         this.listenTo(JumpCommand.class, jumpCommandHandler);
         this.listenTo(VoteBoatMoveCommand.class, voteCommandHandler);
