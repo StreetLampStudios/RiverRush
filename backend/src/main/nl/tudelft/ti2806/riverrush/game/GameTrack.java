@@ -119,11 +119,11 @@ public class GameTrack {
             HashMap<Double, String> map = this.levelMap.get(currentDistance.intValue());
             for (Map.Entry<Double, String> entry : map.entrySet()) {
                 if (entry.getValue().equals("#")) {
-                    AddObstacleEvent addEvent = new AddObstacleEvent();
-                    addEvent.setTeam(team.getId());
+                    AddObstacleEvent event = new AddObstacleEvent();
+                    event.setTeam(team.getId());
                     //TODO: Make direction variable
-                    addEvent.setLocation(0.5);
-                    this.dispatcher.dispatch(addEvent);
+                    event.setLocation(0.5);
+                    this.dispatcher.dispatch(event);
                 }
             }
         }
@@ -139,12 +139,12 @@ public class GameTrack {
         if (this.levelMap.containsKey(currentDistance.intValue())) {
             HashMap<Double, String> map = this.levelMap.get(currentDistance.intValue());
             for (Map.Entry<Double, String> entry : map.entrySet()) {
-                if (entry.getValue().equals("#")) {
-                    AddRockEvent addEvent = new AddRockEvent();
-                    addEvent.setTeam(team.getId());
+                if (entry.getValue().equals("@")) {
+                    AddRockEvent event = new AddRockEvent();
+                    event.setTeam(team.getId());
                     //TODO: Make direction variable
-                    addEvent.setLocation(Direction.RIGHT);
-                    this.dispatcher.dispatch(addEvent);
+                    event.setLocation(Direction.RIGHT);
+                    this.dispatcher.dispatch(event);
                 }
             }
         }
@@ -237,5 +237,14 @@ public class GameTrack {
      */
     public Team getTeam(final Integer team) {
         return this.teams.get(team);
+    }
+
+    /**
+     * Return all the teams.
+     *
+     * @return The teams
+     */
+    public HashMap<Integer, Team> getTeams() {
+        return teams;
     }
 }
