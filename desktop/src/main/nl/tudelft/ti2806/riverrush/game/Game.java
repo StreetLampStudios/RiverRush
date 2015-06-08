@@ -149,8 +149,8 @@ public class Game extends GdxGame {
         Integer teamId = event.getTeam();
         Integer animal = event.getAnimal();
         Team team = this.getTeam(teamId);
-        Animal removeAnimal = (Animal) team.getAnimals().get(animal);
+        Animal removeAnimal = (Animal) team.getAnimal(animal);
         team.getBoat().removeAnimal(removeAnimal.getActor());
-        team.getAnimals().remove(animal);
+        team.removeAnimal(animal);
     }
 }

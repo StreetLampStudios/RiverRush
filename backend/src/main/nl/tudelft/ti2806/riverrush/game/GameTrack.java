@@ -146,7 +146,7 @@ public class GameTrack {
     protected double getSpeed(final Team t) {
         int amountOnBoat = 0;
         int total = 0;
-        for (AbstractAnimal anim : t.getAnimals().values()) {
+        for (AbstractAnimal anim : t.getAnimals()) {
             Animal animal = (Animal) anim;
 
             if (animal.isOnBoat()) {

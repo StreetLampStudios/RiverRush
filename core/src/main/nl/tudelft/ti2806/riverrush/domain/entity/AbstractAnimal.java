@@ -134,10 +134,10 @@ public abstract class AbstractAnimal {
     /**
      * Sets the variation of this animal.
      *
-     * @param variation the variation
+     * @param varia the variation
      */
-    public void setVariation(Integer variation) {
-        this.variation = variation;
+    public void setVariation(final Integer varia) {
+        this.variation = varia;
     }
 
     /**
@@ -153,10 +153,10 @@ public abstract class AbstractAnimal {
     /**
      * Sets the team of the animal.
      *
-     * @param teamID - id of the team
+     * @param id - id of the team
      */
-    public void setTeamId(final Integer teamID) {
-        this.teamID = teamID;
+    public void setTeamId(final Integer id) {
+        this.teamID = id;
     }
 
     /**

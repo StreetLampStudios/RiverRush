@@ -15,11 +15,11 @@ public class AddObstacleEvent implements Event {
 
     @Override
     public String serialize(final Protocol protocol) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("team").append(protocol.getKeyValueSeperator()).append(this.teamId.toString());
-        stringBuilder.append(protocol.getPairSeperator());
-        stringBuilder.append("location").append(protocol.getKeyValueSeperator()).append(this.location.toString());
-        return stringBuilder.toString();
+        return "team"
+            + protocol.getKeyValueSeperator()
+            + this.teamId.toString()
+            + protocol.getPairSeperator()
+            + "location" + protocol.getKeyValueSeperator() + this.location.toString();
     }
 
     @Override
