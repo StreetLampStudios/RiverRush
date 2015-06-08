@@ -183,6 +183,7 @@ public abstract class AbstractServer extends WebSocketServer {
             e.printStackTrace();
         } finally {
             connection.getOutputStream().close();
+            connection.getInputStream().close();
         }
     }
 }
