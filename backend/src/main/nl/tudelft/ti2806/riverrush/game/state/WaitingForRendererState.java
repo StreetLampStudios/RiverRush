@@ -48,9 +48,4 @@ public class WaitingForRendererState implements GameState {
         this.dispose();
         return new WaitingGameState(this.dispatcher, this.game);
     }
-
-    @Override
-    public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(final Direction rightOneDirection) {
-        return this;
-    }
 }

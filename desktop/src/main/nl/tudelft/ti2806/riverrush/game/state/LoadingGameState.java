@@ -57,9 +57,4 @@ public class LoadingGameState extends AbstractGameState {
         this.screen.dispose();
         return new WaitingGameState(this.dispatcher, this.assets, this.game);
     }
-
-    @Override
-    public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(final Direction rightOneDirection) {
-        return this;
-    }
 }
