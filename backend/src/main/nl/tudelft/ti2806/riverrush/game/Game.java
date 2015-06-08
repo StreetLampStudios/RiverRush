@@ -2,6 +2,7 @@ package nl.tudelft.ti2806.riverrush.game;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
@@ -35,6 +36,7 @@ public class Game {
     private GameTrack gameTrack;
     private int playerCount = 0;
     private final EventDispatcher eventDispatcher;
+    private boolean eventSend;
 
     /**
      * Create a game instance.
@@ -46,6 +48,7 @@ public class Game {
         this.gameState = new WaitingForRendererState(dispatcher, this);
         this.gameTrack = new BasicGameTrack(dispatcher);
         this.eventDispatcher = dispatcher;
+        this.eventSend = false;
 
         HandlerLambda<AnimalAddedEvent> addAnimal = (e) -> this.addAnimalHandler();
         HandlerLambda<AnimalRemovedEvent> removeAnimal = (e) -> this.removeAnimalHandler(e);
@@ -58,7 +61,8 @@ public class Game {
      */
     private void addAnimalHandler() {
         this.playerCount++;
-        if (this.playerCount == 2) {
+        if (!this.eventSend && this.AllTeamsHaveOnePlayer()) {
+            this.eventSend = true;
             GameAboutToStartEvent event = new GameAboutToStartEvent();
             event.setSeconds(DELAY);
             this.eventDispatcher.dispatch(event);
@@ -66,6 +70,21 @@ public class Game {
             final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
             scheduler.schedule(this::start, DELAY, TimeUnit.SECONDS);
         }
+    }
+
+    /**
+     * Check if all teams have at least one player.
+     *
+     * @return True if they have, otherwise false
+     */
+    private Boolean AllTeamsHaveOnePlayer() {
+        for (Team team : this.gameTrack.getTeams().values()) {
+            if (team.getAnimals().size() == 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
