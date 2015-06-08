@@ -288,7 +288,7 @@ public class PlayingGameState extends AbstractGameState {
     }
 
     /**
-     * Moves the animal bakc to the boat.
+     * Moves the animal back to the boat.
      *
      * @param event - the event
      */
