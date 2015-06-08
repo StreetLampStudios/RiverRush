@@ -58,7 +58,7 @@ public class Game {
      */
     private void addAnimalHandler() {
         this.playerCount++;
-        if (this.playerCount >= 2) {
+        if (this.playerCount == 2) {
             GameAboutToStartEvent event = new GameAboutToStartEvent();
             event.setSeconds(DELAY);
             this.eventDispatcher.dispatch(event);
@@ -147,7 +147,7 @@ public class Game {
      * @param rightOneDirection the direction given by the boat collided event.
      * @param teamID            the team which the action applies to.
      */
-    public void swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(
+    public void sweepAnimals(
         final Direction rightOneDirection, final Integer teamID) {
         Team tm = this.gameTrack.getTeam(teamID);
         for (AbstractAnimal anim : tm.getAnimals().values()) {
