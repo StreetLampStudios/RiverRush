@@ -24,8 +24,7 @@ public class RenderController implements Controller {
     private final HandlerLambda<GameStartedEvent> onGameStartedLambda;
     private final HandlerLambda<GameFinishedEvent> onGameFinishedLambda;
     private final HandlerLambda<AssetsLoadedEvent> onAssetsLoadedLambda;
-    private final HandlerLambda<AnimalCollidedEvent> onCollisionLambda;
-    private final HandlerLambda<BoatCollidedEvent> onBoatCollisionLambda;
+    private final HandlerLambda<Event> sendOverNetworkLambda;
     private final Game game;
     private Client client;
 
@@ -42,13 +41,12 @@ public class RenderController implements Controller {
         this.onGameStartedLambda = (e) -> this.onGameStarted();
         this.onGameFinishedLambda = (e) -> this.onGameEnded();
         this.onAssetsLoadedLambda = (e) -> this.onAssetsLoaded();
-        this.onCollisionLambda = (e) -> this.client.sendEvent(e);
-        this.onBoatCollisionLambda = (e) -> this.client.sendEvent(e);
+        this.sendOverNetworkLambda = (e) -> this.client.sendEvent(e);
         this.dispatcher.attach(GameStartedEvent.class, this.onGameStartedLambda);
         this.dispatcher.attach(GameFinishedEvent.class, this.onGameFinishedLambda);
         this.dispatcher.attach(AssetsLoadedEvent.class, this.onAssetsLoadedLambda);
-        this.dispatcher.attach(AnimalCollidedEvent.class, this.onCollisionLambda);
-        this.dispatcher.attach(BoatCollidedEvent.class, this.onBoatCollisionLambda);
+        this.dispatcher.attach(AnimalCollidedEvent.class, this.sendOverNetworkLambda);
+        this.dispatcher.attach(BoatCollidedEvent.class, this.sendOverNetworkLambda);
     }
 
     @Override
@@ -85,7 +83,10 @@ public class RenderController implements Controller {
     @Override
     public void dispose() {
         this.dispatcher.detach(GameStartedEvent.class, this.onGameStartedLambda);
+        this.dispatcher.detach(GameFinishedEvent.class, this.onGameFinishedLambda);
         this.dispatcher.detach(AssetsLoadedEvent.class, this.onAssetsLoadedLambda);
+        this.dispatcher.detach(AnimalCollidedEvent.class, this.sendOverNetworkLambda);
+        this.dispatcher.detach(BoatCollidedEvent.class, this.sendOverNetworkLambda);
     }
 
     public void setClient(Client client) {
