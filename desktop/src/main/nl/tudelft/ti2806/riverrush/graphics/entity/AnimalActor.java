@@ -1,9 +1,7 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
-
-import java.util.Iterator;
-
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -50,6 +48,8 @@ public class AnimalActor extends Actor {
     private static final float WIGGLE_LEFT_DURATION = 0.125f;
     private static final float WIGGLE_DISTANCE = 5f;
 
+    private static final float ROLL_DURATION = 0.7f;
+
     /**
      * Number of milliseconds in a second.
      */
@@ -70,6 +70,9 @@ public class AnimalActor extends Actor {
         this.manager = assetManager;
         this.setWidth(ANIMAL_WIDTH);
         this.setHeight(ANIMAL_HEIGHT);
+
+        this.setOriginX(this.getWidth() / 2);
+        this.setOriginY(this.getHeight() / 2);
     }
 
     @Override
@@ -94,10 +97,10 @@ public class AnimalActor extends Actor {
 
     @Override
     public void act(final float delta) {
-        // super.act(delta);
-        for (Iterator<Action> iter = this.getActions().iterator(); iter.hasNext();) {
-            iter.next().act(delta);
-        }
+        super.act(delta);
+        // for (Iterator<Action> iter = this.getActions().iterator(); iter.hasNext();) {
+        // iter.next().act(delta);
+        // }
 
     }
 
@@ -142,6 +145,22 @@ public class AnimalActor extends Actor {
         return fade;
     }
 
+    /**
+     * Creat action to roll.
+     * @return Action to roll.
+     */
+    public Action rollAction(Direction direction) {
+        MoveToAction roll = new MoveToAction();
+        roll.setDuration(ROLL_DURATION);
+        roll.setPosition((direction == Direction.LEFT ? -1 * this.getWidth() : this.getParent()
+                .getWidth()), this.getY());
+        RotateByAction rot = new RotateByAction();
+        rot.setDuration(ROLL_DURATION); // 0.5f
+        rot.setAmount(360f * (direction == Direction.LEFT ? 1 : -1));
+
+        return Actions.parallel(roll, rot);
+    }
+
     public Action jumpAction() {
         MoveToAction jumpUp = new MoveToAction();
         jumpUp.setPosition(this.getX(), this.getY() + JUMP_HEIGHT);
@@ -165,8 +184,7 @@ public class AnimalActor extends Actor {
         SequenceAction wiggle = sequence(wiggleLeft, wiggleRight, wiggleBack);
 
         SequenceAction jump = sequence(jumpUp,
-
-        Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
+                Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
 
         return jump;
     }
@@ -184,4 +202,5 @@ public class AnimalActor extends Actor {
         move.setDuration(3f);
         this.addAction(move);
     }
+
 }

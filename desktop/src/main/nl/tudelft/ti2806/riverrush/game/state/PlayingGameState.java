@@ -61,17 +61,15 @@ public class PlayingGameState extends AbstractGameState {
      * The state of the game that indicates that the game is currently playable.
      *
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game
-     *                        in this state.
-     * @param assetManager    has all necessary assets loaded and available for use.
-     * @param game            refers to the game that this state belongs to.
+     *            in this state.
+     * @param assetManager has all necessary assets loaded and available for use.
+     * @param game refers to the game that this state belongs to.
      */
     public PlayingGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
-                            final Game game) {
+            final Game game) {
         super(eventDispatcher, assetManager, game);
 
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
-
-
 
         Gdx.app.postRunnable(() -> {
             PlayingGameState.this.screen.init(this.onTick);
@@ -134,7 +132,7 @@ public class PlayingGameState extends AbstractGameState {
 
     @Override
     public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(
-        final Direction rightOneDirection) {
+            final Direction rightOneDirection) {
         return this;
     }
 
@@ -223,7 +221,7 @@ public class PlayingGameState extends AbstractGameState {
     /**
      * Adds an animal to a team.
      *
-     * @param team   the animal
+     * @param team the animal
      * @param animal the team
      */
     private void addAnimal(final Team team, final Animal animal) {
@@ -243,18 +241,17 @@ public class PlayingGameState extends AbstractGameState {
         // Temporary, has to get animal from event
 
         Animal anim = new Animal(this.dispatcher, event.getAnimal(), event.getTeam(),
-            event.getVariation());
+                event.getVariation());
         Team tm = this.game.getTeam(event.getTeam());
         this.addAnimal(tm, anim);
     }
 
     public void addBoat(Team team) {
         BoatGroup group = new BoatGroup(this.assets, (MainDesktop.getWidth() / 2) - 450,
-            MainDesktop.getHeight() * 0.02f);
+                MainDesktop.getHeight() * 0.02f);
         team.setBoat(group);
         this.screen.addTeam(group, team.getId());
     }
-
 
     /**
      * Tells a given animal to perform the jump action.
@@ -274,6 +271,7 @@ public class PlayingGameState extends AbstractGameState {
         Integer tm = event.getTeam();
         Team tim = this.game.getTeam(tm);
         AbstractAnimal animal = tim.getAnimals().get(event.getAnimal());
+        animal.voteOneDirection(event.getDirection());
         if (event.getDirection() == Direction.LEFT) {
             tim.getBoat().voteForDirection(animal, -1);
         } else {
