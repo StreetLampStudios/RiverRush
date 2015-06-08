@@ -7,25 +7,15 @@ import java.util.Map;
 /**
  * Event raised when the game is started.
  */
-public class GameStartedEvent implements Event {
+public class GameStartedEvent extends AbstractAnimalEvent {
 
     @Override
     public String serialize(final Protocol protocol) {
-        return "";
+        return super.serialize(protocol);
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
-        return this;
-    }
-
-    @Override
-    public Integer getAnimal() {
-        return null;
-    }
-
-    @Override
-    public void setAnimal(final Integer aAnimal) {
-        // Has to be empty
+        return super.deserialize(keyValuePairs);
     }
 }
