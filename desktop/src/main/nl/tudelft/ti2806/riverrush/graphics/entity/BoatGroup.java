@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.google.inject.Inject;
@@ -125,10 +124,11 @@ public class BoatGroup extends Group {
 
     @Override
     public void act(final float delta) {
-        // super.act(delta);
-        for (Iterator<Action> iter = this.getActions().iterator(); iter.hasNext(); ) {
-            iter.next().act(delta);
-        }
+        super.act(delta);
+        //TODO: remove comment
+        // for (Iterator<Action> iter = this.getActions().iterator(); iter.hasNext();) {
+        // iter.next().act(delta);
+        // }
     }
 
     public void addAnimal(final AnimalActor actor) {

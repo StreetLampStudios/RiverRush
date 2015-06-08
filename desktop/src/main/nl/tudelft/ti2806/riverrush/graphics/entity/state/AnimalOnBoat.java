@@ -59,6 +59,8 @@ public class AnimalOnBoat implements AnimalState {
     @Override
     public AnimalState voteDirection(final Direction direction) {
         this.animal.setVoteDirection(direction);
+        Action roll = this.animal.getActor().rollAction(direction);
+        this.animal.getActor().addAction(roll);
         return this;
     }
 }

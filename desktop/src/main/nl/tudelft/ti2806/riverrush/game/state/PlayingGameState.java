@@ -55,7 +55,6 @@ public class PlayingGameState extends AbstractGameState {
 
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
 
-
         Gdx.app.postRunnable(() -> {
             PlayingGameState.this.screen.init(this.onTick);
             PlayingGameState.this.game.setScreen(PlayingGameState.this.screen);
@@ -238,7 +237,6 @@ public class PlayingGameState extends AbstractGameState {
         this.screen.addTeam(group, team.getId());
     }
 
-
     /**
      * Tells a given animal to perform the jump action.
      *
@@ -257,6 +255,7 @@ public class PlayingGameState extends AbstractGameState {
         Integer tm = event.getTeam();
         Team tim = this.game.getTeam(tm);
         AbstractAnimal animal = tim.getAnimals().get(event.getAnimal());
+        animal.voteOneDirection(event.getDirection());
         if (event.getDirection() == Direction.LEFT) {
             tim.getBoat().voteForDirection(animal, -1);
         } else {
