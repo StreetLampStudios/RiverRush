@@ -5,10 +5,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.google.inject.Inject;
+
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 
 import java.util.ArrayList;
@@ -50,13 +53,14 @@ public class BoatGroup extends Group {
 
     private final HashMap<AbstractAnimal, Integer> directionVotes;
     private int votingTotal = 0;
+    private Circle bounds;
 
     /**
      * Creates an boat object with a given graphical representation.
      *
      * @param assetManager enables the object to retrieve its assets
-     * @param xpos         represents the position of the boat on the x axis
-     * @param ypos         represents the position of the boat on the y axis
+     * @param xpos represents the position of the boat on the x axis
+     * @param ypos represents the position of the boat on the y axis
      */
     @Inject
     public BoatGroup(final AssetManager assetManager, final float xpos, final float ypos) {
@@ -68,8 +72,6 @@ public class BoatGroup extends Group {
 
         this.tex = this.manager.get("data/ship.png", Texture.class);
         // this.region = new TextureRegion(tex, 0, 0, tex.getWidth(), tex.getHeight());
-
-        this.setBounds(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 
         this.setOriginX((this.getWidth() / 2));
         this.setOriginY((this.getHeight() / 2));
@@ -99,8 +101,20 @@ public class BoatGroup extends Group {
         this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
     }
 
+    public void init() {
+        Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
+        v = this.localToStageCoordinates(v);
+
+        this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
+    }
+
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
+
+        Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
+        this.localToStageCoordinates(v);
+
+        this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
 
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -108,12 +122,9 @@ public class BoatGroup extends Group {
         Color color = this.getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        // batch.draw(this.region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-        // this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-        // this.getRotation());
         batch.draw(this.tex, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-            this.getRotation(), 0, 0, this.tex.getWidth(), this.tex.getHeight(), false, false);
+                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+                this.getRotation(), 0, 0, this.tex.getWidth(), this.tex.getHeight(), false, false);
 
         batch.setColor(Color.WHITE);
 
@@ -125,10 +136,6 @@ public class BoatGroup extends Group {
     @Override
     public void act(final float delta) {
         super.act(delta);
-        //TODO: remove comment
-        // for (Iterator<Action> iter = this.getActions().iterator(); iter.hasNext();) {
-        // iter.next().act(delta);
-        // }
     }
 
     public void addAnimal(final AnimalActor actor) {
@@ -173,5 +180,13 @@ public class BoatGroup extends Group {
                 sec.getAnimals().remove(actor);
             }
         }
+    }
+
+    public boolean calculateCollide() {
+        return false;
+    }
+
+    public Circle getBounds() {
+        return this.bounds;
     }
 }

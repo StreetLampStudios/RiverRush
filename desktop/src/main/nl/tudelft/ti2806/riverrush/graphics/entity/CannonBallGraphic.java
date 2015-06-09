@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 
@@ -28,6 +29,7 @@ public class CannonBallGraphic extends AbstractObstacle {
     private static final int NEGATIVE_MULTIPLIER = -2;
     private static final int TEXTURE_SIZE = 512;
     private final double offset;
+    private Circle bounds;
 
     /**
      * Creates a new obstacle.
@@ -38,6 +40,7 @@ public class CannonBallGraphic extends AbstractObstacle {
     public CannonBallGraphic(final AssetManager assetsManager, final double off) {
         this.assets = assetsManager;
         this.offset = off;
+
     }
 
     /**
@@ -47,6 +50,11 @@ public class CannonBallGraphic extends AbstractObstacle {
         this.setWidth((float) SIZE);
         this.setHeight((float) (SIZE * HEIGHT / WIDTH) / 2);
         this.setPosition((float) ((INIT_POS + OFFSET_POS * this.offset) - SIZE / 2), (float) HEIGHT);
+
+        Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
+        this.localToStageCoordinates(v);
+
+        this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
 
         MoveToAction moveDown = new MoveToAction();
         moveDown.setPosition((float) (WIDTH / 2 - SIZE / 2), (float) (NEGATIVE_MULTIPLIER * SIZE));
@@ -60,6 +68,12 @@ public class CannonBallGraphic extends AbstractObstacle {
         Texture tex = this.assets.get("data/cannonball.png", Texture.class);
         TextureRegion region = new TextureRegion(tex, 0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
         batch.enableBlending();
+
+        Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
+        this.localToStageCoordinates(v);
+
+        this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
+
         batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
                 this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
                 this.getRotation());
@@ -80,26 +94,7 @@ public class CannonBallGraphic extends AbstractObstacle {
      * @return true if collision occurs, false if it doesn't.
      */
     public boolean calculateCollision(final AnimalActor monk) {
-        Vector2 v = new Vector2(0, 0);
-        v = monk.localToStageCoordinates(v);
-        Vector2 o = new Vector2(0, 0);
-        o = this.localToStageCoordinates(o);
-        float monkx = v.x;
-        float monkxedge = monkx + monk.getWidth();
-        float monky = v.y;
-        float monkyedge = monky + monk.getHeight();
-        float[] x = {monkx, monkxedge};
-        float[] y = {monky, monkyedge};
-
-        for (float edgex : x) {
-            for (float edgey : y) {
-                if (edgex < o.x + this.getWidth() && edgex > o.x && edgey < o.y + this.getHeight()
-                        && edgey > o.y) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        boolean ret = this.bounds.overlaps(monk.getBounds());
+        return ret;
     }
-
 }

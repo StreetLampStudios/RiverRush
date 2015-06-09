@@ -1,11 +1,19 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -14,10 +22,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RotateByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.inject.Inject;
-import nl.tudelft.ti2806.riverrush.domain.event.Direction;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
  * Game object representing a monkey.
@@ -58,12 +62,13 @@ public class AnimalActor extends Actor {
     private AssetManager manager;
     private float origX;
     private float origY;
+    private Circle bounds;
 
     /**
      * Creates a monkey object that represents player characters.
      *
      * @param assetManager enables the object to retrieve its assets
-     * @param dispatcher   Event dispatcher for dispatching events
+     * @param dispatcher Event dispatcher for dispatching events
      */
     @Inject
     public AnimalActor(final AssetManager assetManager, final EventDispatcher dispatcher) {
@@ -75,6 +80,13 @@ public class AnimalActor extends Actor {
         this.setOriginY(this.getHeight() / 2);
     }
 
+    public void init() {
+        Vector2 v = new Vector2(this.getOriginX(), this.getOriginY());
+        v = this.localToStageCoordinates(v);
+
+        this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
+    }
+
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
         Texture tex = this.manager.get("data/raccoon.png", Texture.class);
@@ -83,12 +95,17 @@ public class AnimalActor extends Actor {
         Color color = this.getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
+        Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
+        this.localToStageCoordinates(v);
+
+        this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
+
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-            this.getRotation());
+                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+                this.getRotation());
 
         batch.setColor(Color.WHITE);
 
@@ -98,10 +115,6 @@ public class AnimalActor extends Actor {
     @Override
     public void act(final float delta) {
         super.act(delta);
-        //TODO: remove comment
-        // for (Iterator<Action> iter = this.getActions().iterator(); iter.hasNext();) {
-        // iter.next().act(delta);
-        // }
     }
 
     /**
@@ -154,7 +167,7 @@ public class AnimalActor extends Actor {
         MoveToAction roll = new MoveToAction();
         roll.setDuration(ROLL_DURATION);
         roll.setPosition((direction == Direction.LEFT ? -1 * this.getWidth() : this.getParent()
-            .getWidth()), this.getY());
+                .getWidth()), this.getY());
         RotateByAction rot = new RotateByAction();
         rot.setDuration(ROLL_DURATION); // 0.5f
         rot.setAmount(360f * (direction == Direction.LEFT ? 1 : -1));
@@ -185,7 +198,7 @@ public class AnimalActor extends Actor {
         SequenceAction wiggle = sequence(wiggleLeft, wiggleRight, wiggleBack);
 
         SequenceAction jump = sequence(jumpUp,
-            Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
+                Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
 
         return jump;
     }
@@ -202,6 +215,13 @@ public class AnimalActor extends Actor {
         move.setPosition(this.getX() + (distance * direction), this.getY());
         move.setDuration(3f);
         this.addAction(move);
+    }
+
+    /**
+     * @return the hitbox of the animal.
+     */
+    public Circle getBounds() {
+        return this.bounds;
     }
 
 }
