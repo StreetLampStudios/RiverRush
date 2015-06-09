@@ -48,6 +48,11 @@ public class UserController extends AbstractController {
                 this.server.sendEvent(e, this);
             }
         };
+        final HandlerLambda<AbstractTeamEvent> sendTeamEventOverNetworkLambda = (e) -> {
+            if (Objects.equals(e.getTeam(), this.animal.getTeamId())) {
+                this.server.sendEvent(e, this);
+            }
+        };
         final HandlerLambda<JumpCommand> jumpCommandHandler = (e) -> {
             if (this.animal.getId().equals(e.getAnimal())) {
                 this.game.jumpAnimal(this.animal);
@@ -60,8 +65,8 @@ public class UserController extends AbstractController {
             }
         };
 
-        this.listenTo(AddObstacleEvent.class, sendOverNetworkLambda);
-        this.listenTo(AddRockEvent.class, sendOverNetworkLambda);
+        this.listenTo(AddObstacleEvent.class, sendTeamEventOverNetworkLambda);
+        this.listenTo(AddRockEvent.class, sendTeamEventOverNetworkLambda);
         this.listenTo(AnimalAddedEvent.class, sendOverNetworkLambda);
         this.listenTo(AnimalDroppedEvent.class, sendOverNetworkLambda);
         this.listenTo(AnimalFellOffEvent.class, sendOverNetworkLambda);
@@ -74,7 +79,7 @@ public class UserController extends AbstractController {
         this.listenTo(GameStartedEvent.class, sendOverNetworkLambda);
         this.listenTo(GameStoppedEvent.class, sendOverNetworkLambda);
         this.listenTo(GameWaitingEvent.class, sendOverNetworkLambda);
-        this.listenTo(TeamProgressEvent.class, sendOverNetworkLambda);
+        this.listenTo(TeamProgressEvent.class, sendTeamEventOverNetworkLambda);
         this.listenTo(JoinTeamCommand.class, joinTeamHandler);
         this.listenTo(JumpCommand.class, jumpCommandHandler);
         this.listenTo(VoteBoatMoveCommand.class, voteCommandHandler);
