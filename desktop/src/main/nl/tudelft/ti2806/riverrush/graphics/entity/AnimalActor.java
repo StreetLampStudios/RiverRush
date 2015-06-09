@@ -115,10 +115,6 @@ public class AnimalActor extends Actor {
     @Override
     public void act(final float delta) {
         super.act(delta);
-        // TODO: remove comment
-        // for (Iterator<Action> iter = this.getActions().iterator(); iter.hasNext();) {
-        // iter.next().act(delta);
-        // }
     }
 
     /**
