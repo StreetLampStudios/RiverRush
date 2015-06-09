@@ -85,12 +85,6 @@ public class AnimalActor extends Actor {
         v = this.localToStageCoordinates(v);
 
         this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
-
-        Vector2 w = new Vector2(0, 0);
-        w = this.localToStageCoordinates(w);
-        System.out.println("Animal bounds: " + w.toString() + "- width: " + this.getWidth()
-                + " - height: " + this.getHeight());
-
     }
 
     @Override
@@ -101,7 +95,10 @@ public class AnimalActor extends Actor {
         Color color = this.getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        // TODO: update bounds
+        Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
+        this.localToStageCoordinates(v);
+
+        this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
 
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);

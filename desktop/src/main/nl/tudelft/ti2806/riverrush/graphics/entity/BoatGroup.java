@@ -102,7 +102,7 @@ public class BoatGroup extends Group {
     }
 
     public void init() {
-        Vector2 v = new Vector2(this.getOriginX(), this.getOriginY());
+        Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         v = this.localToStageCoordinates(v);
 
         this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
@@ -111,17 +111,17 @@ public class BoatGroup extends Group {
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
 
+        Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
+        this.localToStageCoordinates(v);
+
+        this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
+
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         Color color = this.getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        // TODO: update bounds
-
-        // batch.draw(this.region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-        // this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-        // this.getRotation());
         batch.draw(this.tex, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
                 this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
                 this.getRotation(), 0, 0, this.tex.getWidth(), this.tex.getHeight(), false, false);

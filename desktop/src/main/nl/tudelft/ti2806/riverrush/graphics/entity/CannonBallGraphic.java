@@ -56,11 +56,6 @@ public class CannonBallGraphic extends AbstractObstacle {
 
         this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
 
-        Vector2 w = new Vector2(this.getX(), this.getY());
-        v = this.localToStageCoordinates(w);
-        System.out.println("Rock bounds: " + w.toString() + "- width: " + this.getWidth()
-                + " - height: " + this.getHeight());
-
         MoveToAction moveDown = new MoveToAction();
         moveDown.setPosition((float) (WIDTH / 2 - SIZE / 2), (float) (NEGATIVE_MULTIPLIER * SIZE));
         moveDown.setDuration(VELOCITY);
