@@ -80,11 +80,6 @@ public class WaitingGameState extends AbstractGameState {
         return this;
     }
 
-    @Override
-    public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(final Direction rightOneDirection) {
-        return this;
-    }
-
     /**
      * Add an animal.
      *

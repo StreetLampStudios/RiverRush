@@ -4,7 +4,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 
@@ -34,7 +36,7 @@ public class RockGraphic extends AbstractObstacle {
      * Creates a new obstacle.
      *
      * @param assetsManager refers to the manager that has made all loaded assets available for use.
-     * @param off           Configures the place from which the obstacle is fired. Must be between 0 and 1
+     * @param off Configures the place from which the obstacle is fired. Must be between 0 and 1
      */
     public RockGraphic(final AssetManager assetsManager, final Direction dir) {
         this.assets = assetsManager;
@@ -70,8 +72,8 @@ public class RockGraphic extends AbstractObstacle {
         TextureRegion region = new TextureRegion(tex, 0, 0, TEXTURE_SIZE_X, TEXTURE_SIZE_Y);
         batch.enableBlending();
         batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-            this.getRotation());
+                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+                this.getRotation());
     }
 
     /**
@@ -82,17 +84,22 @@ public class RockGraphic extends AbstractObstacle {
     }
 
     public boolean calculateCollision(final BoatGroup boat) {
-        float boatx = boat.getX() + (boat.getWidth() * HITBOX_OFFSET_X);
-        float boatxedge = boat.getX() + boat.getWidth() - (boat.getWidth() * HITBOX_OFFSET_X);
-        float boaty = boat.getY() + (boat.getHeight() * HITBOX_OFFSET_Y);
-        float boatyedge = boat.getY() + boat.getHeight() - (boat.getHeight() * HITBOX_OFFSET_Y);
+        Vector2 v = new Vector2(0, 0);
+        v = boat.localToStageCoordinates(v);
+        Vector2 o = new Vector2(0, 0);
+        o = this.localToStageCoordinates(o);
+
+        float boatx = v.x + (boat.getWidth() * HITBOX_OFFSET_X);
+        float boatxedge = v.x + boat.getWidth() - (boat.getWidth() * HITBOX_OFFSET_X);
+        float boaty = v.y + (boat.getHeight() * HITBOX_OFFSET_Y);
+        float boatyedge = v.y + boat.getHeight() - (boat.getHeight() * HITBOX_OFFSET_Y);
         float[] x = {boatx, boatxedge};
         float[] y = {boaty, boatyedge};
 
         for (float edgex : x) {
             for (float edgey : y) {
-                if (edgex < this.getX() + this.getWidth() && edgex > this.getX()
-                    && edgey < this.getY() + this.getHeight() && edgey > this.getY()) {
+                if (edgex < o.x + this.getWidth() && edgex > o.x && edgey < o.y + this.getHeight()
+                        && edgey > o.y) {
                     return true;
                 }
             }

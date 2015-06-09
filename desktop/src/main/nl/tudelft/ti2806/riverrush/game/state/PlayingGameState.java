@@ -45,12 +45,12 @@ public class PlayingGameState extends AbstractGameState {
      * The state of the game that indicates that the game is currently playable.
      *
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game
-     *                        in this state.
-     * @param assetManager    has all necessary assets loaded and available for use.
-     * @param game            refers to the game that this state belongs to.
+     *            in this state.
+     * @param assetManager has all necessary assets loaded and available for use.
+     * @param game refers to the game that this state belongs to.
      */
     public PlayingGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
-                            final Game game) {
+            final Game game) {
         super(eventDispatcher, assetManager, game);
 
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
@@ -60,7 +60,7 @@ public class PlayingGameState extends AbstractGameState {
             PlayingGameState.this.game.setScreen(PlayingGameState.this.screen);
 
             for (Team currentTeam : PlayingGameState.this.game.getTeams().values()) {
-                this.addBoat(currentTeam);
+                PlayingGameState.this.addBoat(currentTeam);
                 for (AbstractAnimal currentAnimal : currentTeam.getAnimals().values()) {
                     PlayingGameState.this.addAnimal(currentTeam, (Animal) currentAnimal);
                 }
@@ -75,6 +75,8 @@ public class PlayingGameState extends AbstractGameState {
         this.dispatcher.attach(AnimalMovedEvent.class, this.animalMovedHandlerLambda);
         this.dispatcher.attach(AnimalDroppedEvent.class, this.playerDroppedEventHandlerLambda);
         this.dispatcher.attach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
+        this.dispatcher.attach(AnimalReturnedToBoatEvent.class,
+                this.animalReturnedToBoatEventHandlerLambda);
 
         this.leftObstList = new ArrayList<>();
         this.rightObstList = new ArrayList<>();
@@ -114,44 +116,38 @@ public class PlayingGameState extends AbstractGameState {
         return this;
     }
 
-    @Override
-    public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(
-        final Direction rightOneDirection) {
-        return this;
-    }
-
     /**
      * This method is called when the game renders the screen.
      */
     private void tick() { // TODO: CAUSE HOLY SHIT
-        for (RockGraphic graphic : this.rightRockList) {
+        for (RockGraphic graphic : this.leftRockList) {
             Team team = this.game.getTeam(0);
             BoatGroup boat = team.getBoat();
             if (graphic.calculateCollision(boat)) {
-                BoatCollidedEvent ev = new BoatCollidedEvent();
-                ev.setTeam(team.getId());
-                ev.setDirection(graphic.getDirection());
-                this.dispatcher.dispatch(ev);
+                BoatCollidedEvent event = new BoatCollidedEvent();
+                event.setTeam(team.getId());
+                event.setDirection(graphic.getDirection());
+                this.dispatcher.dispatch(event);
             }
         }
-        for (RockGraphic graphic : this.leftRockList) {
+        for (RockGraphic graphic : this.rightRockList) {
             Team team = this.game.getTeam(1);
             BoatGroup boat = team.getBoat();
             if (graphic.calculateCollision(boat)) {
-                BoatCollidedEvent ev = new BoatCollidedEvent();
-                ev.setTeam(team.getId());
-                ev.setDirection(graphic.getDirection());
-                this.dispatcher.dispatch(ev);
+                BoatCollidedEvent event = new BoatCollidedEvent();
+                event.setTeam(team.getId());
+                event.setDirection(graphic.getDirection());
+                this.dispatcher.dispatch(event);
             }
         }
         for (CannonBallGraphic graphic : this.leftObstList) {
-            for (AbstractAnimal animal : this.game.getTeam(0).getAnimals().values()) { // TODO
+            for (AbstractAnimal animal : this.game.getTeam(0).getAnimals().values()) {
                 Animal animal1 = (Animal) animal;
                 if (graphic.calculateCollision(animal1.getActor())) {
-                    AnimalCollidedEvent ev = new AnimalCollidedEvent();
-                    ev.setAnimal(animal1.getId());
-                    ev.setTeam(animal.getTeamId());
-                    this.dispatcher.dispatch(ev);
+                    AnimalCollidedEvent event = new AnimalCollidedEvent();
+                    event.setAnimal(animal1.getId());
+                    event.setTeam(animal1.getTeamId());
+                    this.dispatcher.dispatch(event);
                 }
             }
         }
@@ -159,11 +155,10 @@ public class PlayingGameState extends AbstractGameState {
             for (AbstractAnimal animal : this.game.getTeam(1).getAnimals().values()) {
                 Animal animal1 = (Animal) animal;
                 if (graphic.calculateCollision(animal1.getActor())) {
-                    // TODO: Set animal
-                    AnimalCollidedEvent ev = new AnimalCollidedEvent();
-                    ev.setAnimal(animal1.getId());
-                    ev.setTeam(animal.getTeamId());
-                    this.dispatcher.dispatch(ev);
+                    AnimalCollidedEvent event = new AnimalCollidedEvent();
+                    event.setAnimal(animal1.getId());
+                    event.setTeam(animal1.getTeamId());
+                    this.dispatcher.dispatch(event);
                 }
             }
         }
@@ -205,7 +200,7 @@ public class PlayingGameState extends AbstractGameState {
     /**
      * Adds an animal to a team.
      *
-     * @param team   the animal
+     * @param team the animal
      * @param animal the team
      */
     private void addAnimal(final Team team, final Animal animal) {
@@ -225,14 +220,14 @@ public class PlayingGameState extends AbstractGameState {
         // Temporary, has to get animal from event
 
         Animal anim = new Animal(this.dispatcher, event.getAnimal(), event.getTeam(),
-            event.getVariation());
+                event.getVariation());
         Team tm = this.game.getTeam(event.getTeam());
         this.addAnimal(tm, anim);
     }
 
     public void addBoat(Team team) {
         BoatGroup group = new BoatGroup(this.assets, (MainDesktop.getWidth() / 2) - 450,
-            MainDesktop.getHeight() * 0.02f);
+                MainDesktop.getHeight() * 0.02f);
         team.setBoat(group);
         this.screen.addTeam(group, team.getId());
     }
@@ -282,7 +277,7 @@ public class PlayingGameState extends AbstractGameState {
      * @param teamProgressEvent - the event
      */
     private void teamProgress(final TeamProgressEvent teamProgressEvent) {
-        this.screen.updateProgress(teamProgressEvent.getTeamID(), teamProgressEvent.getProgress());
+        this.screen.updateProgress(teamProgressEvent.getTeam(), teamProgressEvent.getProgress());
     }
 
     /**
@@ -295,7 +290,7 @@ public class PlayingGameState extends AbstractGameState {
     }
 
     /**
-     * Moves the animal bakc to the boat.
+     * Moves the animal back to the boat.
      *
      * @param event - the event
      */

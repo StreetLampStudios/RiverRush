@@ -53,9 +53,4 @@ public class FinishedGameState implements GameState {
         this.dispose();
         return new WaitingGameState(this.eventDispatcher, this.game);
     }
-
-    @Override
-    public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(Direction rightOneDirection) {
-        return this;
-    }
 }

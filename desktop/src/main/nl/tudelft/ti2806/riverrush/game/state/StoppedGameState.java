@@ -55,9 +55,4 @@ public class StoppedGameState extends AbstractGameState {
     public GameState waitForPlayers() {
         return this;
     }
-
-    @Override
-    public GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(final Direction rightOneDirection) {
-        return this;
-    }
 }

@@ -50,7 +50,7 @@ public class GameTrackTest {
         try {
             this.track.addAnimal(this.team.getId(), animal);
             AbstractAnimal gottenAnimal = this.track.getTeam(this.team.getId()).getAnimals()
-                .get(animal.getId());
+                    .get(animal.getId());
             assertEquals(animal, gottenAnimal);
         } catch (NoSuchTeamException e) {
             e.printStackTrace();
@@ -79,7 +79,7 @@ public class GameTrackTest {
         this.track.updateProgress();
         assertEquals(1.0, this.track.getDistanceTeam(this.team.getId()), delta);
         Mockito.verify(this.dispatcher, Mockito.times(1)).dispatch(
-            Mockito.any(TeamProgressEvent.class));
+                Mockito.any(TeamProgressEvent.class));
 
     }
 
@@ -92,7 +92,7 @@ public class GameTrackTest {
         }
 
         Mockito.verify(this.dispatcher, Mockito.times(1)).dispatch(
-            Mockito.isA(GameFinishedEvent.class));
+                Mockito.isA(GameFinishedEvent.class));
 
         assertEquals(GameTrack.TRACK_LENGTH, this.track.getDistanceTeam(this.team.getId()), delta);
     }
@@ -131,9 +131,9 @@ public class GameTrackTest {
 
         this.track.updateProgress();
         assertEquals("Distance of team 1 is not equal", GameTrack.TRACK_LENGTH + 1,
-            this.track.getDistanceTeam(this.team.getId()), delta);
+                this.track.getDistanceTeam(this.team.getId()), delta);
         assertEquals("Distance of team 2 is not equal", GameTrack.TRACK_LENGTH + 0.5,
-            this.track.getDistanceTeam(team2.getId()), delta);
+                this.track.getDistanceTeam(team2.getId()), delta);
 
         ArrayList<Team> list = new ArrayList<>();
         list.add(this.team);
@@ -148,10 +148,10 @@ public class GameTrackTest {
         Animal animal = new Animal(this.dispatcher);
         this.team.addAnimal(animal);
 
-        this.track.updateCannonballObstacles(this.team, 10.0);
+        this.track.updateCannonballObstacles(this.team, 15.0);
 
         Mockito.verify(this.dispatcher, Mockito.times(1)).dispatch(
-            Mockito.isA(AddObstacleEvent.class));
+                Mockito.isA(AddObstacleEvent.class));
     }
 
 }

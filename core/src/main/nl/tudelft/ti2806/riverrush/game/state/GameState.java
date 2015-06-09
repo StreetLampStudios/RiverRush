@@ -41,6 +41,4 @@ public interface GameState {
      * @return The new state.
      */
     GameState waitForPlayers();
-
-    GameState swooshThaFuckahsFromBoatThatMovedToTheWrongDirection(Direction rightOneDirection);
 }

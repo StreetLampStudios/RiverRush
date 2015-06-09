@@ -4,12 +4,15 @@ import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
 import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -20,11 +23,11 @@ public class GameTrack {
 
     private static final long UPDATE_DELAY = 1000;
     public static final Integer TRACK_LENGTH = 100;
-    private static final Integer DISTANCE_INTERVAL = 10;
+    private static final Integer DISTANCE_INTERVAL = 5;
 
     private HashMap<Integer, Team> teams;
     private HashMap<Team, Double> teamDistances;
-    private final HashMap<Integer, Double> levelMap;
+    private final HashMap<Integer, HashMap<Double, String>> levelMap;
 
     private EventDispatcher dispatcher;
 
@@ -50,8 +53,13 @@ public class GameTrack {
     public void parseLevel(final String level) {
         for (int i = 0; i < level.length(); i++) {
             char c = level.charAt(i);
+            HashMap<Double, String> map = new HashMap<>();
             if (c == '#') {
-                this.levelMap.put((i - this.levelMap.size()) * DISTANCE_INTERVAL, 0.5);
+                map.put(0.5, String.valueOf(c));
+                this.levelMap.put((i - this.levelMap.size()) * DISTANCE_INTERVAL, map);
+            } else if (c == '@') {
+                map.put(0.5, String.valueOf(c));
+                this.levelMap.put((i - this.levelMap.size()) * DISTANCE_INTERVAL, map);
             }
         }
     }
@@ -84,16 +92,17 @@ public class GameTrack {
             }
 
             this.updateCannonballObstacles(team, currentDistance);
+            this.updateRockObstacles(team, currentDistance);
 
             TeamProgressEvent event = new TeamProgressEvent();
             event.setProgress(currentDistance + speed);
-            event.setTeamID(team.getId());
+            event.setTeam(team.getId());
             this.dispatcher.dispatch(event);
         }
         if (finishedTeams.size() > 0) {
             Team winner = this.determineWinningTeam(finishedTeams);
             GameFinishedEvent event = new GameFinishedEvent();
-            event.setWonTeam(winner.getId());
+            event.setTeam(winner.getId());
             this.dispatcher.dispatch(event);
         }
 
@@ -106,11 +115,38 @@ public class GameTrack {
      * @param currentDistance - The distance this team has travelled
      */
     protected void updateCannonballObstacles(final Team team, final Double currentDistance) {
-        if (this.levelMap.get(currentDistance.intValue()) != null) {
-            AddObstacleEvent addEvent = new AddObstacleEvent();
-            addEvent.setTeam(team.getId());
-            addEvent.setLocation(0.5);
-            this.dispatcher.dispatch(addEvent);
+        if (this.levelMap.containsKey(currentDistance.intValue())) {
+            HashMap<Double, String> map = this.levelMap.get(currentDistance.intValue());
+            for (Map.Entry<Double, String> entry : map.entrySet()) {
+                if (entry.getValue().equals("#")) {
+                    AddObstacleEvent event = new AddObstacleEvent();
+                    event.setTeam(team.getId());
+                    //TODO: Make direction variable
+                    event.setLocation(0.5);
+                    this.dispatcher.dispatch(event);
+                }
+            }
+        }
+    }
+
+    /**
+     * This will check if it is time for the team to get a rock to their faces.
+     *
+     * @param team            - The team
+     * @param currentDistance - The distance this team has travelled
+     */
+    protected void updateRockObstacles(final Team team, final Double currentDistance) {
+        if (this.levelMap.containsKey(currentDistance.intValue())) {
+            HashMap<Double, String> map = this.levelMap.get(currentDistance.intValue());
+            for (Map.Entry<Double, String> entry : map.entrySet()) {
+                if (entry.getValue().equals("@")) {
+                    AddRockEvent event = new AddRockEvent();
+                    event.setTeam(team.getId());
+                    //TODO: Make direction variable
+                    event.setLocation(Direction.RIGHT);
+                    this.dispatcher.dispatch(event);
+                }
+            }
         }
     }
 
@@ -201,5 +237,14 @@ public class GameTrack {
      */
     public Team getTeam(final Integer team) {
         return this.teams.get(team);
+    }
+
+    /**
+     * Return all the teams.
+     *
+     * @return The teams
+     */
+    public HashMap<Integer, Team> getTeams() {
+        return teams;
     }
 }
