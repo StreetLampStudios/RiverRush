@@ -28,7 +28,7 @@ public class LoadingScreen implements Screen {
      * Creates the graphical representation of the loading game screen. The loading game screen
      * simply shows an image to indicate that the game is loading.
      *
-     * @param assetManager    refers to the manager that has made all loaded assets available for use.
+     * @param assetManager refers to the manager that has made all loaded assets available for use.
      * @param eventDispatcher is the dispatcher that handles all relevant events.
      */
     public LoadingScreen(final AssetManager assetManager, final EventDispatcher eventDispatcher) {
@@ -64,6 +64,7 @@ public class LoadingScreen implements Screen {
         this.assets.load(getFileName("field.jpg"), Texture.class);
         this.assets.load(getFileName("river.png"), Texture.class);
         this.assets.load(getFileName("cannonball.png"), Texture.class);
+        this.assets.load(getFileName("cannonballCrop.png"), Texture.class);
         this.assets.load(getFileName("iceberg.png"), Texture.class);
         this.assets.load(getFileName("win.png"), Texture.class);
         this.assets.load(getFileName("lose.png"), Texture.class);

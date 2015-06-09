@@ -8,6 +8,7 @@ import nl.tudelft.ti2806.riverrush.controller.RenderController;
 import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
@@ -59,6 +60,69 @@ public class MainDesktop extends CoreModule {
 
         this.setupGraphics();
         client.connect();
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        AnimalAddedEvent ev;
+        for (int i = 0; i < 5; i++) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ev = new AnimalAddedEvent();
+            ev.setAnimal(i);
+            ev.setTeam(i % 2);
+
+            this.eventDispatcher.dispatch(ev);
+        }
+        this.eventDispatcher.dispatch(new GameAboutToStartEvent());
+
+        this.eventDispatcher.dispatch(new GameStartedEvent());
+        // try {
+        // Thread.sleep(2000);
+        // } catch (InterruptedException e) {
+        // e.printStackTrace();
+
+        // }
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //
+        // AnimalMovedEvent event = new AnimalMovedEvent();
+        // event.setAnimal(1);
+        // event.setDirection(Direction.LEFT);
+        // event.setTeam(1);
+        // this.eventDispatcher.dispatch(event);
+        //
+        // AnimalMovedEvent event2 = new AnimalMovedEvent();
+        // event2.setAnimal(3);
+        // event2.setDirection(Direction.LEFT);
+        // event2.setTeam(1);
+        // this.eventDispatcher.dispatch(event2);
+        // try {
+        // Thread.sleep(2000);
+        // } catch (InterruptedException e) {
+        // e.printStackTrace();
+        // }
+        // AddObstacleEvent evie = new AddObstacleEvent();
+        // evie.setTeam(1);
+        // evie.setLocation(0.5);
+        // evie.setAnimal(1);
+        // this.eventDispatcher.dispatch(evie);
+
+        // AddRockEvent crap = new AddRockEvent();
+        // crap.setLocation(Direction.NEUTRAL);
+        // crap.setTeam(1);
+        // crap.setAnimal(1);
+        // this.eventDispatcher.dispatch(crap);
+
     }
 
     /**

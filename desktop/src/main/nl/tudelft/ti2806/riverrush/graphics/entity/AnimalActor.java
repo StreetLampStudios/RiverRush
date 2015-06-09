@@ -51,6 +51,7 @@ public class AnimalActor extends Actor {
     private static final float WIGGLE_RIGHT_DURATION = 0.25f;
     private static final float WIGGLE_LEFT_DURATION = 0.125f;
     private static final float WIGGLE_DISTANCE = 5f;
+    private static final double HITBOX_MULTIPLIER = 0.3;
 
     private static final float ROLL_DURATION = 0.7f;
 
@@ -84,7 +85,7 @@ public class AnimalActor extends Actor {
         Vector2 v = new Vector2(this.getOriginX(), this.getOriginY());
         v = this.localToStageCoordinates(v);
 
-        this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
+        this.bounds = new Circle(v.x, v.y, ((float) (this.getHeight() * HITBOX_MULTIPLIER)));
     }
 
     @Override
@@ -98,7 +99,7 @@ public class AnimalActor extends Actor {
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         this.localToStageCoordinates(v);
 
-        this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
+        this.bounds = new Circle(v.x, v.y, ((float) (this.getHeight() * HITBOX_MULTIPLIER)));
 
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);

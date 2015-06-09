@@ -43,6 +43,7 @@ public class BoatGroup extends Group {
     private Iterator<BoatSector> iterator;
 
     private static final float MOVE_DISTANCE = 400;
+    private static final double HITBOX_OFFSET = 0.3;
 
     private static final int NUM_SECTORS = 5;
     private static final int COL_COUNT = 5;
@@ -105,7 +106,7 @@ public class BoatGroup extends Group {
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         v = this.localToStageCoordinates(v);
 
-        this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
+        this.bounds = new Circle(v.x, v.y, ((float) (this.getHeight() * HITBOX_OFFSET)));
     }
 
     @Override
@@ -114,7 +115,7 @@ public class BoatGroup extends Group {
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         this.localToStageCoordinates(v);
 
-        this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
+        this.bounds = new Circle(v.x, v.y, ((float) (this.getHeight() * HITBOX_OFFSET)));
 
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
