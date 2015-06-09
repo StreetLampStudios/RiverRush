@@ -94,28 +94,7 @@ public class CannonBallGraphic extends AbstractObstacle {
      * @return true if collision occurs, false if it doesn't.
      */
     public boolean calculateCollision(final AnimalActor monk) {
-        // Vector2 v = new Vector2(0, 0);
-        // v = monk.localToStageCoordinates(v);
-        // Vector2 o = new Vector2(0, 0);
-        // o = this.localToStageCoordinates(o);
-
         boolean ret = this.bounds.overlaps(monk.getBounds());
         return ret;
-        // float monkx = v.x;
-        // float monkxedge = monkx + monk.getWidth();
-        // float monky = v.y;
-        // float monkyedge = monky + monk.getHeight();
-        // float[] x = {monkx, monkxedge};
-        // float[] y = {monky, monkyedge};
-        //
-        // for (float edgex : x) {
-        // for (float edgey : y) {
-        // if (edgex < o.x + this.getWidth() && edgex > o.x && edgey < o.y + this.getHeight()
-        // && edgey > o.y) {
-        // return true;
-        // }
-        // }
-        // }
-        // return false;
     }
 }

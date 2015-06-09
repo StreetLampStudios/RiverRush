@@ -99,27 +99,6 @@ public class RockGraphic extends AbstractObstacle {
     public boolean calculateCollision(final BoatGroup boat) {
         boolean ret = this.bounds.overlaps(boat.getBounds());
         return ret;
-        // Vector2 v = new Vector2(0, 0);
-        // v = boat.localToStageCoordinates(v);
-        // Vector2 o = new Vector2(0, 0);
-        // o = this.localToStageCoordinates(o);
-        //
-        // float boatx = v.x + (boat.getWidth() * HITBOX_OFFSET_X);
-        // float boatxedge = v.x + boat.getWidth() - (boat.getWidth() * HITBOX_OFFSET_X);
-        // float boaty = v.y + (boat.getHeight() * HITBOX_OFFSET_Y);
-        // float boatyedge = v.y + boat.getHeight() - (boat.getHeight() * HITBOX_OFFSET_Y);
-        // float[] x = {boatx, boatxedge};
-        // float[] y = {boaty, boatyedge};
-        //
-        // for (float edgex : x) {
-        // for (float edgey : y) {
-        // if (edgex < o.x + this.getWidth() && edgex > o.x && edgey < o.y + this.getHeight()
-        // && edgey > o.y) {
-        // return true;
-        // }
-        // }
-        // }
-        // return false;
     }
 
     public Direction getDirection() {
