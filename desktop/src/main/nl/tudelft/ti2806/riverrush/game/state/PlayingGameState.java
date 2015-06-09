@@ -45,12 +45,12 @@ public class PlayingGameState extends AbstractGameState {
      * The state of the game that indicates that the game is currently playable.
      *
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game
-     *                        in this state.
-     * @param assetManager    has all necessary assets loaded and available for use.
-     * @param game            refers to the game that this state belongs to.
+     *            in this state.
+     * @param assetManager has all necessary assets loaded and available for use.
+     * @param game refers to the game that this state belongs to.
      */
     public PlayingGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
-                            final Game game) {
+            final Game game) {
         super(eventDispatcher, assetManager, game);
 
         this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
@@ -75,6 +75,8 @@ public class PlayingGameState extends AbstractGameState {
         this.dispatcher.attach(AnimalMovedEvent.class, this.animalMovedHandlerLambda);
         this.dispatcher.attach(AnimalDroppedEvent.class, this.playerDroppedEventHandlerLambda);
         this.dispatcher.attach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
+        this.dispatcher.attach(AnimalReturnedToBoatEvent.class,
+                this.animalReturnedToBoatEventHandlerLambda);
 
         this.leftObstList = new ArrayList<>();
         this.rightObstList = new ArrayList<>();
@@ -198,7 +200,7 @@ public class PlayingGameState extends AbstractGameState {
     /**
      * Adds an animal to a team.
      *
-     * @param team   the animal
+     * @param team the animal
      * @param animal the team
      */
     private void addAnimal(final Team team, final Animal animal) {
@@ -218,14 +220,14 @@ public class PlayingGameState extends AbstractGameState {
         // Temporary, has to get animal from event
 
         Animal anim = new Animal(this.dispatcher, event.getAnimal(), event.getTeam(),
-            event.getVariation());
+                event.getVariation());
         Team tm = this.game.getTeam(event.getTeam());
         this.addAnimal(tm, anim);
     }
 
     public void addBoat(Team team) {
         BoatGroup group = new BoatGroup(this.assets, (MainDesktop.getWidth() / 2) - 450,
-            MainDesktop.getHeight() * 0.02f);
+                MainDesktop.getHeight() * 0.02f);
         team.setBoat(group);
         this.screen.addTeam(group, team.getId());
     }
