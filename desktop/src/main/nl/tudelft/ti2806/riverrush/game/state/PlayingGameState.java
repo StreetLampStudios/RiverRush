@@ -209,6 +209,8 @@ public class PlayingGameState extends AbstractGameState {
 
         team.addAnimal(animal);
         team.getBoat().addAnimal(actor);
+
+        actor.init();
     }
 
     /**
@@ -230,6 +232,7 @@ public class PlayingGameState extends AbstractGameState {
                 MainDesktop.getHeight() * 0.02f);
         team.setBoat(group);
         this.screen.addTeam(group, team.getId());
+        group.init();
     }
 
     /**

@@ -1,16 +1,13 @@
 package nl.tudelft.ti2806.riverrush.desktop;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import java.net.URISyntaxException;
+
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
+import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
@@ -18,7 +15,11 @@ import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
 
-import java.net.URISyntaxException;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  * This class is the main class to be ran when starting the game. This class sets up the graphics
@@ -58,6 +59,69 @@ public class MainDesktop extends CoreModule {
 
         this.setupGraphics();
         client.connect();
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        AnimalAddedEvent ev;
+        for (int i = 0; i < 5; i++) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ev = new AnimalAddedEvent();
+            ev.setAnimal(i);
+            ev.setTeam(i % 2);
+
+            this.eventDispatcher.dispatch(ev);
+        }
+        this.eventDispatcher.dispatch(new GameAboutToStartEvent());
+
+        this.eventDispatcher.dispatch(new GameStartedEvent());
+        // try {
+        // Thread.sleep(2000);
+        // } catch (InterruptedException e) {
+        // e.printStackTrace();
+
+        // }
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // AnimalMovedEvent event = new AnimalMovedEvent();
+        // event.setAnimal(1);
+        // event.setDirection(Direction.LEFT);
+        // event.setTeam(1);
+        // this.eventDispatcher.dispatch(event);
+        //
+        // event = new AnimalMovedEvent();
+        // event.setAnimal(0);
+        // event.setDirection(Direction.RIGHT);
+        // event.setTeam(0);
+        // this.eventDispatcher.dispatch(event);
+        // event = new AnimalMovedEvent();
+        // event.setAnimal(1);
+        // event.setDirection(Direction.RIGHT);
+        // event.setTeam(0);
+        // this.eventDispatcher.dispatch(event);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        AddObstacleEvent evie = new AddObstacleEvent();
+        AddRockEvent crap = new AddRockEvent();
+        evie.setTeam(1);
+        evie.setLocation(0.5);
+        crap.setLocation(Direction.NEUTRAL);
+        evie.setAnimal(1);
+        this.eventDispatcher.dispatch(evie);
     }
 
     /**
