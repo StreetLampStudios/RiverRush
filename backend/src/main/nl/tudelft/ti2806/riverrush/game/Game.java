@@ -2,7 +2,6 @@ package nl.tudelft.ti2806.riverrush.game;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
@@ -61,7 +60,7 @@ public class Game {
      */
     private void addAnimalHandler() {
         this.playerCount++;
-        if (!this.eventSend && this.AllTeamsHaveOnePlayer()) {
+        if (!this.eventSend && this.AllTeamsHaveAPlayer()) {
             this.eventSend = true;
             GameAboutToStartEvent event = new GameAboutToStartEvent();
             event.setSeconds(DELAY);
@@ -77,7 +76,7 @@ public class Game {
      *
      * @return True if they have, otherwise false
      */
-    private Boolean AllTeamsHaveOnePlayer() {
+    private Boolean AllTeamsHaveAPlayer() {
         for (Team team : this.gameTrack.getTeams().values()) {
             if (team.getAnimals().size() == 0) {
                 return false;
