@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush;
 
+import com.google.inject.AbstractModule;
 import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
@@ -11,6 +12,7 @@ import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalReturnedToBoatEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.BoatCollidedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
@@ -23,8 +25,6 @@ import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
 import nl.tudelft.ti2806.riverrush.network.event.VoteBoatMoveCommand;
 import nl.tudelft.ti2806.riverrush.network.protocol.BasicProtocol;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
-
-import com.google.inject.AbstractModule;
 
 /**
  * Configures dependency injection.
@@ -85,8 +85,8 @@ public abstract class CoreModule extends AbstractModule {
         protocol.registerNetworkMessage(AnimalJumpedEvent.class, AnimalJumpedEvent::new);
         protocol.registerNetworkMessage(AnimalMovedEvent.class, AnimalMovedEvent::new);
         protocol.registerNetworkMessage(AnimalRemovedEvent.class, AnimalRemovedEvent::new);
-        protocol.registerNetworkMessage(AnimalReturnedToBoatEvent.class,
-                AnimalReturnedToBoatEvent::new);
+        protocol.registerNetworkMessage(AnimalReturnedToBoatEvent.class, AnimalReturnedToBoatEvent::new);
+        protocol.registerNetworkMessage(BoatCollidedEvent.class, BoatCollidedEvent::new);
         protocol.registerNetworkMessage(GameAboutToStartEvent.class, GameAboutToStartEvent::new);
         protocol.registerNetworkMessage(GameFinishedEvent.class, GameFinishedEvent::new);
         protocol.registerNetworkMessage(GameStartedEvent.class, GameStartedEvent::new);
