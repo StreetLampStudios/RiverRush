@@ -14,12 +14,14 @@ public class AnimalMovedEvent extends AbstractTeamAnimalEvent {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(super.serialize(protocol));
         stringBuilder.append(protocol.getPairSeperator());
-        stringBuilder.append("direction").append(protocol.getKeyValueSeperator()).append(this.direction.toString());
+        stringBuilder.append("direction").append(protocol.getKeyValueSeperator())
+                .append(this.direction.toString());
         return stringBuilder.toString();
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
+        super.deserialize(keyValuePairs);
         if (keyValuePairs.containsKey("direction")) {
             this.direction = Direction.valueOf(keyValuePairs.get("direction").toUpperCase());
         } else {
