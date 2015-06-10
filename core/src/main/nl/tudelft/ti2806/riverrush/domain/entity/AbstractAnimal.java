@@ -22,6 +22,7 @@ public abstract class AbstractAnimal {
     private final Integer animalID;
     private Integer teamID;
     private Direction voteDirection = Direction.NEUTRAL;
+    private Sector sectorOnBoat;
     private Integer variation;
 
     private EventDispatcher dispatcher;
@@ -181,5 +182,13 @@ public abstract class AbstractAnimal {
      */
     public Integer getTeamId() {
         return this.teamID;
+    }
+
+    public Sector getSectorOnBoat() {
+        return sectorOnBoat;
+    }
+
+    public void setSectorOnBoat(Sector sectorOnBoat) {
+        this.sectorOnBoat = sectorOnBoat;
     }
 }
