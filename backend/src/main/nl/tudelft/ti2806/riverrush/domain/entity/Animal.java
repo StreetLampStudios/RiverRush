@@ -18,19 +18,20 @@ public class Animal extends AbstractAnimal {
      */
     public Animal(final EventDispatcher eventDispatcher) {
         super(eventDispatcher);
-        setState(new AnimalOnBoat(this, eventDispatcher));
+        this.setState(new AnimalOnBoat(this, eventDispatcher));
     }
 
     /**
      * Try to drop the animal back to the boat.
      */
+    @Override
     public void drop() {
         this.setState(this.getState().drop());
     }
 
     public boolean isOnBoat() {
-        return !(getState() instanceof AnimalInWater);
-        //TODO Can we fix this?
+        return !(this.getState() instanceof AnimalInWater);
+        // TODO Can we fix this?
     }
 
     @Override
