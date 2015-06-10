@@ -1,11 +1,30 @@
 package nl.tudelft.ti2806.riverrush;
 
-import com.google.inject.AbstractModule;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
+import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalDroppedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalReturnedToBoatEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.GameStoppedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 import nl.tudelft.ti2806.riverrush.network.event.JoinTeamCommand;
 import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
+import nl.tudelft.ti2806.riverrush.network.event.VoteBoatMoveCommand;
 import nl.tudelft.ti2806.riverrush.network.protocol.BasicProtocol;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
+
+import com.google.inject.AbstractModule;
 
 /**
  * Configures dependency injection.
@@ -28,8 +47,7 @@ public abstract class CoreModule extends AbstractModule {
     }
 
     /**
-     * Creates instances of EventDispatcher
-     * Override for the ability to pre-attach any listeners.
+     * Creates instances of EventDispatcher Override for the ability to pre-attach any listeners.
      *
      * @return A fresh dispatcher.
      */
@@ -38,8 +56,7 @@ public abstract class CoreModule extends AbstractModule {
     }
 
     /**
-     * Configure the renderer protocol by registering all valid messages that can be
-     * sent.
+     * Configure the renderer protocol by registering all valid messages that can be sent.
      *
      * @return The fully configured protocol.
      */
@@ -68,7 +85,8 @@ public abstract class CoreModule extends AbstractModule {
         protocol.registerNetworkMessage(AnimalJumpedEvent.class, AnimalJumpedEvent::new);
         protocol.registerNetworkMessage(AnimalMovedEvent.class, AnimalMovedEvent::new);
         protocol.registerNetworkMessage(AnimalRemovedEvent.class, AnimalRemovedEvent::new);
-        protocol.registerNetworkMessage(AnimalReturnedToBoatEvent.class, AnimalReturnedToBoatEvent::new);
+        protocol.registerNetworkMessage(AnimalReturnedToBoatEvent.class,
+                AnimalReturnedToBoatEvent::new);
         protocol.registerNetworkMessage(GameAboutToStartEvent.class, GameAboutToStartEvent::new);
         protocol.registerNetworkMessage(GameFinishedEvent.class, GameFinishedEvent::new);
         protocol.registerNetworkMessage(GameStartedEvent.class, GameStartedEvent::new);
@@ -78,8 +96,7 @@ public abstract class CoreModule extends AbstractModule {
     }
 
     /**
-     * Configure the client protocol by registering all valid messages that can be
-     * sent.
+     * Configure the client protocol by registering all valid messages that can be sent.
      *
      * @return The fully configured protocol.
      */
@@ -90,7 +107,10 @@ public abstract class CoreModule extends AbstractModule {
 
         protocol.registerNetworkMessage(JumpCommand.class, JumpCommand::new);
         protocol.registerNetworkMessage(JoinTeamCommand.class, JoinTeamCommand::new);
-        registerStateMessages(protocol);
+        protocol.registerNetworkMessage(VoteBoatMoveCommand.class, VoteBoatMoveCommand::new);
+        this.registerStateMessages(protocol);
+
+        this.registerStateMessages(protocol);
 
         return protocol;
     }

@@ -27,12 +27,12 @@ public class UserController extends AbstractController {
      * Create a player controller.
      *
      * @param aDispatcher The event dispatcher for dispatching the events
-     * @param aServer     The server for sending the events over the network
-     * @param aGame       The game instance
+     * @param aServer The server for sending the events over the network
+     * @param aGame The game instance
      */
     @Inject
     public UserController(final EventDispatcher aDispatcher,
-                          @Named("playerServer") final AbstractServer aServer, final Game aGame) {
+            @Named("playerServer") final AbstractServer aServer, final Game aGame) {
         super(aDispatcher);
         this.animal = new Animal(aDispatcher);
         this.dispatcher = aDispatcher;
@@ -44,7 +44,8 @@ public class UserController extends AbstractController {
     public void initialize() {
         final HandlerLambda<JoinTeamCommand> joinTeamHandler = this::joinTeamHandler;
         final HandlerLambda<Event> sendOverNetworkLambda = (e) -> {
-            if (Objects.equals(e.getAnimal(), this.animal.getId()) || Objects.equals(e.getAnimal(), -1)) {
+            if (Objects.equals(e.getAnimal(), this.animal.getId())
+                    || Objects.equals(e.getAnimal(), -1)) {
                 this.server.sendEvent(e, this);
             }
         };
