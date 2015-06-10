@@ -27,6 +27,8 @@ public class PlayingGameState implements GameState {
         this.eventDispatcher = dispatcher;
         this.game = gme;
 
+
+
         this.animalCollidedLambda = (e) -> this.game.collideAnimal(e.getAnimal(), e.getTeam());
 
         this.eventDispatcher.dispatch(new GameStartedEvent());

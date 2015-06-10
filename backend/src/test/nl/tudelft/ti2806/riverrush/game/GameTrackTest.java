@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 /**
  * Created by MARTIJN.
@@ -29,7 +30,7 @@ public class GameTrackTest {
     @Before
     public void setUp() throws Exception {
         this.dispatcher = Mockito.spy(EventDispatcher.class);
-        this.track = new GameTrack("--[#5]-[#5]---[@5]--[#5]--[#5]-[#5]--", this.dispatcher);
+        this.track = new GameTrack("--[#5]-[#5]---[@5]--[#5]--[#5]-[#5]--", this.dispatcher, mock(Game.class));
         this.team = new Team();
         this.track.addTeam(this.team);
     }

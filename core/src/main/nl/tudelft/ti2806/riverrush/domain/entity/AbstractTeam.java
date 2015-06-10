@@ -31,4 +31,11 @@ public abstract class AbstractTeam {
     public Integer getId() {
         return this.id;
     }
+
+    /**
+     * @return the amount of animals in a team
+     */
+    public int size() {
+        return animals.values().size();
+    }
 }
