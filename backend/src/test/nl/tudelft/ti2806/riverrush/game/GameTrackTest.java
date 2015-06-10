@@ -29,7 +29,7 @@ public class GameTrackTest {
     @Before
     public void setUp() throws Exception {
         this.dispatcher = Mockito.spy(EventDispatcher.class);
-        this.track = new GameTrack("-#--#--#--#--#-", this.dispatcher);
+        this.track = new GameTrack("--[#5]-[#5]---[@5]--[#5]--[#5]-[#5]--", this.dispatcher);
         this.team = new Team();
         this.track.addTeam(this.team);
     }
@@ -148,7 +148,7 @@ public class GameTrackTest {
         Animal animal = new Animal(this.dispatcher);
         this.team.addAnimal(animal);
 
-        this.track.updateCannonballObstacles(this.team, 15.0);
+        this.track.updateCannonballObstacles(this.team, 10.0);
 
         Mockito.verify(this.dispatcher, Mockito.times(1)).dispatch(
                 Mockito.isA(AddObstacleEvent.class));

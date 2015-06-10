@@ -58,10 +58,10 @@ public class GameTrack {
                 char sym = level.charAt(i + 1);
                 Double dir = Double.parseDouble("0." + String.valueOf(level.charAt(i + 2)));
                 if (sym == '#') {
-                    map.put(dir, String.valueOf(c));
+                    map.put(dir, String.valueOf(sym));
                     this.levelMap.put((i - this.levelMap.size()) * DISTANCE_INTERVAL, map);
                 } else if (sym == '@') {
-                    map.put(dir, String.valueOf(c));
+                    map.put(dir, String.valueOf(sym));
                     this.levelMap.put((i - this.levelMap.size()) * DISTANCE_INTERVAL, map);
                 }
                 i = i + 3;
