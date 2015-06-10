@@ -3,7 +3,6 @@ package nl.tudelft.ti2806.riverrush.game.state;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
@@ -93,7 +92,7 @@ public class WaitingGameState extends AbstractGameState {
             tim = this.game.addTeam(tm);
         }
         Integer variation = event.getVariation();
-        tim.addAnimal(new Animal(this.dispatcher, event.getAnimal(), tm, variation));
+        tim.addAnimal(new Animal(this.dispatcher, event.getAnimal(), tm, variation, event.getSector()));
     }
 
 }

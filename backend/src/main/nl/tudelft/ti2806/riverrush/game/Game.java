@@ -1,8 +1,10 @@
 package nl.tudelft.ti2806.riverrush.game;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
+import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
@@ -13,6 +15,7 @@ import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.WaitingForRendererState;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -33,9 +36,10 @@ public class Game {
      */
     private GameState gameState;
     private GameTrack gameTrack;
-    private int playerCount = 0;
     private final EventDispatcher eventDispatcher;
     private boolean eventSend;
+
+    private List<Sector> currentPlayerSectors = Lists.newArrayList(Sector.FRONT, Sector.FRONT);
 
     /**
      * Create a game instance.
@@ -59,8 +63,7 @@ public class Game {
      * Handler that adds a player to the game.
      */
     private void addAnimalHandler() {
-        this.playerCount++;
-        if (!this.eventSend && this.AllTeamsHaveAPlayer()) {
+        if (!this.eventSend && this.allTeamsHaveAPlayer()) {
             this.eventSend = true;
             GameAboutToStartEvent event = new GameAboutToStartEvent();
             event.setSeconds(DELAY);
@@ -76,7 +79,7 @@ public class Game {
      *
      * @return True if they have, otherwise false
      */
-    private Boolean AllTeamsHaveAPlayer() {
+    private Boolean allTeamsHaveAPlayer() {
         for (Team team : this.gameTrack.getTeams().values()) {
             if (team.getAnimals().size() == 0) {
                 return false;
@@ -90,7 +93,6 @@ public class Game {
      * Handler that adds a player to the game.
      */
     private void removeAnimalHandler(AnimalRemovedEvent event) {
-        this.playerCount--;
         Integer team = event.getTeam();
         Integer animal = event.getAnimal();
         this.gameTrack.getTeam(team).getAnimals().remove(animal);
@@ -139,6 +141,9 @@ public class Game {
             event.setAnimal(animal.getId());
             event.setTeam(team);
             event.setVariation(animal.getVariation());
+            Sector nextSector = currentPlayerSectors.get(team).getNext();
+            currentPlayerSectors.set(team, nextSector);
+            event.setSector(nextSector);
             this.eventDispatcher.dispatch(event);
         } catch (NoSuchTeamException e) {
             // Empty for now TODO

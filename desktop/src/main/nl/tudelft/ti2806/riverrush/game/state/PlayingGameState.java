@@ -4,7 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
+import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalDroppedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalReturnedToBoatEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.BoatCollidedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
+import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.game.TickHandler;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
@@ -208,7 +221,7 @@ public class PlayingGameState extends AbstractGameState {
         animal.setActor(actor);
 
         team.addAnimal(animal);
-        team.getBoat().addAnimal(actor);
+        team.getBoat().addAnimal(actor, animal.getSectorOnBoat());
 
         actor.init();
     }
@@ -222,7 +235,7 @@ public class PlayingGameState extends AbstractGameState {
         // Temporary, has to get animal from event
 
         Animal anim = new Animal(this.dispatcher, event.getAnimal(), event.getTeam(),
-                event.getVariation());
+                event.getVariation(), event.getSector());
         Team tm = this.game.getTeam(event.getTeam());
         this.addAnimal(tm, anim);
     }

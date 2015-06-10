@@ -11,12 +11,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.google.inject.Inject;
-
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
+import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Represents a boat that the animals row on.
@@ -29,22 +28,11 @@ public class BoatGroup extends Group {
      * The asset manager.
      */
     private final AssetManager manager;
-    /**
-     * Specifies dimension x.
-     */
-    private static final int REGION_ENDX = 584;
-    /**
-     * Specifies dimension y.
-     */
-    private static final int REGION_ENDY = 1574;
 
     private final ArrayList<BoatSector> sectors;
 
-    private Iterator<BoatSector> iterator;
-
     private static final float MOVE_DISTANCE = 400;
 
-    private static final int NUM_SECTORS = 5;
     private static final int COL_COUNT = 5;
     private static final int ROW_COUNT = 2;
 
@@ -71,7 +59,6 @@ public class BoatGroup extends Group {
         this.setHeight(this.SIZE);
 
         this.tex = this.manager.get("data/ship.png", Texture.class);
-        // this.region = new TextureRegion(tex, 0, 0, tex.getWidth(), tex.getHeight());
 
         this.setOriginX((this.getWidth() / 2));
         this.setOriginY((this.getHeight() / 2));
@@ -86,7 +73,7 @@ public class BoatGroup extends Group {
         colors.add(Color.YELLOW);
         colors.add(Color.WHITE);
 
-        for (int i = NUM_SECTORS - 1; i >= 0; i--) {
+        for (int i = Sector.countSectors() - 1; i >= 0; i--) {
             Color color = colors.get(i);
             BoatSector sec = new BoatSector(assetManager, ROW_COUNT, COL_COUNT, color);
             float secPosX = (this.getWidth() / 2) - (sec.getWidth() / 2);
@@ -95,8 +82,6 @@ public class BoatGroup extends Group {
             this.sectors.add(sec);
             this.addActor(sec);
         }
-        this.iterator = this.sectors.iterator();
-        this.iterator.next(); // Start with the second sector
 
         this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
     }
@@ -138,11 +123,8 @@ public class BoatGroup extends Group {
         super.act(delta);
     }
 
-    public void addAnimal(final AnimalActor actor) {
-        if (!this.iterator.hasNext()) {
-            this.iterator = this.sectors.iterator();
-        }
-        BoatSector sec = this.iterator.next();
+    public void addAnimal(final AnimalActor actor, final Sector sector) {
+        BoatSector sec = this.sectors.get(sector.getIndex());
         sec.addAnimal(actor);
     }
 
@@ -180,10 +162,6 @@ public class BoatGroup extends Group {
                 sec.getAnimals().remove(actor);
             }
         }
-    }
-
-    public boolean calculateCollide() {
-        return false;
     }
 
     public Circle getBounds() {
