@@ -128,7 +128,7 @@ public class GameTrack {
                     AddObstacleEvent event = new AddObstacleEvent();
                     event.setTeam(team.getId());
                     // TODO: Make direction variable
-                    event.setLocation(0.5);
+                    event.setLocation(entry.getKey());
                     this.dispatcher.dispatch(event);
                 }
             }
@@ -149,7 +149,13 @@ public class GameTrack {
                     AddRockEvent event = new AddRockEvent();
                     event.setTeam(team.getId());
                     // TODO: Make direction variable
-                    event.setLocation(Direction.RIGHT);
+                    Direction dir = Direction.NEUTRAL;
+                    if (entry.getKey() < 0.45) {
+                        dir = Direction.LEFT;
+                    } else if (entry.getKey() > 0.55) {
+                        dir = Direction.RIGHT;
+                    }
+                    event.setLocation(dir);
                     this.dispatcher.dispatch(event);
                 }
             }

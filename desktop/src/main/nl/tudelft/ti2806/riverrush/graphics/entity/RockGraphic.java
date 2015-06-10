@@ -16,21 +16,21 @@ public class RockGraphic extends AbstractObstacle {
     /**
      * Size of the graphic.
      */
-    private static final double SIZE = 256;
-    private static final float VELOCITY = 5f;
+    private static final float SIZE = 256;
+    private static final float VELOCITY = ((MainDesktop.getHeight() + (SIZE * 2)) / 720f) * 2;
+    // 720f = velocity river
 
     private final AssetManager assets;
-    private static final double HEIGHT = MainDesktop.getHeight();
-    private static final double WIDTH = MainDesktop.getWidth();
-    private static final double INIT_POS = 800.0;
-    private static final double OFFSET_POS = 320.0;
+    private static final float DESKTOP_HEIGHT = MainDesktop.getHeight();
+    private static final float DESKTOP_WIDTH = MainDesktop.getWidth();
+    private static final float INIT_POS = 800f;
+    private static final float OFFSET_SIZE = 320f;
+
     private static final int NEGATIVE_MULTIPLIER = -2;
     private static final int TEXTURE_SIZE_X = 679;
     private static final int TEXTURE_SIZE_Y = 436;
-    private static final float HITBOX_OFFSET_X = 0.1f;
-    private static final float HITBOX_OFFSET_Y = 0.1f;
 
-    private final double offset;
+    private final float offset;
     private final Direction direction;
     private Circle bounds;
 
@@ -45,11 +45,11 @@ public class RockGraphic extends AbstractObstacle {
 
         this.direction = dir;
         if (dir == Direction.LEFT) {
-            this.offset = 0.2;
+            this.offset = 0.2f;
         } else if (dir == Direction.RIGHT) {
-            this.offset = 0.8;
+            this.offset = 0.8f;
         } else {
-            this.offset = 0.5;
+            this.offset = 0.5f;
         }
     }
 
@@ -57,9 +57,9 @@ public class RockGraphic extends AbstractObstacle {
      * Actually adds the obstacle to the screen.
      */
     public void init() {
-        this.setWidth((float) SIZE);
-        this.setHeight((float) (SIZE * HEIGHT / WIDTH) / 2);
-        this.setPosition((float) ((INIT_POS + OFFSET_POS * this.offset) - SIZE / 2), (float) HEIGHT);
+        this.setWidth(SIZE);
+        this.setHeight(SIZE * DESKTOP_HEIGHT / DESKTOP_WIDTH / 2);
+        this.setPosition((DESKTOP_WIDTH * this.offset) - SIZE / 2, DESKTOP_HEIGHT); // 1080
 
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         this.localToStageCoordinates(v);
@@ -67,7 +67,7 @@ public class RockGraphic extends AbstractObstacle {
         this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
 
         MoveToAction moveDown = new MoveToAction();
-        moveDown.setPosition((float) (WIDTH / 2 - SIZE / 2), (float) (NEGATIVE_MULTIPLIER * SIZE));
+        moveDown.setPosition(this.getX(), NEGATIVE_MULTIPLIER * SIZE); // 1592 distance
         moveDown.setDuration(VELOCITY);
 
         this.addAction(moveDown);

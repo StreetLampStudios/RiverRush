@@ -16,9 +16,8 @@ public class BasicGameTrack extends GameTrack {
     public BasicGameTrack(final EventDispatcher dispatcher) {
         super("--[#5]-[#5]---[@5]--[#5]--[#5]-[#5]--", dispatcher);
         // --[@2]-[@2]---[@8]--[@8]--[@2]-[@8]--
+        // --[#5]-[#5]---[@5]--[#5]--[#5]-[#5]--
         this.addTeam(new Team());
         this.addTeam(new Team());
-
-        // this.parseLevel(-);
     }
 }
