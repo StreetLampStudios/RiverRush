@@ -2,15 +2,17 @@ package nl.tudelft.ti2806.riverrush.graphics.entity;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
+import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.entity.state.AnimalOnBoat;
 
 public class Animal extends AbstractAnimal {
 
-    public Animal(EventDispatcher dispatch, Integer id, Integer team, Integer variation) {
+    public Animal(EventDispatcher dispatch, Integer id, Integer team, Integer variation, Sector boatSector) {
         super(dispatch, id);
         this.setTeamId(team);
         this.setVariation(variation);
+        this.setSectorOnBoat(boatSector);
     }
 
     private AnimalActor actor;
