@@ -23,7 +23,7 @@ public class GameTrack {
 
     private static final long UPDATE_DELAY = 1000;
     public static final Integer TRACK_LENGTH = 100;
-    private static final Integer DISTANCE_INTERVAL = 2;
+    private static final Integer DISTANCE_INTERVAL = 5;
 
     private HashMap<Integer, Team> teams;
     private HashMap<Team, Double> teamDistances;
