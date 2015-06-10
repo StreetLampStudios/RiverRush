@@ -98,6 +98,7 @@ public final class BasicProtocol implements Protocol {
         EventInstantiator eventInstatiator = this.eventMapping.get(action);
         if (eventInstatiator == null) {
             log.error("Protocol message not registered: " + action);
+            throw new InvalidActionException("Protocol message not registered");
         }
         Event result = eventInstatiator.instantiate();
 

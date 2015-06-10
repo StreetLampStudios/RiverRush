@@ -6,6 +6,9 @@ import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
 import nl.tudelft.ti2806.riverrush.controller.UserController;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.AbstractServer;
 import nl.tudelft.ti2806.riverrush.network.RenderServer;
@@ -20,6 +23,9 @@ import static com.google.inject.name.Names.named;
  */
 public final class MainBackend extends CoreModule {
 
+    private HandlerLambda<GameWaitingEvent> handler;
+    private final AbstractServer clientServer;
+
     /**
      * Main is a utility class.
      */
@@ -29,10 +35,19 @@ public final class MainBackend extends CoreModule {
         injector.getInstance(Game.class);
 
         AbstractServer renderServer = injector.getInstance(RenderServer.class);
-        AbstractServer clientServer = injector.getInstance(UserServer.class);
+        clientServer = injector.getInstance(UserServer.class);
 
-        clientServer.start();
         renderServer.start();
+
+
+        EventDispatcher dispatcher = injector.getInstance(EventDispatcher.class);
+        handler = (e) -> this.startClientServer(dispatcher);
+        dispatcher.attach(GameWaitingEvent.class, handler);
+    }
+
+    private void startClientServer(final EventDispatcher d) {
+        d.detach(GameWaitingEvent.class, handler);
+        clientServer.start();
     }
 
     /**
