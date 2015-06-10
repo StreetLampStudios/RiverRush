@@ -32,8 +32,9 @@ public interface GameState {
      * Transition when the game wants to finish.
      *
      * @return The new state.
+     * @param team
      */
-    GameState finish();
+    GameState finish(Integer team);
 
     /**
      * Transition when the game is ready to add players.

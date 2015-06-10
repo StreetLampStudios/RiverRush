@@ -18,6 +18,7 @@ public class WaitingGameState implements GameState {
      * Game about to start timer delay.
      */
     public static final int DELAY = 5;
+    private boolean readyToPlay = false;
 
     private final EventDispatcher dispatcher;
     private Game game;
@@ -33,6 +34,11 @@ public class WaitingGameState implements GameState {
         this.game = theGame;
         this.dispatcher.dispatch(new GameWaitingEvent());
         this.dispatcher.attach(AnimalAddedEvent.class, AnimalAddedEventHandlerLambda);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         animalAddedHandler();
     }
 
@@ -40,7 +46,8 @@ public class WaitingGameState implements GameState {
      * Is called when a new animal is added.
      */
     public void animalAddedHandler() {
-        if (hasEnoughAnimals()) {
+        if (hasEnoughAnimals() && !readyToPlay) {
+            readyToPlay = true;
             GameAboutToStartEvent event = new GameAboutToStartEvent();
             event.setSeconds(DELAY);
             this.dispatcher.dispatch(event);
@@ -58,8 +65,8 @@ public class WaitingGameState implements GameState {
         if (teams.size() == 0) {
             return false;
         }
-        for(Team t : teams) {
-            if(t.size() < 1) {
+        for (Team t : teams) {
+            if (t.size() < 1) {
                 return false;
             }
         }
@@ -84,7 +91,7 @@ public class WaitingGameState implements GameState {
     }
 
     @Override
-    public GameState finish() {
+    public GameState finish(Integer team) {
         return this;
     }
 
@@ -93,6 +100,4 @@ public class WaitingGameState implements GameState {
         return this;
     }
 
-    private class AnimalAddedEventHandler {
-    }
 }

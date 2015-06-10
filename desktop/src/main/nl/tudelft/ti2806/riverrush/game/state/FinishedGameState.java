@@ -5,7 +5,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.screen.FinishedGameScreen;
-import nl.tudelft.ti2806.riverrush.screen.WaitingScreen;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -31,7 +30,7 @@ public class FinishedGameState extends AbstractGameState {
             public void run() {
                 Gdx.app.postRunnable(() -> game.reset());
             }
-        }, gameAboutToWaitEvent.getTimeTillWait());
+        }, gameAboutToWaitEvent.getTimeTillWait() - 100);
     }
 
 
@@ -44,11 +43,15 @@ public class FinishedGameState extends AbstractGameState {
      * @param gm              refers to the game that this state belongs to.
      */
     public FinishedGameState(final EventDispatcher eventDispatcher,
-                             final AssetManager assetManager, final Game gm) {
+                             final AssetManager assetManager, final Game gm, final int winningID) {
         super(eventDispatcher, assetManager, gm);
         this.screen = new FinishedGameScreen(assetManager, eventDispatcher);
-        Gdx.app.postRunnable(() -> FinishedGameState.this.game
-            .setScreen(FinishedGameState.this.screen));
+        Gdx.app.postRunnable(() -> {
+                FinishedGameState.this.game
+                    .setScreen(FinishedGameState.this.screen);
+                screen.drawWinningLabel(winningID);
+            }
+        );
 
         eventDispatcher.attach(GameAboutToWaitEvent.class, gameAboutToWaitHandlerLambda);
         eventDispatcher.attach(GameWaitingEvent.class, gameWaitHandlerLambda);
@@ -71,7 +74,7 @@ public class FinishedGameState extends AbstractGameState {
     }
 
     @Override
-    public GameState finish() {
+    public GameState finish(Integer team) {
         return this;
     }
 

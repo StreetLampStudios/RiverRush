@@ -39,7 +39,7 @@ public class RenderController implements Controller {
         this.dispatcher = eventDispatcher;
         this.game = gm;
         this.onGameStartedLambda = (e) -> this.onGameStarted();
-        this.onGameFinishedLambda = (e) -> this.onGameEnded();
+        this.onGameFinishedLambda = (e) -> this.onGameEnded(e);
         this.onAssetsLoadedLambda = (e) -> this.onAssetsLoaded();
         this.sendOverNetworkLambda = (e) -> this.client.sendEvent(e);
         this.dispatcher.attach(GameStartedEvent.class, this.onGameStartedLambda);
@@ -71,8 +71,8 @@ public class RenderController implements Controller {
     /**
      * Handles the game finished event through sending a command to the game.
      */
-    private void onGameEnded() {
-        this.game.finish();
+    private void onGameEnded(GameFinishedEvent event) {
+        this.game.finish(event.getTeam());
     }
 
     @Override

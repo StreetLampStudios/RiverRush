@@ -100,7 +100,7 @@ public class GameTrack {
         for (Team team : this.teamDistances.keySet()) {
             Double speed = this.getSpeed(team);
             Double currentDistance = this.teamDistances.get(team);
-            this.teamDistances.put(team, currentDistance + speed * 30);
+            this.teamDistances.put(team, currentDistance + speed);
 
             if (currentDistance + speed >= TRACK_LENGTH) {
                 finishedTeams.add(team);

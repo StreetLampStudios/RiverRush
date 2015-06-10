@@ -1,6 +1,5 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
-import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStoppedEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
@@ -50,7 +49,7 @@ public class StoppedGameState implements GameState {
     }
 
     @Override
-    public GameState finish() {
+    public GameState finish(Integer team) {
         return this;
     }
 

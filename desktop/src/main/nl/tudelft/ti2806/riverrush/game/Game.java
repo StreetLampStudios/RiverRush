@@ -122,9 +122,10 @@ public class Game extends GdxGame {
 
     /**
      * Commands the game to finish. This action is relegated to the current game state.
+     * @param team
      */
-    public void finish() {
-        this.currentGameState = this.currentGameState.finish();
+    public void finish(Integer team) {
+        this.currentGameState = this.currentGameState.finish(team);
     }
 
     /**

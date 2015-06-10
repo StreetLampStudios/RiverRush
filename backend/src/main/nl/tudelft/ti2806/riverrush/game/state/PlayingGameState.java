@@ -1,10 +1,6 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.Direction;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
 
@@ -13,26 +9,24 @@ import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
  */
 public class PlayingGameState implements GameState {
 
-    private final EventDispatcher eventDispatcher;
+    private final EventDispatcher dispatcher;
     private Game game;
     private final HandlerLambda<AnimalCollidedEvent> animalCollidedLambda;
 
     /**
      * The game transitions to this state when the game starts.
      *
-     * @param dispatcher The dispatcher used to listen to {@link JumpCommand}.
+     * @param eventDispatcher The dispatcher used to listen to {@link JumpCommand}.
      * @param gme
      */
-    public PlayingGameState(final EventDispatcher dispatcher, final Game gme) {
-        this.eventDispatcher = dispatcher;
+    public PlayingGameState(final EventDispatcher eventDispatcher, final Game gme) {
+        this.dispatcher = eventDispatcher;
         this.game = gme;
-
-
 
         this.animalCollidedLambda = (e) -> this.game.collideAnimal(e.getAnimal(), e.getTeam());
 
-        this.eventDispatcher.dispatch(new GameStartedEvent());
-        this.eventDispatcher.attach(AnimalCollidedEvent.class, this.animalCollidedLambda);
+        this.dispatcher.dispatch(new GameStartedEvent());
+        this.dispatcher.attach(AnimalCollidedEvent.class, this.animalCollidedLambda);
     }
 
     @Override
@@ -48,13 +42,18 @@ public class PlayingGameState implements GameState {
     @Override
     public GameState stop() {
         this.dispose();
-        return new StoppedGameState(this.eventDispatcher, this.game);
+        return new StoppedGameState(this.dispatcher, this.game);
     }
 
     @Override
-    public GameState finish() {
+    public GameState finish(Integer team) {
         this.dispose();
-        return new FinishedGameState(this.eventDispatcher, this.game);
+
+        GameFinishedEvent event = new GameFinishedEvent();
+        event.setTeam(team);
+        this.dispatcher.dispatch(event);
+
+        return new FinishedGameState(this.dispatcher, this.game);
     }
 
     @Override

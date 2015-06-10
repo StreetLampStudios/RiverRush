@@ -13,9 +13,6 @@ import nl.tudelft.ti2806.riverrush.game.state.WaitingGameState;
 
 import java.util.List;
 import java.util.Collection;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Represents an ongoing or waiting game.
@@ -100,10 +97,7 @@ public class Game {
      * @param winningId - id of the winner.
      */
     public void finish(final Integer winningId) {
-        this.gameState = this.gameState.finish();
-        GameFinishedEvent event = new GameFinishedEvent();
-        event.setTeam(winningId);
-        this.dispatcher.dispatch(event);
+        this.gameState = this.gameState.finish(winningId);
     }
 
     /**

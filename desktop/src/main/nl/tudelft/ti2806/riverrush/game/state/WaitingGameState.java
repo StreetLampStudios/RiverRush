@@ -71,7 +71,7 @@ public class WaitingGameState extends AbstractGameState {
     }
 
     @Override
-    public GameState finish() {
+    public GameState finish(Integer team) {
         return this;
     }
 

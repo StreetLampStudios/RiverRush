@@ -26,8 +26,10 @@ public class FinishedGameScreen implements Screen {
     private TextureAtlas atlas;
     private Stage stage;
     private Label timerLabel;
-    private static final float TIMER_LABEL_WIDTH_MULTIPLIER = 0.625f;
-    private static final float TIMER_LABEL_HEIGHT_MULTIPLIER = 0.5f;
+    private static final float TIMER_LABEL_WIDTH_MULTIPLIER = 0.43f;
+    private static final float TIMER_LABEL_HEIGHT_MULTIPLIER = 0.2f;
+    private static final float WINNING_LABEL_HEIGHT_MULTIPLIER = 0.3f;
+    private static final float WINNING_LABEL_WIDTH_MULTIPLIER = 0.40f;
     private static final int TIMER_TICK= 1000;
     private int countdown;
 
@@ -98,11 +100,11 @@ public class FinishedGameScreen implements Screen {
     /**
      * Creates a timerLabel.
      */
-    private void createTimerLabel() {
+    private void createLabels() {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
-                timerLabel = new Label("Time till game start: ", skin);
+                timerLabel = new Label("", skin);
                 timerLabel.setFontScale(2f);
                 timerLabel.setPosition(Gdx.graphics.getWidth() * TIMER_LABEL_WIDTH_MULTIPLIER,
                     Gdx.graphics.getHeight() * TIMER_LABEL_HEIGHT_MULTIPLIER); // 1200, 540
@@ -118,7 +120,7 @@ public class FinishedGameScreen implements Screen {
      */
     public void startCountdown(final int time) {
         this.countdown = time / TIMER_TICK;
-        createTimerLabel();
+        createLabels();
         Timer tmr = new Timer();
         tmr.schedule(new TimerTask() {
             @Override
@@ -127,9 +129,23 @@ public class FinishedGameScreen implements Screen {
                     tmr.cancel();
                     return;
                 }
-                timerLabel.setText("Time till game start: " + countdown);
+                if (timerLabel != null) {
+                    timerLabel.setText("Returning to lobby in: " + countdown);
+                }
                 countdown--;
             }
-        }, TIMER_TICK, TIMER_TICK);
+        }, 0, TIMER_TICK);
+    }
+
+    public void drawWinningLabel(int winningID) {
+
+        String winningTeamName = winningID == 0 ? "Left" : "Right";
+
+        Label teamWonLabel = new Label(winningTeamName + " team won! Congratulations!", skin);
+        teamWonLabel.setFontScale(2f);
+        teamWonLabel.setPosition(Gdx.graphics.getWidth() * WINNING_LABEL_WIDTH_MULTIPLIER,
+            Gdx.graphics.getHeight() * WINNING_LABEL_HEIGHT_MULTIPLIER); // 1200, 540
+        stage.addActor(teamWonLabel);
+
     }
 }
