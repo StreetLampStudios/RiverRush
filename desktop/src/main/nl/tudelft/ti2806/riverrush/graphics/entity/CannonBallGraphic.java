@@ -27,7 +27,8 @@ public class CannonBallGraphic extends AbstractObstacle {
     private static final double INIT_POS = 800.0;
     private static final double OFFSET_POS = 320.0;
     private static final int NEGATIVE_MULTIPLIER = -2;
-    private static final int TEXTURE_SIZE = 512;
+    private static final int TEXTURE_SIZE_X = 346;
+    private static final int TEXTURE_SIZE_Y = 336;
     private final double offset;
     private Circle bounds;
 
@@ -65,8 +66,8 @@ public class CannonBallGraphic extends AbstractObstacle {
 
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
-        Texture tex = this.assets.get("data/cannonball.png", Texture.class);
-        TextureRegion region = new TextureRegion(tex, 0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
+        Texture tex = this.assets.get("data/cannonballCrop.png", Texture.class);
+        TextureRegion region = new TextureRegion(tex, 0, 0, TEXTURE_SIZE_X, TEXTURE_SIZE_Y);
         batch.enableBlending();
 
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
