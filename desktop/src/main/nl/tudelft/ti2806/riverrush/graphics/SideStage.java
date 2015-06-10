@@ -22,8 +22,8 @@ public class SideStage extends Table {
     private RockGraphic rock;
     private final AssetManager assets;
 
-    private static final int RIVER_HEIGHT = 1920;
-    private static final int RIVER_WIDTH = 1080;
+    private static final int RIVER_WIDTH = 1920;
+    private static final int RIVER_HEIGHT = 1080;
     private static final int BOAT_OFFSET = 300;
     private static final int BOAT_POSITION = 150;
     private static final int BOAT_SIZE = 600;
@@ -43,7 +43,7 @@ public class SideStage extends Table {
                      final EventDispatcher eventDispatcher) {
         this.setBounds(0, 0, width, height);
         this.assets = assetManager;
-        this.river = new RiverActor(this.assets, 0, RIVER_HEIGHT, RIVER_WIDTH);
+        this.river = new RiverActor(this.assets, 0, RIVER_WIDTH, RIVER_HEIGHT);
         this.addActor(this.river);
     }
 

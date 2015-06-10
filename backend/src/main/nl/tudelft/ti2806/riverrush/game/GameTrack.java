@@ -23,7 +23,7 @@ public class GameTrack {
 
     private static final long UPDATE_DELAY = 1000;
     public static final Integer TRACK_LENGTH = 100;
-    private static final Integer DISTANCE_INTERVAL = 5;
+    private static final Integer DISTANCE_INTERVAL = 2;
 
     private HashMap<Integer, Team> teams;
     private HashMap<Team, Double> teamDistances;
@@ -128,7 +128,7 @@ public class GameTrack {
                     AddObstacleEvent event = new AddObstacleEvent();
                     event.setTeam(team.getId());
                     // TODO: Make direction variable
-                    event.setLocation(0.5);
+                    event.setLocation(entry.getKey());
                     this.dispatcher.dispatch(event);
                 }
             }
@@ -149,7 +149,13 @@ public class GameTrack {
                     AddRockEvent event = new AddRockEvent();
                     event.setTeam(team.getId());
                     // TODO: Make direction variable
-                    event.setLocation(Direction.RIGHT);
+                    Direction dir = Direction.NEUTRAL;
+                    if (entry.getKey() < 0.45) {
+                        dir = Direction.LEFT;
+                    } else if (entry.getKey() > 0.55) {
+                        dir = Direction.RIGHT;
+                    }
+                    event.setLocation(dir);
                     this.dispatcher.dispatch(event);
                 }
             }
