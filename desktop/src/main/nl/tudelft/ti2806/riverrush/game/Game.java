@@ -4,7 +4,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.LoadingGameState;
@@ -22,7 +25,7 @@ public class Game extends GdxGame {
 
     private final AssetManager assets;
     private final EventDispatcher dispatcher;
-    private final HandlerLambda<AnimalAddedEvent> addAnimalHandlerLambda = this::addAnimalHandler;
+    private final HandlerLambda<AnimalFellOffEvent> animalFellOffEventHandlerLambda;
     private final HandlerLambda<AnimalRemovedEvent> removeAnimalHandlerLambda = this::removeAnimalHandler;
     private GameState currentGameState;
 
@@ -40,7 +43,9 @@ public class Game extends GdxGame {
         this.assets = assetManager;
         this.teams = new HashMap<>();
 
-        this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandlerLambda);
+        this.animalFellOffEventHandlerLambda = (e) -> this.getTeam(e.getTeam()).getAnimal(e.getAnimal()).fall();
+
+        this.dispatcher.attach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
         this.dispatcher.attach(AnimalRemovedEvent.class, this.removeAnimalHandlerLambda);
     }
 
@@ -123,22 +128,6 @@ public class Game extends GdxGame {
         this.currentGameState = this.currentGameState.waitForPlayers();
     }
 
-    /**
-     * Add an animal.
-     *
-     * @param event The add event
-     */
-    public void addAnimalHandler(final AnimalAddedEvent event) {
-        // Temporary, has to get animal from event
-
-        Integer tm = event.getTeam();
-        Team tim = this.getTeam(tm);
-        if (tim == null) {
-            tim = this.addTeam(tm);
-        }
-        Integer variation = event.getVariation();
-        tim.addAnimal(new Animal(this.dispatcher, event.getAnimal(), tm, variation));
-    }
 
     /**
      * Removed an animal.

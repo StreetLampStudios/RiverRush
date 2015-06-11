@@ -1,6 +1,8 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
 
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+
 /**
  * Represents the current state of the game.
  */
@@ -39,5 +41,4 @@ public interface GameState {
      * @return The new state.
      */
     GameState waitForPlayers();
-
 }

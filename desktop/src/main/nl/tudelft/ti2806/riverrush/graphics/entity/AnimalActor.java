@@ -1,32 +1,41 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.*;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RotateByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.inject.Inject;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
  * Game object representing a monkey.
  */
-public class MonkeyActor extends Actor {
+public class AnimalActor extends Actor {
 
     /**
      * Specifies the animal's width.
      */
-    private static final float MONKEY_WIDTH = 90; // 144
+    private static final float ANIMAL_WIDTH = 90; // 144
     /**
      * Specifies the animal's height.
      */
-    private static final float MONKEY_HEIGHT = 50; // 81
+    private static final float ANIMAL_HEIGHT = 50; // 81
 
     private static final float JUMP_HEIGHT = 100;
     private static final int END_REGIONX = 432;
@@ -36,12 +45,15 @@ public class MonkeyActor extends Actor {
     private static final float FALL_VELOCITY = 0.5f;
     private static final float JUMP_UP_DURATION = 0.3f;
     private static final float JUMP_DOWN_DURATION = 0.15f;
-    private static final float DELAY_DURATION = 5f;
+    private static final float DELAY_DURATION = 0.5f;
     private static final float WIGGLE_DURATION = 0.5f;
     private static final float WIGGLE_BACK_DURATION = 0.125f;
     private static final float WIGGLE_RIGHT_DURATION = 0.25f;
     private static final float WIGGLE_LEFT_DURATION = 0.125f;
     private static final float WIGGLE_DISTANCE = 5f;
+    private static final double HITBOX_MULTIPLIER = 0.3;
+
+    private static final float ROLL_DURATION = 0.7f;
 
     /**
      * Number of milliseconds in a second.
@@ -51,18 +63,29 @@ public class MonkeyActor extends Actor {
     private AssetManager manager;
     private float origX;
     private float origY;
+    private Circle bounds;
 
     /**
      * Creates a monkey object that represents player characters.
      *
      * @param assetManager enables the object to retrieve its assets
-     * @param dispatcher   Event dispatcher for dispatching events
+     * @param dispatcher Event dispatcher for dispatching events
      */
     @Inject
-    public MonkeyActor(final AssetManager assetManager, final EventDispatcher dispatcher) {
+    public AnimalActor(final AssetManager assetManager, final EventDispatcher dispatcher) {
         this.manager = assetManager;
-        this.setWidth(MONKEY_WIDTH);
-        this.setHeight(MONKEY_HEIGHT);
+        this.setWidth(ANIMAL_WIDTH);
+        this.setHeight(ANIMAL_HEIGHT);
+
+        this.setOriginX(this.getWidth() / 2);
+        this.setOriginY(this.getHeight() / 2);
+    }
+
+    public void init() {
+        Vector2 v = new Vector2(this.getOriginX(), this.getOriginY());
+        v = this.localToStageCoordinates(v);
+
+        this.bounds = new Circle(v.x, v.y, ((float) (this.getHeight() * HITBOX_MULTIPLIER)));
     }
 
     @Override
@@ -73,12 +96,17 @@ public class MonkeyActor extends Actor {
         Color color = this.getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
+        Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
+        this.localToStageCoordinates(v);
+
+        this.bounds = new Circle(v.x, v.y, ((float) (this.getHeight() * HITBOX_MULTIPLIER)));
+
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-            this.getRotation());
+                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+                this.getRotation());
 
         batch.setColor(Color.WHITE);
 
@@ -88,7 +116,6 @@ public class MonkeyActor extends Actor {
     @Override
     public void act(final float delta) {
         super.act(delta);
-
     }
 
     /**
@@ -132,6 +159,23 @@ public class MonkeyActor extends Actor {
         return fade;
     }
 
+    /**
+     * Creat action to roll.
+     *
+     * @return Action to roll.
+     */
+    public Action rollAction(Direction direction) {
+        MoveToAction roll = new MoveToAction();
+        roll.setDuration(ROLL_DURATION);
+        roll.setPosition((direction == Direction.LEFT ? -1 * this.getWidth() : this.getParent()
+                .getWidth()), this.getY());
+        RotateByAction rot = new RotateByAction();
+        rot.setDuration(ROLL_DURATION); // 0.5f
+        rot.setAmount(360f * (direction == Direction.LEFT ? 1 : -1));
+
+        return Actions.parallel(roll, rot);
+    }
+
     public Action jumpAction() {
         MoveToAction jumpUp = new MoveToAction();
         jumpUp.setPosition(this.getX(), this.getY() + JUMP_HEIGHT);
@@ -155,8 +199,7 @@ public class MonkeyActor extends Actor {
         SequenceAction wiggle = sequence(wiggleLeft, wiggleRight, wiggleBack);
 
         SequenceAction jump = sequence(jumpUp,
-
-            Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
+                Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
 
         return jump;
     }
@@ -167,4 +210,19 @@ public class MonkeyActor extends Actor {
         this.origX = x;
         this.origY = y;
     }
+
+    public void moveAlong(float direction, float distance) {
+        MoveToAction move = new MoveToAction();
+        move.setPosition(this.getX() + (distance * direction), this.getY());
+        move.setDuration(3f);
+        this.addAction(move);
+    }
+
+    /**
+     * @return the hitbox of the animal.
+     */
+    public Circle getBounds() {
+        return this.bounds;
+    }
+
 }

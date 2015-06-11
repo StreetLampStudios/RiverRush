@@ -8,39 +8,28 @@ import java.util.Map;
 /**
  * This event is fired when an obstacle needs to be added to the screen.
  */
-public class AddObstacleEvent implements Event {
+public class AddObstacleEvent extends AbstractTeamEvent {
 
     private Double location;
-    private Integer teamId;
 
     @Override
     public String serialize(final Protocol protocol) {
-        return "team"
-            + protocol.getKeyValueSeperator()
-            + this.teamId.toString()
-            + protocol.getPairSeperator()
-            + "location" + protocol.getKeyValueSeperator() + this.location.toString();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(super.serialize(protocol));
+        stringBuilder.append(protocol.getPairSeperator());
+        stringBuilder.append("location").append(protocol.getKeyValueSeperator()).append(this.location.toString());
+        return stringBuilder.toString();
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
-        if (keyValuePairs.containsKey("team") && keyValuePairs.containsKey("location")) {
-            this.teamId = Integer.parseInt(keyValuePairs.get("team"));
+        super.deserialize(keyValuePairs);
+        if (keyValuePairs.containsKey("location")) {
             this.location = Double.parseDouble(keyValuePairs.get("location"));
         } else {
             throw new InvalidProtocolException("Does not contain all the keys");
         }
         return this;
-    }
-
-    @Override
-    public Integer getAnimal() {
-        return 0;
-    }
-
-    @Override
-    public void setAnimal(final Integer animal) {
-        // Has to be empty
     }
 
     public double getLocation() {
@@ -49,13 +38,5 @@ public class AddObstacleEvent implements Event {
 
     public void setLocation(Double aLocation) {
         this.location = aLocation;
-    }
-
-    public Integer getTeam() {
-        return this.teamId;
-    }
-
-    public void setTeam(final Integer team) {
-        this.teamId = team;
     }
 }

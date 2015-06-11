@@ -16,7 +16,11 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -183,6 +187,7 @@ public abstract class AbstractServer extends WebSocketServer {
             e.printStackTrace();
         } finally {
             connection.getOutputStream().close();
+            connection.getInputStream().close();
         }
     }
 }

@@ -1,6 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.entity;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalState;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 
@@ -20,6 +21,8 @@ public abstract class AbstractAnimal {
     private static Integer highestId = 0;
     private final Integer animalID;
     private Integer teamID;
+    private Direction voteDirection = Direction.NEUTRAL;
+    private Sector sectorOnBoat;
     private Integer variation;
 
     private EventDispatcher dispatcher;
@@ -30,7 +33,7 @@ public abstract class AbstractAnimal {
     public AbstractAnimal(final EventDispatcher dispatch) {
         this.dispatcher = dispatch;
         this.animalID = highestId;
-        this.variation = getRandomVariation();
+        this.variation = this.getRandomVariation();
         highestId++;
     }
 
@@ -43,7 +46,7 @@ public abstract class AbstractAnimal {
     public AbstractAnimal(final EventDispatcher dispatch, Integer animal) {
         this.dispatcher = dispatch;
         this.animalID = animal;
-        this.variation = getRandomVariation();
+        this.variation = this.getRandomVariation();
     }
 
     /**
@@ -68,8 +71,8 @@ public abstract class AbstractAnimal {
     /**
      * Changes the state to that having been collided.
      */
-    public void collide() {
-        this.setState(this.getState().collide());
+    public void fall() {
+        this.setState(this.getState().fall());
     }
 
     /**
@@ -104,7 +107,7 @@ public abstract class AbstractAnimal {
         }
 
         AbstractAnimal animal = (AbstractAnimal) o;
-        return this.animalID == animal.animalID;
+        return this.animalID.equals(animal.animalID);
 
     }
 
@@ -130,7 +133,6 @@ public abstract class AbstractAnimal {
         return this.animalID;
     }
 
-
     /**
      * Sets the variation of this animal.
      *
@@ -146,9 +148,8 @@ public abstract class AbstractAnimal {
      * @return the variation
      */
     public Integer getVariation() {
-        return variation;
+        return this.variation;
     }
-
 
     /**
      * Sets the team of the animal.
@@ -160,11 +161,34 @@ public abstract class AbstractAnimal {
     }
 
     /**
+     * @return the direction the animal voted on.
+     */
+    public Direction getVoteDirection() {
+        return this.voteDirection;
+    }
+
+    public void voteOneDirection(final Direction direction) {
+        this.currentState = this.currentState.voteDirection(direction);
+    }
+
+    public void setVoteDirection(final Direction direction) {
+        this.voteDirection = direction;
+    }
+
+    /**
      * Returns the team ID of the animal.
      *
      * @return the team ID
      */
     public Integer getTeamId() {
         return this.teamID;
+    }
+
+    public Sector getSectorOnBoat() {
+        return sectorOnBoat;
+    }
+
+    public void setSectorOnBoat(Sector sectorOnBoat) {
+        this.sectorOnBoat = sectorOnBoat;
     }
 }

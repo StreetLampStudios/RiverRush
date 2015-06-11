@@ -37,7 +37,7 @@ public class AbstractAnimalTest {
         animal = spy(new AbstractAnimalTestImplementation(dispatcher));
         state = mock(AnimalState.class);
 
-        when(state.collide()).thenReturn(state);
+        when(state.fall()).thenReturn(state);
         when(state.jump()).thenReturn(state);
         when(state.returnToBoat()).thenReturn(state);
         when(state.drop()).thenReturn(state);
@@ -59,8 +59,8 @@ public class AbstractAnimalTest {
 
     @Test
     public void testCollide() throws Exception {
-        animal.collide();
-        verify(state).collide();
+        animal.fall();
+        verify(state).fall();
     }
 
     @Test

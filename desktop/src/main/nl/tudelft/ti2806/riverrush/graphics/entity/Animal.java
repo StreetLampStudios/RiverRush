@@ -2,22 +2,24 @@ package nl.tudelft.ti2806.riverrush.graphics.entity;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
+import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.entity.state.AnimalOnBoat;
 
 public class Animal extends AbstractAnimal {
 
-    public Animal(EventDispatcher dispatch, Integer id, Integer team, Integer variation) {
+    public Animal(EventDispatcher dispatch, Integer id, Integer team, Integer variation, Sector boatSector) {
         super(dispatch, id);
         this.setTeamId(team);
         this.setVariation(variation);
+        this.setSectorOnBoat(boatSector);
     }
 
-    private MonkeyActor actor;
+    private AnimalActor actor;
 
-    public void setActor(MonkeyActor act) {
+    public void setActor(AnimalActor act) {
         this.actor = act;
-        this.setState(new AnimalOnBoat(this.actor, this.getDispatcher()));
+        this.setState(new AnimalOnBoat(this, this.getDispatcher()));
     }
 
     /**
@@ -59,7 +61,7 @@ public class Animal extends AbstractAnimal {
     /**
      * @return this animal's graphical component: MonkeyActor.
      */
-    public MonkeyActor getActor() {
+    public AnimalActor getActor() {
         return this.actor;
     }
 

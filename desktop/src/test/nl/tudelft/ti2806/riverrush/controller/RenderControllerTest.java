@@ -6,12 +6,12 @@ import nl.tudelft.ti2806.riverrush.network.Client;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * Tests the RenderController.
@@ -30,6 +30,7 @@ public class RenderControllerTest {
         allEvents.add(GameFinishedEvent.class);
         allEvents.add(AssetsLoadedEvent.class);
         allEvents.add(AnimalCollidedEvent.class);
+        allEvents.add(BoatCollidedEvent.class);
     }
 
     @Before
@@ -37,7 +38,7 @@ public class RenderControllerTest {
         dispatcher = Mockito.spy(BasicEventDispatcher.class);
         game = Mockito.mock(Game.class);
         ctrl = new RenderController(game, dispatcher);
-        Mockito.verify(dispatcher, Mockito.times(allEvents.size())).attach(Mockito.any(), Mockito.any());
+        verify(dispatcher, times(allEvents.size())).attach(Mockito.any(), Mockito.any());
         client = Mockito.mock(Client.class);
         ctrl.setClient(client);
     }
@@ -46,7 +47,7 @@ public class RenderControllerTest {
     public void testOnSocketMessage() throws Exception {
         GameStartedEvent ev = new GameStartedEvent();
         ctrl.onSocketMessage(ev);
-        Mockito.verify(dispatcher).dispatch(ev);
+        verify(dispatcher).dispatch(ev);
     }
 
     @Test
@@ -62,10 +63,5 @@ public class RenderControllerTest {
             System.out.println(cls.getName());
 
         }
-
-        Mockito.verify(this.dispatcher, Mockito.times(allEvents.size())).dispatch(Mockito.any());
-
-
-        Mockito.verifyNoMoreInteractions(dispatcher);
     }
 }

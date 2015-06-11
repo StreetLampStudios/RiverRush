@@ -42,7 +42,7 @@ public class AnimalTest {
 
     @Test
     public void testCollide() throws Exception {
-        animal.collide();
+        animal.fall();
         assertEquals(animal.getState().getClass().getName(), AnimalInWater.class.getName());
     }
 
@@ -62,7 +62,7 @@ public class AnimalTest {
 
     @Test
     public void testReturnToBoat() throws Exception {
-        animal.collide();
+        animal.fall();
         animal.returnToBoat();
         assertEquals(animal.getState().getClass().getName(), AnimalOnBoat.class.getName());
     }

@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Event raised when there are enough players in the game.
  */
-public class GameAboutToStartEvent implements Event {
+public class GameAboutToStartEvent extends AbstractAnimalEvent {
 
     //TODO: Make not hardcoded.
     private static final int FIVE_SECONDS = 5;
@@ -36,16 +36,6 @@ public class GameAboutToStartEvent implements Event {
             throw new InvalidProtocolException("Does not contain all the keys");
         }
         return this;
-    }
-
-    @Override
-    public Integer getAnimal() {
-        return null;
-    }
-
-    @Override
-    public void setAnimal(final Integer aAnimal) {
-        // Has to be empty
     }
 
     /**

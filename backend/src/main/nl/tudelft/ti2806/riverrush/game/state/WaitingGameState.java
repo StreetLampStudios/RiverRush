@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
@@ -16,7 +17,7 @@ public class WaitingGameState implements GameState {
      * Create the waiting game state.
      *
      * @param dispatcher The event dispatcher for firing events
-     * @param theGame The game
+     * @param theGame    The game
      */
     public WaitingGameState(final EventDispatcher dispatcher, final Game theGame) {
         this.eventDispatcher = dispatcher;
