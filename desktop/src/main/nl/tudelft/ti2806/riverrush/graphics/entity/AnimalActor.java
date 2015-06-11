@@ -10,23 +10,22 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RotateByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RotateToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.inject.Inject;
 
 /**
  * Game object representing a monkey.
  */
-public class AnimalActor extends Actor {
+public class AnimalActor extends Group {
 
     /**
      * Specifies the animal's width.
@@ -65,6 +64,8 @@ public class AnimalActor extends Actor {
     private float origY;
     private Circle bounds;
 
+    private DirectionFlag directionFlag;
+
     /**
      * Creates a monkey object that represents player characters.
      *
@@ -79,6 +80,13 @@ public class AnimalActor extends Actor {
 
         this.setOriginX(this.getWidth() / 2);
         this.setOriginY(this.getHeight() / 2);
+
+        DirectionFlag flag = new DirectionFlag(assetManager);
+        flag.setPosition(this.getWidth(), this.getHeight() / 2);
+
+        flag.setVisible(false);
+        this.addActor(flag);
+        this.directionFlag = flag;
     }
 
     public void init() {
@@ -109,7 +117,7 @@ public class AnimalActor extends Actor {
                 this.getRotation());
 
         batch.setColor(Color.WHITE);
-
+        super.draw(batch, parentAlpha);
         batch.disableBlending();
     }
 
@@ -174,6 +182,22 @@ public class AnimalActor extends Actor {
         rot.setAmount(360f * (direction == Direction.LEFT ? 1 : -1));
 
         return Actions.parallel(roll, rot);
+    }
+
+    public void updateFlag(Direction direction) {
+        this.directionFlag.setRotation(-30f);
+        this.directionFlag.setVisible(true);
+        if (direction == Direction.RIGHT) {
+            this.setScale(1f, 1f);
+            this.directionFlag.setColor(Color.RED);
+        } else {
+            this.setScale(-1, 1);
+            this.directionFlag.setColor(Color.GREEN);
+        }
+        RotateToAction rot = new RotateToAction();
+        rot.setRotation(0f);
+        rot.setDuration(0.3f);
+        this.directionFlag.addAction(rot);
     }
 
     public Action jumpAction() {

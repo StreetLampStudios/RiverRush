@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.google.inject.Inject;
+
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
 
@@ -38,11 +39,19 @@ public class BoatGroup extends Group {
     private static final int ROW_COUNT = 2;
 
     private final Texture tex;
-    private static final int MOVE_VOTE_THRESHOLD = 2;
+    private static final int MOVE_VOTE_THRESHOLD = 1;
 
     private final HashMap<AbstractAnimal, Integer> directionVotes;
-    private int votingTotal = 0;
+    private int votingSum = 0;
+    private float totalNumAnimals = 0;
     private Circle bounds;
+
+    private MoveToAction move;
+    private long previousMillis;
+
+    private float VELOCITY = 0;
+    private final float origX;
+    private final float origY;
 
     /**
      * Creates an boat object with a given graphical representation.
@@ -58,6 +67,9 @@ public class BoatGroup extends Group {
         this.setY(ypos);
         this.setWidth(this.SIZE);
         this.setHeight(this.SIZE);
+
+        this.origX = xpos;
+        this.origY = ypos;
 
         this.tex = this.manager.get("data/ship.png", Texture.class);
 
@@ -92,6 +104,7 @@ public class BoatGroup extends Group {
         v = this.localToStageCoordinates(v);
 
         this.bounds = new Circle(v.x, v.y, ((float) (this.getHeight() * HITBOX_OFFSET)));
+        this.move = new MoveToAction();
     }
 
     @Override
@@ -127,19 +140,32 @@ public class BoatGroup extends Group {
     public void addAnimal(final AnimalActor actor, final Sector sector) {
         BoatSector sec = this.sectors.get(sector.getIndex());
         sec.addAnimal(actor);
+        this.totalNumAnimals++;
+        this.updateBoatPosition();
     }
 
     public void voteForDirection(final AbstractAnimal animal, final int direction) {
-        Integer currentVote = this.directionVotes.get(animal);
-        if (currentVote == null || currentVote != direction) {
-            this.votingTotal += direction;
+        Integer currentVote = this.directionVotes.getOrDefault(animal, 0);
+        if (currentVote != direction) {
+            this.votingSum -= currentVote;
+            this.votingSum += direction;
             this.directionVotes.put(animal, direction);
-            if (this.votingTotal <= -MOVE_VOTE_THRESHOLD) {
-                this.move(-1);
-            } else if (this.votingTotal >= MOVE_VOTE_THRESHOLD) {
-                this.move(1);
-            }
+            this.updateBoatPosition();
+
+            this.directionVotes.put(animal, direction);
         }
+    }
+
+    private void updateBoatPosition() {
+        this.VELOCITY = (this.votingSum / this.totalNumAnimals) * MOVE_DISTANCE;
+        float newX = this.origX + this.VELOCITY;
+
+        this.clearActions();
+        this.move = new MoveToAction();
+        this.move.setPosition(newX, this.getY());
+
+        this.move.setDuration(0.5f);
+        this.addAction(this.move);
     }
 
     /**
@@ -148,21 +174,26 @@ public class BoatGroup extends Group {
      * @param direction this parameter determines direction. 1 is to the right, -1 is to the left.
      */
     public void move(final int direction) {
-        MoveToAction move = new MoveToAction();
-        move.setPosition(this.getX() + (MOVE_DISTANCE * direction), this.getY());
+        this.move = new MoveToAction();
+        this.move.setPosition(this.getX() + (MOVE_DISTANCE * direction), this.getY());
 
-        move.setDuration(0.5f);
-        move.setInterpolation(new Interpolation.Elastic(2, 1, 1, 0.3f));
-        this.addAction(move);
+        this.move.setDuration(0.5f);
+        this.move.setInterpolation(new Interpolation.Elastic(2, 1, 1, 0.3f));
+        this.addAction(this.move);
     }
 
-    public void removeAnimal(AnimalActor actor) {
+    public void removeAnimal(AbstractAnimal absAnimal) {
+        Animal anim = (Animal) absAnimal;
+        AnimalActor actor = anim.getActor();
         for (BoatSector sec : this.sectors) {
             if (sec.getAnimals().contains(actor)) {
                 sec.removeActor(actor);
                 sec.getAnimals().remove(actor);
             }
         }
+        this.totalNumAnimals--;
+        this.directionVotes.remove(anim);
+        this.updateBoatPosition();
     }
 
     public Circle getBounds() {
