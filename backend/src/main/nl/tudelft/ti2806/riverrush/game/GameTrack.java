@@ -108,7 +108,7 @@ public class GameTrack {
             }
 
             this.updateCannonballObstacles(team, currentDistance);
-            //this.updateRockObstacles(team, currentDistance);
+            this.updateRockObstacles(team, currentDistance);
 
             TeamProgressEvent event = new TeamProgressEvent();
             event.setProgress(currentDistance + speed);
