@@ -42,10 +42,9 @@ public class RenderServer extends AbstractServer {
 
         if (this.sockets.size() <= MAX_RENDERERS) {
             this.createController(conn);
-            return;
+        } else {
+            conn.close(CloseFrame.REFUSE, "Maximum number of renderers reached");
+            log.info("Connection rejected");
         }
-
-        conn.close(CloseFrame.REFUSE, "Maximum number of renderers reached");
-        log.info("Connection rejected");
     }
 }

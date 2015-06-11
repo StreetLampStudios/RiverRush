@@ -80,12 +80,10 @@ public abstract class AbstractServer extends WebSocketServer {
         FailIf.isNull(conn);
         log.info("Connection closed.");
 
-        if (code == CloseFrame.REFUSE) {
-            return;
+        if (code != CloseFrame.REFUSE) {
+            this.controllers.get(conn).dispose();
+            this.controllers.remove(conn);
         }
-
-        this.controllers.get(conn).dispose();
-        this.controllers.remove(conn);
     }
 
     @Override
