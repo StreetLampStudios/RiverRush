@@ -1,25 +1,7 @@
 package nl.tudelft.ti2806.riverrush;
 
 import com.google.inject.AbstractModule;
-import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalDroppedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalReturnedToBoatEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.BoatCollidedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameStoppedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.network.event.JoinTeamCommand;
 import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
 import nl.tudelft.ti2806.riverrush.network.event.VoteBoatMoveCommand;
@@ -93,6 +75,7 @@ public abstract class CoreModule extends AbstractModule {
         protocol.registerNetworkMessage(GameStoppedEvent.class, GameStoppedEvent::new);
         protocol.registerNetworkMessage(GameWaitingEvent.class, GameWaitingEvent::new);
         protocol.registerNetworkMessage(TeamProgressEvent.class, TeamProgressEvent::new);
+        protocol.registerNetworkMessage(GameAboutToWaitEvent.class, GameAboutToWaitEvent::new);
     }
 
     /**

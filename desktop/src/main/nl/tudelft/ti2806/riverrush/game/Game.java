@@ -11,6 +11,7 @@ import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.LoadingGameState;
+import nl.tudelft.ti2806.riverrush.game.state.WaitingGameState;
 import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
@@ -48,6 +49,10 @@ public class Game extends GdxGame {
 
         this.dispatcher.attach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
         this.dispatcher.attach(AnimalRemovedEvent.class, this.removeAnimalHandlerLambda);
+    }
+
+    public void reset() {
+        this.currentGameState = new WaitingGameState(dispatcher, assets, this);
     }
 
     /**
@@ -117,9 +122,10 @@ public class Game extends GdxGame {
 
     /**
      * Commands the game to finish. This action is relegated to the current game state.
+     * @param team
      */
-    public void finish() {
-        this.currentGameState = this.currentGameState.finish();
+    public void finish(Integer team) {
+        this.currentGameState = this.currentGameState.finish(team);
     }
 
     /**

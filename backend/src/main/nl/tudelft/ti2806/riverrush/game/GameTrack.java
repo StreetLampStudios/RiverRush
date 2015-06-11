@@ -3,18 +3,9 @@ package nl.tudelft.ti2806.riverrush.game;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
-import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.Direction;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * Representation of a game track.
@@ -24,25 +15,40 @@ public class GameTrack {
     private static final long UPDATE_DELAY = 1000;
     public static final Integer TRACK_LENGTH = 100;
     private static final Integer DISTANCE_INTERVAL = 5;
+    private final HashMap<Integer, Team> teams;
 
-    private HashMap<Integer, Team> teams;
     private HashMap<Team, Double> teamDistances;
     private final HashMap<Integer, HashMap<Double, String>> levelMap;
 
     private EventDispatcher dispatcher;
+    private Game game;
+
 
     /**
      * Create a gametrack.
      *
      * @param level - String which will determine when to add an cannonball
      * @param dispatch - See {@link EventDispatcher}
+     * @param gme      - the game
      */
-    public GameTrack(final String level, final EventDispatcher dispatch) {
+    public GameTrack(final String level, final EventDispatcher dispatch, final Game gme) {
         this.dispatcher = dispatch;
+        game = gme;
         this.teams = new HashMap<>();
         this.teamDistances = new HashMap<>();
         this.levelMap = new HashMap<>();
         this.parseLevel(level);
+
+        reset();
+    }
+
+    /**
+     * Resets the gametrack to start over.
+     */
+    public void reset() {
+        for (Team team : teamDistances.keySet()) {
+            teamDistances.put(team, 0.0);
+        }
     }
 
     /**
@@ -78,7 +84,9 @@ public class GameTrack {
         tmr.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                GameTrack.this.updateProgress();
+                if (GameTrack.this.updateProgress()) {
+                    tmr.cancel();
+                }
             }
         }, UPDATE_DELAY, UPDATE_DELAY);
     }
@@ -86,7 +94,8 @@ public class GameTrack {
     /**
      * This method will update the progress of the gametrack.
      */
-    protected void updateProgress() {
+    protected boolean updateProgress() {
+        boolean someoneFinished = false;
         ArrayList<Team> finishedTeams = new ArrayList<>();
         for (Team team : this.teamDistances.keySet()) {
             Double speed = this.getSpeed(team);
@@ -95,6 +104,7 @@ public class GameTrack {
 
             if (currentDistance + speed >= TRACK_LENGTH) {
                 finishedTeams.add(team);
+                someoneFinished = true;
             }
 
             this.updateCannonballObstacles(team, currentDistance);
@@ -107,11 +117,10 @@ public class GameTrack {
         }
         if (finishedTeams.size() > 0) {
             Team winner = this.determineWinningTeam(finishedTeams);
-            GameFinishedEvent event = new GameFinishedEvent();
-            event.setTeam(winner.getId());
-            this.dispatcher.dispatch(event);
-        }
+            game.finish(winner.getId());
 
+        }
+        return someoneFinished;
     }
 
     /**

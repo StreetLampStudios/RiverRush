@@ -13,8 +13,8 @@ public class BasicGameTrack extends GameTrack {
      *
      * @param dispatcher - See {@link EventDispatcher}
      */
-    public BasicGameTrack(final EventDispatcher dispatcher) {
-        super("--[#5]-[#5]---[@5]--[#5]--[#5]-[#5]--", dispatcher);
+    public BasicGameTrack(final EventDispatcher dispatcher, Game game) {
+        super("--[#5]-[#5]---[@5]--[#5]--[#5]-[#5]--", dispatcher, game);
         // --[@2]-[@2]---[@8]--[@8]--[@2]-[@8]--
         // --[#5]-[#5]---[@5]--[#5]--[#5]-[#5]--
         this.addTeam(new Team());

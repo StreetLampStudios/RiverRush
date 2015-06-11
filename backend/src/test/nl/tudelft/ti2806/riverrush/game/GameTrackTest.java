@@ -15,6 +15,8 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 
 /**
  * Created by MARTIJN.
@@ -25,11 +27,13 @@ public class GameTrackTest {
     EventDispatcher dispatcher;
     private Team team;
     private final static double delta = 0.001;
+    private Game game;
 
     @Before
     public void setUp() throws Exception {
         this.dispatcher = Mockito.spy(EventDispatcher.class);
-        this.track = new GameTrack("--[#5]-[#5]---[@5]--[#5]--[#5]-[#5]--", this.dispatcher);
+        game = mock(Game.class);
+        this.track = new GameTrack("--[#5]-[#5]---[@5]--[#5]--[#5]-[#5]--", this.dispatcher, this.game);
         this.team = new Team();
         this.track.addTeam(this.team);
     }
@@ -91,8 +95,7 @@ public class GameTrackTest {
             this.track.updateProgress();
         }
 
-        Mockito.verify(this.dispatcher, Mockito.times(1)).dispatch(
-                Mockito.isA(GameFinishedEvent.class));
+        Mockito.verify(this.game, times(1)).finish(Mockito.any());
 
         assertEquals(GameTrack.TRACK_LENGTH, this.track.getDistanceTeam(this.team.getId()), delta);
     }

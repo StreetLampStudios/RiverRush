@@ -54,6 +54,7 @@ public class PlayingGameState extends AbstractGameState {
     private final ArrayList<CannonBallGraphic> leftObstList;
     private final ArrayList<CannonBallGraphic> rightObstList;
 
+
     /**
      * The state of the game that indicates that the game is currently playable.
      *
@@ -119,9 +120,9 @@ public class PlayingGameState extends AbstractGameState {
     }
 
     @Override
-    public GameState finish() {
+    public GameState finish(Integer team) {
         this.screen.dispose();
-        return new FinishedGameState(this.dispatcher, this.assets, this.game);
+        return new FinishedGameState(this.dispatcher, this.assets, this.game, team);
     }
 
     @Override

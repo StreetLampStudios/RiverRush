@@ -49,6 +49,7 @@ public class RenderController extends AbstractController {
         this.listenTo(GameWaitingEvent.class, sendOverNetworkLambda);
         this.listenTo(TeamProgressEvent.class, sendOverNetworkLambda);
         this.listenTo(BoatCollidedEvent.class, boatRektHandler);
+        this.listenTo(GameAboutToWaitEvent.class, sendOverNetworkLambda);
 
         this.game.waitForPlayers();
     }

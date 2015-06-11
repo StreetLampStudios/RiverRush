@@ -6,19 +6,13 @@ import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.Direction;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.WaitingForRendererState;
+import nl.tudelft.ti2806.riverrush.game.state.WaitingGameState;
 
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.Collection;
 
 /**
  * Represents an ongoing or waiting game.
@@ -26,52 +20,37 @@ import java.util.concurrent.TimeUnit;
 @Singleton
 public class Game {
 
-    /**
-     * Game about to start timer delay.
-     */
-    public static final int DELAY = 5;
+
 
     /**
      * The current state of the game.
      */
     private GameState gameState;
     private GameTrack gameTrack;
-    private final EventDispatcher eventDispatcher;
-    private boolean eventSend;
+    private final EventDispatcher dispatcher;
 
     private List<Sector> currentPlayerSectors = Lists.newArrayList(Sector.FRONT, Sector.FRONT);
 
     /**
      * Create a game instance.
      *
-     * @param dispatcher The event dispatcher
+     * @param eventDispatcher The event dispatcher
      */
     @Inject
-    public Game(final EventDispatcher dispatcher) {
+    public Game(final EventDispatcher eventDispatcher) {
+        this.dispatcher = eventDispatcher;
         this.gameState = new WaitingForRendererState(dispatcher, this);
-        this.gameTrack = new BasicGameTrack(dispatcher);
-        this.eventDispatcher = dispatcher;
-        this.eventSend = false;
-
-        HandlerLambda<AnimalAddedEvent> addAnimal = (e) -> this.addAnimalHandler();
-        HandlerLambda<AnimalRemovedEvent> removeAnimal = (e) -> this.removeAnimalHandler(e);
-        this.eventDispatcher.attach(AnimalAddedEvent.class, addAnimal);
-        this.eventDispatcher.attach(AnimalRemovedEvent.class, removeAnimal);
+        this.gameTrack = new BasicGameTrack(dispatcher, this);
+        HandlerLambda<AnimalRemovedEvent> removeAnimal = this::removeAnimalHandler;
+        this.dispatcher.attach(AnimalRemovedEvent.class, removeAnimal);
     }
 
     /**
-     * Handler that adds a player to the game.
+     * Resets the game.
      */
-    private void addAnimalHandler() {
-        if (!this.eventSend && this.allTeamsHaveAPlayer()) {
-            this.eventSend = true;
-            GameAboutToStartEvent event = new GameAboutToStartEvent();
-            event.setSeconds(DELAY);
-            this.eventDispatcher.dispatch(event);
-
-            final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-            scheduler.schedule(this::start, DELAY, TimeUnit.SECONDS);
-        }
+    public void reset() {
+        this.gameTrack.reset();
+        this.gameState = new WaitingGameState(dispatcher, this);
     }
 
     /**
@@ -115,9 +94,10 @@ public class Game {
 
     /**
      * Finish the game.
+     * @param winningId - id of the winner.
      */
-    public void finish() {
-        this.gameState = this.gameState.finish();
+    public void finish(final Integer winningId) {
+        this.gameState = this.gameState.finish(winningId);
     }
 
     /**
@@ -144,9 +124,9 @@ public class Game {
             Sector nextSector = currentPlayerSectors.get(team).getNext();
             currentPlayerSectors.set(team, nextSector);
             event.setSector(nextSector);
-            this.eventDispatcher.dispatch(event);
+            this.dispatcher.dispatch(event);
         } catch (NoSuchTeamException e) {
-            // Empty for now TODO
+            //TODO Empty for now
         }
 
     }
@@ -191,5 +171,9 @@ public class Game {
         Team team1 = this.gameTrack.getTeam(team);
         AbstractAnimal animal1 = team1.getAnimals().get(animal);
         animal1.fall();
+    }
+
+    public Collection<Team> getTeams() {
+        return gameTrack.getTeams().values();
     }
 }

@@ -21,7 +21,7 @@ public class WaitingGameState extends AbstractGameState {
     // private final HandlerLambda<AnimalAddedEvent> animalHandler = (e) ->
     // this.addAnimalHandler(e);
     private final HandlerLambda<GameAboutToStartEvent> timerHandler = (e) -> this.startTimer();
-    private final HandlerLambda<AnimalAddedEvent> addAnimalHandler = (e) -> this.addAnimalHandler(e);
+    private final HandlerLambda<AnimalAddedEvent> addAnimalHandler = this::addAnimalHandler;
 
     /**
      * The state of the game that indicates that the game is waiting for players. In this state the
@@ -39,8 +39,9 @@ public class WaitingGameState extends AbstractGameState {
         this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandler);
         this.dispatcher.attach(GameAboutToStartEvent.class, this.timerHandler);
         this.screen = new WaitingScreen(assetManager, eventDispatcher);
-        Gdx.app.postRunnable(() -> WaitingGameState.this.game
-            .setScreen(WaitingGameState.this.screen));
+        Gdx.app.postRunnable(() ->
+            WaitingGameState.this.game.setScreen(WaitingGameState.this.screen)
+        );
     }
 
     /**
@@ -70,7 +71,7 @@ public class WaitingGameState extends AbstractGameState {
     }
 
     @Override
-    public GameState finish() {
+    public GameState finish(Integer team) {
         return this;
     }
 
