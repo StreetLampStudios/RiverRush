@@ -6,20 +6,23 @@ import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.WaitingForRendererState;
 import nl.tudelft.ti2806.riverrush.game.state.WaitingGameState;
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Represents an ongoing or waiting game.
  */
 @Singleton
 public class Game {
-
 
 
     /**
@@ -94,6 +97,7 @@ public class Game {
 
     /**
      * Finish the game.
+     *
      * @param winningId - id of the winner.
      */
     public void finish(final Integer winningId) {
@@ -111,24 +115,19 @@ public class Game {
      * Add the player to the team.
      *
      * @param animal The animal
-     * @param team The team
+     * @param team   The team
      */
     public void addPlayerToTeam(final AbstractAnimal animal, final Integer team) {
-        try {
-            this.gameTrack.addAnimal(team, animal);
+        Integer teamId = this.gameTrack.addAnimal(team, animal);
 
-            AnimalAddedEvent event = new AnimalAddedEvent();
-            event.setAnimal(animal.getId());
-            event.setTeam(team);
-            event.setVariation(animal.getVariation());
-            Sector nextSector = currentPlayerSectors.get(team).getNext();
-            currentPlayerSectors.set(team, nextSector);
-            event.setSector(nextSector);
-            this.dispatcher.dispatch(event);
-        } catch (NoSuchTeamException e) {
-            //TODO Empty for now
-        }
-
+        AnimalAddedEvent event = new AnimalAddedEvent();
+        event.setAnimal(animal.getId());
+        event.setTeam(teamId);
+        event.setVariation(animal.getVariation());
+        Sector nextSector = currentPlayerSectors.get(teamId).getNext();
+        currentPlayerSectors.set(teamId, nextSector);
+        event.setSector(nextSector);
+        this.dispatcher.dispatch(event);
     }
 
     /**
@@ -148,13 +147,13 @@ public class Game {
      * Remove all the animals from a given boat that moved to the wrong direction.
      *
      * @param rightOneDirection the direction given by the boat collided event.
-     * @param teamID the team which the action applies to.
+     * @param teamID            the team which the action applies to.
      */
     public void sweepAnimals(final Direction rightOneDirection, final Integer teamID) {
         Team tm = this.gameTrack.getTeam(teamID);
         for (AbstractAnimal anim : tm.getAnimals().values()) {
             if (anim.getVoteDirection().equals(rightOneDirection)
-                    || anim.getVoteDirection().equals(Direction.NEUTRAL)) {
+                || anim.getVoteDirection().equals(Direction.NEUTRAL)) {
                 // TODO: check if this equals works properly
                 anim.fall();
             }
@@ -165,7 +164,7 @@ public class Game {
      * kick an animal off the boat
      *
      * @param animal - integer that represents the animal
-     * @param team - integer that represents the team
+     * @param team   - integer that represents the team
      */
     public void collideAnimal(final Integer animal, final Integer team) {
         Team team1 = this.gameTrack.getTeam(team);

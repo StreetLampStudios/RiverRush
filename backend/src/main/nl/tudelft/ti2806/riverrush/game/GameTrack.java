@@ -3,9 +3,17 @@ package nl.tudelft.ti2806.riverrush.game;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
+import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Representation of a game track.
@@ -15,6 +23,7 @@ public class GameTrack {
     private static final long UPDATE_DELAY = 1000;
     public static final Integer TRACK_LENGTH = 100;
     private static final Integer DISTANCE_INTERVAL = 5;
+    public static final int TEAM_SIZE = 50;
     private final HashMap<Integer, Team> teams;
 
     private HashMap<Team, Double> teamDistances;
@@ -27,7 +36,7 @@ public class GameTrack {
     /**
      * Create a gametrack.
      *
-     * @param level - String which will determine when to add an cannonball
+     * @param level    - String which will determine when to add an cannonball
      * @param dispatch - See {@link EventDispatcher}
      * @param gme      - the game
      */
@@ -126,7 +135,7 @@ public class GameTrack {
     /**
      * This will check if it is time for the team to get a cannonball to their faces.
      *
-     * @param team - The team
+     * @param team            - The team
      * @param currentDistance - The distance this team has travelled
      */
     protected void updateCannonballObstacles(final Team team, final Double currentDistance) {
@@ -147,7 +156,7 @@ public class GameTrack {
     /**
      * This will check if it is time for the team to get a rock to their faces.
      *
-     * @param team - The team
+     * @param team            - The team
      * @param currentDistance - The distance this team has travelled
      */
     protected void updateRockObstacles(final Team team, final Double currentDistance) {
@@ -232,16 +241,31 @@ public class GameTrack {
      *
      * @param teamID - The id of the team
      * @param animal - The animal to add
+     * @return The team id the player joined
      * @throws NoSuchTeamException - if team is not found
+     * @throws TeamFullException - if team is full
      */
-    public void addAnimal(final Integer teamID, final AbstractAnimal animal)
-            throws NoSuchTeamException {
+    public Integer addAnimal(final Integer teamID, final AbstractAnimal animal) throws NoSuchTeamException, TeamFullException {
         if (!this.teams.containsKey(teamID)) {
             throw new NoSuchTeamException();
         }
 
-        this.getTeam(teamID).addAnimal(animal);
-        animal.setTeamId(teamID);
+        if (this.getTeam(teamID).size() < TEAM_SIZE) {
+            this.getTeam(teamID).addAnimal(animal);
+            animal.setTeamId(teamID);
+            return teamID;
+        }
+
+        //TODO: Find a better way to get this
+        int otherTeam = Math.abs(teamID - 1);
+
+        if (this.getTeam(otherTeam).size() < TEAM_SIZE) {
+            this.getTeam(otherTeam).addAnimal(animal);
+            animal.setTeamId(otherTeam);
+            return otherTeam;
+        }
+
+        throw new TeamFullException();
     }
 
     /**

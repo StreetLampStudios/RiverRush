@@ -14,6 +14,8 @@ import nl.tudelft.ti2806.riverrush.game.state.LoadingGameState;
 import nl.tudelft.ti2806.riverrush.game.state.WaitingGameState;
 import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
+import nl.tudelft.ti2806.riverrush.graphics.entity.AnimalActor;
+import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 
 import java.util.HashMap;
@@ -143,10 +145,16 @@ public class Game extends GdxGame {
      */
     public void removeAnimalHandler(final AnimalRemovedEvent event) {
         Integer teamId = event.getTeam();
-        Integer animal = event.getAnimal();
+        Integer animalId = event.getAnimal();
         Team team = this.getTeam(teamId);
-        AbstractAnimal removeAnimal = team.getAnimals().get(animal);
-        team.getBoat().removeAnimal(removeAnimal);
-        team.getAnimals().remove(animal);
+        Animal animal = (Animal) team.getAnimals().get(animalId);
+        BoatGroup boat = team.getBoat();
+
+        //TODO: put this in de game states
+        if (boat != null) {
+            boat.removeAnimal(animal);
+        }
+
+        team.getAnimals().remove(animalId);
     }
 }
