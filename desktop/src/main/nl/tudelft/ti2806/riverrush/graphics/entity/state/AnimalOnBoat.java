@@ -24,7 +24,7 @@ public class AnimalOnBoat implements AnimalState {
     /**
      * Constructor.
      *
-     * @param anAnimal        - The animal that is on the boat
+     * @param anAnimal - The animal that is on the boat
      * @param eventDispatcher - The event disptacher
      */
     public AnimalOnBoat(final Animal anAnimal, final EventDispatcher eventDispatcher) {
@@ -59,8 +59,9 @@ public class AnimalOnBoat implements AnimalState {
     @Override
     public AnimalState voteDirection(final Direction direction) {
         this.animal.setVoteDirection(direction);
-        Action roll = this.animal.getActor().rollAction(direction);
-        this.animal.getActor().addAction(roll);
+        this.animal.getActor().updateFlag(direction);
+        // Action roll = this.animal.getActor().rollAction(direction);
+        // this.animal.getActor().addAction(roll);
         return this;
     }
 }

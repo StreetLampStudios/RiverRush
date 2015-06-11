@@ -34,8 +34,9 @@ public class Game extends GdxGame {
     /**
      * Creates a game class.
      *
-     * @param eventDispatcher the dispatcher that handles the events that are relevant to the game class.
-     * @param assetManager    has all necessary assets loaded and available for use.
+     * @param eventDispatcher the dispatcher that handles the events that are relevant to the game
+     *            class.
+     * @param assetManager has all necessary assets loaded and available for use.
      */
     @Inject
     public Game(final EventDispatcher eventDispatcher, final AssetManager assetManager) {
@@ -44,7 +45,7 @@ public class Game extends GdxGame {
         this.teams = new HashMap<>();
 
         this.animalFellOffEventHandlerLambda = (e) -> this.getTeam(e.getTeam()).getAnimals()
-            .get(e.getAnimal()).fall();
+                .get(e.getAnimal()).fall();
 
         this.dispatcher.attach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
         this.dispatcher.attach(AnimalRemovedEvent.class, this.removeAnimalHandlerLambda);
@@ -65,7 +66,7 @@ public class Game extends GdxGame {
      * @return the teams
      */
     public HashMap<Integer, Team> getTeams() {
-        return teams;
+        return this.teams;
     }
 
     /**
@@ -129,7 +130,6 @@ public class Game extends GdxGame {
         this.currentGameState = this.currentGameState.waitForPlayers();
     }
 
-
     /**
      * Removed an animal.
      *
@@ -139,8 +139,8 @@ public class Game extends GdxGame {
         Integer teamId = event.getTeam();
         Integer animal = event.getAnimal();
         Team team = this.getTeam(teamId);
-        Animal removeAnimal = (Animal) team.getAnimals().get(animal);
-        team.getBoat().removeAnimal(removeAnimal.getActor());
+        AbstractAnimal removeAnimal = team.getAnimals().get(animal);
+        team.getBoat().removeAnimal(removeAnimal);
         team.getAnimals().remove(animal);
     }
 }
