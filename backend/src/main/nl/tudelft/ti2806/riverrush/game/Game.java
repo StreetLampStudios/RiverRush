@@ -115,18 +115,18 @@ public class Game {
      */
     public void addPlayerToTeam(final AbstractAnimal animal, final Integer team) {
         try {
-            this.gameTrack.addAnimal(team, animal);
+            Integer teamId = this.gameTrack.addAnimal(team, animal);
 
             AnimalAddedEvent event = new AnimalAddedEvent();
             event.setAnimal(animal.getId());
-            event.setTeam(team);
+            event.setTeam(teamId);
             event.setVariation(animal.getVariation());
-            Sector nextSector = currentPlayerSectors.get(team).getNext();
-            currentPlayerSectors.set(team, nextSector);
+            Sector nextSector = currentPlayerSectors.get(teamId).getNext();
+            currentPlayerSectors.set(teamId, nextSector);
             event.setSector(nextSector);
             this.dispatcher.dispatch(event);
-        } catch (NoSuchTeamException e) {
-            //TODO Empty for now
+        } catch (NoSuchTeamException | TeamFullException e) {
+            // Never happens
         }
 
     }
