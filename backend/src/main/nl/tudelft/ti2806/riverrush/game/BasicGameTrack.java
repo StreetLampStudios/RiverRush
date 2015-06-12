@@ -3,6 +3,8 @@ package nl.tudelft.ti2806.riverrush.game;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
+import java.io.InputStream;
+
 /**
  * A basic implementation of a game track.
  */
@@ -14,9 +16,10 @@ public class BasicGameTrack extends GameTrack {
      * @param dispatcher - See {@link EventDispatcher}
      */
     public BasicGameTrack(final EventDispatcher dispatcher, Game game) {
-        super("--[#5]-[#5]---[@5]--[#5]--[#5]-[#5]--", dispatcher, game);
-        // --[@2]-[@2]---[@8]--[@8]--[@2]-[@8]--
-        // --[#5]-[#5]---[@5]--[#5]--[#5]-[#5]--
+        super(dispatcher, game);
+        InputStream in = BasicGameTrack.class.getResourceAsStream("/simpletrack.txt");
+        this.parseLevel(in);
+
         this.addTeam(new Team());
         this.addTeam(new Team());
     }

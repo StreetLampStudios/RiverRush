@@ -4,20 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
-import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalDroppedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalReturnedToBoatEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.BoatCollidedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.Direction;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
-import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.game.TickHandler;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
@@ -53,7 +40,6 @@ public class PlayingGameState extends AbstractGameState {
     private final ArrayList<RockGraphic> rightRockList;
     private final ArrayList<CannonBallGraphic> leftObstList;
     private final ArrayList<CannonBallGraphic> rightObstList;
-
 
     /**
      * The state of the game that indicates that the game is currently playable.
@@ -131,6 +117,11 @@ public class PlayingGameState extends AbstractGameState {
         return this;
     }
 
+    @Override
+    public Event getStateEvent() {
+        return null;
+    }
+
     /**
      * This method is called when the game renders the screen.
      */
@@ -159,10 +150,7 @@ public class PlayingGameState extends AbstractGameState {
             for (AbstractAnimal animal : this.game.getTeam(0).getAnimals()) {
                 Animal animal1 = (Animal) animal;
                 if (graphic.calculateCollision(animal1.getActor())) {
-                    AnimalCollidedEvent event = new AnimalCollidedEvent();
-                    event.setAnimal(animal1.getId());
-                    event.setTeam(animal1.getTeamId());
-                    this.dispatcher.dispatch(event);
+                    animal1.collide();
                 }
             }
         }
@@ -171,10 +159,7 @@ public class PlayingGameState extends AbstractGameState {
             for (AbstractAnimal animal : this.game.getTeam(1).getAnimals()) {
                 Animal animal1 = (Animal) animal;
                 if (graphic.calculateCollision(animal1.getActor())) {
-                    AnimalCollidedEvent event = new AnimalCollidedEvent();
-                    event.setAnimal(animal1.getId());
-                    event.setTeam(animal1.getTeamId());
-                    this.dispatcher.dispatch(event);
+                    animal1.collide();
                 }
             }
         }
@@ -296,7 +281,8 @@ public class PlayingGameState extends AbstractGameState {
      * @param teamProgressEvent - the event
      */
     private void teamProgress(final TeamProgressEvent teamProgressEvent) {
-        this.screen.updateProgress(teamProgressEvent.getTeam(), teamProgressEvent.getProgress());
+        this.screen.updateProgress(teamProgressEvent.getTeam(), teamProgressEvent.getProgress(),
+                teamProgressEvent.getSpeed());
     }
 
     /**

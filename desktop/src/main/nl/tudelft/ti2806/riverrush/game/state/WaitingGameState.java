@@ -3,6 +3,7 @@ package nl.tudelft.ti2806.riverrush.game.state;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
@@ -18,8 +19,7 @@ public class WaitingGameState extends AbstractGameState {
 
     private final WaitingScreen screen;
     private static final int DELAY = 5;
-    // private final HandlerLambda<AnimalAddedEvent> animalHandler = (e) ->
-    // this.addAnimalHandler(e);
+
     private final HandlerLambda<GameAboutToStartEvent> timerHandler = (e) -> this.startTimer();
     private final HandlerLambda<AnimalAddedEvent> addAnimalHandler = this::addAnimalHandler;
 
@@ -30,17 +30,17 @@ public class WaitingGameState extends AbstractGameState {
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game in this
      *                        state.
      * @param assetManager    has all necessary assets loaded and available for use.
-     * @param gm              refers to the game that this state belongs to.
+     * @param game            refers to the game that this state belongs to.
      */
     public WaitingGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
-                            final Game gm) {
-        super(eventDispatcher, assetManager, gm);
+                            final Game game) {
+        super(eventDispatcher, assetManager, game);
 
         this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandler);
         this.dispatcher.attach(GameAboutToStartEvent.class, this.timerHandler);
         this.screen = new WaitingScreen(assetManager, eventDispatcher);
-        Gdx.app.postRunnable(() ->
-            WaitingGameState.this.game.setScreen(WaitingGameState.this.screen)
+        Gdx.app.postRunnable(
+            () -> WaitingGameState.this.game.setScreen(WaitingGameState.this.screen)
         );
     }
 
@@ -71,13 +71,18 @@ public class WaitingGameState extends AbstractGameState {
     }
 
     @Override
-    public GameState finish(Integer team) {
+    public GameState finish(final Integer team) {
         return this;
     }
 
     @Override
     public GameState waitForPlayers() {
         return this;
+    }
+
+    @Override
+    public Event getStateEvent() {
+        return null;
     }
 
     /**

@@ -39,4 +39,11 @@ public class AddRockEvent extends AbstractTeamEvent {
     public void setLocation(Direction aLocation) {
         this.location = aLocation;
     }
+
+    @Override
+    public String toString() {
+        return "AddRockEvent{" +
+            "location=" + location +
+            "} " + super.toString();
+    }
 }

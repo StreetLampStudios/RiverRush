@@ -1,6 +1,8 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 
 /**
@@ -25,6 +27,15 @@ public class WaitingForRendererState implements GameState {
     @Override
     public void dispose() {
         // Nothing to dispose.
+    }
+
+    /**
+     * Get the event for the current state to send to new connections.
+     *
+     * @return The event for the current state
+     */
+    public Event getStateEvent() {
+        return null;
     }
 
     @Override

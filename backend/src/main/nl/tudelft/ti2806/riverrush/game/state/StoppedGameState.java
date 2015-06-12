@@ -1,6 +1,8 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStoppedEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 
@@ -30,12 +32,21 @@ public class StoppedGameState implements GameState {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         scheduler.schedule(() -> System.exit(0), DELAY, TimeUnit.SECONDS);
 
-        dispatcher.dispatch(new GameStoppedEvent());
+        dispatcher.dispatch(this.getStateEvent());
     }
 
     @Override
     public void dispose() {
         // Nothing to dispose.
+    }
+
+    /**
+     * Get the event for the current state to send to new connections.
+     *
+     * @return The event for the current state
+     */
+    public Event getStateEvent() {
+        return new GameStoppedEvent();
     }
 
     @Override

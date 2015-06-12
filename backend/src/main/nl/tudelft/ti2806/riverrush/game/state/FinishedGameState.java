@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToWaitEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
@@ -36,10 +37,6 @@ public class FinishedGameState implements GameState {
             }
         }, WAITTOSTARTGAME, WAITTOSTARTGAME);
 
-        GameFinishedEvent event2 = new GameFinishedEvent();
-        event2.setTeam(-1);
-        dispatcher.dispatch(event2);
-
         GameAboutToWaitEvent event = new GameAboutToWaitEvent();
         event.setTimeTillWait(WAITTOSTARTGAME);
         eventDispatcher.dispatch(event);
@@ -48,6 +45,17 @@ public class FinishedGameState implements GameState {
     @Override
     public void dispose() {
         // Nothing to dispose.
+    }
+
+    /**
+     * Get the event for the current state to send to new connections.
+     *
+     * @return The event for the current state
+     */
+    public Event getStateEvent() {
+        GameFinishedEvent event = new GameFinishedEvent();
+        event.setTeam(-1);
+        return event;
     }
 
     @Override
