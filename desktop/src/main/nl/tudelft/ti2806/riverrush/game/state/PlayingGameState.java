@@ -41,7 +41,6 @@ public class PlayingGameState extends AbstractGameState {
     private final ArrayList<CannonBallGraphic> leftObstList;
     private final ArrayList<CannonBallGraphic> rightObstList;
 
-
     /**
      * The state of the game that indicates that the game is currently playable.
      *
@@ -288,7 +287,8 @@ public class PlayingGameState extends AbstractGameState {
      * @param teamProgressEvent - the event
      */
     private void teamProgress(final TeamProgressEvent teamProgressEvent) {
-        this.screen.updateProgress(teamProgressEvent.getTeam(), teamProgressEvent.getProgress());
+        this.screen.updateProgress(teamProgressEvent.getTeam(), teamProgressEvent.getProgress(),
+                teamProgressEvent.getSpeed());
     }
 
     /**

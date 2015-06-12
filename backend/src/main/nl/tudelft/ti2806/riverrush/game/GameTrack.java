@@ -32,31 +32,30 @@ public class GameTrack {
     private EventDispatcher dispatcher;
     private Game game;
 
-
     /**
      * Create a gametrack.
      *
-     * @param level    - String which will determine when to add an cannonball
+     * @param level - String which will determine when to add an cannonball
      * @param dispatch - See {@link EventDispatcher}
-     * @param gme      - the game
+     * @param gme - the game
      */
     public GameTrack(final String level, final EventDispatcher dispatch, final Game gme) {
         this.dispatcher = dispatch;
-        game = gme;
+        this.game = gme;
         this.teams = new HashMap<>();
         this.teamDistances = new HashMap<>();
         this.levelMap = new HashMap<>();
         this.parseLevel(level);
 
-        reset();
+        this.reset();
     }
 
     /**
      * Resets the gametrack to start over.
      */
     public void reset() {
-        for (Team team : teamDistances.keySet()) {
-            teamDistances.put(team, 0.0);
+        for (Team team : this.teamDistances.keySet()) {
+            this.teamDistances.put(team, 0.0);
         }
     }
 
@@ -122,11 +121,12 @@ public class GameTrack {
             TeamProgressEvent event = new TeamProgressEvent();
             event.setProgress(currentDistance + speed);
             event.setTeam(team.getId());
+            event.setSpeed(speed);
             this.dispatcher.dispatch(event);
         }
         if (finishedTeams.size() > 0) {
             Team winner = this.determineWinningTeam(finishedTeams);
-            game.finish(winner.getId());
+            this.game.finish(winner.getId());
 
         }
         return someoneFinished;
@@ -135,7 +135,7 @@ public class GameTrack {
     /**
      * This will check if it is time for the team to get a cannonball to their faces.
      *
-     * @param team            - The team
+     * @param team - The team
      * @param currentDistance - The distance this team has travelled
      */
     protected void updateCannonballObstacles(final Team team, final Double currentDistance) {
@@ -156,7 +156,7 @@ public class GameTrack {
     /**
      * This will check if it is time for the team to get a rock to their faces.
      *
-     * @param team            - The team
+     * @param team - The team
      * @param currentDistance - The distance this team has travelled
      */
     protected void updateRockObstacles(final Team team, final Double currentDistance) {
@@ -245,7 +245,8 @@ public class GameTrack {
      * @throws NoSuchTeamException - if team is not found
      * @throws TeamFullException - if team is full
      */
-    public Integer addAnimal(final Integer teamID, final AbstractAnimal animal) throws NoSuchTeamException, TeamFullException {
+    public Integer addAnimal(final Integer teamID, final AbstractAnimal animal)
+            throws NoSuchTeamException, TeamFullException {
         if (!this.teams.containsKey(teamID)) {
             throw new NoSuchTeamException();
         }
@@ -256,7 +257,7 @@ public class GameTrack {
             return teamID;
         }
 
-        //TODO: Find a better way to get this
+        // TODO: Find a better way to get this
         int otherTeam = Math.abs(teamID - 1);
 
         if (this.getTeam(otherTeam).size() < TEAM_SIZE) {
