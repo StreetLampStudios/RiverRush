@@ -1,6 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
+import nl.tudelft.ti2806.riverrush.network.protocol.InvalidProtocolException;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
@@ -20,7 +21,11 @@ public class GameAboutToWaitEvent extends AbstractAnimalEvent {
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
-        timeTillWait = Integer.parseInt(keyValuePairs.get("time"));
+        if (keyValuePairs.containsKey("time")) {
+            timeTillWait = Integer.parseInt(keyValuePairs.get("time"));
+        } else {
+            throw new InvalidProtocolException("Does not contain all the keys");
+        }
         return super.deserialize(keyValuePairs);
     }
 

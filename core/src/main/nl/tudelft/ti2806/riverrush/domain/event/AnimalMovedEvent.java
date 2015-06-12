@@ -5,6 +5,9 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
 
+/**
+ * This event is sent when a player flicks or swipes left/right.
+ */
 public class AnimalMovedEvent extends AbstractTeamAnimalEvent {
 
     private Direction direction;

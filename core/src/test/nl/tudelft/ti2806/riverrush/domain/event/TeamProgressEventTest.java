@@ -8,43 +8,41 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
 
 /**
- * Test for {@link AddObstacleEvent}
+ * Created by Martijn on 12-6-2015.
  */
-public class AddObstacleEventTest extends AbstractTeamEventTest {
+public class TeamProgressEventTest extends AbstractTeamEventTest{
 
-    private static final double DELTA = 0.001;
-    protected AddObstacleEvent event;
+    protected TeamProgressEvent event;
 
-    public final double location = 50;
+    public final double progress = 50;
 
     @BeforeClass
     public static void setup() {
-        uglyList.add("location");
+        uglyList.add("progress");
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
-        uglyList.remove("location");
+        uglyList.remove("progress");
     }
 
     @Override
     @Test
     public void testSerialize() throws Exception{
-        event = (AddObstacleEvent) getInstance();
+        event = (TeamProgressEvent) getInstance();
         event.setAnimal(getAnimalId());
 
         String s = event.serialize(protocol);
-        assertTrue(s.contains("location" + protocol.getKeyValueSeperator() + location));
+        assertTrue("Did not find progress", s.contains("progress" + protocol.getKeyValueSeperator() + progress));
         super.testSerialize();
     }
 
     @Override
     public AbstractTeamEvent getInstance() {
-        event = new AddObstacleEvent();
-        event.setLocation(location);
+        event = new TeamProgressEvent();
+        event.setProgress(progress);
         super.addVariables(event);
         return event;
     }
@@ -53,14 +51,13 @@ public class AddObstacleEventTest extends AbstractTeamEventTest {
     public Map<String, String> getTestMap() {
         Map<String, String> testMap = new HashMap<>();
         testMap.putAll(super.getTestMap());
-        testMap.put("location", Double.toString(location));
+        testMap.put("progress", Double.toString(progress));
         return testMap;
     }
 
     @Test
     public void testDeserializeExtraFunc() throws Exception {
-        event = (AddObstacleEvent) getInstance();
-        assertEquals(location, event.getLocation(), DELTA);
+        event = (TeamProgressEvent) getInstance();
+        assertEquals(new Double(progress), event.getProgress());
     }
-
 }
