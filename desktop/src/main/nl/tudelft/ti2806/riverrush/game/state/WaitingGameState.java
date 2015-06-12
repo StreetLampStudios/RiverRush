@@ -100,6 +100,8 @@ public class WaitingGameState extends AbstractGameState {
         }
         Integer variation = event.getVariation();
         tim.addAnimal(new Animal(this.dispatcher, event.getAnimal(), tm, variation, event.getSector()));
+
+        this.screen.addConnection();
     }
 
 }
