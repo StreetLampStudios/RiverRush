@@ -10,7 +10,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
 /**
- * Created by Martijn on 8-6-2015.
+ * Test for {@link AbstractTeam}
  */
 public class AbstractTeamTest {
 

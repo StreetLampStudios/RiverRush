@@ -9,7 +9,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by Martijn on 8-6-2015.
+ * Test for {@link AddObstacleEvent}
  */
 public class AddObstacleEventTest {
 

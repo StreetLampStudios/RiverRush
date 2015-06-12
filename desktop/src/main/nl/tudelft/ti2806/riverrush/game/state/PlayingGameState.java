@@ -314,7 +314,7 @@ public class PlayingGameState extends AbstractGameState {
      */
     private void returnToBoat(final AnimalReturnedToBoatEvent event) {
         Team t = this.game.getTeam(event.getTeam());
-        AbstractAnimal a  = t.getAnimal(event.getAnimal());
+        AbstractAnimal a = t.getAnimal(event.getAnimal());
         a.returnToBoat();
     }
 }

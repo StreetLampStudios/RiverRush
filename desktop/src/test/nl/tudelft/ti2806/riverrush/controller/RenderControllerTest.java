@@ -52,7 +52,6 @@ public class RenderControllerTest {
 
     @Test
     public void testDispose() throws Exception {
-
         ctrl.dispose();
 
         Mockito.verifyNoMoreInteractions(game);

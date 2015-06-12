@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Created by Martijn on 8-6-2015.
+ * Tests the {@link AbstractAnimal}
  */
 public class AbstractAnimalTest {
 

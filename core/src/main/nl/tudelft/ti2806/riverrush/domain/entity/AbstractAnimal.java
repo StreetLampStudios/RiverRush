@@ -136,10 +136,10 @@ public abstract class AbstractAnimal {
     /**
      * Sets the variation of this animal.
      *
-     * @param varia the variation
+     * @param aVariation the variation
      */
-    public void setVariation(final Integer varia) {
-        this.variation = varia;
+    public void setVariation(final Integer aVariation) {
+        this.variation = aVariation;
     }
 
     /**
