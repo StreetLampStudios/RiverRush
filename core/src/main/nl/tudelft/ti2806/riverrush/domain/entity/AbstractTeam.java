@@ -47,7 +47,7 @@ public abstract class AbstractTeam {
      * @param animalId The id of the animal
      * @return The animal
      */
-    public AbstractAnimal getAnimal(Integer animalId) {
+    public AbstractAnimal getAnimal(final Integer animalId) {
         return this.animals.get(animalId);
     }
 
