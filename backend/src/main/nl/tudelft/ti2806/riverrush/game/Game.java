@@ -9,7 +9,9 @@ import nl.tudelft.ti2806.riverrush.domain.entity.Team;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.GameStoppedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.WaitingForRendererState;
@@ -174,5 +176,14 @@ public class Game {
 
     public Collection<Team> getTeams() {
         return gameTrack.getTeams().values();
+    }
+
+    /**
+     * Get the event for the current state to send to new connections.
+     *
+     * @return The event for the current state
+     */
+    public Event getStateEvent() {
+        return this.gameState.getStateEvent();
     }
 }
