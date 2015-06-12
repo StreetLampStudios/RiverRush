@@ -11,21 +11,28 @@ import java.util.Map;
 public class TeamProgressEvent extends AbstractTeamEvent {
 
     private Double progress;
+    private Double speed;
 
     @Override
     public String serialize(final Protocol protocol) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(super.serialize(protocol));
         stringBuilder.append(protocol.getPairSeperator());
-        stringBuilder.append("progress").append(protocol.getKeyValueSeperator()).append(this.progress.toString());
+        stringBuilder.append("progress").append(protocol.getKeyValueSeperator())
+                .append(this.progress.toString());
+        stringBuilder.append(protocol.getPairSeperator());
+        stringBuilder.append("speed").append(protocol.getKeyValueSeperator())
+                .append(this.speed.toString());
+
         return stringBuilder.toString();
     }
 
     @Override
     public Event deserialize(final Map<String, String> keyValuePairs) {
         super.deserialize(keyValuePairs);
-        if (keyValuePairs.containsKey("progress")) {
+        if (keyValuePairs.containsKey("progress") && keyValuePairs.containsKey("speed")) {
             this.progress = Double.parseDouble(keyValuePairs.get("progress"));
+            this.speed = Double.parseDouble(keyValuePairs.get("speed"));
         } else {
             throw new InvalidProtocolException("Does not contain all the keys");
         }
@@ -42,4 +49,13 @@ public class TeamProgressEvent extends AbstractTeamEvent {
     public void setProgress(final Double aProgress) {
         this.progress = aProgress;
     }
+
+    public Double getSpeed() {
+        return this.speed;
+    }
+
+    public void setSpeed(final Double speed) {
+        this.speed = speed;
+    }
+
 }
