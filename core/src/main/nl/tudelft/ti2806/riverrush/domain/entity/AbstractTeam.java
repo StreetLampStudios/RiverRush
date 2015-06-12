@@ -1,7 +1,11 @@
 package nl.tudelft.ti2806.riverrush.domain.entity;
 
+import java.util.Collection;
 import java.util.HashMap;
 
+/**
+ * Abstract class for all the base logic of a team.
+ */
 public abstract class AbstractTeam {
 
     private static Integer highestId = 0;
@@ -9,30 +13,65 @@ public abstract class AbstractTeam {
 
     private final HashMap<Integer, AbstractAnimal> animals;
 
+    /**
+     * Create a team with an unique id.
+     */
     public AbstractTeam() {
         this.animals = new HashMap<>();
         this.id = highestId;
         highestId++;
     }
 
+    /**
+     * Create a team with an existing id.
+     *
+     * @param aId The id of the team
+     */
     public AbstractTeam(final int aId) {
         this.id = aId;
         this.animals = new HashMap<>();
     }
 
-    public HashMap<Integer, AbstractAnimal> getAnimals() {
-        return this.animals;
-    }
-
-    public void addAnimal(final AbstractAnimal animal) {
-        this.animals.put(animal.getId(), animal);
-    }
-
+    /**
+     * Get the id of the team.
+     *
+     * @return The id
+     */
     public Integer getId() {
         return this.id;
     }
 
     /**
+     * Get an animal from the team.
+     *
+     * @param animalId The id of the animal
+     * @return The animal
+     */
+    public AbstractAnimal getAnimal(Integer animalId) {
+        return this.animals.get(animalId);
+    }
+
+    /**
+     * Get all the animals.
+     *
+     * @return the animals.
+     */
+    public Collection<AbstractAnimal> getAnimals() {
+        return this.animals.values();
+    }
+
+    /**
+     * Add an animal to the team.
+     *
+     * @param animal The animal to add
+     */
+    public void addAnimal(final AbstractAnimal animal) {
+        this.animals.put(animal.getId(), animal);
+    }
+
+    /**
+     * Get the size of the team.
+     *
      * @return the amount of animals in a team
      */
     public int size() {
