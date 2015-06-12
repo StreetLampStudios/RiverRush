@@ -5,16 +5,25 @@ package nl.tudelft.ti2806.riverrush.domain.entity;
  * Sectors are rough location indicators.
  */
 public enum Sector {
+
+    /**
+     * The different sections of the boat.
+     */
     FRONT(0), FRONT_MIDDLE(1), MIDDLE(2), BACK_MIDDLE(3), BACK(4);
 
     private final int value;
 
+    /**
+     * Create a sector.
+     *
+     * @param sectorIndex The id of the sector
+     */
     Sector(final int sectorIndex) {
         this.value = sectorIndex;
     }
 
     /**
-     * Get the indec of this sector for array access purposes.
+     * Get the index of this sector for array access purposes.
      * @return The integer index.
      */
     public int getIndex() {
