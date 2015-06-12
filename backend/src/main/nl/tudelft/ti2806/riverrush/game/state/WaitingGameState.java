@@ -1,7 +1,11 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.game.Game;
 
 import java.util.Collection;
@@ -21,31 +25,36 @@ public class WaitingGameState implements GameState {
     private boolean readyToPlay = false;
 
     private final EventDispatcher dispatcher;
-    private Game game;
-    HandlerLambda<AnimalAddedEvent> AnimalAddedEventHandlerLambda = (e) -> animalAddedHandler();
+    private final Game game;
+    HandlerLambda<AnimalAddedEvent> AnimalAddedEventHandlerLambda = (e) -> checkForEnoughPlayers();
 
     /**
      * Create the waiting game state.
-     *  @param eventDispatcher The event dispatcher for firing events
-     * @param theGame    The game
+     *
+     * @param eventDispatcher The event dispatcher for firing events
+     * @param aGame           The game
      */
-    public WaitingGameState(final EventDispatcher eventDispatcher, final Game theGame) {
+    public WaitingGameState(final EventDispatcher eventDispatcher, final Game aGame) {
         this.dispatcher = eventDispatcher;
-        this.game = theGame;
+        this.game = aGame;
+
         this.dispatcher.dispatch(new GameWaitingEvent());
+
         this.dispatcher.attach(AnimalAddedEvent.class, AnimalAddedEventHandlerLambda);
+
+        // When restarting the game this has to be done to give the renderer time to switch the states.
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        animalAddedHandler();
+        this.checkForEnoughPlayers();
     }
 
     /**
      * Is called when a new animal is added.
      */
-    public void animalAddedHandler() {
+    public void checkForEnoughPlayers() {
         if (hasEnoughAnimals() && !readyToPlay) {
             readyToPlay = true;
             GameAboutToStartEvent event = new GameAboutToStartEvent();
@@ -75,7 +84,7 @@ public class WaitingGameState implements GameState {
 
     @Override
     public void dispose() {
-        // Nothing to dispose.
+        this.dispatcher.detach(AnimalAddedEvent.class, AnimalAddedEventHandlerLambda);
     }
 
     @Override

@@ -9,17 +9,17 @@ import nl.tudelft.ti2806.riverrush.game.Game;
 public class WaitingForRendererState implements GameState {
 
     private final EventDispatcher dispatcher;
-    private Game game;
+    private final Game game;
 
     /**
      * Create the waiting for renderer state.
      *
      * @param eventDispatcher The event dispatcher for firing events
-     * @param game
+     * @param aGame            The main aGame
      */
-    public WaitingForRendererState(final EventDispatcher eventDispatcher, final Game game) {
+    public WaitingForRendererState(final EventDispatcher eventDispatcher, final Game aGame) {
         this.dispatcher = eventDispatcher;
-        this.game = game;
+        this.game = aGame;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class WaitingForRendererState implements GameState {
     }
 
     @Override
-    public GameState finish(Integer team) {
+    public GameState finish(final Integer team) {
         return this;
     }
 
