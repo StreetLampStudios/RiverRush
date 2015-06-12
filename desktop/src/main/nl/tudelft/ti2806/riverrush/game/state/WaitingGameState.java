@@ -56,6 +56,7 @@ public class WaitingGameState extends AbstractGameState {
     public void dispose() {
         this.dispatcher.detach(GameAboutToStartEvent.class, this.timerHandler);
         this.dispatcher.detach(AnimalAddedEvent.class, this.addAnimalHandler);
+        this.dispatcher.detach(AnimalRemovedEvent.class, this.removeAnimalHandler);
         this.screen.dispose();
     }
 
