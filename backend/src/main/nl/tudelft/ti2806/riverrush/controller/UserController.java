@@ -22,6 +22,7 @@ public class UserController extends AbstractController {
     private final EventDispatcher dispatcher;
     private final AbstractServer server;
     private final Game game;
+    private boolean isJoined;
 
     /**
      * Create a player controller.
@@ -38,6 +39,7 @@ public class UserController extends AbstractController {
         this.dispatcher = aDispatcher;
         this.server = aServer;
         this.game = aGame;
+        this.isJoined = false;
     }
 
     @Override
@@ -93,8 +95,9 @@ public class UserController extends AbstractController {
      * @param e The event
      */
     private void joinTeamHandler(final JoinTeamCommand e) {
-        if (Objects.equals(e.getAnimal(), this.animal.getId())) {
+        if (Objects.equals(e.getAnimal(), this.animal.getId()) && !this.isJoined) {
             this.game.addPlayerToTeam(this.animal, e.getTeam());
+            this.isJoined = true;
         }
     }
 
