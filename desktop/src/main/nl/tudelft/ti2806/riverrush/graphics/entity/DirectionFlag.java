@@ -21,7 +21,6 @@ public class DirectionFlag extends Actor {
      * Creates a monkey object that represents player characters.
      *
      * @param assetManager enables the object to retrieve its assets
-     * @param dispatcher   Event dispatcher for dispatching events
      */
     @Inject
     public DirectionFlag(final AssetManager assetManager) {

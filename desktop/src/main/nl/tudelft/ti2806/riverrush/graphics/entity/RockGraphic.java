@@ -37,7 +37,7 @@ public class RockGraphic extends AbstractObstacle {
      * Creates a new obstacle.
      *
      * @param assetsManager refers to the manager that has made all loaded assets available for use.
-     * @param off           Configures the place from which the obstacle is fired. Must be between 0 and 1
+     * @param dir           Configures the place from which the obstacle is fired. Must be between 0 and 1
      */
     public RockGraphic(final AssetManager assetsManager, final Direction dir) {
         this.assets = assetsManager;

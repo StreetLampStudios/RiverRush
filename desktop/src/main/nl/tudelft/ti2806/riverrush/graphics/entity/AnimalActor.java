@@ -232,7 +232,7 @@ public class AnimalActor extends Group {
     }
 
     @Override
-    public void setPosition(float x, float y) {
+    public void setPosition(final float x, final float y) {
         super.setPosition(x, y);
         this.origX = x;
         this.origY = y;
