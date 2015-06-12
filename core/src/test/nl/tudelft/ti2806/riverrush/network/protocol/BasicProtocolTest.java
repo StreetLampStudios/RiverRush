@@ -60,7 +60,7 @@ public class BasicProtocolTest {
     }
 
     /**
-     * serialize calls and event.
+     * testSerialize calls and event.
      *
      * @throws InvalidActionException - If an invalid action occurs.
      */
@@ -111,7 +111,7 @@ public class BasicProtocolTest {
     }
 
     /**
-     * Tests serialize with a field.
+     * Tests testSerialize with a field.
      */
     @Test
     public void testSerializeWithField() {

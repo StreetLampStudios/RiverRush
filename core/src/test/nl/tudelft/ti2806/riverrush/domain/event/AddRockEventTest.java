@@ -7,19 +7,16 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.*;
 
 /**
- * Test for {@link AddObstacleEvent}
+ * Created by Martijn on 12-6-2015.
  */
-public class AddObstacleEventTest extends AbstractTeamEventTest {
+public class AddRockEventTest extends AbstractTeamEventTest {
 
-    private static final double DELTA = 0.001;
-    protected AddObstacleEvent event;
+    protected AddRockEvent event;
 
-    public final double location = 50;
+    public final Direction direction = Direction.LEFT;
 
     @BeforeClass
     public static void setup() {
@@ -34,20 +31,18 @@ public class AddObstacleEventTest extends AbstractTeamEventTest {
     @Override
     @Test
     public void testSerialize() throws Exception{
-        event = (AddObstacleEvent) getInstance();
+        event = (AddRockEvent) getInstance();
         event.setAnimal(getAnimalId());
 
         String s = event.serialize(protocol);
-        assertTrue(s.contains("location" + protocol.getKeyValueSeperator() + location));
+        assertTrue(s.contains("location" + protocol.getKeyValueSeperator() + direction));
         super.testSerialize();
     }
 
-
-
     @Override
     public AbstractTeamEvent getInstance() {
-        event = new AddObstacleEvent();
-        event.setLocation(location);
+        event = new AddRockEvent();
+        event.setLocation(Direction.LEFT);
         super.addVariables(event);
         return event;
     }
@@ -56,14 +51,14 @@ public class AddObstacleEventTest extends AbstractTeamEventTest {
     public Map<String, String> getTestMap() {
         Map<String, String> testMap = new HashMap<>();
         testMap.putAll(super.getTestMap());
-        testMap.put("location", Double.toString(location));
+        testMap.put("location", direction.toString());
         return testMap;
     }
 
     @Test
     public void testDeserializeExtraFunc() throws Exception {
-        event = (AddObstacleEvent) getInstance();
-        assertEquals(location, event.getLocation(), DELTA);
+        event = (AddRockEvent) getInstance();
+        assertEquals(direction, event.getLocation());
     }
 
 }

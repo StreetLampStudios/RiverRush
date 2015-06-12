@@ -151,7 +151,7 @@ public abstract class ServerTest extends AbstractModule {
     /**
      * When a controller calls sendEvent,
      * and the controller is associated with a connection,
-     * the server calls Protocol.serialize() on the event.
+     * the server calls Protocol.testSerialize() on the event.
      */
     @Test
     public void sendEvent_callsProtocol() {

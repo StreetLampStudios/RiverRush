@@ -7,47 +7,42 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.*;
 
 /**
- * Test for {@link AddObstacleEvent}
+ * Created by Martijn on 12-6-2015.
  */
-public class AddObstacleEventTest extends AbstractTeamEventTest {
+public class GameAboutToStartEventTest extends AbstractAnimalEventTest {
 
-    private static final double DELTA = 0.001;
-    protected AddObstacleEvent event;
+    protected GameAboutToStartEvent event;
 
-    public final double location = 50;
+    public final int seconds = 50;
 
     @BeforeClass
     public static void setup() {
-        uglyList.add("location");
+        uglyList.add("seconds");
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
-        uglyList.remove("location");
+        uglyList.remove("seconds");
     }
 
     @Override
     @Test
     public void testSerialize() throws Exception{
-        event = (AddObstacleEvent) getInstance();
+        event = (GameAboutToStartEvent) getInstance();
         event.setAnimal(getAnimalId());
 
         String s = event.serialize(protocol);
-        assertTrue(s.contains("location" + protocol.getKeyValueSeperator() + location));
+        assertTrue(s.contains("seconds" + protocol.getKeyValueSeperator() + seconds));
         super.testSerialize();
     }
 
-
-
     @Override
-    public AbstractTeamEvent getInstance() {
-        event = new AddObstacleEvent();
-        event.setLocation(location);
+    public Event getInstance() {
+        event = new GameAboutToStartEvent();
+        event.setSeconds(seconds);
         super.addVariables(event);
         return event;
     }
@@ -56,14 +51,13 @@ public class AddObstacleEventTest extends AbstractTeamEventTest {
     public Map<String, String> getTestMap() {
         Map<String, String> testMap = new HashMap<>();
         testMap.putAll(super.getTestMap());
-        testMap.put("location", Double.toString(location));
+        testMap.put("seconds", Integer.toString(seconds));
         return testMap;
     }
 
     @Test
     public void testDeserializeExtraFunc() throws Exception {
-        event = (AddObstacleEvent) getInstance();
-        assertEquals(location, event.getLocation(), DELTA);
+        event = (GameAboutToStartEvent) getInstance();
+        assertEquals(seconds, event.getSeconds());
     }
-
 }
