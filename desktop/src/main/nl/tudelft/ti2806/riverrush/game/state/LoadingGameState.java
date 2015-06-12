@@ -2,6 +2,7 @@ package nl.tudelft.ti2806.riverrush.game.state;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.screen.LoadingScreen;
@@ -55,5 +56,10 @@ public class LoadingGameState extends AbstractGameState {
     public GameState waitForPlayers() {
         this.screen.dispose();
         return new WaitingGameState(this.dispatcher, this.assets, this.game);
+    }
+
+    @Override
+    public Event getStateEvent() {
+        return null;
     }
 }

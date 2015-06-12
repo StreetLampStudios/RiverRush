@@ -82,4 +82,9 @@ public class FinishedGameState extends AbstractGameState {
     public GameState waitForPlayers() {
         return new WaitingGameState(this.dispatcher, this.assets, this.game);
     }
+
+    @Override
+    public Event getStateEvent() {
+        return null;
+    }
 }

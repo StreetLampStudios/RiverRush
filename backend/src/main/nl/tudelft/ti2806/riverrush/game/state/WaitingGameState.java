@@ -32,7 +32,7 @@ public class WaitingGameState implements GameState {
     public WaitingGameState(final EventDispatcher eventDispatcher, final Game theGame) {
         this.dispatcher = eventDispatcher;
         this.game = theGame;
-        this.dispatcher.dispatch(new GameWaitingEvent());
+        this.dispatcher.dispatch(this.getStateEvent());
         this.dispatcher.attach(AnimalAddedEvent.class, AnimalAddedEventHandlerLambda);
         try {
             Thread.sleep(100);
@@ -76,6 +76,15 @@ public class WaitingGameState implements GameState {
     @Override
     public void dispose() {
         // Nothing to dispose.
+    }
+
+    /**
+     * Get the event for the current state to send to new connections.
+     *
+     * @return The event for the current state
+     */
+    public Event getStateEvent() {
+        return new GameWaitingEvent();
     }
 
     @Override

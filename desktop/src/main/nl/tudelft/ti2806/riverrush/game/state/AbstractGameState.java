@@ -4,7 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.game.Game;
 
-public class AbstractGameState implements GameState {
+public abstract class AbstractGameState implements GameState {
 
     protected final EventDispatcher dispatcher;
     protected final AssetManager assets;
