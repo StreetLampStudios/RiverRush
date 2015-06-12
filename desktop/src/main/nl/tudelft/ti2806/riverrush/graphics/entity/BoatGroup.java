@@ -39,7 +39,6 @@ public class BoatGroup extends Group {
     private static final int ROW_COUNT = 2;
 
     private final Texture tex;
-    private static final int MOVE_VOTE_THRESHOLD = 1;
 
     private final HashMap<AbstractAnimal, Integer> directionVotes;
     private int votingSum = 0;
@@ -47,11 +46,8 @@ public class BoatGroup extends Group {
     private Circle bounds;
 
     private MoveToAction move;
-    private long previousMillis;
 
-    private float VELOCITY = 0;
     private final float origX;
-    private final float origY;
 
     /**
      * Creates an boat object with a given graphical representation.
@@ -69,7 +65,6 @@ public class BoatGroup extends Group {
         this.setHeight(this.SIZE);
 
         this.origX = xpos;
-        this.origY = ypos;
 
         this.tex = this.manager.get("data/ship.png", Texture.class);
 
@@ -157,8 +152,11 @@ public class BoatGroup extends Group {
     }
 
     private void updateBoatPosition() {
-        this.VELOCITY = (this.votingSum / this.totalNumAnimals) * MOVE_DISTANCE;
-        float newX = this.origX + this.VELOCITY;
+        float moveOffset = 0;
+        if (this.totalNumAnimals > 0) {
+            moveOffset = (this.votingSum / this.totalNumAnimals) * MOVE_DISTANCE;
+        }
+        float newX = this.origX + moveOffset;
 
         this.clearActions();
         this.move = new MoveToAction();
