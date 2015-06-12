@@ -20,7 +20,7 @@ public class AnimalInWater extends AbstractAnimalState {
     /**
      * Constructor.
      *
-     * @param anim - the animal of the stat
+     * @param anim            - the animal of the stat
      * @param eventDispatcher - The event disptacher
      */
     public AnimalInWater(final Animal anim, final EventDispatcher eventDispatcher) {

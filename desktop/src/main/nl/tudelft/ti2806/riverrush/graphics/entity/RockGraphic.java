@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-
 import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 
@@ -38,7 +37,7 @@ public class RockGraphic extends AbstractObstacle {
      * Creates a new obstacle.
      *
      * @param assetsManager refers to the manager that has made all loaded assets available for use.
-     * @param off Configures the place from which the obstacle is fired. Must be between 0 and 1
+     * @param off           Configures the place from which the obstacle is fired. Must be between 0 and 1
      */
     public RockGraphic(final AssetManager assetsManager, final Direction dir) {
         this.assets = assetsManager;
@@ -85,8 +84,8 @@ public class RockGraphic extends AbstractObstacle {
         this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
 
         batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-                this.getRotation());
+            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+            this.getRotation());
     }
 
     /**

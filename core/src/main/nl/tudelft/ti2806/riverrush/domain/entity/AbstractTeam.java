@@ -5,6 +5,9 @@ import nl.tudelft.ti2806.riverrush.failfast.FailIf;
 import java.util.Collection;
 import java.util.HashMap;
 
+/**
+ * Abstract class for all the base logic of a team.
+ */
 public abstract class AbstractTeam {
 
     private static Integer highestId = 0;
@@ -12,61 +15,80 @@ public abstract class AbstractTeam {
 
     private final HashMap<Integer, AbstractAnimal> animals;
 
+    /**
+     * Create a team with an unique id.
+     */
     public AbstractTeam() {
         this.animals = new HashMap<>();
         this.id = highestId;
         highestId++;
     }
 
+    /**
+     * Create a team with an existing id.
+     *
+     * @param aId The id of the team
+     */
     public AbstractTeam(final int aId) {
         this.id = aId;
         this.animals = new HashMap<>();
     }
 
     /**
-     * Adds an animal to the team.
+     * Get the id of the team.
      *
-     * @param animal - Animal you want to add
+     * @return The id
+     */
+    public Integer getId() {
+        return this.id;
+    }
+
+    /**
+     * Get an animal from the team.
+     *
+     * @param animalId The id of the animal
+     * @return The animal
+     */
+    public AbstractAnimal getAnimal(final Integer animalId) {
+        FailIf.isNull(animalId);
+        return this.animals.get(animalId);
+    }
+
+    /**
+     * Get all the animals.
+     *
+     * @return the animals.
+     */
+    public Collection<AbstractAnimal> getAnimals() {
+        return this.animals.values();
+    }
+
+    /**
+     * Add an animal to the team.
+     *
+     * @param animal The animal to add
      */
     public void addAnimal(final AbstractAnimal animal) {
         FailIf.isNull(animal);
         this.animals.put(animal.getId(), animal);
     }
 
-    public Integer getId() {
-        return this.id;
+    /**
+     * Remove an animal from the team.
+     *
+     * @param animalId The id of the animal to remove.
+     */
+    public void removeAnimal(final Integer animalId) {
+        FailIf.isNull(animalId);
+        this.animals.remove(animalId);
     }
 
     /**
+     * Get the size of the team.
+     *
      * @return the amount of animals in a team
      */
     public int size() {
         return animals.values().size();
-    }
-
-    /**
-    * Returns an animal.
-     *
-     * @param animalId - the id of the animal you want to get
-     * @return the animal of class {@link AbstractAnimal}
-     */
-    public AbstractAnimal getAnimal(final Integer animalId) {
-        FailIf.isNull(animalId);
-        return animals.get(animalId);
-    }
-
-
-    /**
-     * Removes an animal.
-     *
-     * @param animal - Integer that represents an animal
-     */
-    public void removeAnimal(final Integer animal) {
-        FailIf.isNull(animal);
-        animals.remove(animal);
-    }
-
-    public Collection<AbstractAnimal> getAnimals() {
-        return animals.values();
     }
 }

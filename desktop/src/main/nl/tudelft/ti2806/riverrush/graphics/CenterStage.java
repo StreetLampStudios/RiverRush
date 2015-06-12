@@ -4,11 +4,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.inject.Inject;
-
 import nl.tudelft.ti2806.riverrush.graphics.entity.LittleBoat;
 import nl.tudelft.ti2806.riverrush.graphics.entity.RiverBanksActor;
 import nl.tudelft.ti2806.riverrush.graphics.entity.WoodenBackground;
@@ -29,7 +26,7 @@ public class CenterStage extends Table {
      * The constructor of the center stage class.
      *
      * @param assets - specifies the assets
-     * @param width - specifies the width
+     * @param width  - specifies the width
      * @param height - specifies the height
      */
     @Inject
@@ -45,12 +42,12 @@ public class CenterStage extends Table {
         DividingLine line = new DividingLine(assets, 300, 30, width / 2, height);
 
         float top_y = this.TOTALHEIGHT - 2 * BOAT_HEIGHT - 30; // At max the boat should be at the
-                                                               // topMinus a margin of 30
+        // topMinus a margin of 30
 
         this.leftBoat = new LittleBoat(assets, this.TOTALWIDTH / 5, BOAT_HEIGHT, top_y,
-                this.TOTALHEIGHT / 4, this.TOTALWIDTH / 10);
+            this.TOTALHEIGHT / 4, this.TOTALWIDTH / 10);
         this.rightBoat = new LittleBoat(assets, this.TOTALWIDTH / 5 * 3, BOAT_HEIGHT, top_y,
-                this.TOTALHEIGHT / 4, this.TOTALWIDTH / 10);
+            this.TOTALHEIGHT / 4, this.TOTALWIDTH / 10);
 
         this.addActor(floor);
         this.addActor(line);

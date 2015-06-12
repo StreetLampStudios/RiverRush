@@ -11,7 +11,6 @@ import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameStoppedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.WaitingForRendererState;
@@ -149,13 +148,13 @@ public class Game {
      * Remove all the animals from a given boat that moved to the wrong direction.
      *
      * @param rockDirection the direction given by the boat collided event.
-     * @param teamID            the team which the action applies to.
+     * @param teamID        the team which the action applies to.
      */
     public void sweepAnimals(final Direction rockDirection, final Integer teamID) {
         Team tm = this.gameTrack.getTeam(teamID);
         for (AbstractAnimal anim : tm.getAnimals()) {
             if (anim.getVoteDirection().equals(rockDirection)
-                    || anim.getVoteDirection().equals(Direction.NEUTRAL)) {
+                || anim.getVoteDirection().equals(Direction.NEUTRAL)) {
                 // TODO: check if this equals works properly
                 anim.fall();
             }

@@ -15,18 +15,18 @@ import java.util.TimerTask;
 public class FinishedGameState implements GameState {
 
     private final EventDispatcher eventDispatcher;
-    private Game game;
-    private static final int WAITTOSTARTGAME = 5000;
+    private final Game game;
+    private static final int WAIT_TO_START_GAME = 5000;
 
     /**
      * Initializes the state where the game is finished. A game is finished when one team has won.
      *
      * @param dispatcher The dispatcher, so we can dispatch {@link GameFinishedEvent}
-     * @param gme - the game. see {@link Game}
+     * @param aGame      - the game. see {@link Game}
      */
-    public FinishedGameState(final EventDispatcher dispatcher, final Game gme) {
+    public FinishedGameState(final EventDispatcher dispatcher, final Game aGame) {
         this.eventDispatcher = dispatcher;
-        this.game = gme;
+        this.game = aGame;
 
         Timer tmr = new Timer();
         tmr.schedule(new TimerTask() {
@@ -35,11 +35,11 @@ public class FinishedGameState implements GameState {
                 game.reset();
                 tmr.cancel();
             }
-        }, WAITTOSTARTGAME, WAITTOSTARTGAME);
+        }, WAIT_TO_START_GAME, WAIT_TO_START_GAME);
 
         GameAboutToWaitEvent event = new GameAboutToWaitEvent();
-        event.setTimeTillWait(WAITTOSTARTGAME);
-        eventDispatcher.dispatch(event);
+        event.setTimeTillWait(WAIT_TO_START_GAME);
+        this.eventDispatcher.dispatch(event);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity.state;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
-
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalState;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalCollidedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
@@ -26,7 +25,7 @@ public class AnimalOnBoat implements AnimalState {
     /**
      * Constructor.
      *
-     * @param anAnimal - The animal that is on the boat
+     * @param anAnimal        - The animal that is on the boat
      * @param eventDispatcher - The event dispatcher
      */
     public AnimalOnBoat(final Animal anAnimal, final EventDispatcher eventDispatcher) {

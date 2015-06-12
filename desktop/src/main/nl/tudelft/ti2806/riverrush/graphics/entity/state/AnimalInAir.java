@@ -24,7 +24,7 @@ public class AnimalInAir implements AnimalState {
     /**
      * Constructor.
      *
-     * @param anAnimal - The monkey that is in the air
+     * @param anAnimal        - The monkey that is in the air
      * @param eventDispatcher - The event dispatcher of this event
      */
     public AnimalInAir(final Animal anAnimal, final EventDispatcher eventDispatcher) {

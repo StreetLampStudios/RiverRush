@@ -4,10 +4,14 @@ import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalState;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Spy;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link AbstractAnimal}
@@ -15,8 +19,7 @@ import static org.mockito.Mockito.*;
 public class AbstractAnimalTest {
 
 
-
-    public class AbstractAnimalTestImplementation extends AbstractAnimal{
+    public class AbstractAnimalTestImplementation extends AbstractAnimal {
 
         public AbstractAnimalTestImplementation(EventDispatcher dispatch) {
             super(dispatch);
@@ -90,18 +93,16 @@ public class AbstractAnimalTest {
     @Test
     public void testSetTeamId() throws Exception {
         animal.setTeamId(10);
-        assertEquals(animal.getTeamId(),new Integer(10));
+        assertEquals(animal.getTeamId(), new Integer(10));
     }
 
     @Test
-    public void testEqualsTrue()
-    {
+    public void testEqualsTrue() {
         assertTrue(animal.equals(animal));
     }
 
     @Test
-    public void testEqualsFalse()
-    {
+    public void testEqualsFalse() {
         assertFalse(animal.equals(new AbstractAnimalTestImplementation(dispatcher)));
     }
 }

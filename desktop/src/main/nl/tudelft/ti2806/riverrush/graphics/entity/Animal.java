@@ -1,83 +1,36 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import com.badlogic.gdx.scenes.scene2d.Action;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.entity.state.AnimalOnBoat;
 
 /**
- * The basic animal.
+ * Graphics animal.
  */
 public class Animal extends AbstractAnimal {
 
-    private AnimalActor actor;
-
     /**
-     * Constructor.
+     * Create an animal.
      *
-     * @param dispatch   - The EventDispatcher
-     * @param id         - ID of the animal
-     * @param team       - TeamID of the animal
-     * @param variation  - Image Variation of the animal
-     * @param boatSector - In which sector the animal should be placed
+     * @param dispatcher The event dispatcher
+     * @param id         The id of the animal
+     * @param team       The team the animal belongs in
+     * @param variation  The variation of the animal
+     * @param boatSector The sector the animal should be in
      */
-    public Animal(final EventDispatcher dispatch,
+    public Animal(final EventDispatcher dispatcher,
                   final Integer id,
                   final Integer team,
                   final Integer variation,
                   final Sector boatSector) {
-        super(dispatch, id);
+        super(dispatcher, id);
         this.setTeamId(team);
         this.setVariation(variation);
         this.setSectorOnBoat(boatSector);
     }
 
-    /**
-     * Sets the actor.
-     *
-     * @param act - The animal actor
-     */
-    public void setActor(final AnimalActor act) {
-        this.actor = act;
-        this.setState(new AnimalOnBoat(this, this.getDispatcher()));
-    }
-
-    /**
-     * Make the actor create a fadeAction.
-     *
-     * @return the action to be used in the state.
-     */
-    public Action returnFade() {
-        return this.actor.returnFade();
-    }
-
-    /**
-     * Make the actor create a returnAction.
-     *
-     * @return the action to be used in the state.
-     */
-    public Action returnMove() {
-        return this.actor.returnMove();
-    }
-
-    /**
-     * Make the actor create a jumpAction.
-     *
-     * @return the action to be used in the state.
-     */
-    public Action jumpAction() {
-        return this.actor.jumpAction();
-    }
-
-    /**
-     * Make the actor create a collideAction.
-     *
-     * @return the action to be used in the state.
-     */
-    public Action collideAction() {
-        return this.actor.collideAction();
-    }
+    private AnimalActor actor;
 
     /**
      * @return this animal's graphical component: MonkeyActor.
@@ -87,11 +40,19 @@ public class Animal extends AbstractAnimal {
     }
 
     /**
+     * Set the actor of the animal.
+     *
+     * @param aActor The actor to set
+     */
+    public void setActor(final AnimalActor aActor) {
+        this.actor = aActor;
+        this.setState(new AnimalOnBoat(this, this.getDispatcher()));
+    }
+
+    /**
      * Determine what happens when an animal in this state collides.
      */
     public void collide() {
         this.getState().collide();
-
     }
-
 }

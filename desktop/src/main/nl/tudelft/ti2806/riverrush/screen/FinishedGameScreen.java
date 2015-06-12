@@ -30,15 +30,15 @@ public class FinishedGameScreen implements Screen {
     private static final float TIMER_LABEL_HEIGHT_MULTIPLIER = 0.2f;
     private static final float WINNING_LABEL_HEIGHT_MULTIPLIER = 0.3f;
     private static final float WINNING_LABEL_WIDTH_MULTIPLIER = 0.40f;
-    private static final int TIMER_TICK= 1000;
+    private static final int TIMER_TICK = 1000;
     private int countdown;
 
 
     /**
      * Creates the graphical representation of the finished game screen.
      *
-     * @param assetManager    refers to the manager that has made all loaded assets available for use.
-     * @param dispatcher is the dispatcher that handles all relevant events.
+     * @param assetManager refers to the manager that has made all loaded assets available for use.
+     * @param dispatcher   is the dispatcher that handles all relevant events.
      */
     public FinishedGameScreen(final AssetManager assetManager, final EventDispatcher dispatcher) {
         Gdx.app.postRunnable(new Runnable() {
@@ -97,6 +97,7 @@ public class FinishedGameScreen implements Screen {
     public void dispose() {
         // Does not need to do anything yet
     }
+
     /**
      * Creates a timerLabel.
      */
@@ -116,6 +117,7 @@ public class FinishedGameScreen implements Screen {
 
     /**
      * Starts the countdown to restart the game.
+     *
      * @param time in milliseconds
      */
     public void startCountdown(final int time) {

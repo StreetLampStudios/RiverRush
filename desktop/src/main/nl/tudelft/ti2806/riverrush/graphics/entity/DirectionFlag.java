@@ -21,7 +21,7 @@ public class DirectionFlag extends Actor {
      * Creates a monkey object that represents player characters.
      *
      * @param assetManager enables the object to retrieve its assets
-     * @param dispatcher Event dispatcher for dispatching events
+     * @param dispatcher   Event dispatcher for dispatching events
      */
     @Inject
     public DirectionFlag(final AssetManager assetManager) {
@@ -45,8 +45,8 @@ public class DirectionFlag extends Actor {
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-                this.getRotation());
+            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+            this.getRotation());
 
         batch.setColor(Color.WHITE);
 
