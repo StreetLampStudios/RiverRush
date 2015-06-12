@@ -24,6 +24,7 @@ public enum Sector {
 
     /**
      * Get the index of this sector for array access purposes.
+     *
      * @return The integer index.
      */
     public int getIndex() {
@@ -32,6 +33,7 @@ public enum Sector {
 
     /**
      * Count the amount of available sectors.
+     *
      * @return The amount of sectors on any boat.
      */
     public static int countSectors() {
@@ -40,6 +42,7 @@ public enum Sector {
 
     /**
      * Returns the next sector in the logical ordering.
+     *
      * @return The sector that comes after the current one.
      */
     public Sector getNext() {

@@ -43,7 +43,7 @@ public abstract class AbstractAnimal {
      * Create an animal with an existing id.
      *
      * @param eventDispatcher - See {@link EventDispatcher}
-     * @param animal   - Id of the animal
+     * @param animal          - Id of the animal
      */
     public AbstractAnimal(final EventDispatcher eventDispatcher, final Integer animal) {
         this.dispatcher = eventDispatcher;
