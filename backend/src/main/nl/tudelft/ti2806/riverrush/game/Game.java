@@ -151,9 +151,10 @@ public class Game {
      */
     public void sweepAnimals(final Direction rockDirection, final Integer teamID) {
         Team tm = this.gameTrack.getTeam(teamID);
-        for (AbstractAnimal anim : tm.getAnimals().values()) {
-            if (anim.getVoteDirection() == rockDirection
-                || anim.getVoteDirection() == Direction.NEUTRAL) {
+        for (AbstractAnimal anim : tm.getAnimals()) {
+            if (anim.getVoteDirection().equals(rockDirection)
+                    || anim.getVoteDirection().equals(Direction.NEUTRAL)) {
+                // TODO: check if this equals works properly
                 anim.fall();
             }
         }
@@ -167,7 +168,7 @@ public class Game {
      */
     public void collideAnimal(final Integer animal, final Integer team) {
         Team team1 = this.gameTrack.getTeam(team);
-        AbstractAnimal animal1 = team1.getAnimals().get(animal);
+        AbstractAnimal animal1 = team1.getAnimal(animal);
         animal1.fall();
     }
 

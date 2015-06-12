@@ -47,8 +47,7 @@ public class Game extends GdxGame {
         this.assets = assetManager;
         this.teams = new HashMap<>();
 
-        this.animalFellOffEventHandlerLambda = (e) -> this.getTeam(e.getTeam()).getAnimals()
-                .get(e.getAnimal()).fall();
+        this.animalFellOffEventHandlerLambda = (e) -> this.getTeam(e.getTeam()).getAnimal(e.getAnimal()).fall();
 
         this.dispatcher.attach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
         this.dispatcher.attach(AnimalRemovedEvent.class, this.removeAnimalHandlerLambda);
@@ -147,7 +146,7 @@ public class Game extends GdxGame {
         Integer teamId = event.getTeam();
         Integer animalId = event.getAnimal();
         Team team = this.getTeam(teamId);
-        Animal animal = (Animal) team.getAnimals().get(animalId);
+        Animal animal = (Animal) team.getAnimal(animalId);
         BoatGroup boat = team.getBoat();
 
         //TODO: put this in de game states

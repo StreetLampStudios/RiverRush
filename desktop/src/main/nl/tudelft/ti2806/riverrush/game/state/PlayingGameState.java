@@ -74,8 +74,9 @@ public class PlayingGameState extends AbstractGameState {
             PlayingGameState.this.game.setScreen(PlayingGameState.this.screen);
 
             for (Team currentTeam : PlayingGameState.this.game.getTeams().values()) {
+
                 PlayingGameState.this.addBoat(currentTeam);
-                for (AbstractAnimal currentAnimal : currentTeam.getAnimals().values()) {
+                for (AbstractAnimal currentAnimal : currentTeam.getAnimals()) {
                     PlayingGameState.this.addAnimal(currentTeam, (Animal) currentAnimal);
                 }
             }
@@ -155,7 +156,7 @@ public class PlayingGameState extends AbstractGameState {
             }
         }
         for (CannonBallGraphic graphic : this.leftObstList) {
-            for (AbstractAnimal animal : this.game.getTeam(0).getAnimals().values()) {
+            for (AbstractAnimal animal : this.game.getTeam(0).getAnimals()) {
                 Animal animal1 = (Animal) animal;
                 if (graphic.calculateCollision(animal1.getActor())) {
                     AnimalCollidedEvent event = new AnimalCollidedEvent();
@@ -165,8 +166,9 @@ public class PlayingGameState extends AbstractGameState {
                 }
             }
         }
+
         for (CannonBallGraphic graphic : this.rightObstList) {
-            for (AbstractAnimal animal : this.game.getTeam(1).getAnimals().values()) {
+            for (AbstractAnimal animal : this.game.getTeam(1).getAnimals()) {
                 Animal animal1 = (Animal) animal;
                 if (graphic.calculateCollision(animal1.getActor())) {
                     AnimalCollidedEvent event = new AnimalCollidedEvent();
@@ -259,14 +261,14 @@ public class PlayingGameState extends AbstractGameState {
         Integer tm = event.getTeam();
         Team tim = this.game.getTeam(tm);
         Integer animalID = event.getAnimal();
-        AbstractAnimal anim = tim.getAnimals().get(animalID);
+        AbstractAnimal anim = tim.getAnimal(animalID);
         anim.jump();
     }
 
     public void animalMoveHandler(final AnimalMovedEvent event) {
         Integer tm = event.getTeam();
         Team tim = this.game.getTeam(tm);
-        AbstractAnimal animal = tim.getAnimals().get(event.getAnimal());
+        AbstractAnimal animal = tim.getAnimal(event.getAnimal());
         animal.voteOneDirection(event.getDirection());
         if (event.getDirection() == Direction.LEFT) {
             tim.getBoat().voteForDirection(animal, -1);
@@ -284,7 +286,7 @@ public class PlayingGameState extends AbstractGameState {
         Integer tm = event.getTeam();
         Team tim = this.game.getTeam(tm);
         Integer animalID = event.getAnimal();
-        AbstractAnimal anim = tim.getAnimals().get(animalID);
+        AbstractAnimal anim = tim.getAnimal(animalID);
         anim.drop();
     }
 
@@ -302,8 +304,8 @@ public class PlayingGameState extends AbstractGameState {
      *
      * @param event - The event
      */
-    private void fellOff(AnimalFellOffEvent event) {
-        this.game.getTeam(event.getTeam()).getAnimals().get(event.getAnimal()).fall();
+    private void fellOff(final AnimalFellOffEvent event) {
+        this.game.getTeam(event.getTeam()).getAnimal(event.getAnimal()).fall();
     }
 
     /**
@@ -313,7 +315,7 @@ public class PlayingGameState extends AbstractGameState {
      */
     private void returnToBoat(final AnimalReturnedToBoatEvent event) {
         Team t = this.game.getTeam(event.getTeam());
-        AbstractAnimal a = t.getAnimals().get(event.getAnimal());
+        AbstractAnimal a = t.getAnimal(event.getAnimal());
         a.returnToBoat();
     }
 }
