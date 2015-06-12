@@ -1,14 +1,15 @@
 package nl.tudelft.ti2806.riverrush.network.event;
 
-import java.util.Map;
-
-import nl.tudelft.ti2806.riverrush.domain.event.AbstractAnimalEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.network.protocol.InvalidProtocolException;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
+import java.util.Map;
+
+/**
+ * Command to vote for a direction to go in.
+ */
 public class VoteBoatMoveCommand implements Event {
 
     private Direction direction;
@@ -19,7 +20,7 @@ public class VoteBoatMoveCommand implements Event {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(protocol.getPairSeperator());
         stringBuilder.append("direction").append(protocol.getKeyValueSeperator())
-                .append(this.direction.toString());
+            .append(this.direction.toString());
         return stringBuilder.toString();
     }
 
