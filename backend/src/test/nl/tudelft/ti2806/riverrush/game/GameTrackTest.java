@@ -5,7 +5,6 @@ import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
 import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,14 +25,15 @@ public class GameTrackTest {
     GameTrack track = null;
     EventDispatcher dispatcher;
     private Team team;
-    private final static double delta = 0.001;
+    private final static double delta = 0.0001;
     private Game game;
 
     @Before
     public void setUp() throws Exception {
         this.dispatcher = Mockito.spy(EventDispatcher.class);
         game = mock(Game.class);
-        this.track = new GameTrack("--[#5]-[#5]---[@5]--[#5]--[#5]-[#5]--", this.dispatcher, this.game);
+        this.track = GameTrack.readFromFile("/simpletrack.txt", dispatcher, game);
+        //this.track = new GameTrack("--[#5]-[#5]---[@5]--[#5]--[#5]-[#5]--", this.dispatcher, this.game);
         this.team = new Team();
         this.track.addTeam(this.team);
     }
