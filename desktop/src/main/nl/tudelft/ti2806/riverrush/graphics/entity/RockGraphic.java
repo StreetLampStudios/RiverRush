@@ -45,9 +45,9 @@ public class RockGraphic extends AbstractObstacle {
 
         this.direction = dir;
         if (dir == Direction.LEFT) {
-            this.offset = 0.2f;
+            this.offset = 0.3f;
         } else if (dir == Direction.RIGHT) {
-            this.offset = 0.8f;
+            this.offset = 0.7f;
         } else {
             this.offset = 0.5f;
         }

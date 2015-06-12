@@ -146,15 +146,14 @@ public class Game {
     /**
      * Remove all the animals from a given boat that moved to the wrong direction.
      *
-     * @param rightOneDirection the direction given by the boat collided event.
+     * @param rockDirection the direction given by the boat collided event.
      * @param teamID            the team which the action applies to.
      */
-    public void sweepAnimals(final Direction rightOneDirection, final Integer teamID) {
+    public void sweepAnimals(final Direction rockDirection, final Integer teamID) {
         Team tm = this.gameTrack.getTeam(teamID);
         for (AbstractAnimal anim : tm.getAnimals().values()) {
-            if (anim.getVoteDirection().equals(rightOneDirection)
-                || anim.getVoteDirection().equals(Direction.NEUTRAL)) {
-                // TODO: check if this equals works properly
+            if (anim.getVoteDirection() == rockDirection
+                || anim.getVoteDirection() == Direction.NEUTRAL) {
                 anim.fall();
             }
         }
