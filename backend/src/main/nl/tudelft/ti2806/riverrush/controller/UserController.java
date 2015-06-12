@@ -87,6 +87,8 @@ public class UserController extends AbstractController {
         this.listenTo(JumpCommand.class, jumpCommandHandler);
         this.listenTo(VoteBoatMoveCommand.class, voteCommandHandler);
         this.listenTo(GameAboutToWaitEvent.class, sendOverNetworkLambda);
+
+        this.server.sendEvent(this.game.getStateEvent(), this);
     }
 
     /**
