@@ -45,24 +45,23 @@ public class UserController extends AbstractController {
         final HandlerLambda<JoinTeamCommand> joinTeamHandler = this::joinTeamHandler;
         final HandlerLambda<Event> sendOverNetworkLambda = (e) -> {
             Integer animalId = e.getAnimal();
-            if (Objects.equals(animalId, this.animal.getId())
-                || Objects.equals(animalId, -1)) {
+            if (animalId == this.animal.getId() || animalId == -1) {
                 this.server.sendEvent(e, this);
             }
         };
         final HandlerLambda<AbstractTeamEvent> sendTeamEventOverNetworkLambda = (e) -> {
-            if (Objects.equals(e.getTeam(), this.animal.getTeamId())) {
+            if (e.getTeam() == this.animal.getTeamId()) {
                 this.server.sendEvent(e, this);
             }
         };
         final HandlerLambda<JumpCommand> jumpCommandHandlerLambda = (e) -> {
-            if (Objects.equals(e.getAnimal(), this.animal.getId())) {
+            if (e.getAnimal() == this.animal.getId()) {
                 this.game.jumpAnimal(this.animal);
             }
         };
 
         final HandlerLambda<VoteBoatMoveCommand> voteCommandHandlerLambda = (e) -> {
-            if (Objects.equals(e.getAnimal(), this.animal.getId())) {
+            if (e.getAnimal() == this.animal.getId()) {
                 this.game.voteMove(this.animal, e.getDirection());
             }
         };
@@ -94,7 +93,7 @@ public class UserController extends AbstractController {
      * @param e The event
      */
     private void joinTeamHandler(final JoinTeamCommand e) {
-        if (Objects.equals(e.getAnimal(), this.animal.getId())) {
+        if (e.getAnimal() == this.animal.getId()) {
             this.game.addPlayerToTeam(this.animal, e.getTeam());
         }
     }
