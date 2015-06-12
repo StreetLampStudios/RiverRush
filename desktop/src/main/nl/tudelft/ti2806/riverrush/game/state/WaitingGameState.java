@@ -30,7 +30,7 @@ public class WaitingGameState extends AbstractGameState {
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game in this
      *                        state.
      * @param assetManager    has all necessary assets loaded and available for use.
-     * @param game              refers to the game that this state belongs to.
+     * @param game            refers to the game that this state belongs to.
      */
     public WaitingGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
                             final Game game) {
@@ -39,8 +39,8 @@ public class WaitingGameState extends AbstractGameState {
         this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandler);
         this.dispatcher.attach(GameAboutToStartEvent.class, this.timerHandler);
         this.screen = new WaitingScreen(assetManager, eventDispatcher);
-        Gdx.app.postRunnable(() ->
-            WaitingGameState.this.game.setScreen(WaitingGameState.this.screen)
+        Gdx.app.postRunnable(
+            () -> WaitingGameState.this.game.setScreen(WaitingGameState.this.screen)
         );
     }
 
