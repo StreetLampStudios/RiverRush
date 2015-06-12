@@ -35,5 +35,11 @@ public interface AnimalState {
      */
     AnimalState returnToBoat();
 
+    /**
+     * Vote the direction the animal wants to go.
+     *
+     * @param direction The direction
+     * @return The new state after voting
+     */
     AnimalState voteDirection(Direction direction);
 }
