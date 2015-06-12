@@ -167,7 +167,7 @@ public class GameTrack {
                     AddRockEvent event = new AddRockEvent();
                     event.setTeam(team.getId());
                     // TODO: Make direction variable
-                    Direction dir = Direction.NEUTRAL;
+                    Direction dir = Direction.LEFT;
                     if (entry.getKey() < 0.45) {
                         dir = Direction.LEFT;
                     } else if (entry.getKey() > 0.55) {
