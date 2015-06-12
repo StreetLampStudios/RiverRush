@@ -108,8 +108,16 @@ public class WaitingScreen implements Screen {
     /**
      * Tell the waiting screen that someone has connected.
      */
-    private void addConnection() {
+    public void addConnection() {
         this.count++;
+        this.counter.setText("Connected: " + this.count);
+    }
+
+    /**
+     * Tell the waiting screen that someone has connected.
+     */
+    public void removeConnection() {
+        this.count--;
         this.counter.setText("Connected: " + this.count);
     }
 
