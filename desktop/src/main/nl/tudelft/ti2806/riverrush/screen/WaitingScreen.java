@@ -114,6 +114,14 @@ public class WaitingScreen implements Screen {
     }
 
     /**
+     * Tell the waiting screen that someone has connected.
+     */
+    public void removeConnection() {
+        this.count--;
+        this.counter.setText("Connected: " + this.count);
+    }
+
+    /**
      * Start counting down to zero. When zero is reached go to the next screen
      *
      * @param amountOfTime - amount of seconds to count down to

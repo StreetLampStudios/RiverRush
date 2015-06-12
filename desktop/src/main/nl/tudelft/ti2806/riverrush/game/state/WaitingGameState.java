@@ -2,11 +2,7 @@ package nl.tudelft.ti2806.riverrush.game.state;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.Event;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
@@ -23,6 +19,9 @@ public class WaitingGameState extends AbstractGameState {
     // this.addAnimalHandler(e);
     private final HandlerLambda<GameAboutToStartEvent> timerHandler = (e) -> this.startTimer();
     private final HandlerLambda<AnimalAddedEvent> addAnimalHandler = this::addAnimalHandler;
+    private final HandlerLambda<AnimalRemovedEvent> removeAnimalHandler = this::removeAnimalHandler;
+
+
 
     /**
      * The state of the game that indicates that the game is waiting for players. In this state the
@@ -39,6 +38,7 @@ public class WaitingGameState extends AbstractGameState {
 
         this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandler);
         this.dispatcher.attach(GameAboutToStartEvent.class, this.timerHandler);
+        this.dispatcher.attach(AnimalRemovedEvent.class, this.removeAnimalHandler);
         this.screen = new WaitingScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(() ->
             WaitingGameState.this.game.setScreen(WaitingGameState.this.screen)
@@ -72,7 +72,7 @@ public class WaitingGameState extends AbstractGameState {
     }
 
     @Override
-    public GameState finish(Integer team) {
+    public GameState finish(final Integer team) {
         return this;
     }
 
@@ -102,6 +102,14 @@ public class WaitingGameState extends AbstractGameState {
         tim.addAnimal(new Animal(this.dispatcher, event.getAnimal(), tm, variation, event.getSector()));
 
         this.screen.addConnection();
+    }
+
+    /**
+     * Is called when an animal is removed.
+     * @param animalRemovedEvent - The event
+     */
+    private void removeAnimalHandler(final AnimalRemovedEvent animalRemovedEvent) {
+        this.screen.removeConnection();
     }
 
 }
