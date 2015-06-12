@@ -36,4 +36,10 @@ public interface AnimalState {
     AnimalState returnToBoat();
 
     AnimalState voteDirection(Direction direction);
+
+    /**
+     * Collide the animal with an obstacle. Dispatch events when applicable.
+     */
+    void collide();
+
 }

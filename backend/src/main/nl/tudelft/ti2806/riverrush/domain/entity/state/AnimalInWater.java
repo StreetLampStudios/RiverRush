@@ -20,7 +20,7 @@ public class AnimalInWater extends AbstractAnimalState {
     /**
      * Constructor.
      *
-     * @param anim            - the animal of the stat
+     * @param anim - the animal of the stat
      * @param eventDispatcher - The event disptacher
      */
     public AnimalInWater(final Animal anim, final EventDispatcher eventDispatcher) {
@@ -30,7 +30,7 @@ public class AnimalInWater extends AbstractAnimalState {
         tmr.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                animal.returnToBoat();
+                AnimalInWater.this.animal.returnToBoat();
                 tmr.cancel();
             }
         }, RESPAWN_DELAY, RESPAWN_DELAY);
@@ -64,6 +64,11 @@ public class AnimalInWater extends AbstractAnimalState {
     @Override
     public AnimalState voteDirection(final Direction direction) {
         return this;
+    }
+
+    @Override
+    public void collide() {
+        // Does nothing.
     }
 
 }

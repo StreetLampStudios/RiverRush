@@ -16,7 +16,7 @@ public class AnimalOnBoat extends AbstractAnimalState {
     /**
      * Constructor.
      *
-     * @param anim            - the animal of the state
+     * @param anim - the animal of the state
      * @param eventDispatcher - The event distpacher
      */
     public AnimalOnBoat(final Animal anim, final EventDispatcher eventDispatcher) {
@@ -56,5 +56,10 @@ public class AnimalOnBoat extends AbstractAnimalState {
     public AnimalState voteDirection(final Direction direction) {
         this.animal.setVoteDirection(direction);
         return this;
+    }
+
+    @Override
+    public void collide() {
+        // Does nothing.
     }
 }
