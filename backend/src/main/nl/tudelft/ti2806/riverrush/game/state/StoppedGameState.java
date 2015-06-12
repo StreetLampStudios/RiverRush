@@ -2,7 +2,6 @@ package nl.tudelft.ti2806.riverrush.game.state;
 
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStoppedEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 
@@ -20,19 +19,24 @@ public class StoppedGameState implements GameState {
      */
     public static final int DELAY = 30;
 
+    private final EventDispatcher dispatcher;
+    private final Game game;
+
     /**
-     * Create the stopped game state.
+     * Create the stopped aGame state.
      *
-     * @param dispatcher The event dispatcher for dispatching events
-     * @param game
+     * @param eventDispatcher The event eventDispatcher for dispatching events
+     * @param aGame           The main game
      */
-    public StoppedGameState(final EventDispatcher dispatcher, Game game) {
-        dispatcher.dispatch(new GameStoppedEvent());
+    public StoppedGameState(final EventDispatcher eventDispatcher, Game aGame) {
+        this.dispatcher = eventDispatcher;
+        this.game = aGame;
+        this.dispatcher.dispatch(new GameStoppedEvent());
 
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         scheduler.schedule(() -> System.exit(0), DELAY, TimeUnit.SECONDS);
 
-        dispatcher.dispatch(this.getStateEvent());
+        this.dispatcher.dispatch(this.getStateEvent());
     }
 
     @Override

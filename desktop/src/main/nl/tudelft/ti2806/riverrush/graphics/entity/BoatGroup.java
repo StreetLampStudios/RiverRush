@@ -6,12 +6,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.google.inject.Inject;
-
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
 
@@ -53,8 +51,8 @@ public class BoatGroup extends Group {
      * Creates an boat object with a given graphical representation.
      *
      * @param assetManager enables the object to retrieve its assets
-     * @param xpos represents the position of the boat on the x axis
-     * @param ypos represents the position of the boat on the y axis
+     * @param xpos         represents the position of the boat on the x axis
+     * @param ypos         represents the position of the boat on the y axis
      */
     @Inject
     public BoatGroup(final AssetManager assetManager, final float xpos, final float ypos) {
@@ -94,6 +92,9 @@ public class BoatGroup extends Group {
         this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
     }
 
+    /**
+     * Init the boat.
+     */
     public void init() {
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         v = this.localToStageCoordinates(v);
@@ -117,8 +118,8 @@ public class BoatGroup extends Group {
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
         batch.draw(this.tex, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-                this.getRotation(), 0, 0, this.tex.getWidth(), this.tex.getHeight(), false, false);
+            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+            this.getRotation(), 0, 0, this.tex.getWidth(), this.tex.getHeight(), false, false);
 
         batch.setColor(Color.WHITE);
 
@@ -132,13 +133,12 @@ public class BoatGroup extends Group {
         super.act(delta);
     }
 
-    public void addAnimal(final AnimalActor actor, final Sector sector) {
-        BoatSector sec = this.sectors.get(sector.getIndex());
-        sec.addAnimal(actor);
-        this.totalNumAnimals++;
-        this.updateBoatPosition();
-    }
-
+    /**
+     * Vote for a direction to move the boat there.
+     *
+     * @param animal    The animal that has voted
+     * @param direction The direction the animal voted in
+     */
     public void voteForDirection(final AbstractAnimal animal, final int direction) {
         Integer currentVote = this.directionVotes.getOrDefault(animal, 0);
         if (currentVote != direction) {
@@ -151,6 +151,9 @@ public class BoatGroup extends Group {
         }
     }
 
+    /**
+     * Update the position of the boat.
+     */
     private void updateBoatPosition() {
         float moveOffset = 0;
         if (this.totalNumAnimals > 0) {
@@ -167,21 +170,25 @@ public class BoatGroup extends Group {
     }
 
     /**
-     * Move to dodge an obstacle. Can dodge left or right based on direction.
+     * Add an animal to teh boat.
      *
-     * @param direction this parameter determines direction. 1 is to the right, -1 is to the left.
+     * @param actor  The actor of the animal
+     * @param sector The sector to add the animal in
      */
-    public void move(final int direction) {
-        this.move = new MoveToAction();
-        this.move.setPosition(this.getX() + (MOVE_DISTANCE * direction), this.getY());
-
-        this.move.setDuration(0.5f);
-        this.move.setInterpolation(new Interpolation.Elastic(2, 1, 1, 0.3f));
-        this.addAction(this.move);
+    public void addAnimal(final AnimalActor actor, final Sector sector) {
+        BoatSector sec = this.sectors.get(sector.getIndex());
+        sec.addAnimal(actor);
+        this.totalNumAnimals++;
+        this.updateBoatPosition();
     }
 
-    public void removeAnimal(AbstractAnimal absAnimal) {
-        Animal anim = (Animal) absAnimal;
+    /**
+     * Remove an animal from the boat.
+     *
+     * @param aAnimal The animal to remove
+     */
+    public void removeAnimal(final AbstractAnimal aAnimal) {
+        Animal anim = (Animal) aAnimal;
         AnimalActor actor = anim.getActor();
         for (BoatSector sec : this.sectors) {
             if (sec.getAnimals().contains(actor)) {
@@ -194,6 +201,11 @@ public class BoatGroup extends Group {
         this.updateBoatPosition();
     }
 
+    /**
+     * Get the bounds of the boat.
+     *
+     * @return The bounds
+     */
     public Circle getBounds() {
         return this.bounds;
     }

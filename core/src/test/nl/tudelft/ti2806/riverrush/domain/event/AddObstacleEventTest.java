@@ -7,7 +7,8 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -40,6 +41,8 @@ public class AddObstacleEventTest extends AbstractTeamEventTest {
         assertTrue(s.contains("location" + protocol.getKeyValueSeperator() + location));
         super.testSerialize();
     }
+
+
 
     @Override
     public AbstractTeamEvent getInstance() {

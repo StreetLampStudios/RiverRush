@@ -1,11 +1,11 @@
 package nl.tudelft.ti2806.riverrush.domain.entity;
 
-import java.util.Random;
-
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalState;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
+
+import java.util.Random;
 
 /**
  * An abstract implementation of an animal.
@@ -20,7 +20,7 @@ public abstract class AbstractAnimal {
     private static final int BITS = 32;
     private static Integer highestId = 0;
     private final Integer animalID;
-    private Integer teamID;
+    private Integer teamId;
     private Direction voteDirection = Direction.NEUTRAL;
     private Sector sectorOnBoat;
     private Integer variation;
@@ -28,23 +28,25 @@ public abstract class AbstractAnimal {
     private EventDispatcher dispatcher;
 
     /**
-     * Create an animal.
+     * Create an animal with an unique id.
+     *
+     * @param eventDispatcher - See {@link EventDispatcher}
      */
-    public AbstractAnimal(final EventDispatcher dispatch) {
-        this.dispatcher = dispatch;
+    public AbstractAnimal(final EventDispatcher eventDispatcher) {
+        this.dispatcher = eventDispatcher;
         this.animalID = highestId;
         this.variation = this.getRandomVariation();
         highestId++;
     }
 
     /**
-     * Create an animal in desktop.
+     * Create an animal with an existing id.
      *
-     * @param dispatch - See {@link EventDispatcher}
-     * @param animal - Id of the animal
+     * @param eventDispatcher - See {@link EventDispatcher}
+     * @param animal          - Id of the animal
      */
-    public AbstractAnimal(final EventDispatcher dispatch, Integer animal) {
-        this.dispatcher = dispatch;
+    public AbstractAnimal(final EventDispatcher eventDispatcher, final Integer animal) {
+        this.dispatcher = eventDispatcher;
         this.animalID = animal;
         this.variation = this.getRandomVariation();
     }
@@ -66,6 +68,112 @@ public abstract class AbstractAnimal {
     protected void setState(final AnimalState newState) {
         FailIf.isNull(newState);
         this.currentState = newState;
+    }
+
+    protected EventDispatcher getDispatcher() {
+        return this.dispatcher;
+    }
+
+    /**
+     * Sets the color of an animal to a random color from an array.
+     */
+    public Integer getRandomVariation() {
+        int[] variations = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        int idx = new Random().nextInt(variations.length);
+        return (variations[idx]);
+    }
+
+    /**
+     * Get the id of the animal.
+     *
+     * @return The id
+     */
+    public Integer getId() {
+        return this.animalID;
+    }
+
+    /**
+     * Returns the variation of the animal.
+     *
+     * @return the variation
+     */
+    public Integer getVariation() {
+        return this.variation;
+    }
+
+    /**
+     * Sets the variation of this animal.
+     *
+     * @param aVariation the variation
+     */
+    public void setVariation(final Integer aVariation) {
+        FailIf.isNull(aVariation);
+        this.variation = aVariation;
+    }
+
+    /**
+     * Vote in a direction.
+     *
+     * @param direction The direction to vote in
+     */
+    public void voteOneDirection(final Direction direction) {
+        this.currentState = this.currentState.voteDirection(direction);
+    }
+
+    /**
+     * Get the direction voted in.
+     *
+     * @return the direction the animal voted on.
+     */
+    public Direction getVoteDirection() {
+        return this.voteDirection;
+    }
+
+    /**
+     * Set the direction to vote in.
+     *
+     * @param direction - The direction
+     */
+    public void setVoteDirection(final Direction direction) {
+        this.voteDirection = direction;
+    }
+
+    /**
+     * Returns the team Id of the animal.
+     *
+     * @return the team Id
+     */
+    public Integer getTeamId() {
+        return this.teamId;
+    }
+
+    /**
+     * Sets the team of the animal.
+     *
+     * @param id - Id of the team
+     */
+    public void setTeamId(final Integer id) {
+        FailIf.isNull(id);
+        this.teamId = id;
+    }
+
+    /**
+     * Get the sector on the boat where the animal is in.
+     *
+     * @return The sector
+     */
+    public Sector getSectorOnBoat() {
+        return sectorOnBoat;
+    }
+
+    /**
+     * Set the sector on the boat where the animal should be.
+     *
+     * @param sector The sector
+     */
+    public void setSectorOnBoat(final Sector sector) {
+        FailIf.isNull(sector);
+        this.sectorOnBoat = sector;
     }
 
     /**
@@ -102,6 +210,7 @@ public abstract class AbstractAnimal {
             return true;
 
         }
+
         if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
@@ -114,81 +223,5 @@ public abstract class AbstractAnimal {
     @Override
     public int hashCode() {
         return this.animalID ^ (this.animalID >>> BITS);
-    }
-
-    protected EventDispatcher getDispatcher() {
-        return this.dispatcher;
-    }
-
-    /**
-     * Sets the color of an animal to a random color from an array
-     */
-    public Integer getRandomVariation() {
-        int[] variations = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        int idx = new Random().nextInt(variations.length);
-        return (variations[idx]);
-    }
-
-    public Integer getId() {
-        return this.animalID;
-    }
-
-    /**
-     * Sets the variation of this animal.
-     *
-     * @param aVariation the variation
-     */
-    public void setVariation(final Integer aVariation) {
-        this.variation = aVariation;
-    }
-
-    /**
-     * Returns the variation of the animal.
-     *
-     * @return the variation
-     */
-    public Integer getVariation() {
-        return this.variation;
-    }
-
-    /**
-     * Sets the team of the animal.
-     *
-     * @param id - id of the team
-     */
-    public void setTeamId(final Integer id) {
-        this.teamID = id;
-    }
-
-    /**
-     * @return the direction the animal voted on.
-     */
-    public Direction getVoteDirection() {
-        return this.voteDirection;
-    }
-
-    public void voteOneDirection(final Direction direction) {
-        this.currentState = this.currentState.voteDirection(direction);
-    }
-
-    public void setVoteDirection(final Direction direction) {
-        this.voteDirection = direction;
-    }
-
-    /**
-     * Returns the team ID of the animal.
-     *
-     * @return the team ID
-     */
-    public Integer getTeamId() {
-        return this.teamID;
-    }
-
-    public Sector getSectorOnBoat() {
-        return this.sectorOnBoat;
-    }
-
-    public void setSectorOnBoat(Sector sectorOnBoat) {
-        this.sectorOnBoat = sectorOnBoat;
     }
 }

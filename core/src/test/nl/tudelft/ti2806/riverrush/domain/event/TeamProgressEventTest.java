@@ -17,15 +17,19 @@ public class TeamProgressEventTest extends AbstractTeamEventTest{
     protected TeamProgressEvent event;
 
     public final double progress = 50;
+    public final double speed = 10;
+
 
     @BeforeClass
     public static void setup() {
         uglyList.add("progress");
+        uglyList.add("speed");
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
         uglyList.remove("progress");
+        uglyList.remove("speed");
     }
 
     @Override
@@ -36,6 +40,7 @@ public class TeamProgressEventTest extends AbstractTeamEventTest{
 
         String s = event.serialize(protocol);
         assertTrue("Did not find progress", s.contains("progress" + protocol.getKeyValueSeperator() + progress));
+        assertTrue("Did not find speed", s.contains("speed" + protocol.getKeyValueSeperator() + speed));
         super.testSerialize();
     }
 
@@ -43,6 +48,7 @@ public class TeamProgressEventTest extends AbstractTeamEventTest{
     public AbstractTeamEvent getInstance() {
         event = new TeamProgressEvent();
         event.setProgress(progress);
+        event.setSpeed(speed);
         super.addVariables(event);
         return event;
     }
@@ -52,6 +58,7 @@ public class TeamProgressEventTest extends AbstractTeamEventTest{
         Map<String, String> testMap = new HashMap<>();
         testMap.putAll(super.getTestMap());
         testMap.put("progress", Double.toString(progress));
+        testMap.put("speed", Double.toString(speed));
         return testMap;
     }
 

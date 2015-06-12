@@ -49,8 +49,8 @@ public class BoatSector extends Group {
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
         batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-                this.getRotation());
+            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+            this.getRotation());
         batch.setColor(Color.WHITE);
         super.draw(batch, parentAlpha);
         batch.disableBlending();
@@ -67,7 +67,7 @@ public class BoatSector extends Group {
         float yPos = ((this.currentAnimalPosition / this.colCount) * actor.getHeight());
         actor.setPosition(xPos, yPos);
         this.currentAnimalPosition = (this.currentAnimalPosition + 2)
-                % (this.rowCount * this.colCount);
+            % (this.rowCount * this.colCount);
 
         if (this.animals.get(this.currentAnimalPosition) != null) {
             this.currentAnimalPosition--;

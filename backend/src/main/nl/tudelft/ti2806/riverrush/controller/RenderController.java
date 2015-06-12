@@ -54,9 +54,16 @@ public class RenderController extends AbstractController {
         this.game.waitForPlayers();
     }
 
+    /**
+     * Called when a boat collides.
+     *
+     * @param event The collision event
+     */
     private void onBoatCollided(final BoatCollidedEvent event) {
-        this.game.sweepAnimals(event.getDirection(),
-            event.getTeam());
+        Direction direction = event.getDirection();
+        Integer teamId = event.getTeam();
+
+        this.game.sweepAnimals(direction, teamId);
     }
 
     @Override

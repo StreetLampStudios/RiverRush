@@ -23,7 +23,7 @@ public class AnimalInWater implements AnimalState {
     /**
      * Constructor.
      *
-     * @param anAnimal - The animal that is in the water
+     * @param anAnimal        - The animal that is in the water
      * @param eventDispatcher - The dispatcher of this event
      */
     public AnimalInWater(final Animal anAnimal, final EventDispatcher eventDispatcher) {

@@ -1,13 +1,12 @@
 package nl.tudelft.ti2806.riverrush.domain.entity;
 
-import nl.tudelft.ti2806.riverrush.domain.event.BasicEventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.failfast.FailFastException;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 
 /**
  * Test for {@link AbstractTeam}
@@ -42,8 +41,8 @@ public class AbstractTeamTest {
         team.getAnimal(animal.getId());
     }
 
-    @Test (expected = FailFastException.class)
-    public void testAddNullAnimal()  {
+    @Test(expected = FailFastException.class)
+    public void testAddNullAnimal() {
 
         AbstractTeam team = new AbstractTeamTestImplementation();
         team.addAnimal(null);

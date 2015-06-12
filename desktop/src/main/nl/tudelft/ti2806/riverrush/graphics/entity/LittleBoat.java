@@ -1,8 +1,6 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -27,14 +25,14 @@ public class LittleBoat extends Actor {
      * Creates an river banks object with a given graphical representation.
      *
      * @param assetManager enables the object to retrieve its assets
-     * @param xpos represents the position of the little boat on the x axis
-     * @param y_position represents the position of the little boat on the y axis
-     * @param width represents the width of the little boat object
-     * @param height represents the height of the little boat object
+     * @param xpos         represents the position of the little boat on the x axis
+     * @param y_position   represents the position of the little boat on the y axis
+     * @param width        represents the width of the little boat object
+     * @param height       represents the height of the little boat object
      */
     @Inject
     public LittleBoat(final AssetManager assetManager, final float xpos, final float y_position,
-            final float top_y_position, final float width, final float height) {
+                      final float top_y_position, final float width, final float height) {
         this.manager = assetManager;
         this.ypos = y_position;
         this.top_ypos = top_y_position;

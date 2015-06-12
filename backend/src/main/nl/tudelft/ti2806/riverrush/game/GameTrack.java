@@ -25,7 +25,15 @@ import java.util.TreeMap;
 public class GameTrack {
 
     private static final long UPDATE_DELAY = 1000;
+
+    /**
+     * Track length.
+     */
     public static final Integer TRACK_LENGTH = 100;
+
+    /**
+     * Max team size.
+     */
     public static final int TEAM_SIZE = 50;
     private final HashMap<Integer, Team> teams;
 
@@ -38,14 +46,14 @@ public class GameTrack {
     private Game game;
 
     /**
-     * Create a gametrack.
+     * Create a game track.
      *
      * @param dispatch - See {@link EventDispatcher}
-     * @param gme - the game
+     * @param aGame    - the game
      */
-    public GameTrack(final EventDispatcher dispatch, final Game gme) {
+    public GameTrack(final EventDispatcher dispatch, final Game aGame) {
         this.dispatcher = dispatch;
-        this.game = gme;
+        this.game = aGame;
         this.teams = new HashMap<>();
         this.teamDistances = new HashMap<>();
         this.levelMap = new TreeMap<>();
@@ -62,6 +70,11 @@ public class GameTrack {
         }
     }
 
+    /**
+     * Parse a level for the game track.
+     *
+     * @param inputStream The stream to parse from
+     */
     protected void parseLevel(final InputStream inputStream) {
         this.parseLevel(new Scanner(inputStream));
     }
@@ -82,6 +95,13 @@ public class GameTrack {
         }
     }
 
+    /**
+     * Generate an event to create elements on the game track.
+     *
+     * @param parseCode     The element to create
+     * @param spawnLocation The location to put the element
+     * @return The event
+     */
     protected AbstractTeamEvent generateTrackEvent(final char parseCode, final double spawnLocation) {
         if (parseCode == 'O') {
             AddObstacleEvent event = new AddObstacleEvent();
@@ -149,7 +169,7 @@ public class GameTrack {
     /**
      * This will check if it is time for the team to get a cannonball to their faces.
      *
-     * @param team - The team
+     * @param team            - The team
      * @param currentDistance - The distance this team has travelled
      */
     protected void fireGameTrackEvents(final Team team, final Double currentDistance) {
@@ -230,10 +250,10 @@ public class GameTrack {
      * @param animal - The animal to add
      * @return The team id the player joined
      * @throws NoSuchTeamException - if team is not found
-     * @throws TeamFullException - if team is full
+     * @throws TeamFullException   - if team is full
      */
     public Integer addAnimal(final Integer teamID, final AbstractAnimal animal)
-            throws NoSuchTeamException, TeamFullException {
+        throws NoSuchTeamException, TeamFullException {
         if (!this.teams.containsKey(teamID)) {
             throw new NoSuchTeamException();
         }
@@ -281,6 +301,15 @@ public class GameTrack {
         return this.teams;
     }
 
+    /**
+     * Read the game track from a file.
+     *
+     * @param fileName The name of the file
+     * @param dispatch The event dispatcher
+     * @param game     The main game
+     * @return The created game track
+     * @throws IOException when the file cannot be opened
+     */
     public static GameTrack readFromFile(final String fileName,
                                          final EventDispatcher dispatch,
                                          final Game game) throws IOException {

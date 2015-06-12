@@ -11,8 +11,6 @@ import nl.tudelft.ti2806.riverrush.network.event.JoinTeamCommand;
 import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
 import nl.tudelft.ti2806.riverrush.network.event.VoteBoatMoveCommand;
 
-import java.util.Objects;
-
 /**
  * Controller for the individual players.
  */
@@ -28,12 +26,12 @@ public class UserController extends AbstractController {
      * Create a player controller.
      *
      * @param aDispatcher The event dispatcher for dispatching the events
-     * @param aServer The server for sending the events over the network
-     * @param aGame The game instance
+     * @param aServer     The server for sending the events over the network
+     * @param aGame       The game instance
      */
     @Inject
     public UserController(final EventDispatcher aDispatcher,
-            @Named("playerServer") final AbstractServer aServer, final Game aGame) {
+                          @Named("playerServer") final AbstractServer aServer, final Game aGame) {
         super(aDispatcher);
         this.animal = new Animal(aDispatcher);
         this.dispatcher = aDispatcher;
@@ -46,24 +44,24 @@ public class UserController extends AbstractController {
     public void initialize() {
         final HandlerLambda<JoinTeamCommand> joinTeamHandler = this::joinTeamHandler;
         final HandlerLambda<Event> sendOverNetworkLambda = (e) -> {
-            if (Objects.equals(e.getAnimal(), this.animal.getId())
-                    || Objects.equals(e.getAnimal(), -1)) {
+            Integer animalId = e.getAnimal();
+            if (animalId == this.animal.getId() || animalId == -1) {
                 this.server.sendEvent(e, this);
             }
         };
         final HandlerLambda<AbstractTeamEvent> sendTeamEventOverNetworkLambda = (e) -> {
-            if (Objects.equals(e.getTeam(), this.animal.getTeamId())) {
+            if (e.getTeam() == this.animal.getTeamId()) {
                 this.server.sendEvent(e, this);
             }
         };
-        final HandlerLambda<JumpCommand> jumpCommandHandler = (e) -> {
-            if (this.animal.getId().equals(e.getAnimal())) {
+        final HandlerLambda<JumpCommand> jumpCommandHandlerLambda = (e) -> {
+            if (e.getAnimal() == this.animal.getId()) {
                 this.game.jumpAnimal(this.animal);
             }
         };
 
-        final HandlerLambda<VoteBoatMoveCommand> voteCommandHandler = (e) -> {
-            if (this.animal.getId().equals(e.getAnimal())) {
+        final HandlerLambda<VoteBoatMoveCommand> voteCommandHandlerLambda = (e) -> {
+            if (e.getAnimal() == this.animal.getId()) {
                 this.game.voteMove(this.animal, e.getDirection());
             }
         };
@@ -78,16 +76,15 @@ public class UserController extends AbstractController {
         this.listenTo(AnimalRemovedEvent.class, sendOverNetworkLambda);
         this.listenTo(AnimalReturnedToBoatEvent.class, sendOverNetworkLambda);
         this.listenTo(GameAboutToStartEvent.class, sendOverNetworkLambda);
+        this.listenTo(GameAboutToWaitEvent.class, sendOverNetworkLambda);
         this.listenTo(GameFinishedEvent.class, sendOverNetworkLambda);
         this.listenTo(GameStartedEvent.class, sendOverNetworkLambda);
         this.listenTo(GameStoppedEvent.class, sendOverNetworkLambda);
         this.listenTo(GameWaitingEvent.class, sendOverNetworkLambda);
         this.listenTo(TeamProgressEvent.class, sendTeamEventOverNetworkLambda);
         this.listenTo(JoinTeamCommand.class, joinTeamHandler);
-        this.listenTo(JumpCommand.class, jumpCommandHandler);
-        this.listenTo(VoteBoatMoveCommand.class, voteCommandHandler);
-        this.listenTo(GameAboutToWaitEvent.class, sendOverNetworkLambda);
-
+        this.listenTo(JumpCommand.class, jumpCommandHandlerLambda);
+        this.listenTo(VoteBoatMoveCommand.class, voteCommandHandlerLambda);
         this.server.sendEvent(this.game.getStateEvent(), this);
     }
 
@@ -97,7 +94,7 @@ public class UserController extends AbstractController {
      * @param e The event
      */
     private void joinTeamHandler(final JoinTeamCommand e) {
-        if (Objects.equals(e.getAnimal(), this.animal.getId()) && !this.isJoined) {
+        if (e.getAnimal() == this.animal.getId() && !this.isJoined) {
             this.game.addPlayerToTeam(this.animal, e.getTeam());
             this.isJoined = true;
         }

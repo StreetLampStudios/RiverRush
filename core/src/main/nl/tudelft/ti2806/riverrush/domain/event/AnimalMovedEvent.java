@@ -18,7 +18,7 @@ public class AnimalMovedEvent extends AbstractTeamAnimalEvent {
         stringBuilder.append(super.serialize(protocol));
         stringBuilder.append(protocol.getPairSeperator());
         stringBuilder.append("direction").append(protocol.getKeyValueSeperator())
-                .append(this.direction.toString());
+            .append(this.direction.toString());
         return stringBuilder.toString();
     }
 

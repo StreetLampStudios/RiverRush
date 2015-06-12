@@ -6,9 +6,8 @@ import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalOnBoat;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Spy;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
@@ -32,12 +31,11 @@ public class AnimalTest {
     }
 
 
-
     @Test
     public void testSetState() throws Exception {
         AnimalInAir state = new AnimalInAir(animal, dispatcher);
         animal.setState(state);
-        assertEquals(state,animal.getState());
+        assertEquals(state, animal.getState());
     }
 
     @Test

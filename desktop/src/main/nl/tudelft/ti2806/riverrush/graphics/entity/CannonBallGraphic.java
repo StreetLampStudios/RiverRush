@@ -1,7 +1,5 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -9,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 
 /**
  * Adds an obstacle on the screen.
@@ -36,7 +35,7 @@ public class CannonBallGraphic extends AbstractObstacle {
      * Creates a new obstacle.
      *
      * @param assetsManager refers to the manager that has made all loaded assets available for use.
-     * @param off Configures the place from which the obstacle is fired. Must be between 0 and 1
+     * @param off           Configures the place from which the obstacle is fired. Must be between 0 and 1
      */
     public CannonBallGraphic(final AssetManager assetsManager, final double off) {
         this.assets = assetsManager;
@@ -76,8 +75,8 @@ public class CannonBallGraphic extends AbstractObstacle {
         this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
 
         batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-                this.getRotation());
+            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+            this.getRotation());
     }
 
     /**

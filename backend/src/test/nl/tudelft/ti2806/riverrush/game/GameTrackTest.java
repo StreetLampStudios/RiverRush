@@ -18,14 +18,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
 /**
- * Created by MARTIJN.
+ * Test fot the game track.
  */
 public class GameTrackTest {
 
-    GameTrack track = null;
-    EventDispatcher dispatcher;
+    private GameTrack track = null;
+    private EventDispatcher dispatcher;
     private Team team;
-    private final static double delta = 0.0001;
+    private static final double DELTA = 0.0001;
     private Game game;
 
     @Before
@@ -64,7 +64,7 @@ public class GameTrackTest {
     public void testSpeed() throws Exception {
         Animal animal = new Animal(this.dispatcher);
         this.team.addAnimal(animal);
-        assertEquals(this.track.getSpeed(this.team), 1.0, delta);
+        assertEquals(this.track.getSpeed(this.team), 1.0, DELTA);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class GameTrackTest {
         Animal animal = new Animal(this.dispatcher);
         this.team.addAnimal(animal);
         animal.fall();
-        assertEquals(this.track.getSpeed(this.team), 0.0, delta);
+        assertEquals(this.track.getSpeed(this.team), 0.0, DELTA);
     }
 
     @Test
@@ -80,9 +80,9 @@ public class GameTrackTest {
         Animal animal = new Animal(this.dispatcher);
         this.team.addAnimal(animal);
         this.track.updateProgress();
-        assertEquals(1.0, this.track.getDistanceTeam(this.team.getId()), delta);
+        assertEquals(1.0, this.track.getDistanceTeam(this.team.getId()), DELTA);
         Mockito.verify(this.dispatcher, Mockito.times(1)).dispatch(
-                Mockito.any(TeamProgressEvent.class));
+            Mockito.any(TeamProgressEvent.class));
 
     }
 
@@ -96,7 +96,7 @@ public class GameTrackTest {
 
         Mockito.verify(this.game, times(1)).finish(Mockito.any());
 
-        assertEquals(GameTrack.TRACK_LENGTH, this.track.getDistanceTeam(this.team.getId()), delta);
+        assertEquals(GameTrack.TRACK_LENGTH, this.track.getDistanceTeam(this.team.getId()), DELTA);
     }
 
     @Test
@@ -133,9 +133,9 @@ public class GameTrackTest {
 
         this.track.updateProgress();
         assertEquals("Distance of team 1 is not equal", GameTrack.TRACK_LENGTH + 1,
-                this.track.getDistanceTeam(this.team.getId()), delta);
+            this.track.getDistanceTeam(this.team.getId()), DELTA);
         assertEquals("Distance of team 2 is not equal", GameTrack.TRACK_LENGTH + 0.5,
-                this.track.getDistanceTeam(team2.getId()), delta);
+            this.track.getDistanceTeam(team2.getId()), DELTA);
 
         ArrayList<Team> list = new ArrayList<>();
         list.add(this.team);
@@ -153,7 +153,7 @@ public class GameTrackTest {
         this.track.fireGameTrackEvents(this.team, 10.1);
 
         Mockito.verify(this.dispatcher, Mockito.times(1)).dispatch(
-                Mockito.isA(AbstractTeamEvent.class));
+            Mockito.isA(AbstractTeamEvent.class));
     }
 
 }

@@ -21,14 +21,14 @@ public class WoodenBackground extends Actor {
      * Creates an river banks object with a given graphical representation.
      *
      * @param assetManager enables the object to retrieve its assets
-     * @param xpos represents the position of the wooden background on the x axis
-     * @param ypos represents the position of the wooden background on the y axis
-     * @param width represents the width of the wooden background object
-     * @param height represents the height of the wooden background object
+     * @param xpos         represents the position of the wooden background on the x axis
+     * @param ypos         represents the position of the wooden background on the y axis
+     * @param width        represents the width of the wooden background object
+     * @param height       represents the height of the wooden background object
      */
     @Inject
     public WoodenBackground(final AssetManager assetManager, final float xpos, final float ypos,
-            final float width, final float height) {
+                            final float width, final float height) {
         this.manager = assetManager;
         this.setPosition(xpos, ypos);
         this.setWidth(width);
