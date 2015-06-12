@@ -8,10 +8,7 @@ import com.google.inject.Injector;
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
 
@@ -26,6 +23,7 @@ public class MainDesktop extends CoreModule {
     private static final int WIDTH = 1920;
     private static final int HEIGHT = 1080;
     private final Injector injector;
+    private final EventDispatcher eventDispatcher;
 
     /**
      * Calls the main desktop constructor that starts the game.
@@ -33,7 +31,7 @@ public class MainDesktop extends CoreModule {
      * @param arg not used
      * @throws URISyntaxException handles the situation where the URI has the wrong syntax.
      */
-    public static void main(final String[] arg) throws URISyntaxException {
+    public static void main(final String[] arg) throws URISyntaxException, InterruptedException {
         new MainDesktop();
     }
 
@@ -42,7 +40,7 @@ public class MainDesktop extends CoreModule {
      *
      * @throws URISyntaxException handles the situation where the URI has the wrong syntax.
      */
-    public MainDesktop() throws URISyntaxException {
+    public MainDesktop() throws URISyntaxException, InterruptedException {
         this.injector = Guice.createInjector(this);
 
         Client client = new Client("localhost", this.configureRendererProtocol());
@@ -50,8 +48,11 @@ public class MainDesktop extends CoreModule {
         cntrl.setClient(client);
         client.setController(cntrl);
 
+        this.eventDispatcher = this.injector.getInstance(EventDispatcher.class);
+
         this.setupGraphics();
         client.connect();
+
     }
 
     /**
@@ -84,6 +85,7 @@ public class MainDesktop extends CoreModule {
         // config.fullscreen = true;
 
         Game game = this.injector.getInstance(Game.class);
+        // SceneDemo3 game = this.injector.getInstance(SceneDemo3.class);
         new LwjglApplication(game, config);
     }
 

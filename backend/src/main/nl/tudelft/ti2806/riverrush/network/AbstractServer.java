@@ -12,11 +12,15 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.java_websocket.WebSocket;
-import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.framing.CloseFrame;
 import org.java_websocket.server.WebSocketServer;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,11 +35,11 @@ public abstract class AbstractServer extends WebSocketServer {
     /**
      * Maps a remote address to a handler for player actions.
      */
-    private final Map<WebSocket, Controller> controllers;
+    protected final Map<WebSocket, Controller> controllers;
     /**
      * Maps a websocket to a controller.
      */
-    private final Map<Controller, WebSocket> sockets;
+    protected final Map<Controller, WebSocket> sockets;
 
     /**
      * The protocol used to serialize/deserialize network messages.
@@ -72,19 +76,14 @@ public abstract class AbstractServer extends WebSocketServer {
     }
 
     @Override
-    public void onOpen(final WebSocket conn, final ClientHandshake handshake) {
-        FailIf.isNull(conn);
-        log.info("Connection opened");
-        createController(conn);
-    }
-
-    @Override
-    public void onClose(final WebSocket conn, final int code,
-                        final String reason, final boolean remote) {
+    public void onClose(final WebSocket conn, final int code, final String reason, final boolean remote) {
         FailIf.isNull(conn);
         log.info("Connection closed.");
-        this.controllers.get(conn).dispose();
-        this.controllers.remove(conn);
+
+        if (code != CloseFrame.REFUSE) {
+            this.controllers.get(conn).dispose();
+            this.controllers.remove(conn);
+        }
     }
 
     @Override
@@ -151,7 +150,7 @@ public abstract class AbstractServer extends WebSocketServer {
     private void sendHTTPRequest() throws IOException {
         URL url = null;
         try {
-            url = new URL("http://riverrush.3dsplaza.com/setserver.php");
+            url = new URL("http://riverrushbeta.3dsplaza.com/setserver.php");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -183,6 +182,7 @@ public abstract class AbstractServer extends WebSocketServer {
             e.printStackTrace();
         } finally {
             connection.getOutputStream().close();
+            connection.getInputStream().close();
         }
     }
 }

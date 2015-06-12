@@ -2,6 +2,7 @@ package nl.tudelft.ti2806.riverrush.game.state;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.screen.StoppedScreen;
@@ -46,12 +47,17 @@ public class StoppedGameState extends AbstractGameState {
     }
 
     @Override
-    public GameState finish() {
+    public GameState finish(Integer team) {
         return this;
     }
 
     @Override
     public GameState waitForPlayers() {
         return this;
+    }
+
+    @Override
+    public Event getStateEvent() {
+        return null;
     }
 }

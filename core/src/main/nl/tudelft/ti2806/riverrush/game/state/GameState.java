@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 
 /**
  * Represents the current state of the game.
@@ -29,9 +30,10 @@ public interface GameState {
     /**
      * Transition when the game wants to finish.
      *
+     * @param team The team that wins
      * @return The new state.
      */
-    GameState finish();
+    GameState finish(final Integer team);
 
     /**
      * Transition when the game is ready to add players.
@@ -40,4 +42,10 @@ public interface GameState {
      */
     GameState waitForPlayers();
 
+    /**
+     * Get the event for the current state to send to new connections.
+     *
+     * @return The event for the current state
+     */
+    Event getStateEvent();
 }

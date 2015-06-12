@@ -2,6 +2,8 @@ package nl.tudelft.ti2806.riverrush.network.protocol;
 
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -12,6 +14,8 @@ import java.util.Map;
  * singleton.
  */
 public final class BasicProtocol implements Protocol {
+
+    private static final Logger log = LogManager.getLogger(BasicProtocol.class);
 
     /**
      * We seperate key-value pairs with this character. E.g.:
@@ -75,7 +79,8 @@ public final class BasicProtocol implements Protocol {
             String[] keyValue = pair.split(this.getKeyValueSeperator());
 
             if (keyValue.length != 2) {
-                throw new InvalidProtocolException("Invalid syntax");
+                log.error("Invalid protocol syntax in message: " + message);
+                throw new InvalidProtocolException("Invalid protocol syntax");
             }
 
             if (keyValue[0].equals(this.getEventTypeFieldKey())) {
@@ -85,14 +90,15 @@ public final class BasicProtocol implements Protocol {
             }
         }
         if (action == null) {
+            log.error("Protocol field not found: " + this.getEventTypeFieldKey());
             throw new InvalidProtocolException(this.getEventTypeFieldKey()
                 + " field not found but required.");
         }
 
         EventInstantiator eventInstatiator = this.eventMapping.get(action);
         if (eventInstatiator == null) {
-            throw new InvalidActionException("Unknown "
-                + this.getEventTypeFieldKey() + ": " + action);
+            log.error("Protocol message not registered: " + action);
+            throw new InvalidActionException("Protocol message not registered");
         }
         Event result = eventInstatiator.instantiate();
 

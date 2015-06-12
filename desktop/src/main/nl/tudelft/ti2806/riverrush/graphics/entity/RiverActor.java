@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
@@ -20,10 +21,14 @@ public class RiverActor extends Actor {
 
     private static final int END_REGIONX = 1599; // 570;
     private static final int END_REGIONY = 931; // 570;
-    private static final float FLOW_DURATION = 3f;
+    private static final float BASE_FLOW_DURATION = 3f;
 
     private final AssetManager manager;
     private final float mid;
+    private final float origY;
+
+    private MoveToAction moveDown;
+    private MoveToAction moveUp;
 
     /**
      * Creates an river object with a given graphical representation.
@@ -40,23 +45,27 @@ public class RiverActor extends Actor {
         this.setPosition(0, height);
         this.setWidth(width);
         this.setHeight(height);
+        this.origY = ypos;
         this.mid = width / 2;
 
-        MoveToAction moveDown = new MoveToAction();
-        moveDown.setPosition(0, height * -1);
-        moveDown.setDuration(FLOW_DURATION);
+        this.moveDown = new MoveToAction();
+        this.moveDown.setPosition(0, height * -1);
+        this.moveDown.setDuration(BASE_FLOW_DURATION);
 
-        MoveToAction moveUp = new MoveToAction();
-        moveUp.setPosition(0, ypos);
+        this.moveUp = new MoveToAction();
+        this.moveUp.setPosition(0, ypos);
 
-        SequenceAction seq = sequence(moveUp, moveDown);
+        SequenceAction seq = sequence(this.moveUp, this.moveDown);
         RepeatAction rep = forever(seq);
 
-        // SequenceAction s = (SequenceAction) rep.getAction();
-        // MoveToAction m = (MoveToAction) s.getActions().get(1);
-        // m.setDuration(FLOW_DURATION + 100f);
-
         this.addAction(rep);
+
+        // moveDown.setDuration(this.getRemainingFlowTime() / 2); // TODO make it more elegant
+        // SequenceAction newSeq = sequence(moveUp, moveDown);
+        // RepeatAction newRep = forever(newSeq);
+        // this.clearActions();
+        // this.addAction(newRep);
+
     }
 
     @Override
@@ -80,5 +89,45 @@ public class RiverActor extends Actor {
      */
     public float getMid() {
         return this.mid;
+    }
+
+    public float getRemainingFlowTime(float flow) {
+        Action act = this.getActions().get(0);
+        if (act instanceof MoveToAction) {
+            MoveToAction move = (MoveToAction) act;
+            flow -= move.getTime();
+        } else {
+            RepeatAction rep = (RepeatAction) act; // Get first and only action
+            SequenceAction seq = (SequenceAction) rep.getAction(); // Get the repeated action
+            MoveToAction move = (MoveToAction) seq.getActions().get(1);
+            // Get the second of the sequence action. This can only be a moveto action
+            flow -= move.getTime();
+        }
+        return flow;
+    }
+
+    public void updateFlow(double speed) {
+        float speedMultiplier = (float) speed;
+        float currentFlow = speed <= 0.2 ? 15f : BASE_FLOW_DURATION / speedMultiplier;
+        float resetDuration = currentFlow * (1 - (this.getY() / (-1 * this.getHeight())));
+
+        this.moveDown.setDuration(resetDuration);
+
+        this.clearActions();
+
+        MoveToAction newDown = new MoveToAction();
+        newDown.setPosition(0, this.getHeight() * -1);
+        newDown.setDuration(currentFlow);
+
+        MoveToAction newUp = new MoveToAction();
+        newUp.setPosition(0, this.origY);
+
+        SequenceAction newSeq = sequence(newUp, newDown);
+        RepeatAction newRep = forever(newSeq);
+
+        SequenceAction seq = sequence(this.moveDown, newRep);
+        this.addAction(seq);
+        this.moveDown.setTime(0f);
+
     }
 }

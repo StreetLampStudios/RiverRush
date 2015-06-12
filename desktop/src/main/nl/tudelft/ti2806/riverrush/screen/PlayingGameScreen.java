@@ -18,7 +18,8 @@ import nl.tudelft.ti2806.riverrush.game.TickHandler;
 import nl.tudelft.ti2806.riverrush.graphics.CenterStage;
 import nl.tudelft.ti2806.riverrush.graphics.SideStage;
 import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
-import nl.tudelft.ti2806.riverrush.graphics.entity.ObstacleGraphic;
+import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
+import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
 
 /**
  * The playing game screen constructs and displays all the visuals that are required during game
@@ -226,11 +227,25 @@ public class PlayingGameScreen implements Screen {
      * @param isLeft  - left or right side
      * @param graphic - where the obstacle is the graphic
      */
-    public void addObstacle(boolean isLeft, ObstacleGraphic graphic) {
+    public void addObstacle(boolean isLeft, CannonBallGraphic graphic) {
         if (isLeft) {
             this.leftScreen.spawnObstacle(graphic);
         } else {
             this.rightScreen.spawnObstacle(graphic);
+        }
+    }
+
+    /**
+     * adds an rock on the..
+     *
+     * @param isLeft  - left or right side
+     * @param graphic - where the rock is the graphic
+     */
+    public void addRock(boolean isLeft, RockGraphic graphic) {
+        if (isLeft) {
+            this.leftScreen.spawnRock(graphic);
+        } else {
+            this.rightScreen.spawnRock(graphic);
         }
     }
 
@@ -243,7 +258,10 @@ public class PlayingGameScreen implements Screen {
 
     }
 
-    public void updateProgress(int teamID, double progress) {
+    public void updateProgress(int teamID, double progress, double speed) {
+        // TODO Change river speed
+        this.leftScreen.getRiver().updateFlow(speed);
+        this.rightScreen.getRiver().updateFlow(speed);
         this.midScreen.updateProgress(teamID, progress);
     }
 }

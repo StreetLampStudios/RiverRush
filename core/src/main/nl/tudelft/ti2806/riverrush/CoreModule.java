@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.network.event.JoinTeamCommand;
 import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
+import nl.tudelft.ti2806.riverrush.network.event.VoteBoatMoveCommand;
 import nl.tudelft.ti2806.riverrush.network.protocol.BasicProtocol;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
@@ -28,8 +29,7 @@ public abstract class CoreModule extends AbstractModule {
     }
 
     /**
-     * Creates instances of EventDispatcher
-     * Override for the ability to pre-attach any listeners.
+     * Creates instances of EventDispatcher Override for the ability to pre-attach any listeners.
      *
      * @return A fresh dispatcher.
      */
@@ -38,8 +38,7 @@ public abstract class CoreModule extends AbstractModule {
     }
 
     /**
-     * Configure the renderer protocol by registering all valid messages that can be
-     * sent.
+     * Configure the renderer protocol by registering all valid messages that can be sent.
      *
      * @return The fully configured protocol.
      */
@@ -59,25 +58,28 @@ public abstract class CoreModule extends AbstractModule {
      * @param protocol The protocol for this server
      */
     private void registerStateMessages(final Protocol protocol) {
-        protocol.registerNetworkMessage(GameWaitingEvent.class, GameWaitingEvent::new);
-        protocol.registerNetworkMessage(GameAboutToStartEvent.class, GameAboutToStartEvent::new);
-        protocol.registerNetworkMessage(GameStartedEvent.class, GameStartedEvent::new);
-        protocol.registerNetworkMessage(GameFinishedEvent.class, GameFinishedEvent::new);
-        protocol.registerNetworkMessage(GameStoppedEvent.class, GameStoppedEvent::new);
         protocol.registerNetworkMessage(AddObstacleEvent.class, AddObstacleEvent::new);
+        protocol.registerNetworkMessage(AddRockEvent.class, AddRockEvent::new);
         protocol.registerNetworkMessage(AnimalAddedEvent.class, AnimalAddedEvent::new);
-        protocol.registerNetworkMessage(AnimalRemovedEvent.class, AnimalRemovedEvent::new);
         protocol.registerNetworkMessage(AnimalCollidedEvent.class, AnimalCollidedEvent::new);
+        protocol.registerNetworkMessage(AnimalDroppedEvent.class, AnimalDroppedEvent::new);
         protocol.registerNetworkMessage(AnimalFellOffEvent.class, AnimalFellOffEvent::new);
         protocol.registerNetworkMessage(AnimalJumpedEvent.class, AnimalJumpedEvent::new);
+        protocol.registerNetworkMessage(AnimalMovedEvent.class, AnimalMovedEvent::new);
+        protocol.registerNetworkMessage(AnimalRemovedEvent.class, AnimalRemovedEvent::new);
         protocol.registerNetworkMessage(AnimalReturnedToBoatEvent.class, AnimalReturnedToBoatEvent::new);
-        protocol.registerNetworkMessage(AnimalDroppedEvent.class, AnimalDroppedEvent::new);
+        protocol.registerNetworkMessage(BoatCollidedEvent.class, BoatCollidedEvent::new);
+        protocol.registerNetworkMessage(GameAboutToStartEvent.class, GameAboutToStartEvent::new);
+        protocol.registerNetworkMessage(GameFinishedEvent.class, GameFinishedEvent::new);
+        protocol.registerNetworkMessage(GameStartedEvent.class, GameStartedEvent::new);
+        protocol.registerNetworkMessage(GameStoppedEvent.class, GameStoppedEvent::new);
+        protocol.registerNetworkMessage(GameWaitingEvent.class, GameWaitingEvent::new);
         protocol.registerNetworkMessage(TeamProgressEvent.class, TeamProgressEvent::new);
+        protocol.registerNetworkMessage(GameAboutToWaitEvent.class, GameAboutToWaitEvent::new);
     }
 
     /**
-     * Configure the client protocol by registering all valid messages that can be
-     * sent.
+     * Configure the client protocol by registering all valid messages that can be sent.
      *
      * @return The fully configured protocol.
      */
@@ -88,7 +90,10 @@ public abstract class CoreModule extends AbstractModule {
 
         protocol.registerNetworkMessage(JumpCommand.class, JumpCommand::new);
         protocol.registerNetworkMessage(JoinTeamCommand.class, JoinTeamCommand::new);
-        registerStateMessages(protocol);
+        protocol.registerNetworkMessage(VoteBoatMoveCommand.class, VoteBoatMoveCommand::new);
+        this.registerStateMessages(protocol);
+
+        this.registerStateMessages(protocol);
 
         return protocol;
     }

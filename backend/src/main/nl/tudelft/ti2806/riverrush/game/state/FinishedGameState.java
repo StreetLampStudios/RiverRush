@@ -1,8 +1,13 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToWaitEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * When a team wins the game, it will go into this state.
@@ -10,19 +15,31 @@ import nl.tudelft.ti2806.riverrush.game.Game;
 public class FinishedGameState implements GameState {
 
     private final EventDispatcher eventDispatcher;
-    private Game game;
+    private final Game game;
+    private static final int WAIT_TO_START_GAME = 5000;
 
     /**
      * Initializes the state where the game is finished. A game is finished when one team has won.
      *
      * @param dispatcher The dispatcher, so we can dispatch {@link GameFinishedEvent}
-     * @param gme
+     * @param aGame      - the game. see {@link Game}
      */
-    public FinishedGameState(final EventDispatcher dispatcher, Game gme) {
+    public FinishedGameState(final EventDispatcher dispatcher, final Game aGame) {
         this.eventDispatcher = dispatcher;
-        this.game = gme;
+        this.game = aGame;
 
-        dispatcher.dispatch(new GameFinishedEvent());
+        Timer tmr = new Timer();
+        tmr.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                game.reset();
+                tmr.cancel();
+            }
+        }, WAIT_TO_START_GAME, WAIT_TO_START_GAME);
+
+        GameAboutToWaitEvent event = new GameAboutToWaitEvent();
+        event.setTimeTillWait(WAIT_TO_START_GAME);
+        this.eventDispatcher.dispatch(event);
     }
 
     @Override
@@ -30,10 +47,21 @@ public class FinishedGameState implements GameState {
         // Nothing to dispose.
     }
 
+    /**
+     * Get the event for the current state to send to new connections.
+     *
+     * @return The event for the current state
+     */
+    public Event getStateEvent() {
+        GameFinishedEvent event = new GameFinishedEvent();
+        event.setTeam(-1);
+        return event;
+    }
+
     @Override
     public GameState start() {
         this.dispose();
-        return new WaitingGameState(this.eventDispatcher, this.game);
+        return new PlayingGameState(this.eventDispatcher, this.game);
     }
 
     @Override
@@ -43,7 +71,7 @@ public class FinishedGameState implements GameState {
     }
 
     @Override
-    public GameState finish() {
+    public GameState finish(Integer team) {
         return this;
     }
 

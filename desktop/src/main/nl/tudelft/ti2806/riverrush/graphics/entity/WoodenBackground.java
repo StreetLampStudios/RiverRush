@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.riverrush.graphics;
+package nl.tudelft.ti2806.riverrush.graphics.entity;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,13 +27,8 @@ public class WoodenBackground extends Actor {
      * @param height       represents the height of the wooden background object
      */
     @Inject
-    public WoodenBackground(
-        final AssetManager assetManager,
-        final float xpos,
-        final float ypos,
-        final float width,
-        final float height
-    ) {
+    public WoodenBackground(final AssetManager assetManager, final float xpos, final float ypos,
+                            final float width, final float height) {
         this.manager = assetManager;
         this.setPosition(xpos, ypos);
         this.setWidth(width);

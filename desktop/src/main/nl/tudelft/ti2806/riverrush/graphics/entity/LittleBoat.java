@@ -1,4 +1,4 @@
-package nl.tudelft.ti2806.riverrush.graphics;
+package nl.tudelft.ti2806.riverrush.graphics.entity;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -31,14 +31,8 @@ public class LittleBoat extends Actor {
      * @param height       represents the height of the little boat object
      */
     @Inject
-    public LittleBoat(
-        final AssetManager assetManager,
-        final float xpos,
-        final float y_position,
-        final float top_y_position,
-        final float width,
-        final float height
-    ) {
+    public LittleBoat(final AssetManager assetManager, final float xpos, final float y_position,
+                      final float top_y_position, final float width, final float height) {
         this.manager = assetManager;
         this.ypos = y_position;
         this.top_ypos = top_y_position;
@@ -68,7 +62,7 @@ public class LittleBoat extends Actor {
         this.progress = progres;
         float newY = new Double(progres / 100).floatValue();
         MoveToAction action = new MoveToAction();
-        action.setPosition(getX(), ypos + newY * (top_ypos - ypos));
+        action.setPosition(this.getX(), this.ypos + newY * (this.top_ypos - this.ypos));
         action.setDuration(0.5f);
         this.addAction(action);
     }

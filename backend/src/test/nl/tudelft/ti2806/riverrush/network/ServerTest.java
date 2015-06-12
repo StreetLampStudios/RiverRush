@@ -18,7 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Test for the server.
@@ -148,7 +151,7 @@ public abstract class ServerTest extends AbstractModule {
     /**
      * When a controller calls sendEvent,
      * and the controller is associated with a connection,
-     * the server calls Protocol.serialize() on the event.
+     * the server calls Protocol.testSerialize() on the event.
      */
     @Test
     public void sendEvent_callsProtocol() {

@@ -2,10 +2,15 @@ package nl.tudelft.ti2806.riverrush.game.state;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.game.Game;
+import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
+import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 import nl.tudelft.ti2806.riverrush.screen.WaitingScreen;
 
 /**
@@ -15,9 +20,11 @@ public class WaitingGameState extends AbstractGameState {
 
     private final WaitingScreen screen;
     private static final int DELAY = 5;
-    // private final HandlerLambda<AnimalAddedEvent> animalHandler = (e) ->
-    // this.addAnimalHandler(e);
+
     private final HandlerLambda<GameAboutToStartEvent> timerHandler = (e) -> this.startTimer();
+    private final HandlerLambda<AnimalAddedEvent> addAnimalHandler = this::addAnimalHandler;
+    private final HandlerLambda<AnimalRemovedEvent> removeAnimalHandler = this::removeAnimalHandler;
+
 
     /**
      * The state of the game that indicates that the game is waiting for players. In this state the
@@ -26,17 +33,20 @@ public class WaitingGameState extends AbstractGameState {
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game in this
      *                        state.
      * @param assetManager    has all necessary assets loaded and available for use.
-     * @param gm              refers to the game that this state belongs to.
+     * @param game            refers to the game that this state belongs to.
      */
     public WaitingGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
-                            final Game gm) {
-        super(eventDispatcher, assetManager, gm);
+                            final Game game) {
+        super(eventDispatcher, assetManager, game);
 
+        this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandler);
         this.dispatcher.attach(GameAboutToStartEvent.class, this.timerHandler);
-        // this.dispatcher.attach(AnimalAddedEvent.class, this.animalHandler);
+        this.dispatcher.attach(AnimalRemovedEvent.class, this.removeAnimalHandler);
         this.screen = new WaitingScreen(assetManager, eventDispatcher);
-        Gdx.app.postRunnable(() -> WaitingGameState.this.game
-            .setScreen(WaitingGameState.this.screen));
+
+        Gdx.app.postRunnable(
+            () -> WaitingGameState.this.game.setScreen(WaitingGameState.this.screen)
+        );
     }
 
     /**
@@ -49,8 +59,14 @@ public class WaitingGameState extends AbstractGameState {
     @Override
     public void dispose() {
         this.dispatcher.detach(GameAboutToStartEvent.class, this.timerHandler);
-        // this.dispatcher.detach(AnimalAddedEvent.class, this.animalHandler);
+        this.dispatcher.detach(AnimalAddedEvent.class, this.addAnimalHandler);
+        this.dispatcher.detach(AnimalRemovedEvent.class, this.removeAnimalHandler);
         this.screen.dispose();
+    }
+
+    @Override
+    public Event getStateEvent() {
+        return null;
     }
 
     @Override
@@ -66,7 +82,7 @@ public class WaitingGameState extends AbstractGameState {
     }
 
     @Override
-    public GameState finish() {
+    public GameState finish(final Integer team) {
         return this;
     }
 
@@ -75,4 +91,30 @@ public class WaitingGameState extends AbstractGameState {
         return this;
     }
 
+    /**
+     * Add an animal.
+     *
+     * @param event The add event
+     */
+    public void addAnimalHandler(final AnimalAddedEvent event) {
+
+        Integer tm = event.getTeam();
+        Team tim = this.game.getTeam(tm);
+        if (tim == null) {
+            tim = this.game.addTeam(tm);
+        }
+        Integer variation = event.getVariation();
+        tim.addAnimal(new Animal(this.dispatcher, event.getAnimal(), tm, variation, event.getSector()));
+
+        this.screen.addConnection();
+    }
+
+    /**
+     * Is called when an animal is removed.
+     *
+     * @param animalRemovedEvent - The event
+     */
+    private void removeAnimalHandler(final AnimalRemovedEvent animalRemovedEvent) {
+        this.screen.removeConnection();
+    }
 }

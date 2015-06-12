@@ -1,7 +1,7 @@
 package nl.tudelft.ti2806.riverrush.game;
 
 /**
- * Created by m.olsthoorn on 6/3/2015.
+ * Is thrown when the team is not found
  */
-public class NoSuchTeamException extends Throwable {
+public class NoSuchTeamException extends RuntimeException {
 }

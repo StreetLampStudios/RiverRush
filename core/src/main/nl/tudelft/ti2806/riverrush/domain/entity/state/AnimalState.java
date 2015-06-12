@@ -1,5 +1,7 @@
 package nl.tudelft.ti2806.riverrush.domain.entity.state;
 
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+
 /**
  * Represents the state of an animal.
  */
@@ -24,7 +26,7 @@ public interface AnimalState {
      *
      * @return the new state when the animal collides.
      */
-    AnimalState collide();
+    AnimalState fall();
 
     /**
      * Animal returns to the boast.
@@ -32,4 +34,18 @@ public interface AnimalState {
      * @return the new state after returned to boat.
      */
     AnimalState returnToBoat();
+
+    /**
+     * Vote the direction the animal wants to go.
+     *
+     * @param direction The direction
+     * @return The new state after voting
+     */
+    AnimalState voteDirection(Direction direction);
+
+    /**
+     * Collide the animal with an obstacle. Dispatch events when applicable.
+     */
+    void collide();
+
 }

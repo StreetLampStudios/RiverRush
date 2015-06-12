@@ -2,6 +2,7 @@ package nl.tudelft.ti2806.riverrush.domain.entity.state;
 
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalDroppedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 import java.util.Timer;
@@ -13,7 +14,7 @@ import java.util.TimerTask;
  */
 public class AnimalInAir extends AbstractAnimalState {
 
-    private static final int DROP_DELAY = 5000;
+    private static final int DROP_DELAY = 500;
     private Animal animal;
     private final Timer tmr;
 
@@ -25,8 +26,8 @@ public class AnimalInAir extends AbstractAnimalState {
     public AnimalInAir(final Animal anim, final EventDispatcher eventDispatcher) {
         super(eventDispatcher);
         this.animal = anim;
-        tmr = new Timer();
-        tmr.scheduleAtFixedRate(new TimerTask() {
+        this.tmr = new Timer();
+        this.tmr.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 AnimalInAir.this.animal.drop();
@@ -50,12 +51,22 @@ public class AnimalInAir extends AbstractAnimalState {
     }
 
     @Override
-    public AnimalState collide() {
+    public AnimalState fall() {
         return this;
     }
 
     @Override
     public AnimalState returnToBoat() {
         return this;
+    }
+
+    @Override
+    public AnimalState voteDirection(Direction direction) {
+        return this;
+    }
+
+    @Override
+    public void collide() {
+        // Does nothing.
     }
 }
