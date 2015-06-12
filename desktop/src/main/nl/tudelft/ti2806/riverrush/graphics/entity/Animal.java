@@ -8,7 +8,8 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.state.AnimalOnBoat;
 
 public class Animal extends AbstractAnimal {
 
-    public Animal(EventDispatcher dispatch, Integer id, Integer team, Integer variation, Sector boatSector) {
+    public Animal(EventDispatcher dispatch, Integer id, Integer team, Integer variation,
+            Sector boatSector) {
         super(dispatch, id);
         this.setTeamId(team);
         this.setVariation(variation);
@@ -63,6 +64,14 @@ public class Animal extends AbstractAnimal {
      */
     public AnimalActor getActor() {
         return this.actor;
+    }
+
+    /**
+     * Determine what happens when an animal in this state collides.
+     */
+    public void collide() {
+        this.getState().collide();
+
     }
 
 }

@@ -1,11 +1,11 @@
 package nl.tudelft.ti2806.riverrush.domain.entity;
 
+import java.util.Random;
+
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalState;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.failfast.FailIf;
-
-import java.util.Random;
 
 /**
  * An abstract implementation of an animal.
@@ -41,7 +41,7 @@ public abstract class AbstractAnimal {
      * Create an animal in desktop.
      *
      * @param dispatch - See {@link EventDispatcher}
-     * @param animal   - Id of the animal
+     * @param animal - Id of the animal
      */
     public AbstractAnimal(final EventDispatcher dispatch, Integer animal) {
         this.dispatcher = dispatch;
@@ -185,7 +185,7 @@ public abstract class AbstractAnimal {
     }
 
     public Sector getSectorOnBoat() {
-        return sectorOnBoat;
+        return this.sectorOnBoat;
     }
 
     public void setSectorOnBoat(Sector sectorOnBoat) {

@@ -150,10 +150,7 @@ public class PlayingGameState extends AbstractGameState {
             for (AbstractAnimal animal : this.game.getTeam(0).getAnimals()) {
                 Animal animal1 = (Animal) animal;
                 if (graphic.calculateCollision(animal1.getActor())) {
-                    AnimalCollidedEvent event = new AnimalCollidedEvent();
-                    event.setAnimal(animal1.getId());
-                    event.setTeam(animal1.getTeamId());
-                    this.dispatcher.dispatch(event);
+                    animal1.collide();
                 }
             }
         }
@@ -162,10 +159,7 @@ public class PlayingGameState extends AbstractGameState {
             for (AbstractAnimal animal : this.game.getTeam(1).getAnimals()) {
                 Animal animal1 = (Animal) animal;
                 if (graphic.calculateCollision(animal1.getActor())) {
-                    AnimalCollidedEvent event = new AnimalCollidedEvent();
-                    event.setAnimal(animal1.getId());
-                    event.setTeam(animal1.getTeamId());
-                    this.dispatcher.dispatch(event);
+                    animal1.collide();
                 }
             }
         }

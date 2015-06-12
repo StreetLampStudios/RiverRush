@@ -59,10 +59,6 @@ public class RiverActor extends Actor {
         SequenceAction seq = sequence(this.moveUp, this.moveDown);
         RepeatAction rep = forever(seq);
 
-        // SequenceAction s = (SequenceAction) rep.getAction();
-        // MoveToAction m = (MoveToAction) s.getActions().get(1);
-        // m.setDuration(FLOW_DURATION + 100f);
-
         this.addAction(rep);
 
         // moveDown.setDuration(this.getRemainingFlowTime() / 2); // TODO make it more elegant
@@ -115,7 +111,8 @@ public class RiverActor extends Actor {
         float speedMultiplier = (float) speed;
         float currentFlow = speed <= 0.2 ? 15f : BASE_FLOW_DURATION / speedMultiplier;
         float resetDuration = currentFlow * (1 - (this.getY() / (-1 * this.getHeight())));
-        this.moveDown.setDuration(resetDuration);// - (this.moveDown.getTime() / speedMultiplier));
+
+        this.moveDown.setDuration(resetDuration);
 
         this.clearActions();
 
