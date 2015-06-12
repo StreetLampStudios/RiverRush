@@ -54,11 +54,6 @@ public class AnimalActor extends Group {
 
     private static final float ROLL_DURATION = 0.7f;
 
-    /**
-     * Number of milliseconds in a second.
-     */
-    public static final int SECOND = 1000;
-
     private AssetManager manager;
     private float origX;
     private float origY;
@@ -89,6 +84,9 @@ public class AnimalActor extends Group {
         this.directionFlag = flag;
     }
 
+    /**
+     * Initialise the Actor.
+     */
     public void init() {
         Vector2 v = new Vector2(this.getOriginX(), this.getOriginY());
         v = this.localToStageCoordinates(v);
@@ -172,7 +170,7 @@ public class AnimalActor extends Group {
      *
      * @return Action to roll.
      */
-    public Action rollAction(Direction direction) {
+    public Action rollAction(final Direction direction) {
         MoveToAction roll = new MoveToAction();
         roll.setDuration(ROLL_DURATION);
         roll.setPosition((direction == Direction.LEFT ? -1 * this.getWidth() : this.getParent()
@@ -184,7 +182,11 @@ public class AnimalActor extends Group {
         return Actions.parallel(roll, rot);
     }
 
-    public void updateFlag(Direction direction) {
+    /**
+     * Updates the flag that the animal should hold.
+     * @param direction - The direction it wants to go
+     */
+    public void updateFlag(final Direction direction) {
         this.directionFlag.setRotation(-30f);
         this.directionFlag.setVisible(true);
         if (direction == Direction.RIGHT) {
