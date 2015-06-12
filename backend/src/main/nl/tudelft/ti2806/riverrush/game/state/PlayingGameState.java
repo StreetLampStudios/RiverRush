@@ -25,13 +25,22 @@ public class PlayingGameState implements GameState {
 
         this.animalCollidedLambda = (e) -> this.game.collideAnimal(e.getAnimal(), e.getTeam());
 
-        this.dispatcher.dispatch(new GameStartedEvent());
+        this.dispatcher.dispatch(this.getStateEvent());
         this.dispatcher.attach(AnimalCollidedEvent.class, this.animalCollidedLambda);
     }
 
     @Override
     public void dispose() {
         // Is supposed to be empty
+    }
+
+    /**
+     * Get the event for the current state to send to new connections.
+     *
+     * @return The event for the current state
+     */
+    public Event getStateEvent() {
+        return new GameStartedEvent();
     }
 
     @Override

@@ -3,6 +3,7 @@ package nl.tudelft.ti2806.riverrush.game.state;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
@@ -78,6 +79,11 @@ public class WaitingGameState extends AbstractGameState {
     @Override
     public GameState waitForPlayers() {
         return this;
+    }
+
+    @Override
+    public Event getStateEvent() {
+        return null;
     }
 
     /**
