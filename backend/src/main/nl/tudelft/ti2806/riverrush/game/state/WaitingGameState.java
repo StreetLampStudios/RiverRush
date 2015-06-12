@@ -26,7 +26,7 @@ public class WaitingGameState implements GameState {
 
     private final EventDispatcher dispatcher;
     private final Game game;
-    HandlerLambda<AnimalAddedEvent> AnimalAddedEventHandlerLambda = (e) -> checkForEnoughPlayers();
+    HandlerLambda<AnimalAddedEvent> animalAddedEventHandlerLambda = (e) -> checkForEnoughPlayers();
 
     /**
      * Create the waiting game state.
@@ -40,7 +40,7 @@ public class WaitingGameState implements GameState {
 
         this.dispatcher.dispatch(new GameWaitingEvent());
 
-        this.dispatcher.attach(AnimalAddedEvent.class, AnimalAddedEventHandlerLambda);
+        this.dispatcher.attach(AnimalAddedEvent.class, animalAddedEventHandlerLambda);
 
         // When restarting the game this has to be done to give the renderer time to switch the states.
         try {
@@ -84,7 +84,7 @@ public class WaitingGameState implements GameState {
 
     @Override
     public void dispose() {
-        this.dispatcher.detach(AnimalAddedEvent.class, AnimalAddedEventHandlerLambda);
+        this.dispatcher.detach(AnimalAddedEvent.class, animalAddedEventHandlerLambda);
     }
 
     @Override
