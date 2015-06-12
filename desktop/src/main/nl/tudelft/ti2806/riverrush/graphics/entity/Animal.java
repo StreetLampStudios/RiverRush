@@ -6,18 +6,39 @@ import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.entity.state.AnimalOnBoat;
 
+/**
+ * The basic animal.
+ */
 public class Animal extends AbstractAnimal {
 
-    public Animal(EventDispatcher dispatch, Integer id, Integer team, Integer variation, Sector boatSector) {
+    private AnimalActor actor;
+
+    /**
+     * Constructor.
+     *
+     * @param dispatch   - The EventDispatcher
+     * @param id         - ID of the animal
+     * @param team       - TeamID of the animal
+     * @param variation  - Image Variation of the animal
+     * @param boatSector - In which sector the animal should be placed
+     */
+    public Animal(final EventDispatcher dispatch,
+                  final Integer id,
+                  final Integer team,
+                  final Integer variation,
+                  final Sector boatSector) {
         super(dispatch, id);
         this.setTeamId(team);
         this.setVariation(variation);
         this.setSectorOnBoat(boatSector);
     }
 
-    private AnimalActor actor;
-
-    public void setActor(AnimalActor act) {
+    /**
+     * Sets the actor.
+     *
+     * @param act - The animalactor
+     */
+    public void setActor(final AnimalActor act) {
         this.actor = act;
         this.setState(new AnimalOnBoat(this, this.getDispatcher()));
     }

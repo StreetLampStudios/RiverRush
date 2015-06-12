@@ -4,12 +4,22 @@ import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.game.Game;
 
+/**
+ * Is the gamestate which houses all the code to represent a GameState.
+ */
 public class AbstractGameState implements GameState {
 
-    protected final EventDispatcher dispatcher;
-    protected final AssetManager assets;
-    protected final Game game;
+    private final EventDispatcher dispatcher;
+    private final AssetManager assets;
+    private final Game game;
 
+    /**
+     * Constructor.
+     *
+     * @param eventDispatcher - the eventDispatcher
+     * @param assetManager    - the AssetManager
+     * @param gm              - the game
+     */
     public AbstractGameState(final EventDispatcher eventDispatcher,
                              final AssetManager assetManager, final Game gm) {
         this.game = gm;
@@ -34,7 +44,7 @@ public class AbstractGameState implements GameState {
     }
 
     @Override
-    public GameState finish(Integer team) {
+    public GameState finish(final Integer team) {
         return this;
     }
 
