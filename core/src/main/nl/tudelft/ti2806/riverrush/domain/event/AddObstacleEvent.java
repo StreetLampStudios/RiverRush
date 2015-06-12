@@ -39,4 +39,11 @@ public class AddObstacleEvent extends AbstractTeamEvent {
     public void setLocation(Double aLocation) {
         this.location = aLocation;
     }
+
+    @Override
+    public String toString() {
+        return "AddObstacleEvent{" +
+            "location=" + location +
+            "} " + super.toString();
+    }
 }

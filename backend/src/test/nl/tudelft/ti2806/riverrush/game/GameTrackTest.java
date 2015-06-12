@@ -3,7 +3,7 @@ package nl.tudelft.ti2806.riverrush.game;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
-import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AbstractTeamEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 import org.junit.Before;
@@ -151,10 +151,10 @@ public class GameTrackTest {
         Animal animal = new Animal(this.dispatcher);
         this.team.addAnimal(animal);
 
-        this.track.updateCannonballObstacles(this.team, 10.0);
+        this.track.fireGameTrackEvents(this.team, 10.1);
 
         Mockito.verify(this.dispatcher, Mockito.times(1)).dispatch(
-                Mockito.isA(AddObstacleEvent.class));
+                Mockito.isA(AbstractTeamEvent.class));
     }
 
 }

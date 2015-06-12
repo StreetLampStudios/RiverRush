@@ -46,4 +46,11 @@ public abstract class AbstractTeamEvent implements Event {
     public void setTeam(final Integer team) {
         this.teamId = team;
     }
+
+    @Override
+    public String toString() {
+        return "AbstractTeamEvent{" +
+            "teamId=" + teamId +
+            '}';
+    }
 }
