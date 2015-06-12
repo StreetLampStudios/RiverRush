@@ -53,8 +53,7 @@ public class GameTrackTest {
         Animal animal = new Animal(this.dispatcher);
         try {
             this.track.addAnimal(this.team.getId(), animal);
-            AbstractAnimal gottenAnimal = this.track.getTeam(this.team.getId()).getAnimals()
-                    .get(animal.getId());
+            AbstractAnimal gottenAnimal = this.track.getTeam(this.team.getId()).getAnimal(animal.getId());
             assertEquals(animal, gottenAnimal);
         } catch (NoSuchTeamException e) {
             e.printStackTrace();

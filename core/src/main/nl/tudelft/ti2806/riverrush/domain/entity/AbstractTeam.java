@@ -70,6 +70,15 @@ public abstract class AbstractTeam {
     }
 
     /**
+     * Remove an animal from the team.
+     *
+     * @param animalId The id of the animal to remove.
+     */
+    public void removeAnimal(final Integer animalId) {
+        this.animals.remove(animalId);
+    }
+
+    /**
      * Get the size of the team.
      *
      * @return the amount of animals in a team

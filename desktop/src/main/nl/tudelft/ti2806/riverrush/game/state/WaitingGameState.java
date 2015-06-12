@@ -18,8 +18,6 @@ public class WaitingGameState extends AbstractGameState {
 
     private final WaitingScreen screen;
     private static final int DELAY = 5;
-    // private final HandlerLambda<AnimalAddedEvent> animalHandler = (e) ->
-    // this.addAnimalHandler(e);
     private final HandlerLambda<GameAboutToStartEvent> timerHandler = (e) -> this.startTimer();
     private final HandlerLambda<AnimalAddedEvent> addAnimalHandler = this::addAnimalHandler;
 
@@ -40,7 +38,7 @@ public class WaitingGameState extends AbstractGameState {
         this.dispatcher.attach(GameAboutToStartEvent.class, this.timerHandler);
         this.screen = new WaitingScreen(assetManager, eventDispatcher);
         Gdx.app.postRunnable(() ->
-            WaitingGameState.this.game.setScreen(WaitingGameState.this.screen)
+                WaitingGameState.this.game.setScreen(WaitingGameState.this.screen)
         );
     }
 
@@ -56,6 +54,21 @@ public class WaitingGameState extends AbstractGameState {
         this.dispatcher.detach(GameAboutToStartEvent.class, this.timerHandler);
         this.dispatcher.detach(AnimalAddedEvent.class, this.addAnimalHandler);
         this.screen.dispose();
+    }
+
+    /**
+     * Add an animal.
+     *
+     * @param event The add event
+     */
+    public void addAnimalHandler(final AnimalAddedEvent event) {
+        Integer tm = event.getTeam();
+        Team tim = this.game.getTeam(tm);
+        if (tim == null) {
+            tim = this.game.addTeam(tm);
+        }
+        Integer variation = event.getVariation();
+        tim.addAnimal(new Animal(this.dispatcher, event.getAnimal(), tm, variation, event.getSector()));
     }
 
     @Override
@@ -78,22 +91,6 @@ public class WaitingGameState extends AbstractGameState {
     @Override
     public GameState waitForPlayers() {
         return this;
-    }
-
-    /**
-     * Add an animal.
-     *
-     * @param event The add event
-     */
-    public void addAnimalHandler(final AnimalAddedEvent event) {
-
-        Integer tm = event.getTeam();
-        Team tim = this.game.getTeam(tm);
-        if (tim == null) {
-            tim = this.game.addTeam(tm);
-        }
-        Integer variation = event.getVariation();
-        tim.addAnimal(new Animal(this.dispatcher, event.getAnimal(), tm, variation, event.getSector()));
     }
 
 }
