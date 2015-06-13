@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 import java.util.Timer;
@@ -55,8 +54,7 @@ public class FinishedGameScreen implements Screen {
         this.stage = new Stage();
 
         Texture texture = new Texture(Gdx.files.internal("data/end.jpg"));
-        TextureRegion region = new TextureRegion(texture, 0, 0, MainDesktop.getWidth(),
-            MainDesktop.getHeight());
+        TextureRegion region = new TextureRegion(texture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         Image image = new Image(region);
         image.setFillParent(true);

@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -7,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 
 public class RockGraphic extends AbstractObstacle {
@@ -16,12 +16,12 @@ public class RockGraphic extends AbstractObstacle {
      * Size of the graphic.
      */
     private static final float SIZE = 256;
-    private static final float VELOCITY = ((MainDesktop.getHeight() + (SIZE * 2)) / 720f) * 2;
+    private static final float VELOCITY = ((Gdx.graphics.getHeight() + (SIZE * 2)) / 720f) * 2;
     // 720f = velocity river
 
     private final AssetManager assets;
-    private static final float DESKTOP_HEIGHT = MainDesktop.getHeight();
-    private static final float DESKTOP_WIDTH = MainDesktop.getWidth();
+    private static final float DESKTOP_HEIGHT = Gdx.graphics.getHeight();
+    private static final float DESKTOP_WIDTH = Gdx.graphics.getWidth();
     private static final float INIT_POS = 800f;
     private static final float OFFSET_SIZE = 320f;
 

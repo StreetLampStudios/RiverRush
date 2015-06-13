@@ -19,9 +19,6 @@ import java.net.URISyntaxException;
  * and the client connections.
  */
 public class MainDesktop extends CoreModule {
-
-    private static final int WIDTH = 1920;
-    private static final int HEIGHT = 1080;
     private final Injector injector;
     private final EventDispatcher eventDispatcher;
 
@@ -52,25 +49,6 @@ public class MainDesktop extends CoreModule {
 
         this.setupGraphics();
         client.connect();
-
-    }
-
-    /**
-     * Return the current width of the main screen.
-     *
-     * @return an integer value representing the width.
-     */
-    public static int getWidth() {
-        return WIDTH;
-    }
-
-    /**
-     * Return the current height of the main screen.
-     *
-     * @return an integer value representing the height.
-     */
-    public static int getHeight() {
-        return HEIGHT;
     }
 
     /**
@@ -80,12 +58,11 @@ public class MainDesktop extends CoreModule {
     private void setupGraphics() {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.x = 0;
-        config.width = WIDTH;
-        config.height = HEIGHT;
-        // config.fullscreen = true;
+        //TODO: Don't hardcode screen size
+        config.width = 1920;
+        config.height = 1080;
 
         Game game = this.injector.getInstance(Game.class);
-        // SceneDemo3 game = this.injector.getInstance(SceneDemo3.class);
         new LwjglApplication(game, config);
     }
 

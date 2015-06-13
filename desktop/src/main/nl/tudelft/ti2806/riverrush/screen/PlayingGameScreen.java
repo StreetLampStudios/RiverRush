@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.game.TickHandler;
 import nl.tudelft.ti2806.riverrush.graphics.CenterStage;
 import nl.tudelft.ti2806.riverrush.graphics.SideStage;
@@ -24,8 +23,6 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
  */
 public class PlayingGameScreen implements Screen {
 
-    private static final int WIDTH = MainDesktop.getWidth();
-    private static final int HEIGHT = MainDesktop.getHeight();
     private static final double BANK_SIZE = 0.05;
     private static final double RIVER_SIZE = 0.4;
     private static final double MID_SIZE = 0.1;
@@ -63,13 +60,13 @@ public class PlayingGameScreen implements Screen {
         this.banksLeft = new Stage();
 
         this.riverLeft = new SideStage(this.assets);
-        this.betweenRivers = new CenterStage(this.assets, WIDTH, HEIGHT);
+        this.betweenRivers = new CenterStage(this.assets, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.riverRight = new SideStage(this.assets);
 
         this.banksRight = new Stage();
 
         this.camera = new OrthographicCamera();
-        this.camera.setToOrtho(false, WIDTH, HEIGHT);
+        this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         this.spriteBatch = new SpriteBatch();
 
