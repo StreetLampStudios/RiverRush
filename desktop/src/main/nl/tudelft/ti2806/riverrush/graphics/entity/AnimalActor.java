@@ -1,11 +1,8 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -19,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
@@ -37,8 +35,6 @@ public class AnimalActor extends Group {
     private static final float ANIMAL_HEIGHT = 50; // 81
 
     private static final float JUMP_HEIGHT = 100;
-    private static final int END_REGIONX = 432;
-    private static final int END_REGIONY = 432;
     private static final int FALL_DISTANCEX = 200;
     private static final int FALL_DISTANCEY = -520;
     private static final float FALL_VELOCITY = 0.5f;
@@ -54,7 +50,6 @@ public class AnimalActor extends Group {
 
     private static final float ROLL_DURATION = 0.7f;
 
-    private AssetManager manager;
     private float origX;
     private float origY;
     private Circle bounds;
@@ -64,19 +59,17 @@ public class AnimalActor extends Group {
     /**
      * Creates a monkey object that represents player characters.
      *
-     * @param assetManager enables the object to retrieve its assets
      * @param dispatcher   Event dispatcher for dispatching events
      */
     @Inject
-    public AnimalActor(final AssetManager assetManager, final EventDispatcher dispatcher) {
-        this.manager = assetManager;
+    public AnimalActor(final EventDispatcher dispatcher) {
         this.setWidth(ANIMAL_WIDTH);
         this.setHeight(ANIMAL_HEIGHT);
 
         this.setOriginX(this.getWidth() / 2);
         this.setOriginY(this.getHeight() / 2);
 
-        DirectionFlag flag = new DirectionFlag(assetManager);
+        DirectionFlag flag = new DirectionFlag();
         flag.setPosition(this.getWidth(), this.getHeight() / 2);
 
         flag.setVisible(false);
@@ -96,9 +89,6 @@ public class AnimalActor extends Group {
 
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
-        Texture tex = this.manager.get("data/raccoon.png", Texture.class);
-        TextureRegion region = new TextureRegion(tex, 0, 0, END_REGIONX, END_REGIONY);
-
         Color color = this.getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
@@ -110,7 +100,7 @@ public class AnimalActor extends Group {
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
+        batch.draw(Assets.raccoon, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
             this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
             this.getRotation());
 

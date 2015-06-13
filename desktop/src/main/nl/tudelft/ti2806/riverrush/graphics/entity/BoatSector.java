@@ -1,12 +1,10 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
 import java.util.ArrayList;
 
@@ -16,11 +14,10 @@ public class BoatSector extends Group {
 
     private final int rowCount;
     private final int colCount;
-    private final AssetManager assetManager;
     private int currentAnimalPosition;
     private ArrayList<AnimalActor> animals;
 
-    public BoatSector(AssetManager assets, int rows, int cols, Color color) {
+    public BoatSector(int rows, int cols, Color color) {
         this.rowCount = rows;
         this.colCount = cols;
 
@@ -29,7 +26,6 @@ public class BoatSector extends Group {
 
         this.setColor(color);
 
-        this.assetManager = assets;
         this.currentAnimalPosition = START_POSITION;
         this.animals = new ArrayList<>();
         for (int i = 0; i < (this.colCount * this.rowCount); i++) {
@@ -40,15 +36,13 @@ public class BoatSector extends Group {
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
 
-        Texture tex = this.assetManager.get("data/sector.png", Texture.class);
-        TextureRegion region = new TextureRegion(tex, 0, 0, 700, 360);
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         Color color = this.getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
+        batch.draw(Assets.boatSector, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
             this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
             this.getRotation());
         batch.setColor(Color.WHITE);

@@ -1,7 +1,6 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
 import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
@@ -58,14 +57,13 @@ public class PlayingGameState extends AbstractGameState {
      *
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game
      *                        in this state.
-     * @param assetManager    has all necessary assets loaded and available for use.
      * @param game            refers to the game that this state belongs to.
      */
-    public PlayingGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
+    public PlayingGameState(final EventDispatcher eventDispatcher,
                             final Game game) {
-        super(eventDispatcher, assetManager, game);
+        super(eventDispatcher, game);
 
-        this.screen = new PlayingGameScreen(assetManager, this.onTick);
+        this.screen = new PlayingGameScreen(this.onTick);
 
         Gdx.app.postRunnable(() -> {
             PlayingGameState.this.game.setScreen(PlayingGameState.this.screen);
@@ -159,7 +157,7 @@ public class PlayingGameState extends AbstractGameState {
      * @param e - The event
      */
     private void addObstacle(final AddObstacleEvent e) {
-        CannonBallGraphic graphic = new CannonBallGraphic(this.assets, e.getLocation());
+        CannonBallGraphic graphic = new CannonBallGraphic(e.getLocation());
         // TODO: FIX This
         this.screen.addObstacle(e.getTeam() == 0, graphic);
         if (e.getTeam() == 0) {
@@ -175,7 +173,7 @@ public class PlayingGameState extends AbstractGameState {
      * @param e - The event
      */
     private void addRock(final AddRockEvent e) {
-        RockGraphic graphic = new RockGraphic(this.assets, e.getLocation());
+        RockGraphic graphic = new RockGraphic(e.getLocation());
         // TODO: FIX This
         this.screen.addRock(e.getTeam() == 0, graphic);
         if (e.getTeam() == 0) {
@@ -192,7 +190,7 @@ public class PlayingGameState extends AbstractGameState {
      * @param animal The team
      */
     private void addAnimal(final Team team, final Animal animal) {
-        AnimalActor actor = new AnimalActor(this.assets, this.dispatcher);
+        AnimalActor actor = new AnimalActor(this.dispatcher);
         animal.setActor(actor);
 
         team.addAnimal(animal);
@@ -208,7 +206,7 @@ public class PlayingGameState extends AbstractGameState {
      */
     public void addBoat(final Team team) {
         //TODO: remove magic numbers
-        BoatGroup group = new BoatGroup(this.assets, (Gdx.graphics.getWidth() / 2) - 450,
+        BoatGroup group = new BoatGroup((Gdx.graphics.getWidth() / 2) - 450,
             Gdx.graphics.getHeight() * 0.02f);
 
         team.setBoat(group);
@@ -339,13 +337,13 @@ public class PlayingGameState extends AbstractGameState {
     @Override
     public GameState stop() {
         this.screen.dispose();
-        return new StoppedGameState(this.dispatcher, this.assets, this.game);
+        return new StoppedGameState(this.dispatcher, this.game);
     }
 
     @Override
     public GameState finish(final Integer team) {
         this.screen.dispose();
-        return new FinishedGameState(this.dispatcher, this.assets, this.game, team);
+        return new FinishedGameState(this.dispatcher, this.game, team);
     }
 
     @Override

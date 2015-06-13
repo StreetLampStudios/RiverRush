@@ -1,7 +1,6 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.game.Game;
@@ -21,14 +20,13 @@ public class LoadingGameState extends AbstractGameState {
      *
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game in this
      *                        state.
-     * @param assetManager    has all necessary assets loaded and available for use.
      * @param gm              refers to the game that this state belongs to.
      */
-    public LoadingGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
+    public LoadingGameState(final EventDispatcher eventDispatcher,
                             final Game gm) {
-        super(eventDispatcher, assetManager, gm);
+        super(eventDispatcher, gm);
 
-        this.screen = new LoadingScreen(assetManager, eventDispatcher);
+        this.screen = new LoadingScreen(eventDispatcher);
         this.game.setScreen(this.screen);
     }
 
@@ -55,7 +53,7 @@ public class LoadingGameState extends AbstractGameState {
     @Override
     public GameState waitForPlayers() {
         this.screen.dispose();
-        return new WaitingGameState(this.dispatcher, this.assets, this.game);
+        return new WaitingGameState(this.dispatcher, this.game);
     }
 
     @Override

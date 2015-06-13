@@ -1,13 +1,11 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
 /**
  * Adds an obstacle on the screen.
@@ -20,25 +18,20 @@ public class CannonBallGraphic extends AbstractObstacle {
     private static final double SIZE = 256;
     private static final float VELOCITY = 3f;
 
-    private final AssetManager assets;
     private static final double HEIGHT = Gdx.graphics.getHeight();
     private static final double WIDTH = Gdx.graphics.getWidth();
     private static final double INIT_POS = 800.0;
     private static final double OFFSET_POS = 320.0;
     private static final int NEGATIVE_MULTIPLIER = -2;
-    private static final int TEXTURE_SIZE_X = 346;
-    private static final int TEXTURE_SIZE_Y = 336;
     private final double offset;
     private Circle bounds;
 
     /**
      * Creates a new obstacle.
      *
-     * @param assetsManager refers to the manager that has made all loaded assets available for use.
      * @param off           Configures the place from which the obstacle is fired. Must be between 0 and 1
      */
-    public CannonBallGraphic(final AssetManager assetsManager, final double off) {
-        this.assets = assetsManager;
+    public CannonBallGraphic(final double off) {
         this.offset = off;
 
     }
@@ -65,8 +58,6 @@ public class CannonBallGraphic extends AbstractObstacle {
 
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
-        Texture tex = this.assets.get("data/cannonballCrop.png", Texture.class);
-        TextureRegion region = new TextureRegion(tex, 0, 0, TEXTURE_SIZE_X, TEXTURE_SIZE_Y);
         batch.enableBlending();
 
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
@@ -74,7 +65,7 @@ public class CannonBallGraphic extends AbstractObstacle {
 
         this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
 
-        batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
+        batch.draw(Assets.cannonball, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
             this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
             this.getRotation());
     }

@@ -1,9 +1,7 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
@@ -12,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
+import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,11 +22,6 @@ public class BoatGroup extends Group {
 
     private final int SIZE = 900;
 
-    /**
-     * The asset manager.
-     */
-    private final AssetManager manager;
-
     private final ArrayList<BoatSector> sectors;
 
     private static final float MOVE_DISTANCE = 400;
@@ -35,8 +29,6 @@ public class BoatGroup extends Group {
 
     private static final int COL_COUNT = 5;
     private static final int ROW_COUNT = 2;
-
-    private final Texture tex;
 
     private final HashMap<AbstractAnimal, Integer> directionVotes;
     private int votingSum = 0;
@@ -50,21 +42,17 @@ public class BoatGroup extends Group {
     /**
      * Creates an boat object with a given graphical representation.
      *
-     * @param assetManager enables the object to retrieve its assets
-     * @param xpos         represents the position of the boat on the x axis
-     * @param ypos         represents the position of the boat on the y axis
+     * @param xpos represents the position of the boat on the x axis
+     * @param ypos represents the position of the boat on the y axis
      */
     @Inject
-    public BoatGroup(final AssetManager assetManager, final float xpos, final float ypos) {
-        this.manager = assetManager;
+    public BoatGroup(final float xpos, final float ypos) {
         this.setX(xpos);
         this.setY(ypos);
         this.setWidth(this.SIZE);
         this.setHeight(this.SIZE);
 
         this.origX = xpos;
-
-        this.tex = this.manager.get("data/ship.png", Texture.class);
 
         this.setOriginX((this.getWidth() / 2));
         this.setOriginY((this.getHeight() / 2));
@@ -81,7 +69,7 @@ public class BoatGroup extends Group {
 
         for (int i = Sector.countSectors() - 1; i >= 0; i--) {
             Color color = colors.get(i);
-            BoatSector sec = new BoatSector(assetManager, ROW_COUNT, COL_COUNT, color);
+            BoatSector sec = new BoatSector(ROW_COUNT, COL_COUNT, color);
             float secPosX = (this.getWidth() / 2) - (sec.getWidth() / 2);
             float secPosY = 50f + ((20f + sec.getHeight()) * i);
             sec.setPosition(secPosX, secPosY);
@@ -117,9 +105,9 @@ public class BoatGroup extends Group {
         Color color = this.getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        batch.draw(this.tex, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
+        batch.draw(Assets.ship, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
             this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-            this.getRotation(), 0, 0, this.tex.getWidth(), this.tex.getHeight(), false, false);
+            this.getRotation());
 
         batch.setColor(Color.WHITE);
 

@@ -1,7 +1,6 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
@@ -32,17 +31,16 @@ public class WaitingGameState extends AbstractGameState {
      *
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game in this
      *                        state.
-     * @param assetManager    has all necessary assets loaded and available for use.
      * @param game            refers to the game that this state belongs to.
      */
-    public WaitingGameState(final EventDispatcher eventDispatcher, final AssetManager assetManager,
+    public WaitingGameState(final EventDispatcher eventDispatcher,
                             final Game game) {
-        super(eventDispatcher, assetManager, game);
+        super(eventDispatcher, game);
 
         this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandler);
         this.dispatcher.attach(GameAboutToStartEvent.class, this.timerHandler);
         this.dispatcher.attach(AnimalRemovedEvent.class, this.removeAnimalHandler);
-        this.screen = new WaitingScreen(assetManager, eventDispatcher);
+        this.screen = new WaitingScreen(eventDispatcher);
 
         Gdx.app.postRunnable(
             () -> WaitingGameState.this.game.setScreen(WaitingGameState.this.screen)
@@ -72,13 +70,13 @@ public class WaitingGameState extends AbstractGameState {
     @Override
     public GameState start() {
         this.dispose();
-        return new PlayingGameState(this.dispatcher, this.assets, this.game);
+        return new PlayingGameState(this.dispatcher, this.game);
     }
 
     @Override
     public GameState stop() {
         this.dispose();
-        return new StoppedGameState(this.dispatcher, this.assets, this.game);
+        return new StoppedGameState(this.dispatcher, this.game);
     }
 
     @Override
