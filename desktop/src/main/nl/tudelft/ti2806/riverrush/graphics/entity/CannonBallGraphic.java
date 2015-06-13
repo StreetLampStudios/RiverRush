@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -7,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 
 /**
  * Adds an obstacle on the screen.
@@ -21,8 +21,8 @@ public class CannonBallGraphic extends AbstractObstacle {
     private static final float VELOCITY = 3f;
 
     private final AssetManager assets;
-    private static final double HEIGHT = MainDesktop.getHeight();
-    private static final double WIDTH = MainDesktop.getWidth();
+    private static final double HEIGHT = Gdx.graphics.getHeight();
+    private static final double WIDTH = Gdx.graphics.getWidth();
     private static final double INIT_POS = 800.0;
     private static final double OFFSET_POS = 320.0;
     private static final int NEGATIVE_MULTIPLIER = -2;

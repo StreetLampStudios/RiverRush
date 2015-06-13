@@ -2,10 +2,22 @@ package nl.tudelft.ti2806.riverrush.game.state;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
+import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalDroppedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalReturnedToBoatEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.BoatCollidedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
+import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.game.TickHandler;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
@@ -53,10 +65,9 @@ public class PlayingGameState extends AbstractGameState {
                             final Game game) {
         super(eventDispatcher, assetManager, game);
 
-        this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
+        this.screen = new PlayingGameScreen(assetManager, this.onTick);
 
         Gdx.app.postRunnable(() -> {
-            PlayingGameState.this.screen.init(this.onTick);
             PlayingGameState.this.game.setScreen(PlayingGameState.this.screen);
 
             for (Team currentTeam : PlayingGameState.this.game.getTeams()) {
@@ -197,8 +208,8 @@ public class PlayingGameState extends AbstractGameState {
      */
     public void addBoat(final Team team) {
         //TODO: remove magic numbers
-        BoatGroup group = new BoatGroup(this.assets, (MainDesktop.getWidth() / 2) - 450,
-            MainDesktop.getHeight() * 0.02f);
+        BoatGroup group = new BoatGroup(this.assets, (Gdx.graphics.getWidth() / 2) - 450,
+            Gdx.graphics.getHeight() * 0.02f);
 
         team.setBoat(group);
         this.screen.addTeam(group, team.getId());

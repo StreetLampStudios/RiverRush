@@ -63,8 +63,8 @@ public class WaitingScreen implements Screen {
         this.stage = new Stage();
 
         Texture texture = new Texture(Gdx.files.internal("data/loading.jpeg"));
-        TextureRegion region = new TextureRegion(texture, 0, 0, MainDesktop.getWidth(),
-            MainDesktop.getHeight());
+        TextureRegion region = new TextureRegion(texture, 0, 0, Gdx.graphics.getWidth(),
+            Gdx.graphics.getHeight());
 
         Image image = new Image(region);
         image.setFillParent(true);
