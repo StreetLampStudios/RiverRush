@@ -53,10 +53,9 @@ public class PlayingGameState extends AbstractGameState {
                             final Game game) {
         super(eventDispatcher, assetManager, game);
 
-        this.screen = new PlayingGameScreen(assetManager, eventDispatcher);
+        this.screen = new PlayingGameScreen(assetManager, this.onTick);
 
         Gdx.app.postRunnable(() -> {
-            PlayingGameState.this.screen.init(this.onTick);
             PlayingGameState.this.game.setScreen(PlayingGameState.this.screen);
 
             for (Team currentTeam : PlayingGameState.this.game.getTeams()) {

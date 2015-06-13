@@ -2,10 +2,7 @@ package nl.tudelft.ti2806.riverrush.graphics;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.google.inject.Inject;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.RiverActor;
 import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
@@ -14,9 +11,8 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
  * This class defined the side stage. The side stage always holds a river and a boat as well as
  * anything that occurs within those.
  */
-public class SideStage extends Table {
+public class SideStage extends Stage {
 
-    private BoatGroup boat;
     private final RiverActor river;
     private CannonBallGraphic obstacle;
     private RockGraphic rock;
@@ -24,24 +20,15 @@ public class SideStage extends Table {
 
     private static final int RIVER_WIDTH = 1920;
     private static final int RIVER_HEIGHT = 1080;
-    private static final int BOAT_OFFSET = 300;
-    private static final int BOAT_POSITION = 150;
-    private static final int BOAT_SIZE = 600;
-    private static final double OBSTACLE_OFFSET = 0.5;
 
     /**
      * Creates a stage that holds the river, boats, and any player characters that reside on it, as
      * well as the obstacles that pass through it.
      *
      * @param assetManager    refers to the manager that has made all loaded assets available for use.
-     * @param width           is the width size that the stage will be given.
-     * @param height          is the height size the stage will be given.
-     * @param eventDispatcher - the event dispatcher
      */
-    @Inject
-    public SideStage(final AssetManager assetManager, final float width, final float height,
-                     final EventDispatcher eventDispatcher) {
-        this.setBounds(0, 0, width, height);
+    public SideStage(final AssetManager assetManager) {
+        //this.set(0, 0, width, height);
         this.assets = assetManager;
         this.river = new RiverActor(this.assets, 0, RIVER_WIDTH, RIVER_HEIGHT);
         this.addActor(this.river);
@@ -54,7 +41,7 @@ public class SideStage extends Table {
      */
     public void spawnObstacle(final CannonBallGraphic graphic) {
         if (this.obstacle != null) {
-            this.removeActor(this.obstacle);
+            this.obstacle.remove();
         }
         graphic.init();
         this.obstacle = graphic;
@@ -68,7 +55,7 @@ public class SideStage extends Table {
      */
     public void spawnRock(final RockGraphic graphic) {
         if (this.rock != null) {
-            this.removeActor(this.rock);
+            this.rock.remove();
         }
         graphic.init();
         this.rock = graphic;
@@ -80,17 +67,11 @@ public class SideStage extends Table {
         super.act(delta);
     }
 
-    @Override
+    //@Override
     public void draw(final Batch batch, final float parentAlpha) {
-        super.draw(batch, parentAlpha);
+        //super.draw(batch, parentAlpha);
     }
 
-    /**
-     * @return the boat that is on this stage.
-     */
-    public BoatGroup getBoat() {
-        return this.boat;
-    }
 
     /**
      * @return the river that belongs to this stage.
