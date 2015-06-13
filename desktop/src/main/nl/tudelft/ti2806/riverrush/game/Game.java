@@ -1,6 +1,5 @@
 package nl.tudelft.ti2806.riverrush.game;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
@@ -10,6 +9,7 @@ import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.LoadingGameState;
 import nl.tudelft.ti2806.riverrush.game.state.WaitingGameState;
+import nl.tudelft.ti2806.riverrush.graphics.Assets;
 import nl.tudelft.ti2806.riverrush.graphics.GdxGame;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
 import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
@@ -24,7 +24,6 @@ import java.util.HashMap;
 @Singleton
 public class Game extends GdxGame {
 
-    private final AssetManager assets;
     private final EventDispatcher dispatcher;
     private final HandlerLambda<AnimalFellOffEvent> animalFellOffEventHandlerLambda;
     private final HandlerLambda<AnimalRemovedEvent> removeAnimalHandlerLambda;
@@ -37,12 +36,10 @@ public class Game extends GdxGame {
      *
      * @param eventDispatcher the dispatcher that handles the events that are relevant to the game
      *                        class.
-     * @param assetManager    has all necessary assets loaded and available for use.
      */
     @Inject
-    public Game(final EventDispatcher eventDispatcher, final AssetManager assetManager) {
+    public Game(final EventDispatcher eventDispatcher) {
         this.dispatcher = eventDispatcher;
-        this.assets = assetManager;
         this.teams = new HashMap<>();
 
         this.animalFellOffEventHandlerLambda = (e) -> this.getTeam(e.getTeam()).getAnimal(e.getAnimal()).fall();
@@ -55,7 +52,7 @@ public class Game extends GdxGame {
 
     @Override
     public void create() {
-        this.currentGameState = new LoadingGameState(this.dispatcher, this.assets, this);
+        this.currentGameState = new LoadingGameState(this.dispatcher, this);
     }
 
     @Override
@@ -63,13 +60,14 @@ public class Game extends GdxGame {
         this.dispatcher.detach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
         this.dispatcher.detach(AnimalRemovedEvent.class, this.removeAnimalHandlerLambda);
         this.currentGameState = this.currentGameState.stop();
+        Assets.dispose();
     }
 
     /**
      * Reset the game to the starting state.
      */
     public void reset() {
-        this.currentGameState = new WaitingGameState(dispatcher, assets, this);
+        this.currentGameState = new WaitingGameState(dispatcher, this);
     }
 
     /**

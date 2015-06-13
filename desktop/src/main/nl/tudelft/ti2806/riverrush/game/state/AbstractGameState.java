@@ -1,6 +1,5 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
-import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.game.Game;
 
@@ -10,20 +9,17 @@ import nl.tudelft.ti2806.riverrush.game.Game;
 public abstract class AbstractGameState implements GameState {
 
     protected final EventDispatcher dispatcher;
-    protected final AssetManager assets;
     protected final Game game;
 
     /**
      * Constructor.
      *
      * @param eventDispatcher - the eventDispatcher
-     * @param assetManager    - the AssetManager
      * @param aGame           - the game
      */
     public AbstractGameState(final EventDispatcher eventDispatcher,
-                             final AssetManager assetManager, final Game aGame) {
+                             final Game aGame) {
         this.game = aGame;
-        this.assets = assetManager;
         this.dispatcher = eventDispatcher;
 
     }

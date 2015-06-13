@@ -1,14 +1,12 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
 public class RockGraphic extends AbstractObstacle {
 
@@ -19,15 +17,10 @@ public class RockGraphic extends AbstractObstacle {
     private static final float VELOCITY = ((Gdx.graphics.getHeight() + (SIZE * 2)) / 720f) * 2;
     // 720f = velocity river
 
-    private final AssetManager assets;
     private static final float DESKTOP_HEIGHT = Gdx.graphics.getHeight();
     private static final float DESKTOP_WIDTH = Gdx.graphics.getWidth();
-    private static final float INIT_POS = 800f;
-    private static final float OFFSET_SIZE = 320f;
 
     private static final int NEGATIVE_MULTIPLIER = -2;
-    private static final int TEXTURE_SIZE_X = 679;
-    private static final int TEXTURE_SIZE_Y = 436;
 
     private final float offset;
     private final Direction direction;
@@ -36,11 +29,9 @@ public class RockGraphic extends AbstractObstacle {
     /**
      * Creates a new obstacle.
      *
-     * @param assetsManager refers to the manager that has made all loaded assets available for use.
      * @param dir           Configures the place from which the obstacle is fired. Must be between 0 and 1
      */
-    public RockGraphic(final AssetManager assetsManager, final Direction dir) {
-        this.assets = assetsManager;
+    public RockGraphic(final Direction dir) {
 
         this.direction = dir;
         if (dir == Direction.LEFT) {
@@ -74,8 +65,6 @@ public class RockGraphic extends AbstractObstacle {
 
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
-        Texture tex = this.assets.get("data/iceberg.png", Texture.class);
-        TextureRegion region = new TextureRegion(tex, 0, 0, TEXTURE_SIZE_X, TEXTURE_SIZE_Y);
         batch.enableBlending();
 
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
@@ -83,7 +72,7 @@ public class RockGraphic extends AbstractObstacle {
 
         this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
 
-        batch.draw(region, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
+        batch.draw(Assets.iceberg, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
             this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
             this.getRotation());
     }

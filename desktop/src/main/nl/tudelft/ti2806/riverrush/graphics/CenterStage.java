@@ -1,6 +1,5 @@
 package nl.tudelft.ti2806.riverrush.graphics;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import nl.tudelft.ti2806.riverrush.graphics.entity.LittleBoat;
 import nl.tudelft.ti2806.riverrush.graphics.entity.RiverBanksActor;
@@ -21,26 +20,25 @@ public class CenterStage extends Stage {
     /**
      * The constructor of the center stage class.
      *
-     * @param assets - specifies the assets
      * @param width  - specifies the width
      * @param height - specifies the height
      */
-    public CenterStage(final AssetManager assets, final float width, final float height) {
+    public CenterStage(final float width, final float height) {
         this.TOTALHEIGHT = height;
         this.TOTALWIDTH = width;
 
-        RiverBanksActor background = new RiverBanksActor(assets, 0, 0, width, height);
+        RiverBanksActor background = new RiverBanksActor(0, 0, width, height);
         this.addActor(background);
 
-        WoodenBackground floor = new WoodenBackground(assets, 100, 50, width - 200, height - 100);
-        DividingLine line = new DividingLine(assets, 300, 30, width / 2, height);
+        WoodenBackground floor = new WoodenBackground(100, 50, width - 200, height - 100);
+        DividingLine line = new DividingLine(300, 30, width / 2, height);
 
         float top_y = this.TOTALHEIGHT - 2 * BOAT_HEIGHT - 30; // At max the boat should be at the
         // topMinus a margin of 30
 
-        this.leftBoat = new LittleBoat(assets, this.TOTALWIDTH / 5, BOAT_HEIGHT, top_y,
+        this.leftBoat = new LittleBoat(this.TOTALWIDTH / 5, BOAT_HEIGHT, top_y,
             this.TOTALHEIGHT / 4, this.TOTALWIDTH / 10);
-        this.rightBoat = new LittleBoat(assets, this.TOTALWIDTH / 5 * 3, BOAT_HEIGHT, top_y,
+        this.rightBoat = new LittleBoat(this.TOTALWIDTH / 5 * 3, BOAT_HEIGHT, top_y,
             this.TOTALHEIGHT / 4, this.TOTALWIDTH / 10);
 
         this.addActor(floor);

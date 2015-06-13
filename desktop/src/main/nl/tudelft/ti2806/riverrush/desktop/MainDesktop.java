@@ -40,14 +40,14 @@ public class MainDesktop extends CoreModule {
     public MainDesktop() throws URISyntaxException, InterruptedException {
         this.injector = Guice.createInjector(this);
 
+        this.setupGraphics();
+
         Client client = new Client("localhost", this.configureRendererProtocol());
         RenderController cntrl = this.injector.getInstance(RenderController.class);
         cntrl.setClient(client);
         client.setController(cntrl);
 
         this.eventDispatcher = this.injector.getInstance(EventDispatcher.class);
-
-        this.setupGraphics();
         client.connect();
     }
 

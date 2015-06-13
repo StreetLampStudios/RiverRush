@@ -2,15 +2,12 @@ package nl.tudelft.ti2806.riverrush.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import nl.tudelft.ti2806.riverrush.game.TickHandler;
+import nl.tudelft.ti2806.riverrush.graphics.Assets;
 import nl.tudelft.ti2806.riverrush.graphics.CenterStage;
 import nl.tudelft.ti2806.riverrush.graphics.SideStage;
 import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
@@ -27,18 +24,12 @@ public class PlayingGameScreen implements Screen {
     private static final double RIVER_SIZE = 0.4;
     private static final double MID_SIZE = 0.1;
 
-    private static final int ENDTEXTUREX = 103; // 229;
-    private static final int ENDTEXTUREY = 314; // 138;
-
     private SideStage riverLeft;
     private SideStage riverRight;
     private CenterStage betweenRivers;
     private Stage banksLeft;
     private Stage banksRight;
 
-    private OrthographicCamera camera;
-    private final AssetManager assets;
-    private SpriteBatch spriteBatch;
     private TickHandler onTick;
 
     /**
@@ -46,41 +37,36 @@ public class PlayingGameScreen implements Screen {
      * shows the various stages that are relevant to the players including but not limited to the
      * river, boats, characters, and obstacles.
      *
-     * @param assetManager refers to the manager that has made all loaded assets available for use.
      * @param tickHandler  handles game ticks.
      */
-    public PlayingGameScreen(final AssetManager assetManager,
-                             final TickHandler tickHandler) {
-        this.assets = assetManager;
+    public PlayingGameScreen(final TickHandler tickHandler) {
         this.onTick = tickHandler;
     }
 
     @Override
     public void show() {
-        this.banksLeft = new Stage();
+        this.riverLeft = new SideStage();
+        this.betweenRivers = new CenterStage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.riverRight = new SideStage();
 
-        this.riverLeft = new SideStage(this.assets);
-        this.betweenRivers = new CenterStage(this.assets, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        this.riverRight = new SideStage(this.assets);
+        OrthographicCamera camera = new OrthographicCamera();
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        this.banksRight = new Stage();
+        this.banksLeft = createRiverBank();
+        this.banksRight = createRiverBank();
+    }
 
-        this.camera = new OrthographicCamera();
-        this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    /**
+     * Creates the river banks.
+     * @return A fresh river bank Stage.
+     */
+    private Stage createRiverBank() {
 
-        this.spriteBatch = new SpriteBatch();
-
-        // Get texture
-        Texture tex = this.assets.get("data/field.jpg", Texture.class);
-        TextureRegion region = new TextureRegion(tex, 0, 0, ENDTEXTUREX, ENDTEXTUREY);
-
-        Image leftImg = new Image(region);
-        leftImg.setFillParent(true);
-        this.banksLeft.addActor(leftImg);
-
-        Image rightImg = new Image(region);
+        Stage bank = new Stage();
+        Image rightImg = new Image(Assets.riverBank);
         rightImg.setFillParent(true);
-        this.banksRight.addActor(rightImg);
+        bank.addActor(rightImg);
+        return bank;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToWaitEvent;
@@ -43,13 +42,12 @@ public class FinishedGameState extends AbstractGameState {
      *
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game in this
      *                        state.
-     * @param assetManager    has all necessary assets loaded and available for use.
      * @param gm              refers to the game that this state belongs to.
      */
     public FinishedGameState(final EventDispatcher eventDispatcher,
-                             final AssetManager assetManager, final Game gm, final int winningID) {
-        super(eventDispatcher, assetManager, gm);
-        this.screen = new FinishedGameScreen(assetManager, eventDispatcher);
+                             final Game gm, final int winningID) {
+        super(eventDispatcher, gm);
+        this.screen = new FinishedGameScreen(eventDispatcher);
         Gdx.app.postRunnable(() -> {
                 FinishedGameState.this.game
                     .setScreen(FinishedGameState.this.screen);
@@ -69,12 +67,12 @@ public class FinishedGameState extends AbstractGameState {
 
     @Override
     public GameState start() {
-        return new WaitingGameState(this.dispatcher, this.assets, this.game);
+        return new WaitingGameState(this.dispatcher, this.game);
     }
 
     @Override
     public GameState stop() {
-        return new StoppedGameState(this.dispatcher, this.assets, this.game);
+        return new StoppedGameState(this.dispatcher, this.game);
     }
 
     @Override
@@ -84,7 +82,7 @@ public class FinishedGameState extends AbstractGameState {
 
     @Override
     public GameState waitForPlayers() {
-        return new WaitingGameState(this.dispatcher, this.assets, this.game);
+        return new WaitingGameState(this.dispatcher, this.game);
     }
 
     @Override

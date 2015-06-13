@@ -2,7 +2,6 @@ package nl.tudelft.ti2806.riverrush.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -12,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.Inject;
-import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 
 import java.util.Timer;
@@ -48,11 +46,10 @@ public class WaitingScreen implements Screen {
      * image to indicate the waiting screen, a timer for the time that remains before the game can
      * start, and a counter for the amount of currently connected players.
      *
-     * @param assetManager    refers to the manager that has made all loaded assets available for use.
      * @param eventDispatcher is the dispatcher that handles all relevant events.
      */
     @Inject
-    public WaitingScreen(final AssetManager assetManager, final EventDispatcher eventDispatcher) {
+    public WaitingScreen(final EventDispatcher eventDispatcher) {
         this.time = Integer.MAX_VALUE;
     }
 

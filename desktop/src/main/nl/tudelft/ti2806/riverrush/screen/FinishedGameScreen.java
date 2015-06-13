@@ -2,7 +2,6 @@ package nl.tudelft.ti2806.riverrush.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -36,10 +35,9 @@ public class FinishedGameScreen implements Screen {
     /**
      * Creates the graphical representation of the finished game screen.
      *
-     * @param assetManager refers to the manager that has made all loaded assets available for use.
      * @param dispatcher   is the dispatcher that handles all relevant events.
      */
-    public FinishedGameScreen(final AssetManager assetManager, final EventDispatcher dispatcher) {
+    public FinishedGameScreen(final EventDispatcher dispatcher) {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
