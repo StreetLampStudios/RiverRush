@@ -20,9 +20,9 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
  */
 public class PlayingGameScreen implements Screen {
 
-    private static final double BANK_SIZE = 0.05;
-    private static final double RIVER_SIZE = 0.4;
-    private static final double MID_SIZE = 0.1;
+    private static final double BANK_SIZE = 0.025;
+    private static final double RIVER_SIZE = 0.45;
+    private static final double MID_SIZE = 0.05;
 
     private SideStage riverLeft;
     private SideStage riverRight;
@@ -46,7 +46,7 @@ public class PlayingGameScreen implements Screen {
     @Override
     public void show() {
         this.riverLeft = new SideStage();
-        // this.betweenRivers = new CenterStage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.betweenRivers = new CenterStage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.riverRight = new SideStage();
 
         OrthographicCamera camera = new OrthographicCamera();
@@ -82,7 +82,7 @@ public class PlayingGameScreen implements Screen {
         this.drawStage(this.riverLeft, startPosition, RIVER_SIZE);
         startPosition += RIVER_SIZE;
 
-        // this.drawStage(this.betweenRivers, startPosition, MID_SIZE);
+        this.drawStage(this.betweenRivers, startPosition, MID_SIZE);
         startPosition += MID_SIZE;
 
         this.drawStage(this.riverRight, startPosition, RIVER_SIZE);
