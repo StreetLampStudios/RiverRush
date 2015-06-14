@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -55,6 +56,7 @@ public class AnimalActor extends Group {
     private Circle bounds;
 
     private DirectionFlag directionFlag;
+    private Animal animal;
 
     /**
      * Creates a monkey object that represents player characters.
@@ -242,4 +244,15 @@ public class AnimalActor extends Group {
         return this.bounds;
     }
 
+    public void setAnimal(final Animal animal) {
+        this.animal = animal;
+    }
+
+    public Animal getAnimal() {
+        return animal;
+    }
+
+    public boolean isColliding(final Circle obstacle) {
+        return Intersector.overlaps(obstacle, this.bounds);
+    }
 }

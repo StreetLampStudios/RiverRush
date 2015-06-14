@@ -48,6 +48,7 @@ public class MainDesktop extends CoreModule {
         client.setController(cntrl);
 
         this.eventDispatcher = this.injector.getInstance(EventDispatcher.class);
+
         client.connect();
     }
 

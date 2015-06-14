@@ -28,6 +28,7 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 import nl.tudelft.ti2806.riverrush.screen.PlayingGameScreen;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * State for a game that is playing.
@@ -47,11 +48,8 @@ public class PlayingGameState extends AbstractGameState {
 
     private final TickHandler onTick = this::tick;
 
-    private final ArrayList<RockGraphic> leftRockList;
-    private final ArrayList<RockGraphic> rightRockList;
-    private final ArrayList<CannonBallGraphic> leftObstList;
-    private final ArrayList<CannonBallGraphic> rightObstList;
-
+    private final HashMap<Integer, ArrayList<RockGraphic>> rocks;
+    private final HashMap<Integer, ArrayList<CannonBallGraphic>> obstacles;
     /**
      * The state of the game that indicates that the game is currently playable.
      *
@@ -86,10 +84,8 @@ public class PlayingGameState extends AbstractGameState {
         this.dispatcher.attach(AnimalReturnedToBoatEvent.class, this.animalReturnedToBoatEventHandlerLambda);
         this.dispatcher.attach(TeamProgressEvent.class, this.teamProgressEventHandlerLambda);
 
-        this.leftObstList = new ArrayList<>();
-        this.rightObstList = new ArrayList<>();
-        this.rightRockList = new ArrayList<>();
-        this.leftRockList = new ArrayList<>();
+        this.rocks = new HashMap<>();
+        this.obstacles = new HashMap<>();
     }
 
     @Override
@@ -110,43 +106,36 @@ public class PlayingGameState extends AbstractGameState {
      * This method is called when the game renders the screen.
      */
     private void tick() {
-        for (RockGraphic graphic : this.leftRockList) {
-            Team team = this.game.getTeam(0);
+        for (Team team : this.game.getTeams()) {
+            updateRockCollision(this.rocks.get(team.getId()), team);
+            updateObstacleCollision(this.obstacles.get(team.getId()), team);
+        }
+
+    }
+
+    private synchronized void updateObstacleCollision(final ArrayList<CannonBallGraphic> obstacles, final Team team) {
+        if (obstacles == null) return;
+        for (CannonBallGraphic graphic : obstacles) {
             BoatGroup boat = team.getBoat();
-            if (graphic.calculateCollision(boat)) {
+            if (boat.isColliding(graphic.getBounds())) {
+                AnimalActor hitByCollision = boat.getCollidingChild(graphic.getBounds());
+                if (hitByCollision != null) {
+                    hitByCollision.getAnimal().collide();
+                }
+            }
+        }
+    }
+
+    private synchronized void updateRockCollision(final ArrayList<RockGraphic> rocks, final Team team) {
+        if (rocks == null) return;
+        for (RockGraphic graphic : rocks) {
+            BoatGroup boat = team.getBoat();
+
+            if (boat.isColliding(graphic.getBounds())) {
                 BoatCollidedEvent event = new BoatCollidedEvent();
                 event.setTeam(team.getId());
                 event.setDirection(graphic.getDirection());
                 this.dispatcher.dispatch(event);
-            }
-        }
-
-        for (RockGraphic graphic : this.rightRockList) {
-            Team team = this.game.getTeam(1);
-            BoatGroup boat = team.getBoat();
-            if (graphic.calculateCollision(boat)) {
-                BoatCollidedEvent event = new BoatCollidedEvent();
-                event.setTeam(team.getId());
-                event.setDirection(graphic.getDirection());
-                this.dispatcher.dispatch(event);
-            }
-        }
-
-        for (CannonBallGraphic graphic : this.leftObstList) {
-            for (AbstractAnimal animal : this.game.getTeam(0).getAnimals()) {
-                Animal animal1 = (Animal) animal;
-                if (graphic.calculateCollision(animal1.getActor())) {
-                    animal1.collide();
-                }
-            }
-        }
-
-        for (CannonBallGraphic graphic : this.rightObstList) {
-            for (AbstractAnimal animal : this.game.getTeam(1).getAnimals()) {
-                Animal animal1 = (Animal) animal;
-                if (graphic.calculateCollision(animal1.getActor())) {
-                    animal1.collide();
-                }
             }
         }
     }
@@ -156,15 +145,12 @@ public class PlayingGameState extends AbstractGameState {
      *
      * @param e - The event
      */
-    private void addObstacle(final AddObstacleEvent e) {
+    private synchronized void addObstacle(final AddObstacleEvent e) {
         CannonBallGraphic graphic = new CannonBallGraphic(e.getLocation());
-        // TODO: FIX This
         this.screen.addObstacle(e.getTeam() == 0, graphic);
-        if (e.getTeam() == 0) {
-            this.leftObstList.add(graphic);
-        } else {
-            this.rightObstList.add(graphic);
-        }
+        ArrayList<CannonBallGraphic> obs = this.obstacles.getOrDefault(e.getTeam(), new ArrayList<>());
+        obs.add(graphic);
+        this.obstacles.put(e.getTeam(), obs);
     }
 
     /**
@@ -172,15 +158,12 @@ public class PlayingGameState extends AbstractGameState {
      *
      * @param e - The event
      */
-    private void addRock(final AddRockEvent e) {
+    private synchronized void addRock(final AddRockEvent e) {
         RockGraphic graphic = new RockGraphic(e.getLocation());
-        // TODO: FIX This
         this.screen.addRock(e.getTeam() == 0, graphic);
-        if (e.getTeam() == 0) {
-            this.leftRockList.add(graphic);
-        } else {
-            this.rightRockList.add(graphic);
-        }
+        ArrayList<RockGraphic> obs = this.rocks.getOrDefault(e.getTeam(), new ArrayList<>());
+        obs.add(graphic);
+        this.rocks.put(e.getTeam(), obs);
     }
 
     /**

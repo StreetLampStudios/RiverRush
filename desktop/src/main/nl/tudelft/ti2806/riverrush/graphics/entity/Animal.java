@@ -46,6 +46,7 @@ public class Animal extends AbstractAnimal {
      */
     public void setActor(final AnimalActor aActor) {
         this.actor = aActor;
+        this.actor.setAnimal(this);
         this.setState(new AnimalOnBoat(this, this.getDispatcher()));
     }
 

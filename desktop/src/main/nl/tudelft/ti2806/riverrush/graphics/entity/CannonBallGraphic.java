@@ -24,7 +24,6 @@ public class CannonBallGraphic extends AbstractObstacle {
     private static final double OFFSET_POS = 320.0;
     private static final int NEGATIVE_MULTIPLIER = -2;
     private final double offset;
-    private Circle bounds;
 
     /**
      * Creates a new obstacle.
@@ -47,7 +46,7 @@ public class CannonBallGraphic extends AbstractObstacle {
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         this.localToStageCoordinates(v);
 
-        this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
+        this.setBounds(new Circle(v.x, v.y, this.getHeight() / 2));
 
         MoveToAction moveDown = new MoveToAction();
         moveDown.setPosition((float) (WIDTH / 2 - SIZE / 2), (float) (NEGATIVE_MULTIPLIER * SIZE));
@@ -63,7 +62,7 @@ public class CannonBallGraphic extends AbstractObstacle {
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         this.localToStageCoordinates(v);
 
-        this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
+        this.getBounds().setPosition(v.x, v.y);
 
         batch.draw(Assets.cannonball, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
             this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
@@ -77,15 +76,4 @@ public class CannonBallGraphic extends AbstractObstacle {
         return this.getY() == NEGATIVE_MULTIPLIER * SIZE;
     }
 
-    /**
-     * Calculates whether or not this obtacle is currently colliding with the given monkey. We find
-     * a collision to be true if any part of the monkey is within the bounds of the obstacle.
-     *
-     * @param monk refers to the monkey for which the collision has to be calculated
-     * @return true if collision occurs, false if it doesn't.
-     */
-    public boolean calculateCollision(final AnimalActor monk) {
-        boolean ret = this.bounds.overlaps(monk.getBounds());
-        return ret;
-    }
 }

@@ -3,6 +3,10 @@ package nl.tudelft.ti2806.riverrush.graphics.entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
@@ -16,6 +20,7 @@ public class BoatSector extends Group {
     private final int colCount;
     private int currentAnimalPosition;
     private ArrayList<AnimalActor> animals;
+    private final Rectangle bounds;
 
     public BoatSector(int rows, int cols, Color color) {
         this.rowCount = rows;
@@ -23,6 +28,9 @@ public class BoatSector extends Group {
 
         this.setWidth(this.colCount * 90); // Monkey width
         this.setHeight(this.rowCount * 50); // Monkey height
+
+        Vector2 v = this.localToStageCoordinates(new Vector2(0, 0));
+        this.bounds = new Rectangle(v.x, v.y, this.getWidth(), this.getHeight());
 
         this.setColor(color);
 
@@ -35,6 +43,8 @@ public class BoatSector extends Group {
 
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
+        Vector2 v = this.localToStageCoordinates(new Vector2(0, 0));
+        this.bounds.setPosition(v.x, v.y);
 
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -78,4 +88,17 @@ public class BoatSector extends Group {
         return this.animals;
     }
 
+    public boolean isColliding(final Circle obstacle) {
+        return Intersector.overlaps(obstacle, this.bounds);
+    }
+
+    public AnimalActor getCollidingChild(final Circle collider) {
+        AnimalActor result = null;
+        for (AnimalActor actor : this.animals) {
+            if (actor != null && actor.isColliding(collider)) {
+                return actor;
+            }
+        }
+        return result;
+    }
 }
