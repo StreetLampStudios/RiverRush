@@ -27,13 +27,12 @@ public class RiverActor extends Actor {
     /**
      * Creates an river object with a given graphical representation.
      *
-     * @param ypos         represents the position of the river on the y axis
-     * @param width        represents the width of the river object
-     * @param height       represents the height of the river object
+     * @param ypos represents the position of the river on the y axis
+     * @param width represents the width of the river object
+     * @param height represents the height of the river object
      */
     @Inject
-    public RiverActor(final float ypos, final float width,
-                      final float height) {
+    public RiverActor(final float ypos, final float width, final float height) {
         this.setPosition(0, height);
         this.setWidth(width);
         this.setHeight(height);
@@ -52,19 +51,13 @@ public class RiverActor extends Actor {
 
         this.addAction(rep);
 
-        // moveDown.setDuration(this.getRemainingFlowTime() / 2); // TODO make it more elegant
-        // SequenceAction newSeq = sequence(moveUp, moveDown);
-        // RepeatAction newRep = forever(newSeq);
-        // this.clearActions();
-        // this.addAction(newRep);
-
     }
 
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
         batch.draw(Assets.river, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-            this.getWidth(), this.getHeight() * 2, this.getScaleX(), this.getScaleY(),
-            this.getRotation());
+                this.getWidth(), this.getHeight() * 2, this.getScaleX(), this.getScaleY(),
+                this.getRotation());
     }
 
     @Override
@@ -79,21 +72,6 @@ public class RiverActor extends Actor {
      */
     public float getMid() {
         return this.mid;
-    }
-
-    public float getRemainingFlowTime(float flow) {
-        Action act = this.getActions().get(0);
-        if (act instanceof MoveToAction) {
-            MoveToAction move = (MoveToAction) act;
-            flow -= move.getTime();
-        } else {
-            RepeatAction rep = (RepeatAction) act; // Get first and only action
-            SequenceAction seq = (SequenceAction) rep.getAction(); // Get the repeated action
-            MoveToAction move = (MoveToAction) seq.getActions().get(1);
-            // Get the second of the sequence action. This can only be a moveto action
-            flow -= move.getTime();
-        }
-        return flow;
     }
 
     public void updateFlow(double speed) {
