@@ -26,9 +26,11 @@ public class BoatGroup extends Group {
 
     private static final float MOVE_DISTANCE = 400;
     private static final double HITBOX_OFFSET = 0.3;
+    private static final float SECTOR_DIVIDING_DISTANCE = 30f;
+    private static final float SECTOR_INIT_POS = 50f;
 
-    private static final int COL_COUNT = 5;
-    private static final int ROW_COUNT = 2;
+    private static final int COL_COUNT = 2;
+    private static final int ROW_COUNT = 5;
 
     private final HashMap<AbstractAnimal, Integer> directionVotes;
     private int votingSum = 0;
@@ -70,8 +72,10 @@ public class BoatGroup extends Group {
         for (int i = Sector.countSectors() - 1; i >= 0; i--) {
             Color color = colors.get(i);
             BoatSector sec = new BoatSector(ROW_COUNT, COL_COUNT, color);
-            float secPosX = (this.getWidth() / 2) - (sec.getWidth() / 2);
-            float secPosY = 50f + ((20f + sec.getHeight()) * i);
+            float secPosX = SECTOR_INIT_POS + ((SECTOR_DIVIDING_DISTANCE + sec.getWidth()) * i);
+            float secPosY = (this.getHeight() / 2) - (sec.getHeight() / 2);
+            // float secPosX = (this.getWidth() / 2) - (sec.getWidth() / 2);
+            // float secPosY = 50f + ((20f + sec.getHeight()) * i);
             sec.setPosition(secPosX, secPosY);
             this.sectors.add(sec);
             this.addActor(sec);
@@ -106,8 +110,8 @@ public class BoatGroup extends Group {
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
         batch.draw(Assets.ship, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-            this.getRotation());
+                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+                this.getRotation());
 
         batch.setColor(Color.WHITE);
 
@@ -124,7 +128,7 @@ public class BoatGroup extends Group {
     /**
      * Vote for a direction to move the boat there.
      *
-     * @param animal    The animal that has voted
+     * @param animal The animal that has voted
      * @param direction The direction the animal voted in
      */
     public void voteForDirection(final AbstractAnimal animal, final int direction) {
@@ -160,7 +164,7 @@ public class BoatGroup extends Group {
     /**
      * Add an animal to teh boat.
      *
-     * @param actor  The actor of the animal
+     * @param actor The actor of the animal
      * @param sector The sector to add the animal in
      */
     public void addAnimal(final AnimalActor actor, final Sector sector) {
