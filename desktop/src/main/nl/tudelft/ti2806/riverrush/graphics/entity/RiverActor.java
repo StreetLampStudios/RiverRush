@@ -17,9 +17,10 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
  */
 public class RiverActor extends Actor {
     private static final float BASE_FLOW_DURATION = 3f;
+    private static final float MAX_FLOW_DURATION = 15f;
 
     private final float mid;
-    private final float origY;
+    private final float originalPosition;
 
     private MoveToAction moveDown;
     private MoveToAction moveUp;
@@ -27,16 +28,16 @@ public class RiverActor extends Actor {
     /**
      * Creates an river object with a given graphical representation.
      *
-     * @param ypos represents the position of the river on the y axis
+     * @param startPosition represents the position of the river on the y axis
      * @param width represents the width of the river object
      * @param height represents the height of the river object
      */
     @Inject
-    public RiverActor(final float ypos, final float width, final float height) {
+    public RiverActor(final float startPosition, final float width, final float height) {
         this.setPosition(0, height);
         this.setWidth(width);
         this.setHeight(height);
-        this.origY = ypos;
+        this.originalPosition = startPosition;
         this.mid = width / 2;
 
         this.moveDown = new MoveToAction();
@@ -44,7 +45,7 @@ public class RiverActor extends Actor {
         this.moveDown.setDuration(BASE_FLOW_DURATION);
 
         this.moveUp = new MoveToAction();
-        this.moveUp.setPosition(0, ypos);
+        this.moveUp.setPosition(0, startPosition);
 
         SequenceAction seq = sequence(this.moveUp, this.moveDown);
         RepeatAction rep = forever(seq);
@@ -76,7 +77,8 @@ public class RiverActor extends Actor {
 
     public void updateFlow(double speed) {
         float speedMultiplier = (float) speed;
-        float currentFlow = speed <= 0.2 ? 15f : BASE_FLOW_DURATION / speedMultiplier;
+        float currentFlow = Math.min(MAX_FLOW_DURATION, BASE_FLOW_DURATION / speedMultiplier);
+        // speed <= 0.2 ? 15f : BASE_FLOW_DURATION / speedMultiplier;
         float resetDuration = currentFlow * (1 - (this.getY() / (-1 * this.getHeight())));
 
         this.moveDown.setDuration(resetDuration);
@@ -88,7 +90,7 @@ public class RiverActor extends Actor {
         newDown.setDuration(currentFlow);
 
         MoveToAction newUp = new MoveToAction();
-        newUp.setPosition(0, this.origY);
+        newUp.setPosition(0, this.originalPosition);
 
         SequenceAction newSeq = sequence(newUp, newDown);
         RepeatAction newRep = forever(newSeq);
