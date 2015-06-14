@@ -10,8 +10,8 @@ import nl.tudelft.ti2806.riverrush.graphics.Assets;
  * Game class represents the river bank.
  */
 public class LittleBoat extends Actor {
-    private float ypos;
-    private float top_ypos;
+    private float xpos;
+    private float top_xpos;
 
     private double progress;
 
@@ -19,16 +19,16 @@ public class LittleBoat extends Actor {
      * Creates an river banks object with a given graphical representation.
      *
      * @param xpos         represents the position of the little boat on the x axis
-     * @param y_position   represents the position of the little boat on the y axis
+     * @param ypos   represents the position of the little boat on the y axis
      * @param width        represents the width of the little boat object
      * @param height       represents the height of the little boat object
      */
     @Inject
-    public LittleBoat(final float xpos, final float y_position,
-                      final float top_y_position, final float width, final float height) {
-        this.ypos = y_position;
-        this.top_ypos = top_y_position;
-        this.setPosition(xpos, y_position);
+    public LittleBoat(final float xpos, final float top_x_position, final float ypos,
+                      final float width, final float height) {
+        this.xpos = xpos;
+        this.top_xpos = top_x_position;
+        this.setPosition(xpos, ypos);
         this.setWidth(width);
         this.setHeight(height);
         this.progress = 0;
@@ -52,7 +52,7 @@ public class LittleBoat extends Actor {
         this.progress = progres;
         float newY = new Double(progres / 100).floatValue();
         MoveToAction action = new MoveToAction();
-        action.setPosition(this.getX(), this.ypos + newY * (this.top_ypos - this.ypos));
+        action.setPosition(this.xpos + newY  * (this.top_xpos), this.getY());
         action.setDuration(0.5f);
         this.addAction(action);
     }
