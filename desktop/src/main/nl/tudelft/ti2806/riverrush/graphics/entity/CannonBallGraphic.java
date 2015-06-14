@@ -15,13 +15,13 @@ public class CannonBallGraphic extends AbstractObstacle {
     /**
      * Size of the graphic.
      */
-    private static final double SIZE = 256;
+    private static final float SIZE = 128;
     private static final float VELOCITY = 3f;
 
-    private static final double HEIGHT = Gdx.graphics.getHeight();
-    private static final double WIDTH = Gdx.graphics.getWidth();
-    private static final double INIT_POS = 800.0;
-    private static final double OFFSET_POS = 320.0;
+    private static final float HEIGHT = Gdx.graphics.getHeight();
+    private static final float WIDTH = Gdx.graphics.getWidth();
+    private static final float INIT_POS = (HEIGHT / 2) - (SIZE / 2);
+    private static final float OFFSET_POS = 160f;
     private static final int NEGATIVE_MULTIPLIER = -2;
     private final double offset;
     private Circle bounds;
@@ -29,7 +29,7 @@ public class CannonBallGraphic extends AbstractObstacle {
     /**
      * Creates a new obstacle.
      *
-     * @param off           Configures the place from which the obstacle is fired. Must be between 0 and 1
+     * @param off Configures the place from which the obstacle is fired. Must be between 0 and 1
      */
     public CannonBallGraphic(final double off) {
         this.offset = off;
@@ -40,9 +40,9 @@ public class CannonBallGraphic extends AbstractObstacle {
      * Actually adds the obstacle to the screen.
      */
     public void init() {
-        this.setWidth((float) SIZE);
-        this.setHeight((float) (SIZE * HEIGHT / WIDTH) / 2);
-        this.setPosition((float) ((INIT_POS + OFFSET_POS * this.offset) - SIZE / 2), (float) HEIGHT);
+        this.setWidth(SIZE * 0.45f); // 0.45 is the percentage of the screen of his stage.
+        this.setHeight(SIZE);
+        this.setPosition(WIDTH, (float) ((INIT_POS + OFFSET_POS * this.offset) - SIZE / 2));
 
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         this.localToStageCoordinates(v);
@@ -50,7 +50,7 @@ public class CannonBallGraphic extends AbstractObstacle {
         this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
 
         MoveToAction moveDown = new MoveToAction();
-        moveDown.setPosition((float) (WIDTH / 2 - SIZE / 2), (float) (NEGATIVE_MULTIPLIER * SIZE));
+        moveDown.setPosition(NEGATIVE_MULTIPLIER * SIZE, HEIGHT / 2 - SIZE / 2);
         moveDown.setDuration(VELOCITY);
 
         this.addAction(moveDown);
@@ -65,9 +65,9 @@ public class CannonBallGraphic extends AbstractObstacle {
 
         this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
 
-        batch.draw(Assets.cannonball, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-            this.getRotation());
+        batch.draw(Assets.cannonball, this.getX(), this.getY(), this.getOriginX(),
+                this.getOriginY(), this.getWidth(), this.getHeight(), this.getScaleX(),
+                this.getScaleY(), this.getRotation());
     }
 
     /**
