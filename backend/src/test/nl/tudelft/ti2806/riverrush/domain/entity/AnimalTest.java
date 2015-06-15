@@ -40,7 +40,7 @@ public class AnimalTest {
     }
 
     @Test
-    public void testCollide() throws Exception {
+    public void testFall() throws Exception {
         animal.fall();
         assertEquals(animal.getState().getClass().getName(), AnimalInWater.class.getName());
     }
@@ -60,9 +60,16 @@ public class AnimalTest {
     }
 
     @Test
-    public void testReturnToBoat() throws Exception {
+     public void testReturnToBoat() throws Exception {
         animal.fall();
         animal.returnToBoat();
+        assertEquals(animal.getState().getClass().getName(), AnimalOnBoat.class.getName());
+    }
+
+    @Test
+    public void testCollide() throws Exception {
+        // Collide is supposed to do nothing
+        animal.getState().collide();
         assertEquals(animal.getState().getClass().getName(), AnimalOnBoat.class.getName());
     }
 
