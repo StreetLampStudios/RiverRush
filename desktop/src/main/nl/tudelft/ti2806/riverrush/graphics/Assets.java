@@ -11,15 +11,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 public final class Assets {
 
     private static Texture
-        riverBanksTexture, shipTexture, riverTexture,
-        boatSectorTexture, raccoonTexture, flagTexture,
+        riverBanksTexture, monkeyShipTexture, raccoonShipTexture, riverTexture,
+        boatSectorTexture, raccoonTexture, monkeyTexture, flagTexture,
         endGameTexture, grassTexture, cannonballTexture,
         icebergTexture, winTexture, loseTexture,
         bootjeTexture, woodFloorTexture, lineTexture;
 
     public static TextureRegion
         riverBank, boatSector, river,
-        ship, raccoon, flag, endGame,
+        monkeyShip, raccoonShip, raccoon, monkey, flag, endGame,
         grass, cannonball, iceberg,
         win, lose, bootje, woodFloor,
         line;
@@ -37,14 +37,20 @@ public final class Assets {
         riverBanksTexture = new Texture(Gdx.files.internal(dir + "field.jpg"));
         riverBank = getFullRegion(riverBanksTexture);
 
-        shipTexture = new Texture(Gdx.files.internal(dir + "ship.png"));
-        ship = getFullRegion(shipTexture);
+        monkeyShipTexture = new Texture(Gdx.files.internal(dir + "boat_monkey.png"));
+        monkeyShip = getFullRegion(monkeyShipTexture);
+
+        raccoonShipTexture = new Texture(Gdx.files.internal(dir + "boat_raccoon.png"));
+        raccoonShip = getFullRegion(raccoonShipTexture);
 
         riverTexture = new Texture(Gdx.files.internal(dir + "river.png"));
         river = getFullRegion(riverTexture);
 
         boatSectorTexture = new Texture(Gdx.files.internal(dir + "sector.png"));
         boatSector = getFullRegion(boatSectorTexture);
+
+        monkeyTexture = new Texture(Gdx.files.internal(dir + "monkey.png"));
+        monkey = getFullRegion(monkeyTexture);
 
         raccoonTexture = new Texture(Gdx.files.internal(dir + "raccoon.png"));
         raccoon = getFullRegion(raccoonTexture);

@@ -81,7 +81,7 @@ public class PlayingGameState extends AbstractGameState {
         this.dispatcher.attach(AnimalJumpedEvent.class, this.animalJumpedEventHandlerLambda);
         this.dispatcher.attach(AnimalMovedEvent.class, this.animalMovedHandlerLambda);
         this.dispatcher.attach(AnimalReturnedToBoatEvent.class,
-                this.animalReturnedToBoatEventHandlerLambda);
+            this.animalReturnedToBoatEventHandlerLambda);
         this.dispatcher.attach(TeamProgressEvent.class, this.teamProgressEventHandlerLambda);
 
         this.rocks = new HashMap<>();
@@ -174,7 +174,7 @@ public class PlayingGameState extends AbstractGameState {
      * @param animal The team
      */
     private void addAnimal(final Team team, final Animal animal) {
-        AnimalActor actor = new AnimalActor(this.dispatcher);
+        AnimalActor actor = new AnimalActor(this.dispatcher, team.getId());
         animal.setActor(actor);
 
         team.addAnimal(animal);
@@ -190,13 +190,7 @@ public class PlayingGameState extends AbstractGameState {
      */
     public void addBoat(final Team team) {
         // TODO: remove magic numbers
-        BoatGroup group = new BoatGroup(Gdx.graphics.getWidth() * 0.02f,
-                (Gdx.graphics.getHeight() / 2) - 450);
-
-        team.setBoat(group);
-        this.screen.addTeam(group, team.getId());
-
-        group.init();
+        this.screen.addBoat(team);
     }
 
     /**

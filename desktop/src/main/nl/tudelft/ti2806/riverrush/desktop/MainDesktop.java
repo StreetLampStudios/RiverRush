@@ -1,18 +1,23 @@
 package nl.tudelft.ti2806.riverrush.desktop;
 
+import java.net.URISyntaxException;
+
+import nl.tudelft.ti2806.riverrush.CoreModule;
+import nl.tudelft.ti2806.riverrush.controller.Controller;
+import nl.tudelft.ti2806.riverrush.controller.RenderController;
+import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
+import nl.tudelft.ti2806.riverrush.game.Game;
+import nl.tudelft.ti2806.riverrush.network.Client;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import nl.tudelft.ti2806.riverrush.CoreModule;
-import nl.tudelft.ti2806.riverrush.controller.Controller;
-import nl.tudelft.ti2806.riverrush.controller.RenderController;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.game.Game;
-import nl.tudelft.ti2806.riverrush.network.Client;
-
-import java.net.URISyntaxException;
 
 /**
  * This class is the main class to be ran when starting the game. This class sets up the graphics
@@ -50,6 +55,31 @@ public class MainDesktop extends CoreModule {
         this.eventDispatcher = this.injector.getInstance(EventDispatcher.class);
 
         client.connect();
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        AnimalAddedEvent ev;
+        for (int i = 0; i < 5; i++) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ev = new AnimalAddedEvent();
+            ev.setAnimal(i);
+            ev.setTeam(i % 2);
+            ev.setVariation(0);
+            ev.setSector(Sector.BACK);
+
+            this.eventDispatcher.dispatch(ev);
+        }
+        this.eventDispatcher.dispatch(new GameAboutToStartEvent());
+
+        this.eventDispatcher.dispatch(new GameStartedEvent());
+
     }
 
     /**
@@ -59,7 +89,7 @@ public class MainDesktop extends CoreModule {
     private void setupGraphics() {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.x = 0;
-        //TODO: Don't hardcode screen size
+        // TODO: Don't hardcode screen size
         config.width = 1920;
         config.height = 1080;
 

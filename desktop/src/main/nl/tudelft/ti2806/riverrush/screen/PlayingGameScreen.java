@@ -13,6 +13,7 @@ import nl.tudelft.ti2806.riverrush.graphics.SideStage;
 import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
 import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
+import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 
 /**
  * The playing game screen constructs and displays all the visuals that are required during game
@@ -164,13 +165,17 @@ public class PlayingGameScreen implements Screen {
         }
     }
 
-    public void addTeam(final BoatGroup boat, final Integer teamID) {
-        if (teamID == 0) { // TODO: Temporary hard coding
+    public void addBoat(Team team) {
+        BoatGroup boat = new BoatGroup(Gdx.graphics.getWidth() * 0.02f,
+                (Gdx.graphics.getHeight() / 2) - 450, team.getId());
+        boat.init();
+
+        if (team.getId() % 2 == 0) { // TODO: Temporary hard coding
             this.riverLeft.addActor(boat);
         } else {
             this.riverRight.addActor(boat);
         }
-
+        team.setBoat(boat);
     }
 
     public void updateProgress(int teamID, double progress, double speed) {
