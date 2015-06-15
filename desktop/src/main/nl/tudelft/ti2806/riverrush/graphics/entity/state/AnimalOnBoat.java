@@ -25,7 +25,7 @@ public class AnimalOnBoat implements AnimalState {
     /**
      * Constructor.
      *
-     * @param anAnimal        - The animal that is on the boat
+     * @param anAnimal - The animal that is on the boat
      * @param eventDispatcher - The event dispatcher
      */
     public AnimalOnBoat(final Animal anAnimal, final EventDispatcher eventDispatcher) {
@@ -35,8 +35,7 @@ public class AnimalOnBoat implements AnimalState {
 
     @Override
     public AnimalState jump() {
-        Action jump = this.animal.getActor().jumpAction();
-        this.animal.getActor().addAction(jump);
+        this.animal.getActor().jumpAction();
         return new AnimalInAir(this.animal, this.dispatcher);
     }
 

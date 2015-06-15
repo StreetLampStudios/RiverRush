@@ -1,5 +1,9 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.graphics.Assets;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -8,19 +12,16 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.RotateByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RotateToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.inject.Inject;
-import nl.tudelft.ti2806.riverrush.domain.event.Direction;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.graphics.Assets;
-
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
  * Game object representing a monkey.
@@ -37,8 +38,7 @@ public class AnimalActor extends Group {
     private static final float ANIMAL_HEIGHT = 90; // 81
 
     private final TextureRegion animalTexture;
-
-    private static final float JUMP_HEIGHT = 100;
+    private static final float JUMP_HEIGHT = 10;
     private static final int FALL_DISTANCEX = -520;
     private static final int FALL_DISTANCEY = 200;
     private static final float FALL_VELOCITY = 0.5f;
@@ -60,6 +60,7 @@ public class AnimalActor extends Group {
 
     private DirectionFlag directionFlag;
     private Animal animal;
+    private ShadowActor shadow;
 
     /**
      * Creates a monkey object that represents player characters.
@@ -87,6 +88,56 @@ public class AnimalActor extends Group {
         flag.setVisible(false);
         this.addActor(flag);
         this.directionFlag = flag;
+        ShadowActor shad = new ShadowActor();
+
+        this.shadow = shad;
+    }
+
+    private class ShadowActor extends Actor {
+
+        public ShadowActor() {
+            this.setWidth(Assets.shadow.getRegionWidth());
+            this.setHeight(Assets.shadow.getRegionHeight()); // AnimalActor.ANIMAL_HEIGHT * 0.8f
+            this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
+        }
+
+        @Override
+        public void draw(final Batch batch, final float parentAlpha) {
+            Color color = this.getColor();
+            batch.setColor(color.r, color.g, color.b, color.a * parentAlpha * 0.5f);
+
+            // batch.enableBlending();
+            // batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+            batch.draw(Assets.shadow, this.getX(), this.getY(), this.getOriginX(),
+                    this.getOriginY(), this.getWidth(), this.getHeight(), this.getScaleX(),
+                    this.getScaleY(), this.getRotation());
+
+            batch.setColor(Color.WHITE);
+            super.draw(batch, parentAlpha);
+            // batch.disableBlending();
+        }
+
+        @Override
+        public void act(final float delta) {
+            super.act(delta);
+        }
+
+        private void update() {
+            ScaleToAction scaleUp = new ScaleToAction();
+            scaleUp.setScale(1.2f);
+            scaleUp.setDuration(JUMP_UP_DURATION);
+
+            ScaleToAction scaleDown = new ScaleToAction();
+            scaleDown.setScale(1f);
+            scaleDown.setDuration(JUMP_DOWN_DURATION);
+
+            SequenceAction jump = new SequenceAction(scaleUp, Actions.delay(DELAY_DURATION,
+                    scaleDown));
+
+            this.addAction(jump);
+        }
+
     }
 
     /**
@@ -112,18 +163,22 @@ public class AnimalActor extends Group {
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        batch.draw(animalTexture, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
+        super.draw(batch, parentAlpha);
+        this.shadow.draw(batch, parentAlpha);
+
+        batch.draw(Assets.raccoon, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
                 this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
                 this.getRotation());
 
         batch.setColor(Color.WHITE);
-        super.draw(batch, parentAlpha);
+
         batch.disableBlending();
     }
 
     @Override
     public void act(final float delta) {
         super.act(delta);
+        this.shadow.act(delta);
     }
 
     /**
@@ -190,32 +245,61 @@ public class AnimalActor extends Group {
         this.directionFlag.addAction(rot);
     }
 
-    public Action jumpAction() {
+    public void jumpAction() {
+        // MoveToAction jumpUp = new MoveToAction();
+        // jumpUp.setPosition(this.getX() + JUMP_HEIGHT, this.getY());
+        // jumpUp.setDuration(JUMP_UP_DURATION);
+        //
+        // MoveToAction drop = new MoveToAction();
+        // drop.setPosition(this.origX, this.getY());
+        // drop.setDuration(JUMP_DOWN_DURATION);
+        //
+        // this.setOrigin((this.getWidth() / 2), (this.getHeight() / 2));
+        //
+        // RotateByAction wiggleLeft = Actions.rotateBy(WIGGLE_DISTANCE);
+        // wiggleLeft.setDuration(WIGGLE_LEFT_DURATION);
+        //
+        // RotateByAction wiggleRight = Actions.rotateBy(-(WIGGLE_DISTANCE * 2));
+        // wiggleRight.setDuration(WIGGLE_RIGHT_DURATION);
+        //
+        // RotateByAction wiggleBack = Actions.rotateBy(WIGGLE_DISTANCE);
+        // wiggleBack.setDuration(WIGGLE_BACK_DURATION);
+        //
+        // SequenceAction wiggle = sequence(wiggleLeft, wiggleRight, wiggleBack);
+        //
+        // SequenceAction jump = sequence(jumpUp,
+        // Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
+
         MoveToAction jumpUp = new MoveToAction();
-        jumpUp.setPosition(this.getX() + JUMP_HEIGHT, this.getY());
+        jumpUp.setPosition(this.getX(), this.getY() + JUMP_HEIGHT);
         jumpUp.setDuration(JUMP_UP_DURATION);
+
+        ScaleToAction scaleUp = new ScaleToAction();
+        scaleUp.setScale(1.2f);
+        scaleUp.setDuration(JUMP_UP_DURATION);
 
         MoveToAction drop = new MoveToAction();
         drop.setPosition(this.origX, this.getY());
         drop.setDuration(JUMP_DOWN_DURATION);
 
+        ScaleToAction scaleDown = new ScaleToAction();
+        scaleDown.setScale(1f);
+        scaleDown.setDuration(JUMP_DOWN_DURATION);
+
+        ParallelAction parUp = new ParallelAction();
+        parUp.addAction(jumpUp);
+        parUp.addAction(scaleUp);
+
+        ParallelAction parDown = new ParallelAction();
+        parDown.addAction(drop);
+        parDown.addAction(scaleDown);
+
         this.setOrigin((this.getWidth() / 2), (this.getHeight() / 2));
 
-        RotateByAction wiggleLeft = Actions.rotateBy(WIGGLE_DISTANCE);
-        wiggleLeft.setDuration(WIGGLE_LEFT_DURATION);
+        SequenceAction jump = new SequenceAction(parUp, Actions.delay(DELAY_DURATION, parDown));
 
-        RotateByAction wiggleRight = Actions.rotateBy(-(WIGGLE_DISTANCE * 2));
-        wiggleRight.setDuration(WIGGLE_RIGHT_DURATION);
-
-        RotateByAction wiggleBack = Actions.rotateBy(WIGGLE_DISTANCE);
-        wiggleBack.setDuration(WIGGLE_BACK_DURATION);
-
-        SequenceAction wiggle = sequence(wiggleLeft, wiggleRight, wiggleBack);
-
-        SequenceAction jump = sequence(jumpUp,
-                Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
-
-        return jump;
+        this.addAction(jump);
+        this.shadow.update();
     }
 
     @Override
@@ -223,6 +307,10 @@ public class AnimalActor extends Group {
         super.setPosition(x, y);
         this.origX = x;
         this.origY = y;
+
+        float xS = this.getX() + (this.getWidth() / 2) - (this.shadow.getWidth() / 2);
+        float yS = this.getY() + (this.getHeight() / 2) - (this.shadow.getHeight() / 2);
+        this.shadow.setPosition(xS, yS);
     }
 
     /**
@@ -237,7 +325,7 @@ public class AnimalActor extends Group {
     }
 
     public Animal getAnimal() {
-        return animal;
+        return this.animal;
     }
 
     public boolean isColliding(final Circle obstacle) {
