@@ -24,7 +24,6 @@ public class RockGraphic extends AbstractObstacle {
 
     private final float offset;
     private final Direction direction;
-    private Circle bounds;
 
     /**
      * Creates a new obstacle.
@@ -54,7 +53,7 @@ public class RockGraphic extends AbstractObstacle {
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         this.localToStageCoordinates(v);
 
-        this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
+        this.setBounds(new Circle(v.x, v.y, this.getHeight() / 2));
 
         MoveToAction moveDown = new MoveToAction();
         moveDown.setPosition(this.getX(), NEGATIVE_MULTIPLIER * SIZE); // 1592 distance
@@ -70,7 +69,7 @@ public class RockGraphic extends AbstractObstacle {
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         this.localToStageCoordinates(v);
 
-        this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
+        this.getBounds().setPosition(v.x, v.y);
 
         batch.draw(Assets.iceberg, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
             this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
@@ -82,11 +81,6 @@ public class RockGraphic extends AbstractObstacle {
      */
     public boolean isDone() {
         return this.getY() == NEGATIVE_MULTIPLIER * SIZE;
-    }
-
-    public boolean calculateCollision(final BoatGroup boat) {
-        boolean ret = this.bounds.overlaps(boat.getBounds());
-        return ret;
     }
 
     public Direction getDirection() {

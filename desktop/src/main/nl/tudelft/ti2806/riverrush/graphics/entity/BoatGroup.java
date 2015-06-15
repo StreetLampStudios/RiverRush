@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
@@ -95,9 +96,8 @@ public class BoatGroup extends Group {
     public void draw(final Batch batch, final float parentAlpha) {
 
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
-        this.localToStageCoordinates(v);
-
-        this.bounds = new Circle(v.x, v.y, ((float) (this.getHeight() * HITBOX_OFFSET)));
+        v = this.localToStageCoordinates(v);
+        this.bounds.setPosition(v.x, v.y);
 
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -189,12 +189,19 @@ public class BoatGroup extends Group {
         this.updateBoatPosition();
     }
 
-    /**
-     * Get the bounds of the boat.
-     *
-     * @return The bounds
-     */
-    public Circle getBounds() {
-        return this.bounds;
+    public boolean isColliding(final Circle obstacle) {
+        return Intersector.overlaps(obstacle, this.bounds);
+    }
+
+
+    public AnimalActor getCollidingChild(final Circle collider) {
+        AnimalActor result = null;
+        for (BoatSector sector : this.sectors) {
+            if (sector.isColliding(collider)) {
+                result = sector.getCollidingChild(collider);
+            }
+        }
+
+        return result;
     }
 }
