@@ -9,14 +9,16 @@ import nl.tudelft.ti2806.riverrush.controller.UserController;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
-import nl.tudelft.ti2806.riverrush.game.BasicGameTrack;
 import nl.tudelft.ti2806.riverrush.game.Game;
-import nl.tudelft.ti2806.riverrush.game.GameTrack;
+import nl.tudelft.ti2806.riverrush.game.LevelMapParser;
 import nl.tudelft.ti2806.riverrush.network.AbstractServer;
 import nl.tudelft.ti2806.riverrush.network.RenderServer;
 import nl.tudelft.ti2806.riverrush.network.UserServer;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.apache.logging.log4j.LogManager;
+
+import java.io.IOException;
+import java.util.TreeMap;
 
 import static com.google.inject.name.Names.named;
 
@@ -64,8 +66,7 @@ public final class MainBackend extends CoreModule {
     @Override
     protected void configure() {
         super.configure();
-
-        this.bind(GameTrack.class).to(BasicGameTrack.class);
+        this.bind(TreeMap.class).annotatedWith(named("levelMap")).toInstance(this.configureLevelMap());
 
         this.bind(Controller.class).annotatedWith(named("clientController"))
             .to(UserController.class);
@@ -82,5 +83,20 @@ public final class MainBackend extends CoreModule {
         this.bind(AbstractServer.class).annotatedWith(named("playerServer")).to(UserServer.class);
 
         this.bind(AbstractServer.class).annotatedWith(named("renderServer")).to(RenderServer.class);
+    }
+
+    /**
+     * Configure the level map.
+     *
+     * @return The level map
+     */
+    private TreeMap configureLevelMap() {
+        try {
+            return LevelMapParser.readFromFile("/simpletrack.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

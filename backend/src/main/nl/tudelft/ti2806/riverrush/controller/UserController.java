@@ -56,13 +56,13 @@ public class UserController extends AbstractController {
         };
         final HandlerLambda<JumpCommand> jumpCommandHandlerLambda = (e) -> {
             if (e.getAnimal() == this.animal.getId()) {
-                this.game.jumpAnimal(this.animal);
+                this.animal.jump();
             }
         };
 
         final HandlerLambda<VoteBoatMoveCommand> voteCommandHandlerLambda = (e) -> {
             if (e.getAnimal() == this.animal.getId()) {
-                this.game.voteMove(this.animal, e.getDirection());
+                this.animal.voteOneDirection(e.getDirection());
             }
         };
 

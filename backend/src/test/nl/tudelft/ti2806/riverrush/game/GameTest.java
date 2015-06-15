@@ -1,5 +1,8 @@
 package nl.tudelft.ti2806.riverrush.game;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.game.state.FinishedGameState;
@@ -7,15 +10,12 @@ import nl.tudelft.ti2806.riverrush.game.state.PlayingGameState;
 import nl.tudelft.ti2806.riverrush.game.state.StoppedGameState;
 import nl.tudelft.ti2806.riverrush.game.state.WaitingForRendererState;
 import nl.tudelft.ti2806.riverrush.game.state.WaitingGameState;
-import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -23,23 +23,41 @@ import static org.mockito.Mockito.when;
 /**
  * Test for the main game workings.
  */
-public class GameTest {
+public class GameTest extends AbstractModule {
 
-    public static final int animalId = 1;
-    public static final int teamId = 1;
-    public static final int WrongTeam = 10;
+    private static final int ANIMAL_ID = 1;
+    private static final int TEAM_ID = 1;
     private Game game;
+
+    /**
+     * The event dispatcher.
+     */
+    @Mock
     private EventDispatcher dispatcher;
+
+    /**
+     * The game track.
+     */
+    @Mock
+    private GameTrack track;
+
+    /**
+     * The animal.
+     */
+    @Mock
     private Animal animal;
 
     @Before
     public void setUp() throws Exception {
-        dispatcher = Mockito.mock(EventDispatcher.class);
-        animal = Mockito.mock(Animal.class);
-        game = new Game(dispatcher);
+        MockitoAnnotations.initMocks(this);
 
-        when(this.animal.getId()).thenReturn(animalId);
-        when(this.animal.getTeamId()).thenReturn(teamId);
+        Injector injector = Guice.createInjector(this);
+
+        this.game = injector.getInstance(Game.class);
+
+        when(this.animal.getId()).thenReturn(ANIMAL_ID);
+        when(this.animal.getTeamId()).thenReturn(TEAM_ID);
+        when(this.track.addAnimal(TEAM_ID, this.animal)).thenReturn(TEAM_ID);
 
     }
 
@@ -60,7 +78,7 @@ public class GameTest {
     @Test
     public void testFinish() throws Exception {
         assertTrue(this.game.getGameState() instanceof WaitingForRendererState);
-        this.game.finish();
+        this.game.finish(0);
         assertTrue(this.game.getGameState() instanceof WaitingForRendererState);
     }
 
@@ -91,7 +109,7 @@ public class GameTest {
     public void testWaitingFinish() throws Exception {
         this.game.setGameState(new WaitingGameState(this.dispatcher, this.game));
         assertTrue(this.game.getGameState() instanceof WaitingGameState);
-        this.game.finish();
+        this.game.finish(0);
         assertTrue(this.game.getGameState() instanceof WaitingGameState);
     }
 
@@ -123,7 +141,7 @@ public class GameTest {
     public void testStartedFinish() throws Exception {
         this.game.setGameState(new PlayingGameState(this.dispatcher, this.game));
         assertTrue(this.game.getGameState() instanceof PlayingGameState);
-        this.game.finish();
+        this.game.finish(0);
         assertTrue(this.game.getGameState() instanceof FinishedGameState);
     }
 
@@ -140,7 +158,7 @@ public class GameTest {
         this.game.setGameState(new FinishedGameState(this.dispatcher, this.game));
         assertTrue(this.game.getGameState() instanceof FinishedGameState);
         this.game.start();
-        assertTrue(this.game.getGameState() instanceof WaitingGameState);
+        assertTrue(this.game.getGameState() instanceof PlayingGameState);
     }
 
     @Test
@@ -155,7 +173,7 @@ public class GameTest {
     public void testFinishedFinish() throws Exception {
         this.game.setGameState(new FinishedGameState(this.dispatcher, this.game));
         assertTrue(this.game.getGameState() instanceof FinishedGameState);
-        this.game.finish();
+        this.game.finish(0);
         assertTrue(this.game.getGameState() instanceof FinishedGameState);
     }
 
@@ -175,7 +193,7 @@ public class GameTest {
         assertTrue(this.game.getGameState() instanceof StoppedGameState);
         this.game.stop();
         assertTrue(this.game.getGameState() instanceof StoppedGameState);
-        this.game.finish();
+        this.game.finish(0);
         assertTrue(this.game.getGameState() instanceof StoppedGameState);
         this.game.waitForPlayers();
         assertTrue(this.game.getGameState() instanceof StoppedGameState);
@@ -184,18 +202,18 @@ public class GameTest {
     @Test
     public void testAddPlayerToTeam() throws Exception {
         this.game.addPlayerToTeam(this.animal, this.animal.getTeamId());
-    }
-
-    @Test
-    public void testJumpAnimal() throws Exception {
-        this.game.jumpAnimal(this.animal);
-        verify(this.animal, times(1)).jump();
+        verify(this.track, times(1)).addAnimalToTeam(this.animal, this.animal.getTeamId());
     }
 
     @Test
     public void testCollideAnimal() throws Exception {
-        this.game.addPlayerToTeam(this.animal, this.animal.getTeamId());
         this.game.collideAnimal(this.animal.getId(), this.animal.getTeamId());
-        verify(this.animal, times(1)).collide();
+        verify(this.track, times(1)).collideAnimal(this.animal.getId(), this.animal.getTeamId());
+    }
+
+    @Override
+    protected void configure() {
+        this.bind(GameTrack.class).toInstance(this.track);
+        this.bind(EventDispatcher.class).toInstance(this.dispatcher);
     }
 }

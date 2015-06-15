@@ -8,32 +8,53 @@ import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.TreeMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * Test fot the game track.
  */
 public class GameTrackTest {
 
-    private GameTrack track = null;
+    /**
+     * The game track to test.
+     */
+    private GameTrack track;
+
+    /**
+     * The event dispatcher spy.
+     */
+    @Mock
     private EventDispatcher dispatcher;
-    private Team team;
-    private static final double DELTA = 0.0001;
+
+    /**
+     * The game mock.
+     */
+    @Mock
     private Game game;
+
+    private static final double DELTA = 0.0001;
+    private Team team;
 
     @Before
     public void setUp() throws Exception {
-        this.dispatcher = Mockito.spy(EventDispatcher.class);
-        game = mock(Game.class);
-        this.track = GameTrack.readFromFile("/simpletrack.txt", dispatcher, game);
-        //this.track = new GameTrack("--[#5]-[#5]---[@5]--[#5]--[#5]-[#5]--", this.dispatcher, this.game);
+        MockitoAnnotations.initMocks(this);
+
+        TreeMap<Double, AbstractTeamEvent> levelMap = LevelMapParser.readFromFile("/simpletrack.txt");
+        this.track = new GameTrack(this.dispatcher, this.game, levelMap);
+
         this.team = new Team();
         this.track.addTeam(this.team);
     }
@@ -45,7 +66,7 @@ public class GameTrackTest {
 
     @Test
     public void testAddTeamLength() throws Exception {
-        assertTrue(0.0 == this.track.getDistanceTeam(this.team.getId()));
+        assertEquals(new Double(0.0), this.track.getDistanceTeam(this.team.getId()));
     }
 
     @Test
@@ -156,4 +177,30 @@ public class GameTrackTest {
             Mockito.isA(AbstractTeamEvent.class));
     }
 
+    @Test
+    public void testGetTeams() throws Exception {
+        Collection<Team> teams = this.track.getTeams();
+        assertEquals(1, teams.size());
+        assertTrue(teams.contains(this.team));
+    }
+
+    @Test
+    public void testRemoveAnimalFromTeam() throws Exception {
+        Animal animal = new Animal(this.dispatcher);
+        this.team.addAnimal(animal);
+
+        this.track.removeAnimalFromTeam(this.team.getId(), animal.getId());
+
+        assertEquals(0, this.track.getTeam(this.team.getId()).size());
+    }
+
+    @Test
+    public void testCollideAnimal() throws Exception {
+        Animal animal = mock(Animal.class);
+        this.team.addAnimal(animal);
+
+        this.track.collideAnimal(animal.getId(), this.team.getId());
+
+        verify(animal, times(1)).fall();
+    }
 }
