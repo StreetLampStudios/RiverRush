@@ -9,7 +9,9 @@ import nl.tudelft.ti2806.riverrush.controller.UserController;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
+import nl.tudelft.ti2806.riverrush.game.BasicGameTrack;
 import nl.tudelft.ti2806.riverrush.game.Game;
+import nl.tudelft.ti2806.riverrush.game.GameTrack;
 import nl.tudelft.ti2806.riverrush.network.AbstractServer;
 import nl.tudelft.ti2806.riverrush.network.RenderServer;
 import nl.tudelft.ti2806.riverrush.network.UserServer;
@@ -19,7 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import static com.google.inject.name.Names.named;
 
 /**
- * Entrypoint of the backend.
+ * Entry point of the backend.
  */
 public final class MainBackend extends CoreModule {
 
@@ -62,6 +64,9 @@ public final class MainBackend extends CoreModule {
     @Override
     protected void configure() {
         super.configure();
+
+        this.bind(GameTrack.class).to(BasicGameTrack.class);
+
         this.bind(Controller.class).annotatedWith(named("clientController"))
             .to(UserController.class);
 

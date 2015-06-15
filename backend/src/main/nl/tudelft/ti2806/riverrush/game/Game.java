@@ -2,6 +2,7 @@ package nl.tudelft.ti2806.riverrush.game;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
@@ -39,12 +40,13 @@ public class Game {
      * Create a game instance.
      *
      * @param eventDispatcher The event dispatcher
+     * @param track           The game track to use
      */
     @Inject
-    public Game(final EventDispatcher eventDispatcher) {
+    public Game(final EventDispatcher eventDispatcher, final Provider<GameTrack> track) {
         this.dispatcher = eventDispatcher;
         this.gameState = new WaitingForRendererState(dispatcher, this);
-        this.gameTrack = new BasicGameTrack(dispatcher, this);
+        this.gameTrack = track.get();
         HandlerLambda<AnimalRemovedEvent> removeAnimal = this::removeAnimalHandler;
         this.dispatcher.attach(AnimalRemovedEvent.class, removeAnimal);
     }
@@ -184,5 +186,13 @@ public class Game {
      */
     public Event getStateEvent() {
         return this.gameState.getStateEvent();
+    }
+
+    public GameState getGameState() {
+        return this.gameState;
+    }
+
+    public void setGameState(final GameState aGameState) {
+        this.gameState = aGameState;
     }
 }
