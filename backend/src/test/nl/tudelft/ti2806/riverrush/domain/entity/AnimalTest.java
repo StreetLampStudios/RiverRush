@@ -13,7 +13,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
 /**
- * Created by Martijn on 8-6-2015.
+ * Contains tests for the Animal class.
  */
 public class AnimalTest {
 
@@ -71,128 +71,5 @@ public class AnimalTest {
         // Collide is supposed to do nothing
         animal.getState().collide();
         assertEquals(animal.getState().getClass().getName(), AnimalOnBoat.class.getName());
-    }
-
-    // Tests for AnimalOnBoat
-    @Test
-    public void testAnimalOnBoatJump() throws Exception {
-        AnimalOnBoat state = new AnimalOnBoat(animal, dispatcher);
-        animal.setState(state);
-        animal.jump();
-        assertEquals(animal.getState().getClass().getName(), AnimalInAir.class.getName());
-    }
-
-    @Test
-    public void testAnimalOnBoatDrop() throws Exception {
-        AnimalOnBoat state = new AnimalOnBoat(animal, dispatcher);
-        animal.setState(state);
-        animal.drop();
-        assertEquals(animal.getState().getClass().getName(), AnimalOnBoat.class.getName());
-    }
-
-    @Test
-    public void testAnimalOnBoatFall() throws Exception {
-        AnimalOnBoat state = new AnimalOnBoat(animal, dispatcher);
-        animal.setState(state);
-        animal.fall();
-        assertEquals(animal.getState().getClass().getName(), AnimalInWater.class.getName());
-    }
-
-    @Test
-    public void testAnimalOnBoatReturnToBoat() throws Exception {
-        AnimalOnBoat state = new AnimalOnBoat(animal, dispatcher);
-        animal.setState(state);
-        animal.returnToBoat();
-        assertEquals(animal.getState().getClass().getName(), AnimalOnBoat.class.getName());
-    }
-
-    @Test
-    public void testAnimalOnBoatVoteDirection() throws Exception {
-        AnimalOnBoat state = new AnimalOnBoat(animal, dispatcher);
-        animal.setState(state);
-        animal.voteOneDirection(Direction.LEFT);
-        assertEquals(animal.getState().getClass().getName(), AnimalOnBoat.class.getName());
-    }
-
-    // Tests for AnimalInAir
-    @Test
-    public void testAnimalInAirJump() throws Exception {
-        AnimalInAir state = new AnimalInAir(animal, dispatcher);
-        animal.setState(state);
-        animal.jump();
-        assertEquals(animal.getState().getClass().getName(), AnimalInAir.class.getName());
-    }
-
-    @Test
-    public void testAnimalInAirDrop() throws Exception {
-        AnimalInAir state = new AnimalInAir(animal, dispatcher);
-        animal.setState(state);
-        animal.drop();
-        assertEquals(animal.getState().getClass().getName(), AnimalOnBoat.class.getName());
-    }
-
-    @Test
-    public void testAnimalInAirFall() throws Exception {
-        AnimalInAir state = new AnimalInAir(animal, dispatcher);
-        animal.setState(state);
-        animal.fall();
-        assertEquals(animal.getState().getClass().getName(), AnimalInAir.class.getName());
-    }
-
-    @Test
-    public void testAnimalInAirReturnToBoat() throws Exception {
-        AnimalInAir state = new AnimalInAir(animal, dispatcher);
-        animal.setState(state);
-        animal.returnToBoat();
-        assertEquals(animal.getState().getClass().getName(), AnimalInAir.class.getName());
-    }
-
-    @Test
-    public void testAnimalInAirVoteDirection() throws Exception {
-        AnimalInAir state = new AnimalInAir(animal, dispatcher);
-        animal.setState(state);
-        animal.voteOneDirection(Direction.LEFT);
-        assertEquals(animal.getState().getClass().getName(), AnimalInAir.class.getName());
-    }
-
-    // Tests for AnimalInWater
-    @Test
-    public void testAnimalInWaterJump() throws Exception {
-        AnimalInWater state = new AnimalInWater(animal, dispatcher);
-        animal.setState(state);
-        animal.jump();
-        assertEquals(animal.getState().getClass().getName(), AnimalInWater.class.getName());
-    }
-
-    @Test
-    public void testAnimalInWaterDrop() throws Exception {
-        AnimalInWater state = new AnimalInWater(animal, dispatcher);
-        animal.setState(state);
-        animal.drop();
-        assertEquals(animal.getState().getClass().getName(), AnimalInWater.class.getName());
-    }
-
-    @Test
-    public void testAnimalInWaterFall() throws Exception {
-        AnimalInWater state = new AnimalInWater(animal, dispatcher);
-        animal.setState(state);
-        animal.fall();
-        assertEquals(animal.getState().getClass().getName(), AnimalInWater.class.getName());
-    }
-
-    @Test
-    public void testAnimalInWaterReturnToBoat() throws Exception {
-        AnimalInWater state = new AnimalInWater(animal, dispatcher);
-        animal.setState(state);
-        animal.returnToBoat();
-        assertEquals(animal.getState().getClass().getName(), AnimalOnBoat.class.getName());
-    }
-
-    @Test
-    public void testAnimalInWaterVoteDirection() throws Exception {
-        AnimalInWater state = new AnimalInWater(animal, dispatcher);
-        animal.setState(state);
-        animal.voteOneDirection(Direction.RIGHT);
-        assertEquals(animal.getState().getClass().getName(), AnimalInWater.class.getName());
     }
 }
