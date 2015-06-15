@@ -72,20 +72,12 @@ public class BoatGroup extends Group {
         this.sectors = new ArrayList<>();
         this.directionVotes = new HashMap<>();
 
-        ArrayList<Color> colors = new ArrayList<>();
-        colors.add(Color.BLUE);
-        colors.add(Color.GREEN);
-        colors.add(Color.RED);
-        colors.add(Color.YELLOW);
-        colors.add(Color.WHITE);
-
         for (int i = Sector.countSectors() - 1; i >= 0; i--) {
-            Color color = colors.get(i);
             float extra = 0f;
             if (i == 2) {
                 extra = 30f;
             }
-            BoatSector sec = new BoatSector(ROW_COUNT, COL_COUNT, color);
+            BoatSector sec = new BoatSector(ROW_COUNT, COL_COUNT);
             float secPosX = SECTOR_INIT_POS + ((SECTOR_DIVIDING_DISTANCE + sec.getWidth()) * i) + extra;
             float secPosY = (this.getHeight() / 2) - (sec.getHeight() / 2);
             // float secPosX = (this.getWidth() / 2) - (sec.getWidth() / 2);
