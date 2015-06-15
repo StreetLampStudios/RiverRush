@@ -39,7 +39,7 @@ public class BoatGroup extends Group {
 
     private MoveToAction move;
 
-    private final float origX;
+    private final float origY;
 
     /**
      * Creates an boat object with a given graphical representation.
@@ -54,7 +54,7 @@ public class BoatGroup extends Group {
         this.setWidth(this.SIZE);
         this.setHeight(this.SIZE);
 
-        this.origX = xpos;
+        this.origY = ypos;
 
         this.setOriginX((this.getWidth() / 2));
         this.setOriginY((this.getHeight() / 2));
@@ -151,11 +151,11 @@ public class BoatGroup extends Group {
         if (this.totalNumAnimals > 0) {
             moveOffset = (this.votingSum / this.totalNumAnimals) * MOVE_DISTANCE;
         }
-        float newX = this.origX + moveOffset;
+        float newY = this.origY + moveOffset;
 
         this.clearActions();
         this.move = new MoveToAction();
-        this.move.setPosition(newX, this.getY());
+        this.move.setPosition(this.getX(), newY);
 
         this.move.setDuration(0.5f);
         this.addAction(this.move);
