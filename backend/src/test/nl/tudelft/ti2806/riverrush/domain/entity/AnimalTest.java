@@ -141,10 +141,51 @@ public class AnimalTest {
     }
 
     @Test
-    public void testAnimalInAirtVoteDirection() throws Exception {
+    public void testAnimalInAirVoteDirection() throws Exception {
         AnimalInAir state = new AnimalInAir(animal, dispatcher);
         animal.setState(state);
         animal.voteOneDirection(Direction.LEFT);
         assertEquals(animal.getState().getClass().getName(), AnimalInAir.class.getName());
+    }
+
+    // Tests for AnimalInWater
+    @Test
+    public void testAnimalInWaterJump() throws Exception {
+        AnimalInWater state = new AnimalInWater(animal, dispatcher);
+        animal.setState(state);
+        animal.jump();
+        assertEquals(animal.getState().getClass().getName(), AnimalInWater.class.getName());
+    }
+
+    @Test
+    public void testAnimalInWaterDrop() throws Exception {
+        AnimalInWater state = new AnimalInWater(animal, dispatcher);
+        animal.setState(state);
+        animal.drop();
+        assertEquals(animal.getState().getClass().getName(), AnimalInWater.class.getName());
+    }
+
+    @Test
+    public void testAnimalInWaterFall() throws Exception {
+        AnimalInWater state = new AnimalInWater(animal, dispatcher);
+        animal.setState(state);
+        animal.fall();
+        assertEquals(animal.getState().getClass().getName(), AnimalInWater.class.getName());
+    }
+
+    @Test
+    public void testAnimalInWaterReturnToBoat() throws Exception {
+        AnimalInWater state = new AnimalInWater(animal, dispatcher);
+        animal.setState(state);
+        animal.returnToBoat();
+        assertEquals(animal.getState().getClass().getName(), AnimalOnBoat.class.getName());
+    }
+
+    @Test
+    public void testAnimalInWaterVoteDirection() throws Exception {
+        AnimalInWater state = new AnimalInWater(animal, dispatcher);
+        animal.setState(state);
+        animal.voteOneDirection(Direction.RIGHT);
+        assertEquals(animal.getState().getClass().getName(), AnimalInWater.class.getName());
     }
 }
