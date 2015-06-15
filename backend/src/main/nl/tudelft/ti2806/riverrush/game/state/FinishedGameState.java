@@ -71,7 +71,7 @@ public class FinishedGameState implements GameState {
     }
 
     @Override
-    public GameState finish(Integer team) {
+    public GameState finish(final Integer team) {
         return this;
     }
 
