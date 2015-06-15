@@ -57,9 +57,4 @@ public class AnimalOnBoat extends AbstractAnimalState {
         this.animal.setVoteDirection(direction);
         return this;
     }
-
-    @Override
-    public void collide() {
-        // Does nothing.
-    }
 }

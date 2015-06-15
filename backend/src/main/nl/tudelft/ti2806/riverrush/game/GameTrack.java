@@ -85,13 +85,15 @@ public class GameTrack {
      * @param level - String that represents when the cannonballs need to start flying
      */
     protected void parseLevel(final Scanner level) {
-        final String lineSeperator = System.getProperty("line.separator");
-        level.useDelimiter(",|" + lineSeperator);
-        while (level.hasNextDouble()) {
-            Double spawnTime = level.nextDouble();
-            char thingToSpawn = level.next().charAt(0);
-
-            AbstractTeamEvent event = this.generateTrackEvent(thingToSpawn, level.nextDouble());
+        String currentLine;
+        while(level.hasNextLine())
+        {
+            currentLine = level.nextLine();
+            String[] lineContent = currentLine.split(",");
+            double spawnTime = Double.parseDouble(lineContent[0]);
+            char thingToSpawn = lineContent[1].charAt(0);
+            double spawnLocation = Double.parseDouble(lineContent[2]);
+            AbstractTeamEvent event = this.generateTrackEvent(thingToSpawn, spawnLocation);
             levelMap.put(spawnTime, event);
         }
     }

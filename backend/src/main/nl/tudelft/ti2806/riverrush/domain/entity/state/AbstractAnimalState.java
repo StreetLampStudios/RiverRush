@@ -24,6 +24,11 @@ public abstract class AbstractAnimalState implements AnimalState {
     protected EventDispatcher getDispatcher() {
         return this.dispatcher;
     }
+
+    @Override
+    public void collide() {
+        // Does nothing.
+    }
 }
 
 
