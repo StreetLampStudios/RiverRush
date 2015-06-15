@@ -70,7 +70,7 @@ public class AnimalActor extends Group {
         this.setOriginY(this.getHeight() / 2);
 
         DirectionFlag flag = new DirectionFlag();
-        flag.setPosition(this.getWidth(), this.getHeight() / 2);
+        flag.setPosition(this.getWidth() / 2, this.getHeight());
 
         flag.setVisible(false);
         this.addActor(flag);
@@ -161,14 +161,16 @@ public class AnimalActor extends Group {
      * @param direction - The direction it wants to go
      */
     public void updateFlag(final Direction direction) {
-        this.directionFlag.setRotation(-30f);
         this.directionFlag.setVisible(true);
         if (direction == Direction.RIGHT) {
-            this.setScale(1f, 1f);
-            this.directionFlag.setColor(Color.RED);
-        } else {
-            this.setScale(-1, 1);
+            this.directionFlag.setRotation(30f);
+            this.directionFlag.setScale(1f, 1f);
             this.directionFlag.setColor(Color.GREEN);
+        } else {
+            this.directionFlag.setPosition(this.getWidth() / 2, 0);
+            this.directionFlag.setRotation(-30f);
+            this.directionFlag.setScale(1, -1);
+            this.directionFlag.setColor(Color.RED);
         }
         RotateToAction rot = new RotateToAction();
         rot.setRotation(0f);
