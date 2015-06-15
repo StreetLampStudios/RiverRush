@@ -8,8 +8,8 @@ import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
 public class DirectionFlag extends Actor {
-    private static final float FLAG_WIDTH = 64;
-    private static final float FLAG_HEIGHT = 32;
+    private static final float FLAG_WIDTH = 32;
+    private static final float FLAG_HEIGHT = 64;
 
     /**
      * Creates a monkey object that represents player characters.
@@ -33,8 +33,8 @@ public class DirectionFlag extends Actor {
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         batch.draw(Assets.flag, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-            this.getRotation());
+                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+                this.getRotation());
 
         batch.setColor(Color.WHITE);
 
