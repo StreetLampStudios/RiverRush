@@ -26,8 +26,8 @@ public class BoatSector extends Group {
         this.rowCount = rows;
         this.colCount = cols;
 
-        this.setWidth(this.colCount * 90); // Monkey width
-        this.setHeight(this.rowCount * 50); // Monkey height
+        this.setWidth(this.colCount * 50); // Monkey width
+        this.setHeight(this.rowCount * 90); // Monkey height
 
         Vector2 v = this.localToStageCoordinates(new Vector2(0, 0));
         this.bounds = new Rectangle(v.x, v.y, this.getWidth(), this.getHeight());
@@ -52,9 +52,9 @@ public class BoatSector extends Group {
         Color color = this.getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        batch.draw(Assets.boatSector, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-            this.getRotation());
+        batch.draw(Assets.boatSector, this.getX(), this.getY(), this.getOriginX(),
+                this.getOriginY(), this.getWidth(), this.getHeight(), this.getScaleX(),
+                this.getScaleY(), this.getRotation());
         batch.setColor(Color.WHITE);
         super.draw(batch, parentAlpha);
         batch.disableBlending();
@@ -71,7 +71,7 @@ public class BoatSector extends Group {
         float yPos = ((this.currentAnimalPosition / this.colCount) * actor.getHeight());
         actor.setPosition(xPos, yPos);
         this.currentAnimalPosition = (this.currentAnimalPosition + 2)
-            % (this.rowCount * this.colCount);
+                % (this.rowCount * this.colCount);
 
         if (this.animals.get(this.currentAnimalPosition) != null) {
             this.currentAnimalPosition--;

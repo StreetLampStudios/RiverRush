@@ -29,15 +29,15 @@ public class AnimalActor extends Group {
     /**
      * Specifies the animal's width.
      */
-    private static final float ANIMAL_WIDTH = 90; // 144
+    private static final float ANIMAL_WIDTH = 50; // 144
     /**
      * Specifies the animal's height.
      */
-    private static final float ANIMAL_HEIGHT = 50; // 81
+    private static final float ANIMAL_HEIGHT = 90; // 81
 
     private static final float JUMP_HEIGHT = 100;
-    private static final int FALL_DISTANCEX = 200;
-    private static final int FALL_DISTANCEY = -520;
+    private static final int FALL_DISTANCEX = -520;
+    private static final int FALL_DISTANCEY = 200;
     private static final float FALL_VELOCITY = 0.5f;
     private static final float JUMP_UP_DURATION = 0.3f;
     private static final float JUMP_DOWN_DURATION = 0.15f;
@@ -61,7 +61,7 @@ public class AnimalActor extends Group {
     /**
      * Creates a monkey object that represents player characters.
      *
-     * @param dispatcher   Event dispatcher for dispatching events
+     * @param dispatcher Event dispatcher for dispatching events
      */
     @Inject
     public AnimalActor(final EventDispatcher dispatcher) {
@@ -72,7 +72,7 @@ public class AnimalActor extends Group {
         this.setOriginY(this.getHeight() / 2);
 
         DirectionFlag flag = new DirectionFlag();
-        flag.setPosition(this.getWidth(), this.getHeight() / 2);
+        flag.setPosition(this.getWidth() / 2, this.getHeight());
 
         flag.setVisible(false);
         this.addActor(flag);
@@ -103,8 +103,8 @@ public class AnimalActor extends Group {
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         batch.draw(Assets.raccoon, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-            this.getRotation());
+                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+                this.getRotation());
 
         batch.setColor(Color.WHITE);
         super.draw(batch, parentAlpha);
@@ -158,36 +158,21 @@ public class AnimalActor extends Group {
     }
 
     /**
-     * Creat action to roll.
-     *
-     * @return Action to roll.
-     */
-    public Action rollAction(final Direction direction) {
-        MoveToAction roll = new MoveToAction();
-        roll.setDuration(ROLL_DURATION);
-        roll.setPosition((direction == Direction.LEFT ? -1 * this.getWidth() : this.getParent()
-            .getWidth()), this.getY());
-        RotateByAction rot = new RotateByAction();
-        rot.setDuration(ROLL_DURATION); // 0.5f
-        rot.setAmount(360f * (direction == Direction.LEFT ? 1 : -1));
-
-        return Actions.parallel(roll, rot);
-    }
-
-    /**
      * Updates the flag that the animal should hold.
      *
      * @param direction - The direction it wants to go
      */
     public void updateFlag(final Direction direction) {
-        this.directionFlag.setRotation(-30f);
         this.directionFlag.setVisible(true);
         if (direction == Direction.RIGHT) {
-            this.setScale(1f, 1f);
-            this.directionFlag.setColor(Color.RED);
-        } else {
-            this.setScale(-1, 1);
+            this.directionFlag.setRotation(30f);
+            this.directionFlag.setScale(1f, 1f);
             this.directionFlag.setColor(Color.GREEN);
+        } else {
+            this.directionFlag.setPosition(this.getWidth() / 2, 0);
+            this.directionFlag.setRotation(-30f);
+            this.directionFlag.setScale(1, -1);
+            this.directionFlag.setColor(Color.RED);
         }
         RotateToAction rot = new RotateToAction();
         rot.setRotation(0f);
@@ -197,11 +182,11 @@ public class AnimalActor extends Group {
 
     public Action jumpAction() {
         MoveToAction jumpUp = new MoveToAction();
-        jumpUp.setPosition(this.getX(), this.getY() + JUMP_HEIGHT);
+        jumpUp.setPosition(this.getX() + JUMP_HEIGHT, this.getY());
         jumpUp.setDuration(JUMP_UP_DURATION);
 
         MoveToAction drop = new MoveToAction();
-        drop.setPosition(this.getX(), this.origY);
+        drop.setPosition(this.origX, this.getY());
         drop.setDuration(JUMP_DOWN_DURATION);
 
         this.setOrigin((this.getWidth() / 2), (this.getHeight() / 2));
@@ -218,7 +203,7 @@ public class AnimalActor extends Group {
         SequenceAction wiggle = sequence(wiggleLeft, wiggleRight, wiggleBack);
 
         SequenceAction jump = sequence(jumpUp,
-            Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
+                Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
 
         return jump;
     }
@@ -228,13 +213,6 @@ public class AnimalActor extends Group {
         super.setPosition(x, y);
         this.origX = x;
         this.origY = y;
-    }
-
-    public void moveAlong(float direction, float distance) {
-        MoveToAction move = new MoveToAction();
-        move.setPosition(this.getX() + (distance * direction), this.getY());
-        move.setDuration(3f);
-        this.addAction(move);
     }
 
     /**

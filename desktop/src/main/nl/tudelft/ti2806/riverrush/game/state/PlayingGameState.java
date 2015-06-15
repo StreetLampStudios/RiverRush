@@ -54,11 +54,10 @@ public class PlayingGameState extends AbstractGameState {
      * The state of the game that indicates that the game is currently playable.
      *
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game
-     *                        in this state.
-     * @param game            refers to the game that this state belongs to.
+     *            in this state.
+     * @param game refers to the game that this state belongs to.
      */
-    public PlayingGameState(final EventDispatcher eventDispatcher,
-                            final Game game) {
+    public PlayingGameState(final EventDispatcher eventDispatcher, final Game game) {
         super(eventDispatcher, game);
 
         this.screen = new PlayingGameScreen(this.onTick);
@@ -81,7 +80,8 @@ public class PlayingGameState extends AbstractGameState {
         this.dispatcher.attach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
         this.dispatcher.attach(AnimalJumpedEvent.class, this.animalJumpedEventHandlerLambda);
         this.dispatcher.attach(AnimalMovedEvent.class, this.animalMovedHandlerLambda);
-        this.dispatcher.attach(AnimalReturnedToBoatEvent.class, this.animalReturnedToBoatEventHandlerLambda);
+        this.dispatcher.attach(AnimalReturnedToBoatEvent.class,
+                this.animalReturnedToBoatEventHandlerLambda);
         this.dispatcher.attach(TeamProgressEvent.class, this.teamProgressEventHandlerLambda);
 
         this.rocks = new HashMap<>();
@@ -97,7 +97,8 @@ public class PlayingGameState extends AbstractGameState {
         this.dispatcher.detach(AnimalFellOffEvent.class, this.animalFellOffEventHandlerLambda);
         this.dispatcher.detach(AnimalJumpedEvent.class, this.animalJumpedEventHandlerLambda);
         this.dispatcher.detach(AnimalMovedEvent.class, this.animalMovedHandlerLambda);
-        this.dispatcher.detach(AnimalReturnedToBoatEvent.class, this.animalReturnedToBoatEventHandlerLambda);
+        this.dispatcher.detach(AnimalReturnedToBoatEvent.class,
+                this.animalReturnedToBoatEventHandlerLambda);
         this.dispatcher.detach(TeamProgressEvent.class, this.teamProgressEventHandlerLambda);
         this.screen.dispose();
     }
@@ -169,7 +170,7 @@ public class PlayingGameState extends AbstractGameState {
     /**
      * Adds an animal to a team.
      *
-     * @param team   The animal
+     * @param team The animal
      * @param animal The team
      */
     private void addAnimal(final Team team, final Animal animal) {
@@ -188,9 +189,9 @@ public class PlayingGameState extends AbstractGameState {
      * @param team The team belonging to that boat
      */
     public void addBoat(final Team team) {
-        //TODO: remove magic numbers
-        BoatGroup group = new BoatGroup((Gdx.graphics.getWidth() / 2) - 450,
-            Gdx.graphics.getHeight() * 0.02f);
+        // TODO: remove magic numbers
+        BoatGroup group = new BoatGroup(Gdx.graphics.getWidth() * 0.02f,
+                (Gdx.graphics.getHeight() / 2) - 450);
 
         team.setBoat(group);
         this.screen.addTeam(group, team.getId());

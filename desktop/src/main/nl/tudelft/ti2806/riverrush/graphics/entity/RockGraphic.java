@@ -28,7 +28,7 @@ public class RockGraphic extends AbstractObstacle {
     /**
      * Creates a new obstacle.
      *
-     * @param dir           Configures the place from which the obstacle is fired. Must be between 0 and 1
+     * @param dir Configures the place from which the obstacle is fired. Must be between 0 and 1
      */
     public RockGraphic(final Direction dir) {
 
@@ -46,9 +46,9 @@ public class RockGraphic extends AbstractObstacle {
      * Actually adds the obstacle to the screen.
      */
     public void init() {
-        this.setWidth(SIZE);
-        this.setHeight(SIZE * DESKTOP_HEIGHT / DESKTOP_WIDTH / 2);
-        this.setPosition((DESKTOP_WIDTH * this.offset) - SIZE / 2, DESKTOP_HEIGHT); // 1080
+        this.setWidth(SIZE * 0.45f); // 0.45 is the percentage of the screen of his stage.
+        this.setHeight(SIZE);
+        this.setPosition(DESKTOP_WIDTH, (DESKTOP_HEIGHT * this.offset) - SIZE / 2); // 1080
 
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         this.localToStageCoordinates(v);
@@ -56,7 +56,7 @@ public class RockGraphic extends AbstractObstacle {
         this.setBounds(new Circle(v.x, v.y, this.getHeight() / 2));
 
         MoveToAction moveDown = new MoveToAction();
-        moveDown.setPosition(this.getX(), NEGATIVE_MULTIPLIER * SIZE); // 1592 distance
+        moveDown.setPosition(NEGATIVE_MULTIPLIER * SIZE, this.getY()); // 1592 distance
         moveDown.setDuration(VELOCITY);
 
         this.addAction(moveDown);
@@ -72,8 +72,8 @@ public class RockGraphic extends AbstractObstacle {
         this.getBounds().setPosition(v.x, v.y);
 
         batch.draw(Assets.iceberg, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-            this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-            this.getRotation());
+                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
+                this.getRotation());
     }
 
     /**

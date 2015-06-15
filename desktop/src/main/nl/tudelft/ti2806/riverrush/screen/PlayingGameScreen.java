@@ -20,9 +20,9 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
  */
 public class PlayingGameScreen implements Screen {
 
-    private static final double BANK_SIZE = 0.05;
-    private static final double RIVER_SIZE = 0.4;
-    private static final double MID_SIZE = 0.1;
+    private static final double BANK_SIZE = 0.025;
+    private static final double RIVER_SIZE = 0.45;
+    private static final double MID_SIZE = 0.05;
 
     private SideStage riverLeft;
     private SideStage riverRight;
@@ -37,7 +37,7 @@ public class PlayingGameScreen implements Screen {
      * shows the various stages that are relevant to the players including but not limited to the
      * river, boats, characters, and obstacles.
      *
-     * @param tickHandler  handles game ticks.
+     * @param tickHandler handles game ticks.
      */
     public PlayingGameScreen(final TickHandler tickHandler) {
         this.onTick = tickHandler;
@@ -52,8 +52,8 @@ public class PlayingGameScreen implements Screen {
         OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        this.banksLeft = createRiverBank();
-        this.banksRight = createRiverBank();
+        this.banksLeft = this.createRiverBank();
+        this.banksRight = this.createRiverBank();
     }
 
     /**
@@ -74,45 +74,42 @@ public class PlayingGameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        double leftPosition = 0.0;
+        double startPosition = 0.0;
 
-        this.drawStage(this.banksLeft, leftPosition, BANK_SIZE);
-        leftPosition += BANK_SIZE;
+        this.drawStage(this.banksLeft, startPosition, BANK_SIZE);
+        startPosition += BANK_SIZE;
 
-        this.drawStage(this.riverLeft, leftPosition, RIVER_SIZE);
-        leftPosition += RIVER_SIZE;
+        this.drawStage(this.riverLeft, startPosition, RIVER_SIZE);
+        startPosition += RIVER_SIZE;
 
-        this.drawStage(this.betweenRivers, leftPosition, MID_SIZE);
-        leftPosition += MID_SIZE;
+        this.drawStage(this.betweenRivers, startPosition, MID_SIZE);
+        startPosition += MID_SIZE;
 
-        this.drawStage(this.riverRight, leftPosition, RIVER_SIZE);
-        leftPosition += RIVER_SIZE;
+        this.drawStage(this.riverRight, startPosition, RIVER_SIZE);
+        startPosition += RIVER_SIZE;
 
-        this.drawStage(this.banksRight, leftPosition, BANK_SIZE);
+        this.drawStage(this.banksRight, startPosition, BANK_SIZE);
 
         this.onTick.handle();
     }
 
-
     /**
      * Draws a stage on the screen. Each stage occupies the entire height of the screen.
      *
-     * @param toDraw                 The stage to draw.
-     * @param leftPositionPercentage The position of the stage from the left. Between 0 and 1.
-     * @param widthPercentage        The width of the stage between 0 and 1. (1 = 100%).
+     * @param toDraw The stage to draw.
+     * @param positionPercentage The position of the stage from the left. Between 0 and 1.
+     * @param heigthPercentage The width of the stage between 0 and 1. (1 = 100%).
      */
-    private void drawStage(final Stage toDraw,
-                           final double leftPositionPercentage,
-                           final double widthPercentage) {
+    private void drawStage(final Stage toDraw, final double positionPercentage,
+            final double heigthPercentage) {
 
-        int xPos = (int) (Gdx.graphics.getWidth() * leftPositionPercentage);
-        int width = (int) (Gdx.graphics.getWidth() * widthPercentage);
-        Gdx.gl.glViewport(xPos, 0, width, Gdx.graphics.getHeight());
+        int yPos = (int) (Gdx.graphics.getHeight() * positionPercentage);
+        int height = (int) (Gdx.graphics.getHeight() * heigthPercentage);
+        Gdx.gl.glViewport(0, yPos, Gdx.graphics.getWidth(), height);
 
         toDraw.act(Gdx.graphics.getDeltaTime());
         toDraw.draw();
     }
-
 
     @Override
     public void resize(final int width, final int height) {
@@ -142,7 +139,7 @@ public class PlayingGameScreen implements Screen {
     /**
      * adds an obstacle on the..
      *
-     * @param isLeft  - left or right side
+     * @param isLeft - left or right side
      * @param graphic - where the obstacle is the graphic
      */
     public void addObstacle(boolean isLeft, CannonBallGraphic graphic) {
@@ -156,7 +153,7 @@ public class PlayingGameScreen implements Screen {
     /**
      * adds an rock on the..
      *
-     * @param isLeft  - left or right side
+     * @param isLeft - left or right side
      * @param graphic - where the rock is the graphic
      */
     public void addRock(boolean isLeft, RockGraphic graphic) {

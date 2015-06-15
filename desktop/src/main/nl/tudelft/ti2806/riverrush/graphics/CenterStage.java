@@ -31,15 +31,15 @@ public class CenterStage extends Stage {
         this.addActor(background);
 
         WoodenBackground floor = new WoodenBackground(100, 50, width - 200, height - 100);
-        DividingLine line = new DividingLine(300, 30, width / 2, height);
+        DividingLine line = new DividingLine(300, 30, height, width / 2);
 
-        float top_y = this.TOTALHEIGHT - 2 * BOAT_HEIGHT - 30; // At max the boat should be at the
+        float top_x = width - 200 - this.TOTALWIDTH / 40; // At max the boat should be at the
         // topMinus a margin of 30
 
-        this.leftBoat = new LittleBoat(this.TOTALWIDTH / 5, BOAT_HEIGHT, top_y,
-            this.TOTALHEIGHT / 4, this.TOTALWIDTH / 10);
-        this.rightBoat = new LittleBoat(this.TOTALWIDTH / 5 * 3, BOAT_HEIGHT, top_y,
-            this.TOTALHEIGHT / 4, this.TOTALWIDTH / 10);
+        this.leftBoat = new LittleBoat(100, top_x, TOTALHEIGHT / 5,
+            this.TOTALWIDTH / 40, this.TOTALHEIGHT / 4);
+        this.rightBoat = new LittleBoat(100, top_x, TOTALHEIGHT / 5 * 3,
+            this.TOTALWIDTH / 40, this.TOTALHEIGHT / 4);
 
         this.addActor(floor);
         this.addActor(line);
