@@ -3,6 +3,7 @@ package nl.tudelft.ti2806.riverrush.graphics.entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -24,10 +25,12 @@ public class BoatGroup extends Group {
 
     private final ArrayList<BoatSector> sectors;
 
+    private final TextureRegion shipTexture;
+
     private static final float MOVE_DISTANCE = 400;
     private static final double HITBOX_OFFSET = 0.3;
-    private static final float SECTOR_DIVIDING_DISTANCE = 30f;
-    private static final float SECTOR_INIT_POS = 50f;
+    private static final float SECTOR_DIVIDING_DISTANCE = 45f;
+    private static final float SECTOR_INIT_POS = 65f;
 
     private static final int COL_COUNT = 2;
     private static final int ROW_COUNT = 5;
@@ -46,13 +49,20 @@ public class BoatGroup extends Group {
      *
      * @param xpos represents the position of the boat on the x axis
      * @param ypos represents the position of the boat on the y axis
+     *             @param teamID - The id of the boat that this team will represent
      */
     @Inject
-    public BoatGroup(final float xpos, final float ypos) {
+    public BoatGroup(final float xpos, final float ypos, final int teamID) {
         this.setX(xpos);
         this.setY(ypos);
         this.setWidth(this.SIZE);
         this.setHeight(this.SIZE);
+
+        if (teamID % 2 == 0) {
+            this.shipTexture = Assets.monkeyShip;
+        } else {
+            this.shipTexture = Assets.raccoonShip;
+        }
 
         this.origX = xpos;
 
@@ -71,8 +81,12 @@ public class BoatGroup extends Group {
 
         for (int i = Sector.countSectors() - 1; i >= 0; i--) {
             Color color = colors.get(i);
+            float extra = 0f;
+            if (i == 2) {
+                extra = 30f;
+            }
             BoatSector sec = new BoatSector(ROW_COUNT, COL_COUNT, color);
-            float secPosX = SECTOR_INIT_POS + ((SECTOR_DIVIDING_DISTANCE + sec.getWidth()) * i);
+            float secPosX = SECTOR_INIT_POS + ((SECTOR_DIVIDING_DISTANCE + sec.getWidth()) * i) + extra;
             float secPosY = (this.getHeight() / 2) - (sec.getHeight() / 2);
             // float secPosX = (this.getWidth() / 2) - (sec.getWidth() / 2);
             // float secPosY = 50f + ((20f + sec.getHeight()) * i);
@@ -109,7 +123,7 @@ public class BoatGroup extends Group {
         Color color = this.getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        batch.draw(Assets.ship, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
+        batch.draw(shipTexture, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
                 this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
                 this.getRotation());
 

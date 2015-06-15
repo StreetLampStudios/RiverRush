@@ -2,10 +2,8 @@ package nl.tudelft.ti2806.riverrush.game;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
+import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.LoadingGameState;
 import nl.tudelft.ti2806.riverrush.game.state.WaitingGameState;

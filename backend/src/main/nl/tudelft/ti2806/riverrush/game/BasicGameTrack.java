@@ -17,8 +17,8 @@ public class BasicGameTrack extends GameTrack {
      */
     public BasicGameTrack(final EventDispatcher dispatcher, Game game) {
         super(dispatcher, game);
-        InputStream in = BasicGameTrack.class.getResourceAsStream("/simpletrack.txt");
-        this.parseLevel(in);
+        //InputStream in = BasicGameTrack.class.getResourceAsStream("/simpletrack.txt");
+        //this.parseLevel(in);
 
         this.addTeam(new Team());
         this.addTeam(new Team());

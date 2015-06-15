@@ -3,6 +3,7 @@ package nl.tudelft.ti2806.riverrush.graphics.entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -34,6 +35,8 @@ public class AnimalActor extends Group {
      */
     private static final float ANIMAL_HEIGHT = 90; // 81
 
+    private final TextureRegion animalTexture;
+
     private static final float JUMP_HEIGHT = 100;
     private static final int FALL_DISTANCEX = -520;
     private static final int FALL_DISTANCEY = 200;
@@ -60,11 +63,18 @@ public class AnimalActor extends Group {
      * Creates a monkey object that represents player characters.
      *
      * @param dispatcher Event dispatcher for dispatching events
+     * @param teamID - The id of the team which this monkey belongs
      */
     @Inject
-    public AnimalActor(final EventDispatcher dispatcher) {
+    public AnimalActor(final EventDispatcher dispatcher, final int teamID) {
         this.setWidth(ANIMAL_WIDTH);
         this.setHeight(ANIMAL_HEIGHT);
+
+        if (teamID % 2 == 0) {
+            this.animalTexture = Assets.monkey;
+        } else {
+            this.animalTexture = Assets.raccoon;
+        }
 
         this.setOriginX(this.getWidth() / 2);
         this.setOriginY(this.getHeight() / 2);
@@ -100,7 +110,7 @@ public class AnimalActor extends Group {
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        batch.draw(Assets.raccoon, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
+        batch.draw(animalTexture, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
                 this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
                 this.getRotation());
 

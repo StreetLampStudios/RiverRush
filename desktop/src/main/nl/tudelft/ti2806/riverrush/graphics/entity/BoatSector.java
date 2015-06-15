@@ -39,13 +39,13 @@ public class BoatSector extends Group {
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        Color color = this.getColor();
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+        //Color color = this.getColor();
+        //batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
         batch.draw(Assets.boatSector, this.getX(), this.getY(), this.getOriginX(),
                 this.getOriginY(), this.getWidth(), this.getHeight(), this.getScaleX(),
                 this.getScaleY(), this.getRotation());
-        batch.setColor(Color.WHITE);
+        //batch.setColor(Color.WHITE);
         super.draw(batch, parentAlpha);
         batch.disableBlending();
     }
