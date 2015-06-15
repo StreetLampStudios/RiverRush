@@ -64,9 +64,4 @@ public class AnimalInAir extends AbstractAnimalState {
     public AnimalState voteDirection(Direction direction) {
         return this;
     }
-
-    @Override
-    public void collide() {
-        // Does nothing.
-    }
 }
