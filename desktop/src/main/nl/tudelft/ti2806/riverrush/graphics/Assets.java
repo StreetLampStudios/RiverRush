@@ -10,19 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  */
 public final class Assets {
 
-    private static Texture
-        riverBanksTexture, shipTexture, riverTexture,
-        boatSectorTexture, raccoonTexture, flagTexture,
-        endGameTexture, grassTexture, cannonballTexture,
-        icebergTexture, winTexture, loseTexture,
-        bootjeTexture, woodFloorTexture, lineTexture;
+    private static Texture riverBanksTexture, shipTexture, riverTexture, boatSectorTexture,
+            raccoonTexture, flagTexture, endGameTexture, grassTexture, cannonballTexture,
+            icebergTexture, winTexture, loseTexture, bootjeTexture, woodFloorTexture, lineTexture,
+            shadowTexture;
 
-    public static TextureRegion
-        riverBank, boatSector, river,
-        ship, raccoon, flag, endGame,
-        grass, cannonball, iceberg,
-        win, lose, bootje, woodFloor,
-        line;
+    public static TextureRegion riverBank, boatSector, river, ship, raccoon, flag, endGame, grass,
+            cannonball, iceberg, win, lose, bootje, woodFloor, line, shadow;
 
     private static final String dir = "data/";
 
@@ -78,6 +72,9 @@ public final class Assets {
 
         lineTexture = new Texture(Gdx.files.internal(dir + "dividingLine.png"));
         line = getFullRegion(lineTexture);
+
+        shadowTexture = new Texture(Gdx.files.internal(dir + "shadow.png"));
+        shadow = getFullRegion(shadowTexture);
     }
 
     /**
