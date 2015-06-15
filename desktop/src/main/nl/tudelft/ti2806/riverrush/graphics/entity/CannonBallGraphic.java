@@ -50,7 +50,9 @@ public class CannonBallGraphic extends AbstractObstacle {
         this.bounds = new Circle(v.x, v.y, this.getHeight() / 2);
 
         MoveToAction moveDown = new MoveToAction();
-        moveDown.setPosition(NEGATIVE_MULTIPLIER * SIZE, HEIGHT / 2 - SIZE / 2);
+        // moveDown.setX(NEGATIVE_MULTIPLIER * SIZE);
+        moveDown.setPosition(NEGATIVE_MULTIPLIER * SIZE, (float) ((INIT_POS + OFFSET_POS
+                * this.offset) - SIZE / 2));
         moveDown.setDuration(VELOCITY);
 
         this.addAction(moveDown);
