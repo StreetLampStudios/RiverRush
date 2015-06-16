@@ -55,31 +55,6 @@ public class MainDesktop extends CoreModule {
         this.eventDispatcher = this.injector.getInstance(EventDispatcher.class);
 
         client.connect();
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        AnimalAddedEvent ev;
-        for (int i = 0; i < 5; i++) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            ev = new AnimalAddedEvent();
-            ev.setAnimal(i);
-            ev.setTeam(i % 2);
-            ev.setVariation(0);
-            ev.setSector(Sector.BACK);
-
-            this.eventDispatcher.dispatch(ev);
-        }
-        this.eventDispatcher.dispatch(new GameAboutToStartEvent());
-
-        this.eventDispatcher.dispatch(new GameStartedEvent());
-
     }
 
     /**
