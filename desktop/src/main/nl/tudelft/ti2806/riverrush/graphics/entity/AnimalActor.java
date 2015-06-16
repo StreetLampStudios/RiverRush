@@ -95,8 +95,8 @@ public class AnimalActor extends Group {
     private class ShadowActor extends Actor {
 
         public ShadowActor() {
-            this.setWidth(Assets.shadow.getRegionWidth());
-            this.setHeight(Assets.shadow.getRegionHeight()); // AnimalActor.ANIMAL_HEIGHT * 0.8f
+            this.setWidth(40);
+            this.setHeight(72); // AnimalActor.ANIMAL_HEIGHT * 0.8f
             this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
         }
 
@@ -151,7 +151,7 @@ public class AnimalActor extends Group {
         if (this.animal.getTeamId() % 2 == 0) {
             this.animalTexture = Assets.monkeyMap.get(this.animal.getVariation());
         } else {
-            this.animalTexture = Assets.raccoonMap.get(0); // this.animal.getVariation()
+            this.animalTexture = Assets.raccoonMap.get(this.animal.getVariation()); //
         }
     }
 
