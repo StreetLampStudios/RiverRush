@@ -29,8 +29,8 @@ public class DirectionFlag extends Actor {
         Color color = this.getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        batch.enableBlending();
-        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        // batch.enableBlending();
+        // batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         batch.draw(Assets.flag, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
                 this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
@@ -38,7 +38,7 @@ public class DirectionFlag extends Actor {
 
         batch.setColor(Color.WHITE);
 
-        batch.disableBlending();
+        // batch.disableBlending();
     }
 
     @Override

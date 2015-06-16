@@ -94,6 +94,9 @@ public class AnimalActor extends Group {
 
     private class ShadowActor extends Actor {
 
+        protected float origX;
+        protected float origY;
+
         public ShadowActor() {
             this.setWidth(40);
             this.setHeight(72); // AnimalActor.ANIMAL_HEIGHT * 0.8f
@@ -102,19 +105,10 @@ public class AnimalActor extends Group {
 
         @Override
         public void draw(final Batch batch, final float parentAlpha) {
-            Color color = this.getColor();
-            batch.setColor(color.r, color.g, color.b, color.a * parentAlpha * 0.5f);
-
-            // batch.enableBlending();
-            // batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
             batch.draw(Assets.shadow, this.getX(), this.getY(), this.getOriginX(),
                     this.getOriginY(), this.getWidth(), this.getHeight(), this.getScaleX(),
                     this.getScaleY(), this.getRotation());
-
-            batch.setColor(Color.WHITE);
             super.draw(batch, parentAlpha);
-            // batch.disableBlending();
         }
 
         @Override
@@ -196,10 +190,14 @@ public class AnimalActor extends Group {
         fall.setPosition(this.getX() + FALL_DISTANCEX, this.getY() + FALL_DISTANCEY);
         fall.setDuration(FALL_VELOCITY);
 
-        // AlphaAction fade = Actions.fadeOut(FALL_VELOCITY);
         AlphaAction fade = new AlphaAction();
         fade.setAlpha(0f);
         fade.setDuration(FALL_VELOCITY);
+
+        this.shadow.origX = this.shadow.getX();
+        this.shadow.origY = this.shadow.getY();
+        this.shadow.addAction(Actions.moveTo(this.shadow.getX() + FALL_DISTANCEX,
+                this.shadow.getY() + FALL_DISTANCEY, FALL_VELOCITY));
 
         return Actions.parallel(fade, fall);
     }
@@ -212,6 +210,11 @@ public class AnimalActor extends Group {
     public Action returnMove() {
         MoveToAction ret = new MoveToAction();
         ret.setPosition(this.origX, this.origY);
+
+        MoveToAction returnShad = new MoveToAction();
+        returnShad.setPosition(this.shadow.origX, this.shadow.origY);
+
+        this.shadow.addAction(returnShad);
         return ret;
     }
 
@@ -238,12 +241,16 @@ public class AnimalActor extends Group {
             this.directionFlag.setRotation(30f);
             this.directionFlag.setScale(1f, 1f);
             this.directionFlag.setColor(Color.GREEN);
+            this.directionFlag.setColor(Color.RED);
         } else {
             this.directionFlag.setPosition(this.getWidth() / 2, 0);
+            this.directionFlag.setPosition(this.getWidth(), 0);
             this.directionFlag.setRotation(-30f);
             this.directionFlag.setScale(1, -1);
             this.directionFlag.setColor(Color.RED);
+            this.directionFlag.setColor(Color.GREEN);
         }
+
         RotateToAction rot = new RotateToAction();
         rot.setRotation(0f);
         rot.setDuration(0.3f);
