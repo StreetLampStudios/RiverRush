@@ -1,5 +1,9 @@
 package nl.tudelft.ti2806.riverrush.game;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.TypeLiteral;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
@@ -13,10 +17,12 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
 
+import static com.google.inject.name.Names.named;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -26,7 +32,7 @@ import static org.mockito.Mockito.verify;
 /**
  * Test fot the game track.
  */
-public class GameTrackTest {
+public class GameTrackTest extends AbstractModule{
 
     /**
      * The game track to test.
@@ -53,7 +59,10 @@ public class GameTrackTest {
         MockitoAnnotations.initMocks(this);
 
         TreeMap<Double, AbstractTeamEvent> levelMap = LevelMapParser.readFromFile("/simpletrack.txt");
-        this.track = new GameTrack(this.dispatcher, this.game, levelMap);
+
+        Injector injector = Guice.createInjector(this);
+
+        this.track = new GameTrack(this.dispatcher, injector.getProvider(Game.class), levelMap);
 
         this.team = new Team();
         this.track.addTeam(this.team);
@@ -202,5 +211,10 @@ public class GameTrackTest {
         this.track.collideAnimal(animal.getId(), this.team.getId());
 
         verify(animal, times(1)).fall();
+    }
+
+    @Override
+    protected void configure() {
+        this.bind(Game.class).toInstance(this.game);
     }
 }

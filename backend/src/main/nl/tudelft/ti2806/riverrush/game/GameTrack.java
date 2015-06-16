@@ -2,6 +2,7 @@ package nl.tudelft.ti2806.riverrush.game;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
@@ -44,6 +45,7 @@ public class GameTrack {
     private final HashMap<Team, Double> teamDistances;
     private final TreeMap<Double, AbstractTeamEvent> levelMap;
     private final HashMap<Team, Double> nextEvents;
+    private final Provider<Game> gameProvider;
 
 
     private EventDispatcher dispatcher;
@@ -60,10 +62,10 @@ public class GameTrack {
      */
     @Inject
     public GameTrack(final EventDispatcher dispatch,
-                     final Game aGame,
+                     final Provider<Game> aGame,
                      @Named("levelMap") final TreeMap<Double, AbstractTeamEvent> aLevelMap) {
         this.dispatcher = dispatch;
-        this.game = aGame;
+        this.gameProvider = aGame;
         this.levelMap = aLevelMap;
 
         this.teams = new HashMap<>();
@@ -92,6 +94,8 @@ public class GameTrack {
      * This method will update the progress of the game track.
      */
     protected boolean updateProgress() {
+        this.game = this.gameProvider.get();
+
         boolean someoneFinished = false;
         ArrayList<Team> finishedTeams = new ArrayList<>();
 

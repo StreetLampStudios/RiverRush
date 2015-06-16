@@ -2,10 +2,12 @@ package nl.tudelft.ti2806.riverrush.backend;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.TypeLiteral;
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
 import nl.tudelft.ti2806.riverrush.controller.UserController;
+import nl.tudelft.ti2806.riverrush.domain.event.AbstractTeamEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
@@ -66,7 +68,7 @@ public final class MainBackend extends CoreModule {
     @Override
     protected void configure() {
         super.configure();
-        this.bind(TreeMap.class).annotatedWith(named("levelMap")).toInstance(this.configureLevelMap());
+        this.bind(new TypeLiteral<TreeMap<Double, AbstractTeamEvent>>() {}).annotatedWith(named("levelMap")).toInstance(this.configureLevelMap());
 
         this.bind(Controller.class).annotatedWith(named("clientController"))
             .to(UserController.class);
@@ -90,7 +92,7 @@ public final class MainBackend extends CoreModule {
      *
      * @return The level map
      */
-    private TreeMap configureLevelMap() {
+    private TreeMap<Double, AbstractTeamEvent> configureLevelMap() {
         try {
             return LevelMapParser.readFromFile("/simpletrack.txt");
         } catch (IOException e) {
