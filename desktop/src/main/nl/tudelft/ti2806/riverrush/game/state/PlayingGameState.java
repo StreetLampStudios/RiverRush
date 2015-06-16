@@ -50,6 +50,7 @@ public class PlayingGameState extends AbstractGameState {
 
     private final HashMap<Integer, ArrayList<RockGraphic>> rocks;
     private final HashMap<Integer, ArrayList<CannonBallGraphic>> obstacles;
+
     /**
      * The state of the game that indicates that the game is currently playable.
      *
@@ -81,7 +82,7 @@ public class PlayingGameState extends AbstractGameState {
         this.dispatcher.attach(AnimalJumpedEvent.class, this.animalJumpedEventHandlerLambda);
         this.dispatcher.attach(AnimalMovedEvent.class, this.animalMovedHandlerLambda);
         this.dispatcher.attach(AnimalReturnedToBoatEvent.class,
-            this.animalReturnedToBoatEventHandlerLambda);
+                this.animalReturnedToBoatEventHandlerLambda);
         this.dispatcher.attach(TeamProgressEvent.class, this.teamProgressEventHandlerLambda);
 
         this.rocks = new HashMap<>();
@@ -108,14 +109,17 @@ public class PlayingGameState extends AbstractGameState {
      */
     private void tick() {
         for (Team team : this.game.getTeams()) {
-            updateRockCollision(this.rocks.get(team.getId()), team);
-            updateObstacleCollision(this.obstacles.get(team.getId()), team);
+            this.updateRockCollision(this.rocks.get(team.getId()), team);
+            this.updateObstacleCollision(this.obstacles.get(team.getId()), team);
         }
 
     }
 
-    private synchronized void updateObstacleCollision(final ArrayList<CannonBallGraphic> obstacles, final Team team) {
-        if (obstacles == null) return;
+    private synchronized void updateObstacleCollision(final ArrayList<CannonBallGraphic> obstacles,
+            final Team team) {
+        if (obstacles == null) {
+            return;
+        }
         for (CannonBallGraphic graphic : obstacles) {
             BoatGroup boat = team.getBoat();
             if (boat.isColliding(graphic.getBounds())) {
@@ -127,8 +131,11 @@ public class PlayingGameState extends AbstractGameState {
         }
     }
 
-    private synchronized void updateRockCollision(final ArrayList<RockGraphic> rocks, final Team team) {
-        if (rocks == null) return;
+    private synchronized void updateRockCollision(final ArrayList<RockGraphic> rocks,
+            final Team team) {
+        if (rocks == null) {
+            return;
+        }
         for (RockGraphic graphic : rocks) {
             BoatGroup boat = team.getBoat();
 
@@ -149,7 +156,8 @@ public class PlayingGameState extends AbstractGameState {
     private synchronized void addObstacle(final AddObstacleEvent e) {
         CannonBallGraphic graphic = new CannonBallGraphic(e.getLocation());
         this.screen.addObstacle(e.getTeam() == 0, graphic);
-        ArrayList<CannonBallGraphic> obs = this.obstacles.getOrDefault(e.getTeam(), new ArrayList<>());
+        ArrayList<CannonBallGraphic> obs = this.obstacles.getOrDefault(e.getTeam(),
+                new ArrayList<>());
         obs.add(graphic);
         this.obstacles.put(e.getTeam(), obs);
     }
@@ -176,6 +184,7 @@ public class PlayingGameState extends AbstractGameState {
     private void addAnimal(final Team team, final Animal animal) {
         AnimalActor actor = new AnimalActor(this.dispatcher, team.getId());
         animal.setActor(actor);
+        actor.setAnimal(animal);
 
         team.addAnimal(animal);
         team.getBoat().addAnimal(actor, animal.getSectorOnBoat());
@@ -189,7 +198,6 @@ public class PlayingGameState extends AbstractGameState {
      * @param team The team belonging to that boat
      */
     public void addBoat(final Team team) {
-        // TODO: remove magic numbers
         this.screen.addBoat(team);
     }
 
