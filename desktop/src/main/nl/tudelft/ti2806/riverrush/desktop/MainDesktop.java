@@ -41,6 +41,7 @@ public class MainDesktop extends CoreModule {
      * Constructor for main desktop. Configures the client connections and sets up the graphics.
      *
      * @throws URISyntaxException handles the situation where the URI has the wrong syntax.
+     * @throws InterruptedException handles the situation where it interrupts.
      */
     public MainDesktop() throws URISyntaxException, InterruptedException {
         this.injector = Guice.createInjector(this);
