@@ -32,6 +32,7 @@ public class MainDesktop extends CoreModule {
      *
      * @param arg not used
      * @throws URISyntaxException handles the situation where the URI has the wrong syntax.
+     * @throws InterruptedException handles the situation where it interrupts.
      */
     public static void main(final String[] arg) throws URISyntaxException, InterruptedException {
         new MainDesktop();
