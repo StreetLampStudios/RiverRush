@@ -14,16 +14,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 public final class Assets {
 
     private static Texture riverBanksTexture, monkeyShipTexture, raccoonShipTexture, riverTexture,
-            boatSectorTexture, raccoonTexture, monkeyBrownTexture, monkeyBlackTexture,
-            monkeyBlueTexture, monkeyOrangeTexture, monkeyGreenTexture, monkeyPinkTexture,
-            monkeyPurpleTexture, monkeyRedTexture, monkeyWhiteTexture, monkeyYellowTexture,
-            flagTexture, endGameTexture, grassTexture, cannonballTexture, icebergTexture,
-            winTexture, loseTexture, bootjeTexture, woodFloorTexture, lineTexture, shadowTexture;
+            boatSectorTexture, raccoonBrownTexture, raccoonBlackTexture, raccoonBlueTexture,
+            raccoonOrangeTexture, raccoonGreenTexture, raccoonPinkTexture, raccoonPurpleTexture,
+            raccoonRedTexture, raccoonWhiteTexture, raccoonYellowTexture, monkeyBrownTexture,
+            monkeyBlackTexture, monkeyBlueTexture, monkeyOrangeTexture, monkeyGreenTexture,
+            monkeyPinkTexture, monkeyPurpleTexture, monkeyRedTexture, monkeyWhiteTexture,
+            monkeyYellowTexture, flagTexture, endGameTexture, grassTexture, cannonballTexture,
+            icebergTexture, winTexture, loseTexture, bootjeTexture, woodFloorTexture, lineTexture,
+            shadowTexture;
 
     public static TextureRegion riverBank, boatSector, river, monkeyShip, raccoonShip, raccoon,
             monkeyBrown, monkeyBlack, monkeyBlue, monkeyOrange, monkeyGreen, monkeyPink,
-            monkeyPurple, monkeyRed, monkeyWhite, monkeyYellow, flag, endGame, grass, cannonball,
-            iceberg, win, lose, bootje, woodFloor, line, shadow;
+            monkeyPurple, monkeyRed, monkeyWhite, monkeyYellow, raccoonBrown, raccoonBlack,
+            raccoonBlue, raccoonOrange, raccoonGreen, raccoonPink, raccoonPurple, raccoonRed,
+            raccoonWhite, raccoonYellow, flag, endGame, grass, cannonball, iceberg, win, lose,
+            bootje, woodFloor, line, shadow;
 
     public static ArrayList<TextureRegion> raccoonMap, monkeyMap;
 
@@ -118,10 +123,35 @@ public final class Assets {
         monkeyYellowTexture = new Texture(Gdx.files.internal(dir + "monkeyYellow.png"));
         monkeyYellow = getFullRegion(monkeyYellowTexture);
 
-        raccoonTexture = new Texture(Gdx.files.internal(dir + "raccoon.png"));
-        raccoon = getFullRegion(raccoonTexture);
+        raccoonBrownTexture = new Texture(Gdx.files.internal(dir + "raccoonBrown.png"));
+        raccoonBrown = getFullRegion(raccoonBrownTexture);
 
-        raccoonMap.add(raccoon);
+        raccoonBlackTexture = new Texture(Gdx.files.internal(dir + "raccoonBlack.png"));
+        raccoonBlack = getFullRegion(raccoonBlackTexture);
+
+        raccoonBlueTexture = new Texture(Gdx.files.internal(dir + "raccoonBlue.png"));
+        raccoonBlue = getFullRegion(raccoonBlueTexture);
+
+        raccoonOrangeTexture = new Texture(Gdx.files.internal(dir + "raccoonOrange.png"));
+        raccoonOrange = getFullRegion(raccoonOrangeTexture);
+
+        raccoonGreenTexture = new Texture(Gdx.files.internal(dir + "raccoonGreen.png"));
+        raccoonGreen = getFullRegion(raccoonGreenTexture);
+
+        raccoonPinkTexture = new Texture(Gdx.files.internal(dir + "raccoonPink.png"));
+        raccoonPink = getFullRegion(raccoonPinkTexture);
+
+        raccoonPurpleTexture = new Texture(Gdx.files.internal(dir + "raccoonPurple.png"));
+        raccoonPurple = getFullRegion(raccoonPurpleTexture);
+
+        raccoonRedTexture = new Texture(Gdx.files.internal(dir + "raccoonRed.png"));
+        raccoonRed = getFullRegion(raccoonRedTexture);
+
+        raccoonWhiteTexture = new Texture(Gdx.files.internal(dir + "raccoonWhite.png"));
+        raccoonWhite = getFullRegion(raccoonWhiteTexture);
+
+        raccoonYellowTexture = new Texture(Gdx.files.internal(dir + "raccoonYellow.png"));
+        raccoonYellow = getFullRegion(raccoonYellowTexture);
 
         monkeyMap.add(monkeyBrown);
         monkeyMap.add(monkeyBlack);
@@ -133,6 +163,17 @@ public final class Assets {
         monkeyMap.add(monkeyRed);
         monkeyMap.add(monkeyWhite);
         monkeyMap.add(monkeyYellow);
+
+        raccoonMap.add(raccoonBrown);
+        raccoonMap.add(raccoonBlack);
+        raccoonMap.add(raccoonBlue);
+        raccoonMap.add(raccoonOrange);
+        raccoonMap.add(raccoonGreen);
+        raccoonMap.add(raccoonPink);
+        raccoonMap.add(raccoonPurple);
+        raccoonMap.add(raccoonRed);
+        raccoonMap.add(raccoonWhite);
+        raccoonMap.add(raccoonYellow);
 
     }
 
