@@ -1,5 +1,7 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
+import java.util.HashMap;
+
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.Assets;
@@ -37,7 +39,7 @@ public class AnimalActor extends Group {
      */
     private static final float ANIMAL_HEIGHT = 90; // 81
 
-    private final TextureRegion animalTexture;
+    private TextureRegion animalTexture;
     private static final float JUMP_HEIGHT = 10;
     private static final int FALL_DISTANCEX = -520;
     private static final int FALL_DISTANCEY = 200;
@@ -62,6 +64,9 @@ public class AnimalActor extends Group {
     private Animal animal;
     private ShadowActor shadow;
 
+    // private final HashMap<Integer, TextureRegion> textureMap = new HashMap<Integer,
+    // TextureRegion>();
+
     /**
      * Creates a monkey object that represents player characters.
      *
@@ -72,12 +77,6 @@ public class AnimalActor extends Group {
     public AnimalActor(final EventDispatcher dispatcher, final int teamID) {
         this.setWidth(ANIMAL_WIDTH);
         this.setHeight(ANIMAL_HEIGHT);
-
-        if (teamID % 2 == 0) {
-            this.animalTexture = Assets.monkey;
-        } else {
-            this.animalTexture = Assets.raccoon;
-        }
 
         this.setOriginX(this.getWidth() / 2);
         this.setOriginY(this.getHeight() / 2);
@@ -148,6 +147,12 @@ public class AnimalActor extends Group {
         v = this.localToStageCoordinates(v);
 
         this.bounds = new Circle(v.x, v.y, ((float) (this.getHeight() * HITBOX_MULTIPLIER)));
+
+        if (this.animal.getTeamId() % 2 == 0) {
+            this.animalTexture = Assets.monkeyMap.get(this.animal.getVariation());
+        } else {
+            this.animalTexture = Assets.raccoonMap.get(0); // this.animal.getVariation()
+        }
     }
 
     @Override
@@ -166,9 +171,9 @@ public class AnimalActor extends Group {
         super.draw(batch, parentAlpha);
         this.shadow.draw(batch, parentAlpha);
 
-        batch.draw(Assets.raccoon, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-                this.getRotation());
+        batch.draw(this.animalTexture, this.getX(), this.getY(), this.getOriginX(),
+                this.getOriginY(), this.getWidth(), this.getHeight(), this.getScaleX(),
+                this.getScaleY(), this.getRotation());
 
         batch.setColor(Color.WHITE);
 
