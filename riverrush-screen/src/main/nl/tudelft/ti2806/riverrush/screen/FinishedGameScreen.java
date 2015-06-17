@@ -30,6 +30,8 @@ public class FinishedGameScreen implements Screen {
     private static final float WINNING_LABEL_WIDTH_MULTIPLIER = 0.40f;
     private static final int TIMER_TICK = 1000;
     private int countdown;
+    private Image image;
+    private Label teamWonLabel;
 
 
     /**
@@ -38,12 +40,9 @@ public class FinishedGameScreen implements Screen {
      * @param dispatcher   is the dispatcher that handles all relevant events.
      */
     public FinishedGameScreen(final EventDispatcher dispatcher) {
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                atlas = new TextureAtlas("uiskin.atlas");
-                skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
-            }
+        Gdx.app.postRunnable(() -> {
+            atlas = new TextureAtlas("uiskin.atlas");
+            skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
         });
     }
 
@@ -54,7 +53,7 @@ public class FinishedGameScreen implements Screen {
         Texture texture = new Texture(Gdx.files.internal("data/end.jpg"));
         TextureRegion region = new TextureRegion(texture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        Image image = new Image(region);
+        image = new Image(region);
         image.setFillParent(true);
         this.stage.addActor(image);
 
@@ -71,7 +70,9 @@ public class FinishedGameScreen implements Screen {
 
     @Override
     public void resize(final int width, final int height) {
-        // Does not need to do anything yet
+        this.timerLabel.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
+        this.teamWonLabel.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
+        this.image.setSize(width, height);
     }
 
     @Override
@@ -98,15 +99,12 @@ public class FinishedGameScreen implements Screen {
      * Creates a timerLabel.
      */
     private void createLabels() {
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                timerLabel = new Label("", skin);
-                timerLabel.setFontScale(2f);
-                timerLabel.setPosition(Gdx.graphics.getWidth() * TIMER_LABEL_WIDTH_MULTIPLIER,
-                    Gdx.graphics.getHeight() * TIMER_LABEL_HEIGHT_MULTIPLIER); // 1200, 540
-                stage.addActor(timerLabel);
-            }
+        Gdx.app.postRunnable(() -> {
+            timerLabel = new Label("", skin);
+            timerLabel.setFontScale(2f);
+            timerLabel.setPosition(Gdx.graphics.getWidth() * TIMER_LABEL_WIDTH_MULTIPLIER,
+                Gdx.graphics.getHeight() * TIMER_LABEL_HEIGHT_MULTIPLIER); // 1200, 540
+            stage.addActor(timerLabel);
         });
 
     }
@@ -139,7 +137,7 @@ public class FinishedGameScreen implements Screen {
 
         String winningTeamName = winningID == 0 ? "Left" : "Right";
 
-        Label teamWonLabel = new Label(winningTeamName + " team won! Congratulations!", skin);
+        teamWonLabel = new Label(winningTeamName + " team won! Congratulations!", skin);
         teamWonLabel.setFontScale(2f);
         teamWonLabel.setPosition(Gdx.graphics.getWidth() * WINNING_LABEL_WIDTH_MULTIPLIER,
             Gdx.graphics.getHeight() * WINNING_LABEL_HEIGHT_MULTIPLIER); // 1200, 540
