@@ -87,7 +87,7 @@ public class AnimalActor extends Group {
 
     public void resize(int width, int height) {
         this.setWidth((1920 / width) * ANIMAL_WIDTH);
-        this.setHeight((1080 / width) * ANIMAL_HEIGHT);
+        this.setHeight((1080 / height) * ANIMAL_HEIGHT);
     }
 
     private class ShadowActor extends Actor {
@@ -128,7 +128,6 @@ public class AnimalActor extends Group {
 
             this.addAction(jump);
         }
-
     }
 
     /**
