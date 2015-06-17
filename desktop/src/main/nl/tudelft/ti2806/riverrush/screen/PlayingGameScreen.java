@@ -59,6 +59,7 @@ public class PlayingGameScreen implements Screen {
 
     /**
      * Creates the river banks.
+     *
      * @return A fresh river bank Stage.
      */
     private Stage createRiverBank() {
@@ -97,12 +98,12 @@ public class PlayingGameScreen implements Screen {
     /**
      * Draws a stage on the screen. Each stage occupies the entire height of the screen.
      *
-     * @param toDraw The stage to draw.
+     * @param toDraw             The stage to draw.
      * @param positionPercentage The position of the stage from the left. Between 0 and 1.
-     * @param heigthPercentage The width of the stage between 0 and 1. (1 = 100%).
+     * @param heigthPercentage   The width of the stage between 0 and 1. (1 = 100%).
      */
     private void drawStage(final Stage toDraw, final double positionPercentage,
-            final double heigthPercentage) {
+                           final double heigthPercentage) {
 
         int yPos = (int) (Gdx.graphics.getHeight() * positionPercentage);
         int height = (int) (Gdx.graphics.getHeight() * heigthPercentage);
@@ -140,10 +141,10 @@ public class PlayingGameScreen implements Screen {
     /**
      * adds an obstacle on the..
      *
-     * @param isLeft - left or right side
+     * @param isLeft  - left or right side
      * @param graphic - where the obstacle is the graphic
      */
-    public void addObstacle(boolean isLeft, CannonBallGraphic graphic) {
+    public void addObstacle(final boolean isLeft, final CannonBallGraphic graphic) {
         if (isLeft) {
             this.riverLeft.spawnObstacle(graphic);
         } else {
@@ -154,10 +155,10 @@ public class PlayingGameScreen implements Screen {
     /**
      * adds an rock on the..
      *
-     * @param isLeft - left or right side
+     * @param isLeft  - left or right side
      * @param graphic - where the rock is the graphic
      */
-    public void addRock(boolean isLeft, RockGraphic graphic) {
+    public void addRock(final boolean isLeft, final RockGraphic graphic) {
         if (isLeft) {
             this.riverLeft.spawnRock(graphic);
         } else {
@@ -165,9 +166,14 @@ public class PlayingGameScreen implements Screen {
         }
     }
 
-    public void addBoat(Team team) {
+    /**
+     * Add a boat to the screen.
+     *
+     * @param team The team to add the boat to.
+     */
+    public void addBoat(final Team team) {
         BoatGroup boat = new BoatGroup(Gdx.graphics.getWidth() * 0.02f,
-                (Gdx.graphics.getHeight() / 2) - 450, team.getId());
+            (Gdx.graphics.getHeight() / 2) - 450, team.getId());
         boat.init();
 
         if (team.getId() % 2 == 0) { // TODO: Temporary hard coding
@@ -178,7 +184,14 @@ public class PlayingGameScreen implements Screen {
         team.setBoat(boat);
     }
 
-    public void updateProgress(int teamID, double progress, double speed) {
+    /**
+     * Update the progress.
+     *
+     * @param teamID   The team id
+     * @param progress The progress
+     * @param speed    the speed
+     */
+    public void updateProgress(final int teamID, final double progress, final double speed) {
         // TODO Change river speed
         this.riverLeft.getRiver().updateFlow(speed);
         this.riverRight.getRiver().updateFlow(speed);

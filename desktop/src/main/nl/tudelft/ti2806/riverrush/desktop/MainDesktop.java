@@ -32,6 +32,7 @@ public class MainDesktop extends CoreModule {
      *
      * @param arg not used
      * @throws URISyntaxException handles the situation where the URI has the wrong syntax.
+     * @throws InterruptedException handles the situation where it interrupts.
      */
     public static void main(final String[] arg) throws URISyntaxException, InterruptedException {
         new MainDesktop();
@@ -41,6 +42,7 @@ public class MainDesktop extends CoreModule {
      * Constructor for main desktop. Configures the client connections and sets up the graphics.
      *
      * @throws URISyntaxException handles the situation where the URI has the wrong syntax.
+     * @throws InterruptedException handles the situation where it interrupts.
      */
     public MainDesktop() throws URISyntaxException, InterruptedException {
         this.injector = Guice.createInjector(this);
@@ -55,31 +57,6 @@ public class MainDesktop extends CoreModule {
         this.eventDispatcher = this.injector.getInstance(EventDispatcher.class);
 
         client.connect();
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        AnimalAddedEvent ev;
-        for (int i = 0; i < 5; i++) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            ev = new AnimalAddedEvent();
-            ev.setAnimal(i);
-            ev.setTeam(i % 2);
-            ev.setVariation(0);
-            ev.setSector(Sector.BACK);
-
-            this.eventDispatcher.dispatch(ev);
-        }
-        this.eventDispatcher.dispatch(new GameAboutToStartEvent());
-
-        this.eventDispatcher.dispatch(new GameStartedEvent());
-
     }
 
     /**

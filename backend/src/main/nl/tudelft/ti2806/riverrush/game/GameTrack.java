@@ -1,20 +1,24 @@
 package nl.tudelft.ti2806.riverrush.game;
 
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
+import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
 import nl.tudelft.ti2806.riverrush.domain.event.AbstractTeamEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Scanner;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeMap;
@@ -22,6 +26,7 @@ import java.util.TreeMap;
 /**
  * Representation of a game track.
  */
+@Singleton
 public class GameTrack {
 
     private static final long UPDATE_DELAY = 1000;
@@ -40,86 +45,34 @@ public class GameTrack {
     private final HashMap<Team, Double> teamDistances;
     private final TreeMap<Double, AbstractTeamEvent> levelMap;
     private final HashMap<Team, Double> nextEvents;
+    private final Provider<Game> gameProvider;
 
 
     private EventDispatcher dispatcher;
     private Game game;
 
+    private List<Sector> currentPlayerSectors = Lists.newArrayList(Sector.FRONT, Sector.FRONT);
+
     /**
      * Create a game track.
      *
-     * @param dispatch - See {@link EventDispatcher}
-     * @param aGame    - the game
+     * @param dispatch  - See {@link EventDispatcher}
+     * @param aGame     - the game
+     * @param aLevelMap - The map of the level
      */
-    public GameTrack(final EventDispatcher dispatch, final Game aGame) {
+    @Inject
+    public GameTrack(final EventDispatcher dispatch,
+                     final Provider<Game> aGame,
+                     @Named("levelMap") final TreeMap<Double, AbstractTeamEvent> aLevelMap) {
         this.dispatcher = dispatch;
-        this.game = aGame;
+        this.gameProvider = aGame;
+        this.levelMap = aLevelMap;
+
         this.teams = new HashMap<>();
         this.teamDistances = new HashMap<>();
-        this.levelMap = new TreeMap<>();
         this.nextEvents = new HashMap<>();
+
         this.reset();
-    }
-
-    /**
-     * Resets the game track to start over.
-     */
-    public void reset() {
-        for (Team team : this.teamDistances.keySet()) {
-            this.teamDistances.put(team, 0.0);
-        }
-    }
-
-    /**
-     * Parse a level for the game track.
-     *
-     * @param inputStream The stream to parse from
-     */
-    protected void parseLevel(final InputStream inputStream) {
-        this.parseLevel(new Scanner(inputStream));
-    }
-
-    /**
-     * This will parse the level for you.
-     *
-     * @param level - String that represents when the cannonballs need to start flying
-     */
-    protected void parseLevel(final Scanner level) {
-        String currentLine;
-        while(level.hasNextLine())
-        {
-            currentLine = level.nextLine();
-            String[] lineContent = currentLine.split(",");
-            double spawnTime = Double.parseDouble(lineContent[0]);
-            char thingToSpawn = lineContent[1].charAt(0);
-            double spawnLocation = Double.parseDouble(lineContent[2]);
-            AbstractTeamEvent event = this.generateTrackEvent(thingToSpawn, spawnLocation);
-            levelMap.put(spawnTime, event);
-        }
-    }
-
-    /**
-     * Generate an event to create elements on the game track.
-     *
-     * @param parseCode     The element to create
-     * @param spawnLocation The location to put the element
-     * @return The event
-     */
-    protected AbstractTeamEvent generateTrackEvent(final char parseCode, final double spawnLocation) {
-        if (parseCode == 'O') {
-            AddObstacleEvent event = new AddObstacleEvent();
-            event.setLocation(spawnLocation);
-            return event;
-        } else if (parseCode == 'R') {
-            AddRockEvent event = new AddRockEvent();
-            if (spawnLocation == -1) {
-                event.setLocation(Direction.LEFT);
-            } else {
-                event.setLocation(Direction.RIGHT);
-            }
-            return event;
-        }
-        throw new IllegalArgumentException("Illegal event code: " + parseCode);
     }
 
     /**
@@ -141,32 +94,49 @@ public class GameTrack {
      * This method will update the progress of the game track.
      */
     protected boolean updateProgress() {
+        this.game = this.gameProvider.get();
+
         boolean someoneFinished = false;
         ArrayList<Team> finishedTeams = new ArrayList<>();
+
         for (Team team : this.teamDistances.keySet()) {
             Double speed = this.getSpeed(team);
             Double currentDistance = this.teamDistances.get(team);
-            this.teamDistances.put(team, currentDistance + speed);
 
-            if (currentDistance + speed >= TRACK_LENGTH) {
+            double newDistance = currentDistance + speed;
+
+            this.teamDistances.put(team, newDistance);
+
+            if (newDistance >= TRACK_LENGTH) {
                 finishedTeams.add(team);
                 someoneFinished = true;
             }
 
             this.fireGameTrackEvents(team, currentDistance);
-
-            TeamProgressEvent event = new TeamProgressEvent();
-            event.setProgress(currentDistance + speed);
-            event.setTeam(team.getId());
-            event.setSpeed(speed);
-            this.dispatcher.dispatch(event);
+            this.fireTeamProgressEvent(speed, newDistance, team.getId());
         }
+
         if (finishedTeams.size() > 0) {
             Team winner = this.determineWinningTeam(finishedTeams);
-
             this.game.finish(winner.getId());
         }
+
         return someoneFinished;
+    }
+
+    /**
+     * Fire te team progress event.
+     *
+     * @param speed       The speed of the boat
+     * @param newDistance The updated distance from the start
+     * @param teamId      The team id of the team on the boat
+     */
+    private void fireTeamProgressEvent(final Double speed, final Double newDistance, final Integer teamId) {
+        TeamProgressEvent event = new TeamProgressEvent();
+        event.setProgress(newDistance);
+        event.setTeam(teamId);
+        event.setSpeed(speed);
+        this.dispatcher.dispatch(event);
     }
 
     /**
@@ -196,18 +166,27 @@ public class GameTrack {
      * @return the winning team
      */
     protected Team determineWinningTeam(final ArrayList<Team> finishedTeams) {
-        Team finished = finishedTeams.get(0);
-        Double maxDistance = this.teamDistances.get(finished);
+        Team finishedTeam = finishedTeams.get(0);
+        Double maxDistance = this.teamDistances.get(finishedTeam);
 
         for (final Team team : finishedTeams) {
-            double newDistance = this.teamDistances.get(team);
-            if (newDistance > maxDistance) {
-                maxDistance = newDistance;
-                finished = team;
+            double distance = this.teamDistances.get(team);
+            if (distance > maxDistance) {
+                maxDistance = distance;
+                finishedTeam = team;
             }
         }
 
-        return finished;
+        return finishedTeam;
+    }
+
+    /**
+     * Resets the game track to start over.
+     */
+    public void reset() {
+        for (Team team : this.teamDistances.keySet()) {
+            this.teamDistances.put(team, 0.0);
+        }
     }
 
     /**
@@ -280,6 +259,63 @@ public class GameTrack {
     }
 
     /**
+     * Add the animal to the team.
+     *
+     * @param animal The animal
+     * @param teamId The team
+     */
+    public void addAnimalToTeam(final AbstractAnimal animal, final Integer teamId) {
+        Integer newTeamId = this.addAnimal(teamId, animal);
+
+        AnimalAddedEvent event = new AnimalAddedEvent();
+        event.setAnimal(animal.getId());
+        event.setTeam(newTeamId);
+        event.setVariation(animal.getVariation());
+        Sector nextSector = currentPlayerSectors.get(newTeamId).getNext();
+        currentPlayerSectors.set(newTeamId, nextSector);
+        event.setSector(nextSector);
+        this.dispatcher.dispatch(event);
+    }
+
+    /**
+     * Remove all the animals from a given boat that moved to the wrong direction.
+     *
+     * @param rockDirection the direction given by the boat collided event.
+     * @param teamID        the team which the action applies to.
+     */
+    public void sweepAnimals(final Direction rockDirection, final Integer teamID) {
+        Team tm = this.teams.get(teamID);
+        for (AbstractAnimal anim : tm.getAnimals()) {
+            if (anim.getVoteDirection().equals(rockDirection)
+                || anim.getVoteDirection().equals(Direction.NEUTRAL)) {
+                anim.fall();
+            }
+        }
+    }
+
+    /**
+     * kick an animal off the boat.
+     *
+     * @param animalId - integer that represents the animal
+     * @param teamId   - integer that represents the team
+     */
+    public void collideAnimal(final Integer animalId, final Integer teamId) {
+        Team team = this.teams.get(teamId);
+        AbstractAnimal animal = team.getAnimal(animalId);
+        animal.fall();
+    }
+
+    /**
+     * Remove the animal.
+     *
+     * @param teamId   - integer that represents the team
+     * @param animalId - integer that represents the animal
+     */
+    public void removeAnimalFromTeam(final Integer teamId, final Integer animalId) {
+        this.getTeam(teamId).removeAnimal(animalId);
+    }
+
+    /**
      * @param teamId - The team.
      * @return the distance the team has traveled
      */
@@ -300,25 +336,7 @@ public class GameTrack {
      *
      * @return The teams
      */
-    public HashMap<Integer, Team> getTeams() {
-        return this.teams;
-    }
-
-    /**
-     * Read the game track from a file.
-     *
-     * @param fileName The name of the file
-     * @param dispatch The event dispatcher
-     * @param game     The main game
-     * @return The created game track
-     * @throws IOException when the file cannot be opened
-     */
-    public static GameTrack readFromFile(final String fileName,
-                                         final EventDispatcher dispatch,
-                                         final Game game) throws IOException {
-        GameTrack track = new GameTrack(dispatch, game);
-        InputStream in = GameTrack.class.getResourceAsStream(fileName);
-        track.parseLevel(in);
-        return track;
+    public Collection<Team> getTeams() {
+        return this.teams.values();
     }
 }

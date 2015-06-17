@@ -28,15 +28,13 @@ public class StoppedGameState implements GameState {
      * @param eventDispatcher The event eventDispatcher for dispatching events
      * @param aGame           The main game
      */
-    public StoppedGameState(final EventDispatcher eventDispatcher, Game aGame) {
+    public StoppedGameState(final EventDispatcher eventDispatcher, final Game aGame) {
         this.dispatcher = eventDispatcher;
         this.game = aGame;
-        this.dispatcher.dispatch(new GameStoppedEvent());
+        this.dispatcher.dispatch(this.getStateEvent());
 
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         scheduler.schedule(() -> System.exit(0), DELAY, TimeUnit.SECONDS);
-
-        this.dispatcher.dispatch(this.getStateEvent());
     }
 
     @Override
@@ -64,7 +62,7 @@ public class StoppedGameState implements GameState {
     }
 
     @Override
-    public GameState finish(Integer team) {
+    public GameState finish(final Integer team) {
         return this;
     }
 

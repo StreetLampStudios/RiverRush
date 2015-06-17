@@ -22,7 +22,7 @@ public class PlayingGameState implements GameState {
      * The game transitions to this state when the game starts.
      *
      * @param eventDispatcher The dispatcher used to listen to {@link JumpCommand}.
-     * @param aGame
+     * @param aGame The main game
      */
     public PlayingGameState(final EventDispatcher eventDispatcher, final Game aGame) {
         this.dispatcher = eventDispatcher;

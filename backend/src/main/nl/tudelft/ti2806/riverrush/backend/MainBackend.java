@@ -2,24 +2,30 @@ package nl.tudelft.ti2806.riverrush.backend;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.TypeLiteral;
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
 import nl.tudelft.ti2806.riverrush.controller.UserController;
+import nl.tudelft.ti2806.riverrush.domain.event.AbstractTeamEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameWaitingEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.game.Game;
+import nl.tudelft.ti2806.riverrush.game.LevelMapParser;
 import nl.tudelft.ti2806.riverrush.network.AbstractServer;
 import nl.tudelft.ti2806.riverrush.network.RenderServer;
 import nl.tudelft.ti2806.riverrush.network.UserServer;
 import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.apache.logging.log4j.LogManager;
 
+import java.io.IOException;
+import java.util.TreeMap;
+
 import static com.google.inject.name.Names.named;
 
 /**
- * Entrypoint of the backend.
+ * Entry point of the backend.
  */
 public final class MainBackend extends CoreModule {
 
@@ -62,6 +68,8 @@ public final class MainBackend extends CoreModule {
     @Override
     protected void configure() {
         super.configure();
+        this.bind(new TypeLiteral<TreeMap<Double, AbstractTeamEvent>>() {}).annotatedWith(named("levelMap")).toInstance(this.configureLevelMap());
+
         this.bind(Controller.class).annotatedWith(named("clientController"))
             .to(UserController.class);
 
@@ -77,5 +85,20 @@ public final class MainBackend extends CoreModule {
         this.bind(AbstractServer.class).annotatedWith(named("playerServer")).to(UserServer.class);
 
         this.bind(AbstractServer.class).annotatedWith(named("renderServer")).to(RenderServer.class);
+    }
+
+    /**
+     * Configure the level map.
+     *
+     * @return The level map
+     */
+    private TreeMap<Double, AbstractTeamEvent> configureLevelMap() {
+        try {
+            return LevelMapParser.readFromFile("/simpletrack.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
