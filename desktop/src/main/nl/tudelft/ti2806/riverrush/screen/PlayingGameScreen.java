@@ -173,7 +173,7 @@ public class PlayingGameScreen implements Screen {
      */
     public void addBoat(final Team team) {
         BoatGroup boat = new BoatGroup(Gdx.graphics.getWidth() * 0.02f,
-            (Gdx.graphics.getHeight() / 2) - 450, team.getId());
+            (Gdx.graphics.getHeight() / 2), team.getId());
         boat.init();
 
         if (team.getId() % 2 == 0) { // TODO: Temporary hard coding

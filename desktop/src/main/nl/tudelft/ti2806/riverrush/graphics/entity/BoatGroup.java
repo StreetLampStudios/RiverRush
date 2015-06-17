@@ -22,7 +22,8 @@ import java.util.HashMap;
  */
 public class BoatGroup extends Group {
 
-    private final int SIZE = 900;
+    private final int BOAT_HEIGHT = 600;
+    private final int BOAT_WIDTH = 800;
 
     private final ArrayList<BoatSector> sectors;
 
@@ -30,8 +31,8 @@ public class BoatGroup extends Group {
 
     private static final float MOVE_DISTANCE = 400;
     private static final double HITBOX_OFFSET = 0.3;
-    private static final float SECTOR_DIVIDING_DISTANCE = 45f;
-    private static final float SECTOR_INIT_POS = 65f;
+    private static final float SECTOR_DIVIDING_DISTANCE = 32f;
+    private static final float SECTOR_INIT_POS = 55f;
 
     private static final int COL_COUNT = 2;
     private static final int ROW_COUNT = 5;
@@ -55,9 +56,9 @@ public class BoatGroup extends Group {
     @Inject
     public BoatGroup(final float xpos, final float ypos, final int teamID) {
         this.setX(xpos);
-        this.setY(ypos);
-        this.setWidth(this.SIZE);
-        this.setHeight(this.SIZE);
+        this.setY(ypos - BOAT_HEIGHT /2);
+        this.setWidth(this.BOAT_WIDTH);
+        this.setHeight(this.BOAT_HEIGHT);
 
         this.origY = ypos;
         if (teamID % 2 == 0) {
@@ -75,7 +76,10 @@ public class BoatGroup extends Group {
         for (int i = Sector.countSectors() - 1; i >= 0; i--) {
             float extra = 0f;
             if (i == 2) {
-                extra = 30f;
+                extra = 10f;
+            }
+            if (i > 2) {
+                extra = -12f;
             }
             BoatSector sec = new BoatSector(ROW_COUNT, COL_COUNT);
             float secPosX = SECTOR_INIT_POS + ((SECTOR_DIVIDING_DISTANCE + sec.getWidth()) * i) + extra;
