@@ -235,16 +235,14 @@ public class AnimalActor extends Group {
     public void updateFlag(final Direction direction) {
         this.directionFlag.setVisible(true);
         if (direction == Direction.RIGHT) {
+            this.directionFlag.setPosition(this.getWidth() / 2, this.getHeight());
             this.directionFlag.setRotation(30f);
             this.directionFlag.setScale(1f, 1f);
-            this.directionFlag.setColor(Color.GREEN);
             this.directionFlag.setColor(Color.RED);
         } else {
             this.directionFlag.setPosition(this.getWidth() / 2, 0);
-            this.directionFlag.setPosition(this.getWidth(), 0);
             this.directionFlag.setRotation(-30f);
             this.directionFlag.setScale(1, -1);
-            this.directionFlag.setColor(Color.RED);
             this.directionFlag.setColor(Color.GREEN);
         }
 
