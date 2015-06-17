@@ -46,13 +46,9 @@ public class AnimalActor extends Group {
     private static final float FALL_VELOCITY = 0.5f;
     private static final float JUMP_UP_DURATION = 0.3f;
     private static final float JUMP_DOWN_DURATION = 0.15f;
-    private static final float DELAY_DURATION = 0.5f;
-    private static final float WIGGLE_DURATION = 0.5f;
-    private static final float WIGGLE_BACK_DURATION = 0.125f;
-    private static final float WIGGLE_RIGHT_DURATION = 0.25f;
-    private static final float WIGGLE_LEFT_DURATION = 0.125f;
-    private static final float WIGGLE_DISTANCE = 5f;
+    private static final float DELAY_DURATION = 5f;
     private static final double HITBOX_MULTIPLIER = 0.3;
+    private static final float FLAG_OFFSET = 0.8f;
 
     private static final float ROLL_DURATION = 0.7f;
 
@@ -79,7 +75,7 @@ public class AnimalActor extends Group {
         this.setOriginY(this.getHeight() / 2);
 
         DirectionFlag flag = new DirectionFlag();
-        flag.setPosition(this.getWidth() / 2, this.getHeight());
+        flag.setPosition(this.getWidth() / 2, this.getHeight() * FLAG_OFFSET);
 
         flag.setVisible(false);
         this.addActor(flag);
@@ -235,17 +231,16 @@ public class AnimalActor extends Group {
     public void updateFlag(final Direction direction) {
         this.directionFlag.setVisible(true);
         if (direction == Direction.RIGHT) {
+            this.directionFlag.setPosition(this.getWidth() / 2, this.getHeight() * FLAG_OFFSET);
             this.directionFlag.setRotation(30f);
             this.directionFlag.setScale(1f, 1f);
             this.directionFlag.setColor(Color.GREEN);
-            this.directionFlag.setColor(Color.RED);
         } else {
-            this.directionFlag.setPosition(this.getWidth() / 2, 0);
-            this.directionFlag.setPosition(this.getWidth(), 0);
+            this.directionFlag.setPosition(this.getWidth() / 2, this.getHeight()
+                    * (1 - FLAG_OFFSET));
             this.directionFlag.setRotation(-30f);
             this.directionFlag.setScale(1, -1);
             this.directionFlag.setColor(Color.RED);
-            this.directionFlag.setColor(Color.GREEN);
         }
 
         RotateToAction rot = new RotateToAction();

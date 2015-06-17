@@ -98,12 +98,12 @@ public class PlayingGameScreen implements Screen {
     /**
      * Draws a stage on the screen. Each stage occupies the entire height of the screen.
      *
-     * @param toDraw             The stage to draw.
+     * @param toDraw The stage to draw.
      * @param positionPercentage The position of the stage from the left. Between 0 and 1.
-     * @param heigthPercentage   The width of the stage between 0 and 1. (1 = 100%).
+     * @param heigthPercentage The width of the stage between 0 and 1. (1 = 100%).
      */
     private void drawStage(final Stage toDraw, final double positionPercentage,
-                           final double heigthPercentage) {
+            final double heigthPercentage) {
 
         int yPos = (int) (Gdx.graphics.getHeight() * positionPercentage);
         int height = (int) (Gdx.graphics.getHeight() * heigthPercentage);
@@ -141,7 +141,7 @@ public class PlayingGameScreen implements Screen {
     /**
      * adds an obstacle on the..
      *
-     * @param isRight  - left or right side
+     * @param isRight - left or right side
      * @param graphic - where the obstacle is the graphic
      */
     public void addObstacle(final boolean isRight, final CannonBallGraphic graphic) {
@@ -155,7 +155,7 @@ public class PlayingGameScreen implements Screen {
     /**
      * adds an rock on the..
      *
-     * @param isRight  - left or right side
+     * @param isRight - left or right side
      * @param graphic - where the rock is the graphic
      */
     public void addRock(final boolean isRight, final RockGraphic graphic) {
@@ -173,10 +173,10 @@ public class PlayingGameScreen implements Screen {
      */
     public void addBoat(final Team team) {
         BoatGroup boat = new BoatGroup(Gdx.graphics.getWidth() * 0.02f,
-            (Gdx.graphics.getHeight() / 2), team.getId());
+                (Gdx.graphics.getHeight() / 2), team.getId());
         boat.init();
 
-        if (team.getId() % 2 == 0) { // TODO: Temporary hard coding
+        if (team.getId() % 2 == 0) {
             this.riverRight.addActor(boat);
         } else {
             this.riverLeft.addActor(boat);
@@ -187,14 +187,17 @@ public class PlayingGameScreen implements Screen {
     /**
      * Update the progress.
      *
-     * @param teamID   The team id
+     * @param teamID The team id
      * @param progress The progress
-     * @param speed    the speed
+     * @param speed the speed
      */
     public void updateProgress(final int teamID, final double progress, final double speed) {
-        // TODO Change river speed
-        this.riverLeft.getRiver().updateFlow(speed);
-        this.riverRight.getRiver().updateFlow(speed);
+        if (teamID % 2 == 0) {
+            this.riverRight.getRiver().updateFlow(speed);
+        } else {
+            this.riverLeft.getRiver().updateFlow(speed);
+        }
+
         this.betweenRivers.updateProgress(teamID, progress);
     }
 }

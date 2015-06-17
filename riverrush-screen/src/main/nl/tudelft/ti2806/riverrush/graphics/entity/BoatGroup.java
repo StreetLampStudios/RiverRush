@@ -29,7 +29,7 @@ public class BoatGroup extends Group {
 
     private final TextureRegion shipTexture;
 
-    private static final float MOVE_DISTANCE = 400;
+    private static final float MOVE_DISTANCE = 200;
     private static final double HITBOX_OFFSET = 0.3;
     private static final float SECTOR_DIVIDING_DISTANCE = 32f;
     private static final float SECTOR_INIT_POS = 55f;
@@ -51,16 +51,16 @@ public class BoatGroup extends Group {
      *
      * @param xpos represents the position of the boat on the x axis
      * @param ypos represents the position of the boat on the y axis
-     *             @param teamID - The id of the boat that this team will represent
+     * @param teamID - The id of the boat that this team will represent
      */
     @Inject
     public BoatGroup(final float xpos, final float ypos, final int teamID) {
         this.setX(xpos);
-        this.setY(ypos - BOAT_HEIGHT /2);
+        this.setY(ypos - this.BOAT_HEIGHT / 2);
         this.setWidth(this.BOAT_WIDTH);
         this.setHeight(this.BOAT_HEIGHT);
 
-        this.origY = ypos;
+        this.origY = this.getY();
         if (teamID % 2 == 0) {
             this.shipTexture = Assets.monkeyShip;
         } else {
@@ -82,7 +82,8 @@ public class BoatGroup extends Group {
                 extra = -12f;
             }
             BoatSector sec = new BoatSector(ROW_COUNT, COL_COUNT);
-            float secPosX = SECTOR_INIT_POS + ((SECTOR_DIVIDING_DISTANCE + sec.getWidth()) * i) + extra;
+            float secPosX = SECTOR_INIT_POS + ((SECTOR_DIVIDING_DISTANCE + sec.getWidth()) * i)
+                    + extra;
             float secPosY = (this.getHeight() / 2) - (sec.getHeight() / 2);
             // float secPosX = (this.getWidth() / 2) - (sec.getWidth() / 2);
             // float secPosY = 50f + ((20f + sec.getHeight()) * i);
@@ -118,9 +119,9 @@ public class BoatGroup extends Group {
         Color color = this.getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        batch.draw(shipTexture, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-                this.getRotation());
+        batch.draw(this.shipTexture, this.getX(), this.getY(), this.getOriginX(),
+                this.getOriginY(), this.getWidth(), this.getHeight(), this.getScaleX(),
+                this.getScaleY(), this.getRotation());
 
         batch.setColor(Color.WHITE);
 
@@ -143,7 +144,7 @@ public class BoatGroup extends Group {
     public void voteForDirection(final AbstractAnimal animal, final int direction) {
         Integer currentVote = this.directionVotes.getOrDefault(animal, 0);
         if (currentVote != direction) {
-            this.votingSum -= currentVote;
+            this.votingSum += currentVote;
             this.votingSum -= direction;
             this.directionVotes.put(animal, direction);
             this.updateBoatPosition();
@@ -205,7 +206,6 @@ public class BoatGroup extends Group {
     public boolean isColliding(final Circle obstacle) {
         return Intersector.overlaps(obstacle, this.bounds);
     }
-
 
     public AnimalActor getCollidingChild(final Circle collider) {
         AnimalActor result = null;
