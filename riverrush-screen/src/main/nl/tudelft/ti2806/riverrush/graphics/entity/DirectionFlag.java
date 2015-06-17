@@ -8,8 +8,8 @@ import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
 public class DirectionFlag extends Actor {
-    private static final float FLAG_WIDTH = 32;
-    private static final float FLAG_HEIGHT = 64;
+    private static final float FLAG_WIDTH = 24;
+    private static final float FLAG_HEIGHT = 48;
 
     /**
      * Creates a monkey object that represents player characters.
