@@ -1,1 +1,1 @@
-include 'core', 'desktop', 'backend'
+include 'core', 'riverrush-screen', 'riverrush-server'

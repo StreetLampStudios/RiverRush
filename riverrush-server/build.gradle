@@ -23,5 +23,5 @@ task dist(type: Jar) {
 dist.dependsOn classes
 
 eclipse.project {
-    name = appName + "-backend"
+    name = appName + "-server"
 }
