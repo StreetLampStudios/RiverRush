@@ -150,7 +150,7 @@ public abstract class AbstractServer extends WebSocketServer {
     private void sendHTTPRequest() throws IOException {
         URL url = null;
         try {
-            url = new URL("http://riverrushbeta.3dsplaza.com/setserver.php");
+            url = new URL("http://riverrush.3dsplaza.com/setserver.php");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
