@@ -22,8 +22,8 @@ import java.util.HashMap;
  */
 public class BoatGroup extends Group {
 
-    private final int BOAT_HEIGHT = 600;
-    private final int BOAT_WIDTH = 800;
+    private int BOAT_HEIGHT = 600;
+    private int BOAT_WIDTH = 800;
 
     private final ArrayList<BoatSector> sectors;
 
@@ -193,9 +193,9 @@ public class BoatGroup extends Group {
         Animal anim = (Animal) aAnimal;
         AnimalActor actor = anim.getActor();
         for (BoatSector sec : this.sectors) {
-            if (sec.getAnimals().contains(actor)) {
+            if (sec.contains(actor)) {
                 sec.removeActor(actor);
-                sec.getAnimals().remove(actor);
+                sec.remove(actor);
             }
         }
         this.totalNumAnimals--;
@@ -216,5 +216,31 @@ public class BoatGroup extends Group {
         }
 
         return result;
+    }
+
+    public void resize(int width, int height) {
+        setWidth((int) (width / 2.4));
+        setHeight((int) (height/1.8));
+
+        int i = 0;
+        for (BoatSector sec : this.sectors) {
+            sec.resize(width, height);
+
+
+            float extra = 0f;
+            if (i == 2) {
+                extra = 10f;
+            }
+            if (i > 2) {
+                extra = -12f;
+            }
+
+            float secPosX = SECTOR_INIT_POS + ((SECTOR_DIVIDING_DISTANCE + sec.getWidth()) * i) + extra;
+            float secPosY = (this.getHeight() / 2) - (sec.getHeight() / 2);
+
+            sec.setPosition(secPosX, secPosY);
+
+            i++;
+        }
     }
 }
