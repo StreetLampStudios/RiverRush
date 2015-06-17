@@ -1,6 +1,5 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Circle;
@@ -8,9 +7,6 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import nl.tudelft.ti2806.riverrush.graphics.Assets;
-
-import java.util.ArrayList;
 
 /**
  * Boat sector class.
@@ -27,6 +23,7 @@ public class BoatSector extends Group {
 
     /**
      * Constructor.
+     *
      * @param rows - number of rows
      * @param cols - number of columns
      */
@@ -66,6 +63,7 @@ public class BoatSector extends Group {
 
     /**
      * Adds an animal to this sector.
+     *
      * @param actor - the animal you want to add
      */
     public void addAnimal(final AnimalActor actor) {
@@ -105,19 +103,24 @@ public class BoatSector extends Group {
     }
 
     public void resize(int width, int height) {
-        for(AnimalActor actor : animals) {
-            if(actor == null)
+        this.setWidth(this.colCount * (float) (width / (1920 / 50))); // Monkey width
+        this.setHeight(this.rowCount * (float) (height / (1080 / 90))); // Monkey height
+
+        for (AnimalActor actor : animals) {
+            if (actor == null) {
                 continue;
+            }
+
             actor.resize(width, height);
             float xPos = ((this.currentAnimalPosition % this.colCount) * actor.getWidth());
             float yPos = ((this.currentAnimalPosition / this.colCount) * actor.getHeight());
-            actor.setPosition(xPos,yPos);
+            actor.setPosition(xPos, yPos);
         }
     }
 
     public boolean contains(AnimalActor actor) {
-        for(AnimalActor s : animals) {
-            if(s == actor){
+        for (AnimalActor s : animals) {
+            if (s == actor) {
                 return true;
             }
         }
@@ -126,7 +129,7 @@ public class BoatSector extends Group {
 
     public void remove(AnimalActor actor) {
         for (int i = 0; i < animals.length; i++) {
-            if(animals[i] == actor){
+            if (animals[i] == actor) {
                 animals[i] = null;
                 return;
             }
