@@ -40,6 +40,7 @@ public class WaitingScreen implements Screen {
     // Label for amount of people connected
     private Label counter;
     private int count;
+    private Image image;
 
     /**
      * Creates the graphical representation of the waiting game screen. This screen displays an
@@ -63,8 +64,8 @@ public class WaitingScreen implements Screen {
         TextureRegion region = new TextureRegion(texture, 0, 0, Gdx.graphics.getWidth(),
             Gdx.graphics.getHeight());
 
-        Image image = new Image(region);
-        image.setFillParent(true);
+        this.image = new Image(region);
+        this.image.setPosition(0, 0);
         this.stage.addActor(image);
 
         this.createTimerLabel();
@@ -142,7 +143,9 @@ public class WaitingScreen implements Screen {
 
     @Override
     public void resize(final int width, final int height) {
-        // Does not need to do anything yet
+        this.timer.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
+        this.counter.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
+        this.image.setSize(width, height);
     }
 
     @Override
@@ -166,5 +169,4 @@ public class WaitingScreen implements Screen {
             this.tmr.cancel();
         }
     }
-
 }
