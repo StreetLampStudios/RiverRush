@@ -85,6 +85,11 @@ public class AnimalActor extends Group {
         this.shadow = shad;
     }
 
+    public void resize(int width, int height) {
+        this.setWidth((1920 / width) * ANIMAL_WIDTH);
+        this.setHeight((1080 / width) * ANIMAL_HEIGHT);
+    }
+
     private class ShadowActor extends Actor {
 
         protected float origX;

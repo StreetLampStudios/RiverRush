@@ -115,7 +115,8 @@ public class PlayingGameScreen implements Screen {
 
     @Override
     public void resize(final int width, final int height) {
-        // Does not need to do anything
+        riverLeft.resize(width, height);
+        riverRight.resize(width, height);
     }
 
     @Override
@@ -177,9 +178,9 @@ public class PlayingGameScreen implements Screen {
         boat.init();
 
         if (team.getId() % 2 == 0) {
-            this.riverRight.addActor(boat);
+            this.riverRight.setBoat(boat);
         } else {
-            this.riverLeft.addActor(boat);
+            this.riverLeft.setBoat(boat);
         }
         team.setBoat(boat);
     }

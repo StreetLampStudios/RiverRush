@@ -37,7 +37,7 @@ public class FinishedGameScreen implements Screen {
     /**
      * Creates the graphical representation of the finished game screen.
      *
-     * @param dispatcher   is the dispatcher that handles all relevant events.
+     * @param dispatcher is the dispatcher that handles all relevant events.
      */
     public FinishedGameScreen(final EventDispatcher dispatcher) {
         Gdx.app.postRunnable(() -> {
@@ -51,7 +51,7 @@ public class FinishedGameScreen implements Screen {
         this.stage = new Stage();
 
         Texture texture = new Texture(Gdx.files.internal("data/end.jpg"));
-        TextureRegion region = new TextureRegion(texture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        TextureRegion region = new TextureRegion(texture, 0, 0, 1920, 1080);
 
         image = new Image(region);
         image.setFillParent(true);
@@ -103,7 +103,7 @@ public class FinishedGameScreen implements Screen {
             timerLabel = new Label("", skin);
             timerLabel.setFontScale(2f);
             timerLabel.setPosition(Gdx.graphics.getWidth() * TIMER_LABEL_WIDTH_MULTIPLIER,
-                Gdx.graphics.getHeight() * TIMER_LABEL_HEIGHT_MULTIPLIER); // 1200, 540
+                    Gdx.graphics.getHeight() * TIMER_LABEL_HEIGHT_MULTIPLIER); // 1200, 540
             stage.addActor(timerLabel);
         });
 
@@ -140,8 +140,7 @@ public class FinishedGameScreen implements Screen {
         teamWonLabel = new Label(winningTeamName + " team won! Congratulations!", skin);
         teamWonLabel.setFontScale(2f);
         teamWonLabel.setPosition(Gdx.graphics.getWidth() * WINNING_LABEL_WIDTH_MULTIPLIER,
-            Gdx.graphics.getHeight() * WINNING_LABEL_HEIGHT_MULTIPLIER); // 1200, 540
+                Gdx.graphics.getHeight() * WINNING_LABEL_HEIGHT_MULTIPLIER); // 1200, 540
         stage.addActor(teamWonLabel);
-
     }
 }

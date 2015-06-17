@@ -1,6 +1,7 @@
 package nl.tudelft.ti2806.riverrush.graphics;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
 import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.RiverActor;
 import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
@@ -17,6 +18,7 @@ public class SideStage extends Stage {
 
     private static final int RIVER_WIDTH = 1920;
     private static final int RIVER_HEIGHT = 1080;
+    private BoatGroup boat;
 
     /**
      * Creates a stage that holds the river, boats, and any player characters that reside on it, as
@@ -65,5 +67,16 @@ public class SideStage extends Stage {
      */
     public RiverActor getRiver() {
         return this.river;
+    }
+
+    public void resize(int width, int height) {
+        if (boat != null) {
+            boat.resize(width, height);
+        }
+    }
+
+    public void setBoat(BoatGroup newBoat) {
+        this.boat = newBoat;
+        this.addActor(newBoat);
     }
 }

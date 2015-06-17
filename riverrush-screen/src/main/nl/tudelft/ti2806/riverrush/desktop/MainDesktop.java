@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.desktop;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -18,6 +19,7 @@ import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
 import org.java_websocket.WebSocket;
 
+import java.awt.*;
 import java.net.URISyntaxException;
 
 /**
@@ -57,8 +59,7 @@ public class MainDesktop extends CoreModule {
 
         this.eventDispatcher = this.injector.getInstance(EventDispatcher.class);
 
-        //client.connect();
-
+        client.connect();
     }
 
     /**
@@ -69,8 +70,8 @@ public class MainDesktop extends CoreModule {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.x = 0;
         // TODO: Don't hardcode screen size
-        config.width = 1920;
-        config.height = 1080;
+        config.width =  (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        config.height = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
         Game game = this.injector.getInstance(Game.class);
         new LwjglApplication(game, config);

@@ -6,19 +6,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.Inject;
-import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -47,7 +40,6 @@ public class WaitingScreen implements Screen {
     // Label for amount of people connected
     private Label counter;
     private int count;
-    private Image image;
 
     /**
      * Creates the graphical representation of the waiting game screen. This screen displays an
@@ -68,26 +60,16 @@ public class WaitingScreen implements Screen {
         this.stage = new Stage();
 
         Texture texture = new Texture(Gdx.files.internal("data/loading.jpeg"));
-        TextureRegion region = new TextureRegion(texture, 0, 0, 1920, 1080);
-        image = new Image(region);
+        TextureRegion region = new TextureRegion(texture, 0, 0, Gdx.graphics.getWidth(),
+            Gdx.graphics.getHeight());
+
+        Image image = new Image(region);
         image.setFillParent(true);
         this.stage.addActor(image);
 
         this.createTimerLabel();
         this.createCounterLabel();
 
-        int width = Gdx.graphics.getWidth();
-        int height = Gdx.graphics.getHeight();
-
-        this.counter.setPosition(width * COUNTER_LABEL_WIDTH_MULTIPLIER,
-            height * COUNTER_LABEL_HEIGHT_MULTIPLIER);
-
-        this.timer.setPosition(width * TIMER_LABEL_WIDTH_MULTIPLIER,
-            height * TIMER_LABEL_HEIGHT_MULTIPLIER);
-
-
-
-        this.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //Set all labels
     }
 
     /**
@@ -95,6 +77,8 @@ public class WaitingScreen implements Screen {
      */
     private void createTimerLabel() {
         this.timer = new Label("Time till game start: ", this.skin);
+        this.timer.setPosition(Gdx.graphics.getWidth() * TIMER_LABEL_WIDTH_MULTIPLIER,
+            Gdx.graphics.getHeight() * TIMER_LABEL_HEIGHT_MULTIPLIER); // 1200, 540
         this.stage.addActor(this.timer);
     }
 
@@ -103,7 +87,8 @@ public class WaitingScreen implements Screen {
      */
     private void createCounterLabel() {
         this.counter = new Label("Connected: ", this.skin);
-         // 1200, 500
+        this.counter.setPosition(Gdx.graphics.getWidth() * COUNTER_LABEL_WIDTH_MULTIPLIER,
+            Gdx.graphics.getHeight() * COUNTER_LABEL_HEIGHT_MULTIPLIER); // 1200, 500
         this.stage.addActor(this.counter);
     }
 
@@ -114,7 +99,6 @@ public class WaitingScreen implements Screen {
 
         this.stage.act();
         this.stage.draw();
-
     }
 
     /**
@@ -150,15 +134,15 @@ public class WaitingScreen implements Screen {
                 WaitingScreen.this.time--;
                 WaitingScreen.this.timer
                     .setText("Time till game start: " + WaitingScreen.this.time);
+                // WaitingScreen.this.addConnection();
+
             }
         }, SECOND, SECOND);
     }
 
     @Override
     public void resize(final int width, final int height) {
-        this.counter.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
-        this.timer.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
-        this.image.setSize(width, height);
+        // Does not need to do anything yet
     }
 
     @Override
