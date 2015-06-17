@@ -20,37 +20,86 @@ import java.net.URISyntaxException;
  * and the client connections.
  */
 public class MainDesktop extends CoreModule {
-    private final Injector injector;
-    private final EventDispatcher eventDispatcher;
+    private Injector injector;
+    private EventDispatcher eventDispatcher;
 
     /**
      * Calls the main desktop constructor that starts the game.
+     *
+     * [url] [fullscreen (true/false)]
+     * [fullscreen (true/false)]
      *
      * @param arg not used
      * @throws URISyntaxException   handles the situation where the URI has the wrong syntax.
      * @throws InterruptedException handles the situation where it interrupts.
      */
     public static void main(final String[] arg) throws URISyntaxException, InterruptedException {
-        new MainDesktop();
+        if (arg.length == 2) {
+            new MainDesktop(arg[0], Boolean.parseBoolean(arg[1]));
+        } else if (arg.length == 1) {
+            new MainDesktop(Boolean.parseBoolean(arg[0]));
+        } else {
+            new MainDesktop();
+        }
     }
 
     /**
-     * Constructor for main desktop. Configures the client connections and sets up the graphics.
+     * Constructor for main desktop.
      *
      * @throws URISyntaxException   handles the situation where the URI has the wrong syntax.
      * @throws InterruptedException handles the situation where it interrupts.
      */
     public MainDesktop() throws URISyntaxException, InterruptedException {
+        super();
+
+        this.init("localhost", false);
+    }
+
+    /**
+     * Constructor for main desktop.
+     *
+     * @param fullscreen If the game should be fullscreen
+     * @throws URISyntaxException   handles the situation where the URI has the wrong syntax.
+     * @throws InterruptedException handles the situation where it interrupts.
+     */
+    public MainDesktop(boolean fullscreen) throws URISyntaxException, InterruptedException {
+        super();
+
+        this.init("localhost", fullscreen);
+    }
+
+    /**
+     * Constructor for main desktop.
+     *
+     * @param url        URL to the server
+     * @param fullscreen If the game should be fullscreen
+     * @throws URISyntaxException   handles the situation where the URI has the wrong syntax.
+     * @throws InterruptedException handles the situation where it interrupts.
+     */
+    public MainDesktop(String url, boolean fullscreen) throws URISyntaxException, InterruptedException {
+        super();
+
+        this.init(url, fullscreen);
+    }
+
+    /**
+     * Init for main desktop. Configures the client connections and sets up the graphics.
+     *
+     * @param url        URL to the server
+     * @param fullscreen If the game should be fullscreen
+     * @throws URISyntaxException   handles the situation where the URI has the wrong syntax.
+     * @throws InterruptedException handles the situation where it interrupts.
+     */
+    private void init(String url, boolean fullscreen) throws URISyntaxException {
         this.injector = Guice.createInjector(this);
+        this.eventDispatcher = this.injector.getInstance(EventDispatcher.class);
 
-        this.setupGraphics();
+        this.setupGraphics(fullscreen);
 
-        Client client = new Client("localhost", this.configureRendererProtocol());
+        Client client = new Client(url, this.configureRendererProtocol());
         RenderController controller = this.injector.getInstance(RenderController.class);
         controller.setClient(client);
         client.setController(controller);
-
-        this.eventDispatcher = this.injector.getInstance(EventDispatcher.class);
 
         client.connect();
     }
@@ -58,12 +107,15 @@ public class MainDesktop extends CoreModule {
     /**
      * Creates a Lwjgl Configurations with the given height and width. It will then get an instance
      * of the game class and use it to create the application.
+     *
+     * @param fullscreen If the game should be fullscreen
      */
-    private void setupGraphics() {
+    private void setupGraphics(boolean fullscreen) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = "RiverRush";
         config.width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         config.height = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+        config.fullscreen = fullscreen;
 
         Game game = this.injector.getInstance(Game.class);
         new LwjglApplication(game, config);
