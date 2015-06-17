@@ -1,5 +1,8 @@
 package nl.tudelft.ti2806.riverrush.graphics;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,13 +14,23 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 public final class Assets {
 
     private static Texture riverBanksTexture, monkeyShipTexture, raccoonShipTexture, riverTexture,
-            boatSectorTexture, raccoonTexture, monkeyTexture, flagTexture, endGameTexture,
-            grassTexture, cannonballTexture, icebergTexture, winTexture, loseTexture,
-            bootjeTexture, woodFloorTexture, lineTexture, shadowTexture;
+            boatSectorTexture, raccoonBrownTexture, raccoonBlackTexture, raccoonBlueTexture,
+            raccoonOrangeTexture, raccoonGreenTexture, raccoonPinkTexture, raccoonPurpleTexture,
+            raccoonRedTexture, raccoonWhiteTexture, raccoonYellowTexture, monkeyBrownTexture,
+            monkeyBlackTexture, monkeyBlueTexture, monkeyOrangeTexture, monkeyGreenTexture,
+            monkeyPinkTexture, monkeyPurpleTexture, monkeyRedTexture, monkeyWhiteTexture,
+            monkeyYellowTexture, flagTexture, endGameTexture, grassTexture, cannonballTexture,
+            icebergTexture, winTexture, loseTexture, bootjeTexture, woodFloorTexture, lineTexture,
+            shadowTexture;
 
     public static TextureRegion riverBank, boatSector, river, monkeyShip, raccoonShip, raccoon,
-            monkey, flag, endGame, grass, cannonball, iceberg, win, lose, bootje, woodFloor, line,
-            shadow;
+            monkeyBrown, monkeyBlack, monkeyBlue, monkeyOrange, monkeyGreen, monkeyPink,
+            monkeyPurple, monkeyRed, monkeyWhite, monkeyYellow, raccoonBrown, raccoonBlack,
+            raccoonBlue, raccoonOrange, raccoonGreen, raccoonPink, raccoonPurple, raccoonRed,
+            raccoonWhite, raccoonYellow, flag, endGame, grass, cannonball, iceberg, win, lose,
+            bootje, woodFloor, line, shadow;
+
+    public static ArrayList<TextureRegion> raccoonMap, monkeyMap;
 
     private static final String dir = "data/";
 
@@ -29,6 +42,9 @@ public final class Assets {
      * Load all assets, creating each TextureRegion in the game.
      */
     public static void load() {
+        raccoonMap = new ArrayList<TextureRegion>();
+        monkeyMap = new ArrayList<TextureRegion>();
+
         riverBanksTexture = new Texture(Gdx.files.internal(dir + "field.jpg"));
         riverBank = getFullRegion(riverBanksTexture);
 
@@ -43,12 +59,6 @@ public final class Assets {
 
         boatSectorTexture = new Texture(Gdx.files.internal(dir + "sector.png"));
         boatSector = getFullRegion(boatSectorTexture);
-
-        monkeyTexture = new Texture(Gdx.files.internal(dir + "monkey.png"));
-        monkey = getFullRegion(monkeyTexture);
-
-        raccoonTexture = new Texture(Gdx.files.internal(dir + "raccoon.png"));
-        raccoon = getFullRegion(raccoonTexture);
 
         flagTexture = new Texture(Gdx.files.internal(dir + "flag.png"));
         flag = getFullRegion(flagTexture);
@@ -82,6 +92,89 @@ public final class Assets {
 
         shadowTexture = new Texture(Gdx.files.internal(dir + "shadow.png"));
         shadow = getFullRegion(shadowTexture);
+
+        monkeyBrownTexture = new Texture(Gdx.files.internal(dir + "monkeyBrown.png"));
+        monkeyBrown = getFullRegion(monkeyBrownTexture);
+
+        monkeyBlackTexture = new Texture(Gdx.files.internal(dir + "monkeyBlack.png"));
+        monkeyBlack = getFullRegion(monkeyBlackTexture);
+
+        monkeyBlueTexture = new Texture(Gdx.files.internal(dir + "monkeyBlue.png"));
+        monkeyBlue = getFullRegion(monkeyBlueTexture);
+
+        monkeyOrangeTexture = new Texture(Gdx.files.internal(dir + "monkeyOrange.png"));
+        monkeyOrange = getFullRegion(monkeyOrangeTexture);
+
+        monkeyGreenTexture = new Texture(Gdx.files.internal(dir + "monkeyGreen.png"));
+        monkeyGreen = getFullRegion(monkeyGreenTexture);
+
+        monkeyPinkTexture = new Texture(Gdx.files.internal(dir + "monkeyPink.png"));
+        monkeyPink = getFullRegion(monkeyPinkTexture);
+
+        monkeyPurpleTexture = new Texture(Gdx.files.internal(dir + "monkeyPurple.png"));
+        monkeyPurple = getFullRegion(monkeyPurpleTexture);
+
+        monkeyRedTexture = new Texture(Gdx.files.internal(dir + "monkeyRed.png"));
+        monkeyRed = getFullRegion(monkeyRedTexture);
+
+        monkeyWhiteTexture = new Texture(Gdx.files.internal(dir + "monkeyWhite.png"));
+        monkeyWhite = getFullRegion(monkeyWhiteTexture);
+
+        monkeyYellowTexture = new Texture(Gdx.files.internal(dir + "monkeyYellow.png"));
+        monkeyYellow = getFullRegion(monkeyYellowTexture);
+
+        raccoonBrownTexture = new Texture(Gdx.files.internal(dir + "raccoonBrown.png"));
+        raccoonBrown = getFullRegion(raccoonBrownTexture);
+
+        raccoonBlackTexture = new Texture(Gdx.files.internal(dir + "raccoonBlack.png"));
+        raccoonBlack = getFullRegion(raccoonBlackTexture);
+
+        raccoonBlueTexture = new Texture(Gdx.files.internal(dir + "raccoonBlue.png"));
+        raccoonBlue = getFullRegion(raccoonBlueTexture);
+
+        raccoonOrangeTexture = new Texture(Gdx.files.internal(dir + "raccoonOrange.png"));
+        raccoonOrange = getFullRegion(raccoonOrangeTexture);
+
+        raccoonGreenTexture = new Texture(Gdx.files.internal(dir + "raccoonGreen.png"));
+        raccoonGreen = getFullRegion(raccoonGreenTexture);
+
+        raccoonPinkTexture = new Texture(Gdx.files.internal(dir + "raccoonPink.png"));
+        raccoonPink = getFullRegion(raccoonPinkTexture);
+
+        raccoonPurpleTexture = new Texture(Gdx.files.internal(dir + "raccoonPurple.png"));
+        raccoonPurple = getFullRegion(raccoonPurpleTexture);
+
+        raccoonRedTexture = new Texture(Gdx.files.internal(dir + "raccoonRed.png"));
+        raccoonRed = getFullRegion(raccoonRedTexture);
+
+        raccoonWhiteTexture = new Texture(Gdx.files.internal(dir + "raccoonWhite.png"));
+        raccoonWhite = getFullRegion(raccoonWhiteTexture);
+
+        raccoonYellowTexture = new Texture(Gdx.files.internal(dir + "raccoonYellow.png"));
+        raccoonYellow = getFullRegion(raccoonYellowTexture);
+
+        monkeyMap.add(monkeyBrown);
+        monkeyMap.add(monkeyBlack);
+        monkeyMap.add(monkeyBlue);
+        monkeyMap.add(monkeyOrange);
+        monkeyMap.add(monkeyGreen);
+        monkeyMap.add(monkeyPink);
+        monkeyMap.add(monkeyPurple);
+        monkeyMap.add(monkeyRed);
+        monkeyMap.add(monkeyWhite);
+        monkeyMap.add(monkeyYellow);
+
+        raccoonMap.add(raccoonBrown);
+        raccoonMap.add(raccoonBlack);
+        raccoonMap.add(raccoonBlue);
+        raccoonMap.add(raccoonOrange);
+        raccoonMap.add(raccoonGreen);
+        raccoonMap.add(raccoonPink);
+        raccoonMap.add(raccoonPurple);
+        raccoonMap.add(raccoonRed);
+        raccoonMap.add(raccoonWhite);
+        raccoonMap.add(raccoonYellow);
+
     }
 
     /**

@@ -1,5 +1,7 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
+import java.util.HashMap;
+
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.Assets;
@@ -37,7 +39,7 @@ public class AnimalActor extends Group {
      */
     private static final float ANIMAL_HEIGHT = 90; // 81
 
-    private final TextureRegion animalTexture;
+    private TextureRegion animalTexture;
     private static final float JUMP_HEIGHT = 10;
     private static final int FALL_DISTANCEX = -520;
     private static final int FALL_DISTANCEY = 200;
@@ -73,12 +75,6 @@ public class AnimalActor extends Group {
         this.setWidth(ANIMAL_WIDTH);
         this.setHeight(ANIMAL_HEIGHT);
 
-        if (teamID % 2 == 0) {
-            this.animalTexture = Assets.monkey;
-        } else {
-            this.animalTexture = Assets.raccoon;
-        }
-
         this.setOriginX(this.getWidth() / 2);
         this.setOriginY(this.getHeight() / 2);
 
@@ -95,27 +91,21 @@ public class AnimalActor extends Group {
 
     private class ShadowActor extends Actor {
 
+        protected float origX;
+        protected float origY;
+
         public ShadowActor() {
-            this.setWidth(Assets.shadow.getRegionWidth());
-            this.setHeight(Assets.shadow.getRegionHeight()); // AnimalActor.ANIMAL_HEIGHT * 0.8f
+            this.setWidth(40);
+            this.setHeight(72);
             this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
         }
 
         @Override
         public void draw(final Batch batch, final float parentAlpha) {
-            Color color = this.getColor();
-            batch.setColor(color.r, color.g, color.b, color.a * parentAlpha * 0.5f);
-
-            // batch.enableBlending();
-            // batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
             batch.draw(Assets.shadow, this.getX(), this.getY(), this.getOriginX(),
                     this.getOriginY(), this.getWidth(), this.getHeight(), this.getScaleX(),
                     this.getScaleY(), this.getRotation());
-
-            batch.setColor(Color.WHITE);
             super.draw(batch, parentAlpha);
-            // batch.disableBlending();
         }
 
         @Override
@@ -148,6 +138,12 @@ public class AnimalActor extends Group {
         v = this.localToStageCoordinates(v);
 
         this.bounds = new Circle(v.x, v.y, ((float) (this.getHeight() * HITBOX_MULTIPLIER)));
+
+        if (this.animal.getTeamId() % 2 == 0) {
+            this.animalTexture = Assets.monkeyMap.get(this.animal.getVariation());
+        } else {
+            this.animalTexture = Assets.raccoonMap.get(this.animal.getVariation()); //
+        }
     }
 
     @Override
@@ -166,9 +162,9 @@ public class AnimalActor extends Group {
         super.draw(batch, parentAlpha);
         this.shadow.draw(batch, parentAlpha);
 
-        batch.draw(Assets.raccoon, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
-                this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
-                this.getRotation());
+        batch.draw(this.animalTexture, this.getX(), this.getY(), this.getOriginX(),
+                this.getOriginY(), this.getWidth(), this.getHeight(), this.getScaleX(),
+                this.getScaleY(), this.getRotation());
 
         batch.setColor(Color.WHITE);
 
@@ -191,10 +187,14 @@ public class AnimalActor extends Group {
         fall.setPosition(this.getX() + FALL_DISTANCEX, this.getY() + FALL_DISTANCEY);
         fall.setDuration(FALL_VELOCITY);
 
-        // AlphaAction fade = Actions.fadeOut(FALL_VELOCITY);
         AlphaAction fade = new AlphaAction();
         fade.setAlpha(0f);
         fade.setDuration(FALL_VELOCITY);
+
+        this.shadow.origX = this.shadow.getX();
+        this.shadow.origY = this.shadow.getY();
+        this.shadow.addAction(Actions.moveTo(this.shadow.getX() + FALL_DISTANCEX,
+                this.shadow.getY() + FALL_DISTANCEY, FALL_VELOCITY));
 
         return Actions.parallel(fade, fall);
     }
@@ -207,6 +207,11 @@ public class AnimalActor extends Group {
     public Action returnMove() {
         MoveToAction ret = new MoveToAction();
         ret.setPosition(this.origX, this.origY);
+
+        MoveToAction returnShad = new MoveToAction();
+        returnShad.setPosition(this.shadow.origX, this.shadow.origY);
+
+        this.shadow.addAction(returnShad);
         return ret;
     }
 
@@ -233,12 +238,16 @@ public class AnimalActor extends Group {
             this.directionFlag.setRotation(30f);
             this.directionFlag.setScale(1f, 1f);
             this.directionFlag.setColor(Color.GREEN);
+            this.directionFlag.setColor(Color.RED);
         } else {
             this.directionFlag.setPosition(this.getWidth() / 2, 0);
+            this.directionFlag.setPosition(this.getWidth(), 0);
             this.directionFlag.setRotation(-30f);
             this.directionFlag.setScale(1, -1);
             this.directionFlag.setColor(Color.RED);
+            this.directionFlag.setColor(Color.GREEN);
         }
+
         RotateToAction rot = new RotateToAction();
         rot.setRotation(0f);
         rot.setDuration(0.3f);
@@ -246,30 +255,6 @@ public class AnimalActor extends Group {
     }
 
     public void jumpAction() {
-        // MoveToAction jumpUp = new MoveToAction();
-        // jumpUp.setPosition(this.getX() + JUMP_HEIGHT, this.getY());
-        // jumpUp.setDuration(JUMP_UP_DURATION);
-        //
-        // MoveToAction drop = new MoveToAction();
-        // drop.setPosition(this.origX, this.getY());
-        // drop.setDuration(JUMP_DOWN_DURATION);
-        //
-        // this.setOrigin((this.getWidth() / 2), (this.getHeight() / 2));
-        //
-        // RotateByAction wiggleLeft = Actions.rotateBy(WIGGLE_DISTANCE);
-        // wiggleLeft.setDuration(WIGGLE_LEFT_DURATION);
-        //
-        // RotateByAction wiggleRight = Actions.rotateBy(-(WIGGLE_DISTANCE * 2));
-        // wiggleRight.setDuration(WIGGLE_RIGHT_DURATION);
-        //
-        // RotateByAction wiggleBack = Actions.rotateBy(WIGGLE_DISTANCE);
-        // wiggleBack.setDuration(WIGGLE_BACK_DURATION);
-        //
-        // SequenceAction wiggle = sequence(wiggleLeft, wiggleRight, wiggleBack);
-        //
-        // SequenceAction jump = sequence(jumpUp,
-        // Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
-
         MoveToAction jumpUp = new MoveToAction();
         jumpUp.setPosition(this.getX(), this.getY() + JUMP_HEIGHT);
         jumpUp.setDuration(JUMP_UP_DURATION);

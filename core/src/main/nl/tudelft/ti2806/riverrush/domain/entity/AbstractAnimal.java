@@ -78,7 +78,7 @@ public abstract class AbstractAnimal {
      * Sets the color of an animal to a random color from an array.
      */
     public Integer getRandomVariation() {
-        int[] variations = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        int[] variations = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         int idx = new Random().nextInt(variations.length);
         return (variations[idx]);
     }
