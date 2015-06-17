@@ -258,30 +258,6 @@ public class AnimalActor extends Group {
     }
 
     public void jumpAction() {
-        // MoveToAction jumpUp = new MoveToAction();
-        // jumpUp.setPosition(this.getX() + JUMP_HEIGHT, this.getY());
-        // jumpUp.setDuration(JUMP_UP_DURATION);
-        //
-        // MoveToAction drop = new MoveToAction();
-        // drop.setPosition(this.origX, this.getY());
-        // drop.setDuration(JUMP_DOWN_DURATION);
-        //
-        // this.setOrigin((this.getWidth() / 2), (this.getHeight() / 2));
-        //
-        // RotateByAction wiggleLeft = Actions.rotateBy(WIGGLE_DISTANCE);
-        // wiggleLeft.setDuration(WIGGLE_LEFT_DURATION);
-        //
-        // RotateByAction wiggleRight = Actions.rotateBy(-(WIGGLE_DISTANCE * 2));
-        // wiggleRight.setDuration(WIGGLE_RIGHT_DURATION);
-        //
-        // RotateByAction wiggleBack = Actions.rotateBy(WIGGLE_DISTANCE);
-        // wiggleBack.setDuration(WIGGLE_BACK_DURATION);
-        //
-        // SequenceAction wiggle = sequence(wiggleLeft, wiggleRight, wiggleBack);
-        //
-        // SequenceAction jump = sequence(jumpUp,
-        // Actions.repeat((int) (DELAY_DURATION / WIGGLE_DURATION), wiggle), drop);
-
         MoveToAction jumpUp = new MoveToAction();
         jumpUp.setPosition(this.getX(), this.getY() + JUMP_HEIGHT);
         jumpUp.setDuration(JUMP_UP_DURATION);

@@ -60,8 +60,6 @@ public class AnimalOnBoat implements AnimalState {
     public AnimalState voteDirection(final Direction direction) {
         this.animal.setVoteDirection(direction);
         this.animal.getActor().updateFlag(direction);
-        // Action roll = this.animal.getActor().rollAction(direction);
-        // this.animal.getActor().addAction(roll);
         return this;
     }
 

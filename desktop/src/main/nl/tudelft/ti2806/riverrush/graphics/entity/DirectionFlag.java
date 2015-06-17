@@ -19,9 +19,6 @@ public class DirectionFlag extends Actor {
     public DirectionFlag() {
         this.setWidth(FLAG_WIDTH);
         this.setHeight(FLAG_HEIGHT);
-
-        // this.setOriginX(0);
-        // this.setOriginY(0);
     }
 
     @Override
@@ -29,16 +26,11 @@ public class DirectionFlag extends Actor {
         Color color = this.getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        // batch.enableBlending();
-        // batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
         batch.draw(Assets.flag, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
                 this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
                 this.getRotation());
 
         batch.setColor(Color.WHITE);
-
-        // batch.disableBlending();
     }
 
     @Override
