@@ -1,11 +1,5 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import java.util.HashMap;
-
-import nl.tudelft.ti2806.riverrush.domain.event.Direction;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.graphics.Assets;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -24,6 +18,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.RotateToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.inject.Inject;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
 /**
  * Game object representing a monkey.
@@ -64,7 +61,7 @@ public class AnimalActor extends Group {
      * Creates a monkey object that represents player characters.
      *
      * @param dispatcher Event dispatcher for dispatching events
-     * @param teamID - The id of the team which this monkey belongs
+     * @param teamID     - The id of the team which this monkey belongs
      */
     @Inject
     public AnimalActor(final EventDispatcher dispatcher, final int teamID) {
@@ -86,8 +83,10 @@ public class AnimalActor extends Group {
     }
 
     public void resize(int width, int height) {
-        this.setWidth((1920 / width) * ANIMAL_WIDTH);
-        this.setHeight((1080 / height) * ANIMAL_HEIGHT);
+        this.setWidth(width / (1920 / ANIMAL_WIDTH));
+        this.setHeight(height / (1080 / ANIMAL_HEIGHT));
+        this.shadow.setWidth(width / (1920 / 40));
+        this.shadow.setHeight(height / (1080 / 72));
     }
 
     private class ShadowActor extends Actor {
