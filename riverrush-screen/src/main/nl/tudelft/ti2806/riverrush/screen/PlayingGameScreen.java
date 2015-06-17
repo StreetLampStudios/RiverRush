@@ -3,7 +3,6 @@ package nl.tudelft.ti2806.riverrush.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import nl.tudelft.ti2806.riverrush.game.TickHandler;
@@ -32,6 +31,8 @@ public class PlayingGameScreen implements Screen {
     private Stage banksRight;
 
     private TickHandler onTick;
+    private int height;
+    private int width;
 
     /**
      * Creates the graphical representation of the playing game screen. The playing game screen
@@ -50,11 +51,11 @@ public class PlayingGameScreen implements Screen {
         this.betweenRivers = new CenterStage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.riverRight = new SideStage();
 
-        OrthographicCamera camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
         this.banksLeft = this.createRiverBank();
         this.banksRight = this.createRiverBank();
+
+        this.height = Gdx.graphics.getHeight();
+        this.width = Gdx.graphics.getWidth();
     }
 
     /**
@@ -63,7 +64,6 @@ public class PlayingGameScreen implements Screen {
      * @return A fresh river bank Stage.
      */
     private Stage createRiverBank() {
-
         Stage bank = new Stage();
         Image rightImg = new Image(Assets.riverBank);
         rightImg.setFillParent(true);
@@ -96,27 +96,30 @@ public class PlayingGameScreen implements Screen {
     }
 
     /**
-     * Draws a stage on the screen. Each stage occupies the entire height of the screen.
+     * Draws a stage on the screen. Each stage occupies the entire width of the screen.
      *
-     * @param toDraw The stage to draw.
+     * @param toDraw             The stage to draw.
      * @param positionPercentage The position of the stage from the left. Between 0 and 1.
-     * @param heigthPercentage The width of the stage between 0 and 1. (1 = 100%).
+     * @param heightPercentage   The width of the stage between 0 and 1. (1 = 100%).
      */
     private void drawStage(final Stage toDraw, final double positionPercentage,
-            final double heigthPercentage) {
+                           final double heightPercentage) {
 
-        int yPos = (int) (Gdx.graphics.getHeight() * positionPercentage);
-        int height = (int) (Gdx.graphics.getHeight() * heigthPercentage);
-        Gdx.gl.glViewport(0, yPos, Gdx.graphics.getWidth(), height);
+        int yPos = (int) ((double) this.height * positionPercentage);
+        int height = (int) ((double) this.height * heightPercentage);
+        Gdx.gl.glViewport(0, yPos, this.width, height);
 
         toDraw.act(Gdx.graphics.getDeltaTime());
         toDraw.draw();
     }
 
     @Override
-    public void resize(final int width, final int height) {
-        riverLeft.resize(width, height);
-        riverRight.resize(width, height);
+    public void resize(final int aWidth, final int aHeight) {
+        this.width = aWidth;
+        this.height = aHeight;
+
+        riverLeft.resize(aWidth, aHeight);
+        riverRight.resize(aWidth, aHeight);
     }
 
     @Override
@@ -174,7 +177,7 @@ public class PlayingGameScreen implements Screen {
      */
     public void addBoat(final Team team) {
         BoatGroup boat = new BoatGroup(Gdx.graphics.getWidth() * 0.02f,
-                (Gdx.graphics.getHeight() / 2), team.getId());
+                (Gdx.graphics.getHeight() * (float) RIVER_SIZE), team.getId());
         boat.init();
 
         if (team.getId() % 2 == 0) {
@@ -188,9 +191,9 @@ public class PlayingGameScreen implements Screen {
     /**
      * Update the progress.
      *
-     * @param teamID The team id
+     * @param teamID   The team id
      * @param progress The progress
-     * @param speed the speed
+     * @param speed    the speed
      */
     public void updateProgress(final int teamID, final double progress, final double speed) {
         if (teamID % 2 == 0) {

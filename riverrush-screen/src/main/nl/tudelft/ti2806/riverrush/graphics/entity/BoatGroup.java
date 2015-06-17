@@ -22,8 +22,8 @@ import java.util.HashMap;
  */
 public class BoatGroup extends Group {
 
-    private int BOAT_HEIGHT = 600;
-    private int BOAT_WIDTH = 800;
+    private final int BOAT_HEIGHT = 600;
+    private final int BOAT_WIDTH = 800;
 
     private final ArrayList<BoatSector> sectors;
 
@@ -49,8 +49,8 @@ public class BoatGroup extends Group {
     /**
      * Creates an boat object with a given graphical representation.
      *
-     * @param xpos represents the position of the boat on the x axis
-     * @param ypos represents the position of the boat on the y axis
+     * @param xpos   represents the position of the boat on the x axis
+     * @param ypos   represents the position of the boat on the y axis
      * @param teamID - The id of the boat that this team will represent
      */
     @Inject
@@ -108,7 +108,6 @@ public class BoatGroup extends Group {
 
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
-
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         v = this.localToStageCoordinates(v);
         this.bounds.setPosition(v.x, v.y);
@@ -127,7 +126,6 @@ public class BoatGroup extends Group {
 
         super.draw(batch, parentAlpha);
         batch.disableBlending();
-
     }
 
     @Override
@@ -138,7 +136,7 @@ public class BoatGroup extends Group {
     /**
      * Vote for a direction to move the boat there.
      *
-     * @param animal The animal that has voted
+     * @param animal    The animal that has voted
      * @param direction The direction the animal voted in
      */
     public void voteForDirection(final AbstractAnimal animal, final int direction) {
@@ -174,7 +172,7 @@ public class BoatGroup extends Group {
     /**
      * Add an animal to teh boat.
      *
-     * @param actor The actor of the animal
+     * @param actor  The actor of the animal
      * @param sector The sector to add the animal in
      */
     public void addAnimal(final AnimalActor actor, final Sector sector) {
@@ -219,23 +217,24 @@ public class BoatGroup extends Group {
     }
 
     public void resize(int width, int height) {
-        setWidth((int) (width / 2.4));
-        setHeight((int) (height/1.8));
+        this.setWidth((int) (width / 2.4));
+        this.setHeight((int) (height / 1.8));
+        this.setX(width * 0.02f);
+        this.setY((float) (1080 * 0.45) - (this.getHeight() / 2));
 
         int i = 0;
         for (BoatSector sec : this.sectors) {
             sec.resize(width, height);
 
-
             float extra = 0f;
             if (i == 2) {
-                extra = 10f;
+                extra = (float) width / (1920 / 10);
             }
             if (i > 2) {
-                extra = -12f;
+                extra = (float) width / (1920 / -12);
             }
 
-            float secPosX = SECTOR_INIT_POS + ((SECTOR_DIVIDING_DISTANCE + sec.getWidth()) * i) + extra;
+            float secPosX = (width / (1920 / SECTOR_INIT_POS)) + (((width / (1920 / SECTOR_DIVIDING_DISTANCE)) + sec.getWidth()) * i) + extra;
             float secPosY = (this.getHeight() / 2) - (sec.getHeight() / 2);
 
             sec.setPosition(secPosX, secPosY);

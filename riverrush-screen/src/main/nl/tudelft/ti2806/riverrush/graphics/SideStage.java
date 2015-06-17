@@ -1,5 +1,6 @@
 package nl.tudelft.ti2806.riverrush.graphics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
 import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
@@ -16,8 +17,6 @@ public class SideStage extends Stage {
     private CannonBallGraphic obstacle;
     private RockGraphic rock;
 
-    private static final int RIVER_WIDTH = 1920;
-    private static final int RIVER_HEIGHT = 1080;
     private BoatGroup boat;
 
     /**
@@ -25,7 +24,7 @@ public class SideStage extends Stage {
      * well as the obstacles that pass through it.
      */
     public SideStage() {
-        this.river = new RiverActor(0, RIVER_WIDTH, RIVER_HEIGHT);
+        this.river = new RiverActor(0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.addActor(this.river);
     }
 
@@ -70,8 +69,8 @@ public class SideStage extends Stage {
     }
 
     public void resize(int width, int height) {
-        if (boat != null) {
-            boat.resize(width, height);
+        if (this.boat != null) {
+            this.boat.resize(width, height);
         }
     }
 

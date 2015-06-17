@@ -1,7 +1,6 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
@@ -29,8 +28,8 @@ public class RiverActor extends Actor {
      * Creates an river object with a given graphical representation.
      *
      * @param startPosition represents the position of the river on the y axis
-     * @param width represents the width of the river object
-     * @param height represents the height of the river object
+     * @param width         represents the width of the river object
+     * @param height        represents the height of the river object
      */
     @Inject
     public RiverActor(final float startPosition, final float width, final float height) {
@@ -51,7 +50,6 @@ public class RiverActor extends Actor {
         RepeatAction rep = forever(seq);
 
         this.addAction(rep);
-
     }
 
     @Override
@@ -97,6 +95,5 @@ public class RiverActor extends Actor {
 
         SequenceAction seq = sequence(this.flow, newRep);
         this.addAction(seq);
-
     }
 }
