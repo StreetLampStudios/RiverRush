@@ -87,7 +87,7 @@ public class WaitingScreen implements Screen {
      * Creates the counter label.
      */
     private void createCounterLabel() {
-        this.counter = new Label("Connected: ", this.skin);
+        this.counter = new Label("Connected: 0", this.skin);
         this.counter.setPosition(Gdx.graphics.getWidth() * COUNTER_LABEL_WIDTH_MULTIPLIER,
             Gdx.graphics.getHeight() * COUNTER_LABEL_HEIGHT_MULTIPLIER); // 1200, 500
         this.stage.addActor(this.counter);
