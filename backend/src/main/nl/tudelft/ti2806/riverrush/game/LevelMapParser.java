@@ -47,13 +47,14 @@ public class LevelMapParser {
     public static TreeMap<Double, AbstractTeamEvent> parseLevel(final Scanner level) {
         TreeMap<Double, AbstractTeamEvent> levelMap = new TreeMap<>();
 
-        final String lineSeperator = System.getProperty("line.separator");
-        level.useDelimiter(",|" + lineSeperator);
-        while (level.hasNextDouble()) {
-            Double spawnTime = level.nextDouble();
-            char thingToSpawn = level.next().charAt(0);
-
-            AbstractTeamEvent event = generateTrackEvent(thingToSpawn, level.nextDouble());
+        String currentLine;
+        while(level.hasNextLine()) {
+            currentLine = level.nextLine();
+            String[] lineContent = currentLine.split(",");
+            double spawnTime = Double.parseDouble(lineContent[0]);
+            char thingToSpawn = lineContent[1].charAt(0);
+            double spawnLocation = Double.parseDouble(lineContent[2]);
+            AbstractTeamEvent event = generateTrackEvent(thingToSpawn, spawnLocation);
             levelMap.put(spawnTime, event);
         }
 
