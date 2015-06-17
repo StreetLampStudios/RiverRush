@@ -1,12 +1,11 @@
 package nl.tudelft.ti2806.riverrush.graphics;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
+import java.util.ArrayList;
 
 /**
  * Centralizes loading and creating of Textures and TextureRegions.
@@ -14,21 +13,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 public final class Assets {
 
     private static Texture riverBanksTexture, monkeyShipTexture, raccoonShipTexture, riverTexture,
-            boatSectorTexture, raccoonBrownTexture, raccoonBlackTexture, raccoonBlueTexture,
-            raccoonOrangeTexture, raccoonGreenTexture, raccoonPinkTexture, raccoonPurpleTexture,
-            raccoonRedTexture, raccoonWhiteTexture, raccoonYellowTexture, monkeyBrownTexture,
-            monkeyBlackTexture, monkeyBlueTexture, monkeyOrangeTexture, monkeyGreenTexture,
-            monkeyPinkTexture, monkeyPurpleTexture, monkeyRedTexture, monkeyWhiteTexture,
-            monkeyYellowTexture, flagTexture, endGameTexture, grassTexture, cannonballTexture,
-            icebergTexture, winTexture, loseTexture, bootjeTexture, woodFloorTexture, lineTexture,
-            shadowTexture;
+        boatSectorTexture, raccoonBrownTexture, raccoonBlackTexture, raccoonBlueTexture,
+        raccoonOrangeTexture, raccoonGreenTexture, raccoonPinkTexture, raccoonPurpleTexture,
+        raccoonRedTexture, raccoonWhiteTexture, raccoonYellowTexture, monkeyBrownTexture,
+        monkeyBlackTexture, monkeyBlueTexture, monkeyOrangeTexture, monkeyGreenTexture,
+        monkeyPinkTexture, monkeyPurpleTexture, monkeyRedTexture, monkeyWhiteTexture,
+        monkeyYellowTexture, flagTexture, endGameTexture, grassTexture, cannonballTexture,
+        icebergTexture, winTexture, loseTexture, woodFloorTexture, lineTexture,
+        shadowTexture, bootjeMonkeyTexture, bootjeRaccoonTexture;
 
     public static TextureRegion riverBank, boatSector, river, monkeyShip, raccoonShip, raccoon,
-            monkeyBrown, monkeyBlack, monkeyBlue, monkeyOrange, monkeyGreen, monkeyPink,
-            monkeyPurple, monkeyRed, monkeyWhite, monkeyYellow, raccoonBrown, raccoonBlack,
-            raccoonBlue, raccoonOrange, raccoonGreen, raccoonPink, raccoonPurple, raccoonRed,
-            raccoonWhite, raccoonYellow, flag, endGame, grass, cannonball, iceberg, win, lose,
-            bootje, woodFloor, line, shadow;
+        monkeyBrown, monkeyBlack, monkeyBlue, monkeyOrange, monkeyGreen, monkeyPink,
+        monkeyPurple, monkeyRed, monkeyWhite, monkeyYellow, raccoonBrown, raccoonBlack,
+        raccoonBlue, raccoonOrange, raccoonGreen, raccoonPink, raccoonPurple, raccoonRed,
+        raccoonWhite, raccoonYellow, flag, endGame, grass, cannonball, iceberg, win, lose,
+        bootjeMonkey, bootjeRaccoon, woodFloor, line, shadow;
 
     public static ArrayList<TextureRegion> raccoonMap, monkeyMap;
 
@@ -78,8 +77,11 @@ public final class Assets {
         loseTexture = new Texture(Gdx.files.internal(dir + "lose.png"));
         lose = getFullRegion(loseTexture);
 
-        bootjeTexture = new Texture(Gdx.files.internal(dir + "bootje.jpg"));
-        bootje = getFullRegion(bootjeTexture);
+        bootjeMonkeyTexture = new Texture(Gdx.files.internal(dir + "bootje4_monkey.png"));
+        bootjeMonkey = getFullRegion(bootjeMonkeyTexture);
+
+        bootjeRaccoonTexture = new Texture(Gdx.files.internal(dir + "bootje4_raccoon.png"));
+        bootjeRaccoon = getFullRegion(bootjeRaccoonTexture);
 
         woodFloorTexture = new Texture(Gdx.files.internal(dir + "wood-floor.jpg"));
         woodFloor = getFullRegion(woodFloorTexture);
