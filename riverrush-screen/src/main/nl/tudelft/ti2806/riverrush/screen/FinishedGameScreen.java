@@ -51,12 +51,11 @@ public class FinishedGameScreen implements Screen {
         this.stage = new Stage();
 
         Texture texture = new Texture(Gdx.files.internal("data/end.jpg"));
-        TextureRegion region = new TextureRegion(texture, 0, 0, 1920, 1080);
+        TextureRegion region = new TextureRegion(texture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         image = new Image(region);
-        image.setFillParent(true);
+        image.setPosition(0, 0);
         this.stage.addActor(image);
-
     }
 
     @Override
