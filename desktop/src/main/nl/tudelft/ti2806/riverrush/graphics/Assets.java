@@ -57,9 +57,6 @@ public final class Assets {
         riverTexture = new Texture(Gdx.files.internal(dir + "river.png"));
         river = getFullRegion(riverTexture);
 
-        boatSectorTexture = new Texture(Gdx.files.internal(dir + "sector.png"));
-        boatSector = getFullRegion(boatSectorTexture);
-
         flagTexture = new Texture(Gdx.files.internal(dir + "flag.png"));
         flag = getFullRegion(flagTexture);
 
