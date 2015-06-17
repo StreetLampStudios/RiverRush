@@ -64,9 +64,6 @@ public class AnimalActor extends Group {
     private Animal animal;
     private ShadowActor shadow;
 
-    // private final HashMap<Integer, TextureRegion> textureMap = new HashMap<Integer,
-    // TextureRegion>();
-
     /**
      * Creates a monkey object that represents player characters.
      *
@@ -99,7 +96,7 @@ public class AnimalActor extends Group {
 
         public ShadowActor() {
             this.setWidth(40);
-            this.setHeight(72); // AnimalActor.ANIMAL_HEIGHT * 0.8f
+            this.setHeight(72);
             this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
         }
 
