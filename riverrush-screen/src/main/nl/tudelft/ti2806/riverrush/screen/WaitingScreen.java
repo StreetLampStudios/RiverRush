@@ -66,11 +66,11 @@ public class WaitingScreen implements Screen {
 
         this.image = new Image(region);
         this.image.setPosition(0, 0);
+        this.image.setFillParent(true);
         this.stage.addActor(image);
 
         this.createTimerLabel();
         this.createCounterLabel();
-
     }
 
     /**

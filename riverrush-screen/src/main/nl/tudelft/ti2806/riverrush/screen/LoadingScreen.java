@@ -40,6 +40,7 @@ public class LoadingScreen implements Screen {
 
         this.loadingImage = Assets.getLoadingImage();
         this.loadingImage.setPosition(0, 0);
+        this.loadingImage.setFillParent(true);
         this.stage.addActor(this.loadingImage);
     }
 
