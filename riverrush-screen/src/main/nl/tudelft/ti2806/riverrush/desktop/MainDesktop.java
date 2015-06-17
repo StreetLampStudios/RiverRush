@@ -46,9 +46,9 @@ public class MainDesktop extends CoreModule {
         this.setupGraphics();
 
         Client client = new Client("localhost", this.configureRendererProtocol());
-        RenderController cntrl = this.injector.getInstance(RenderController.class);
-        cntrl.setClient(client);
-        client.setController(cntrl);
+        RenderController controller = this.injector.getInstance(RenderController.class);
+        controller.setClient(client);
+        client.setController(controller);
 
         this.eventDispatcher = this.injector.getInstance(EventDispatcher.class);
 
