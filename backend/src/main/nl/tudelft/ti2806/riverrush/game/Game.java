@@ -139,13 +139,4 @@ public class Game {
     public Event getStateEvent() {
         return this.gameState.getStateEvent();
     }
-
-
-    public GameState getGameState() {
-        return this.gameState;
-    }
-
-    public void setGameState(final GameState aGameState) {
-        this.gameState = aGameState;
-    }
 }
