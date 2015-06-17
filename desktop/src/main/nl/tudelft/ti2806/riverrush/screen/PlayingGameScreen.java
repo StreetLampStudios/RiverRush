@@ -141,28 +141,28 @@ public class PlayingGameScreen implements Screen {
     /**
      * adds an obstacle on the..
      *
-     * @param isLeft  - left or right side
+     * @param isRight  - left or right side
      * @param graphic - where the obstacle is the graphic
      */
-    public void addObstacle(final boolean isLeft, final CannonBallGraphic graphic) {
-        if (isLeft) {
-            this.riverLeft.spawnObstacle(graphic);
-        } else {
+    public void addObstacle(final boolean isRight, final CannonBallGraphic graphic) {
+        if (isRight) {
             this.riverRight.spawnObstacle(graphic);
+        } else {
+            this.riverLeft.spawnObstacle(graphic);
         }
     }
 
     /**
      * adds an rock on the..
      *
-     * @param isLeft  - left or right side
+     * @param isRight  - left or right side
      * @param graphic - where the rock is the graphic
      */
-    public void addRock(final boolean isLeft, final RockGraphic graphic) {
-        if (isLeft) {
-            this.riverLeft.spawnRock(graphic);
-        } else {
+    public void addRock(final boolean isRight, final RockGraphic graphic) {
+        if (isRight) {
             this.riverRight.spawnRock(graphic);
+        } else {
+            this.riverLeft.spawnRock(graphic);
         }
     }
 
@@ -177,9 +177,9 @@ public class PlayingGameScreen implements Screen {
         boat.init();
 
         if (team.getId() % 2 == 0) { // TODO: Temporary hard coding
-            this.riverLeft.addActor(boat);
-        } else {
             this.riverRight.addActor(boat);
+        } else {
+            this.riverLeft.addActor(boat);
         }
         team.setBoat(boat);
     }

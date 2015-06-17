@@ -144,7 +144,7 @@ public class BoatGroup extends Group {
         Integer currentVote = this.directionVotes.getOrDefault(animal, 0);
         if (currentVote != direction) {
             this.votingSum -= currentVote;
-            this.votingSum += direction;
+            this.votingSum -= direction;
             this.directionVotes.put(animal, direction);
             this.updateBoatPosition();
 
