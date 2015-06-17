@@ -249,9 +249,9 @@ public class PlayingGameState extends AbstractGameState {
         animal.voteOneDirection(direction);
 
         if (direction == Direction.LEFT) {
-            team.getBoat().voteForDirection(animal, -1);
-        } else if (direction == Direction.RIGHT) {
             team.getBoat().voteForDirection(animal, 1);
+        } else if (direction == Direction.RIGHT) {
+            team.getBoat().voteForDirection(animal, -1);
         }
     }
 
