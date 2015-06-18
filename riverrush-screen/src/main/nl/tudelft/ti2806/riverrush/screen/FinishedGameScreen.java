@@ -141,9 +141,9 @@ public class FinishedGameScreen implements Screen {
 
     public void drawWinningLabel(int winningID) {
 
-        String winningTeamName = winningID == 0 ? "Left" : "Right";
+        String winningTeamName = winningID % 2 == 0 ? "Monkey" : "Raccoon";
 
-        teamWonLabel = new Label(winningTeamName + " team won! Congratulations!", skin);
+        teamWonLabel = new Label("Team " + winningTeamName + " won! Congratulations!", skin);
         teamWonLabel.setFontScale(2f);
         teamWonLabel.setPosition(Gdx.graphics.getWidth() * WINNING_LABEL_WIDTH_MULTIPLIER,
                 Gdx.graphics.getHeight() * WINNING_LABEL_HEIGHT_MULTIPLIER); // 1200, 540
