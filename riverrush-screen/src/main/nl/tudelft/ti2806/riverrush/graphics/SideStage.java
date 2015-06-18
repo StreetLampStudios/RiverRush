@@ -34,9 +34,6 @@ public class SideStage extends Stage {
      * @param graphic - The obstacle that you want to add.
      */
     public void spawnObstacle(final CannonBallGraphic graphic) {
-        if (this.obstacle != null) {
-            this.obstacle.remove();
-        }
         graphic.init();
         this.obstacle = graphic;
         this.addActor(this.obstacle);
@@ -48,9 +45,6 @@ public class SideStage extends Stage {
      * @param graphic - The obstacle that you want to add.
      */
     public void spawnRock(final RockGraphic graphic) {
-        if (this.rock != null) {
-            this.rock.remove();
-        }
         graphic.init();
         this.rock = graphic;
         this.addActor(this.rock);

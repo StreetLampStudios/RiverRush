@@ -128,6 +128,9 @@ public class PlayingGameState extends AbstractGameState {
                     hitByCollision.getAnimal().collide();
                 }
             }
+            if(graphic.getWidth() < 0) {
+            	graphic.remove();
+            }
         }
     }
 
@@ -144,6 +147,9 @@ public class PlayingGameState extends AbstractGameState {
                 event.setTeam(team.getId());
                 event.setDirection(graphic.getDirection());
                 this.dispatcher.dispatch(event);
+            }
+            if(graphic.getWidth() < 0) {
+            	graphic.remove();
             }
         }
     }
