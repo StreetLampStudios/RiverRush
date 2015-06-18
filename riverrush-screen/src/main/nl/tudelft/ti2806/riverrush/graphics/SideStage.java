@@ -25,7 +25,7 @@ public class SideStage extends Stage {
      */
     public SideStage() {
         this.river = new RiverActor(0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        this.addActor(this.river);
+        this.getRoot().addActorAt(0, this.river);
     }
 
     /**
@@ -36,7 +36,7 @@ public class SideStage extends Stage {
     public void spawnObstacle(final CannonBallGraphic graphic) {
         graphic.init();
         this.obstacle = graphic;
-        this.addActor(this.obstacle);
+        this.boat.addActorAt(0, this.obstacle);
     }
 
     /**
@@ -47,7 +47,7 @@ public class SideStage extends Stage {
     public void spawnRock(final RockGraphic graphic) {
         graphic.init();
         this.rock = graphic;
-        this.addActor(this.rock);
+        this.getRoot().addActorBefore(this.boat, this.rock);
     }
 
     @Override
@@ -70,6 +70,6 @@ public class SideStage extends Stage {
 
     public void setBoat(BoatGroup newBoat) {
         this.boat = newBoat;
-        this.addActor(newBoat);
+        this.getRoot().addActorAt(1, newBoat);
     }
 }
