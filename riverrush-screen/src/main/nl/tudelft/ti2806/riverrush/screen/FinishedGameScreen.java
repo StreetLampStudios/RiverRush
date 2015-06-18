@@ -70,8 +70,14 @@ public class FinishedGameScreen implements Screen {
 
     @Override
     public void resize(final int width, final int height) {
-        this.timerLabel.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
-        this.teamWonLabel.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
+        if (this.timerLabel != null) {
+            this.timerLabel.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
+        }
+
+        if (this.teamWonLabel != null) {
+            this.teamWonLabel.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
+        }
+
         this.image.setSize(width, height);
     }
 
