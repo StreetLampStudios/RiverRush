@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,10 +24,10 @@ import java.util.TimerTask;
 public class WaitingScreen implements Screen {
 
     private static final int SECOND = 1000;
-    private static final float TIMER_LABEL_WIDTH_MULTIPLIER = 0.625f;
-    private static final float TIMER_LABEL_HEIGHT_MULTIPLIER = 0.5f;
-    private static final float COUNTER_LABEL_WIDTH_MULTIPLIER = 0.625f;
-    private static final float COUNTER_LABEL_HEIGHT_MULTIPLIER = 0.45f;
+    private static final float TIMER_LABEL_WIDTH_MULTIPLIER = 0.8f;
+    private static final float TIMER_LABEL_HEIGHT_MULTIPLIER = 0.8f;
+    private static final float COUNTER_LABEL_WIDTH_MULTIPLIER = 0.8f;
+    private static final float COUNTER_LABEL_HEIGHT_MULTIPLIER = 0.75f;
     private Stage stage;
 
     private TextureAtlas atlas;
@@ -41,6 +42,7 @@ public class WaitingScreen implements Screen {
     private Label counter;
     private int count;
     private Image image;
+    private Image qr;
 
     /**
      * Creates the graphical representation of the waiting game screen. This screen displays an
@@ -60,14 +62,20 @@ public class WaitingScreen implements Screen {
         this.skin = new Skin(Gdx.files.internal("uiskin.json"), this.atlas);
         this.stage = new Stage();
 
-        Texture texture = new Texture(Gdx.files.internal("data/loading.jpeg"));
+        Texture texture = new Texture(Gdx.files.internal("data/ark.jpg"));
         TextureRegion region = new TextureRegion(texture, 0, 0, Gdx.graphics.getWidth(),
             Gdx.graphics.getHeight());
 
         this.image = new Image(region);
         this.image.setPosition(0, 0);
         this.image.setFillParent(true);
-        this.stage.addActor(image);
+        this.stage.addActor(this.image);
+
+        Texture qr_texture = new Texture(Gdx.files.internal("data/qr.jpg"));
+        this.qr = new Image(qr_texture);
+        this.qr.setPosition(1920 / 5, (1080 / 2) - (qr_texture.getWidth() / 2));
+        this.qr.setSize(300, 300);
+        this.stage.addActor(this.qr);
 
         this.createTimerLabel();
         this.createCounterLabel();

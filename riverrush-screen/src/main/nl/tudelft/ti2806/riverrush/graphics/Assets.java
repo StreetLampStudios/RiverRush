@@ -13,20 +13,20 @@ import java.util.ArrayList;
 public final class Assets {
 
     private static Texture riverBanksTexture, monkeyShipTexture, raccoonShipTexture, riverTexture,
-        boatSectorTexture, raccoonBrownTexture, raccoonBlackTexture, raccoonBlueTexture,
+        raccoonBrownTexture, raccoonBlackTexture, raccoonBlueTexture,
         raccoonOrangeTexture, raccoonGreenTexture, raccoonPinkTexture, raccoonPurpleTexture,
         raccoonRedTexture, raccoonWhiteTexture, raccoonYellowTexture, monkeyBrownTexture,
         monkeyBlackTexture, monkeyBlueTexture, monkeyOrangeTexture, monkeyGreenTexture,
         monkeyPinkTexture, monkeyPurpleTexture, monkeyRedTexture, monkeyWhiteTexture,
         monkeyYellowTexture, flagTexture, endGameTexture, grassTexture, cannonballTexture,
-        icebergTexture, winTexture, loseTexture, woodFloorTexture, lineTexture,
+        icebergTexture, woodFloorTexture, lineTexture, qrTexture,
         shadowTexture, bootjeMonkeyTexture, bootjeRaccoonTexture;
 
-    public static TextureRegion riverBank, boatSector, river, monkeyShip, raccoonShip, raccoon,
+    public static TextureRegion riverBank, river, monkeyShip, raccoonShip, qr,
         monkeyBrown, monkeyBlack, monkeyBlue, monkeyOrange, monkeyGreen, monkeyPink,
         monkeyPurple, monkeyRed, monkeyWhite, monkeyYellow, raccoonBrown, raccoonBlack,
         raccoonBlue, raccoonOrange, raccoonGreen, raccoonPink, raccoonPurple, raccoonRed,
-        raccoonWhite, raccoonYellow, flag, endGame, grass, cannonball, iceberg, win, lose,
+        raccoonWhite, raccoonYellow, flag, endGame, grass, cannonball, iceberg,
         bootjeMonkey, bootjeRaccoon, woodFloor, line, shadow;
 
     public static ArrayList<TextureRegion> raccoonMap, monkeyMap;
@@ -145,6 +145,9 @@ public final class Assets {
 
         raccoonYellowTexture = new Texture(Gdx.files.internal(dir + "raccoonYellow.png"));
         raccoonYellow = getFullRegion(raccoonYellowTexture);
+
+        qrTexture = new Texture(Gdx.files.internal(dir + "qr.jpg"));
+        qr = getFullRegion(qrTexture);
 
         monkeyMap.add(monkeyBrown);
         monkeyMap.add(monkeyBlack);
