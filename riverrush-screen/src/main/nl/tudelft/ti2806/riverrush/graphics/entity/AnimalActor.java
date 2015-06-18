@@ -241,7 +241,7 @@ public class AnimalActor extends Group {
      */
     public void updateFlag(final Direction direction) {
         this.directionFlag.setVisible(true);
-        if (direction == Direction.RIGHT) {
+        if (direction == Direction.LEFT) {
             this.directionFlag.setPosition(this.getWidth() / 2, this.getHeight() * FLAG_OFFSET);
             this.directionFlag.setRotation(30f);
             this.directionFlag.setScale(1f, 1f);
