@@ -85,8 +85,7 @@ public class AnimalActor extends Group {
     public void resize(int width, int height) {
         this.setWidth(width / (1920 / ANIMAL_WIDTH));
         this.setHeight(height / (1080 / ANIMAL_HEIGHT));
-        this.shadow.setWidth(width / (1920 / 40));
-        this.shadow.setHeight(height / (1080 / 72));
+        this.shadow.rezize(width, height);
     }
 
     private class ShadowActor extends Actor {
@@ -98,6 +97,11 @@ public class AnimalActor extends Group {
             this.setWidth(40);
             this.setHeight(72);
             this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
+        }
+        
+        public void rezize(int width, int height) {
+        	this.setWidth(width / (1920 / 40));
+        	this.setHeight(height / (1080 / 72));
         }
 
         @Override
