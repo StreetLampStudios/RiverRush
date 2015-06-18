@@ -37,9 +37,9 @@ public class CenterStage extends Stage {
         // topMinus a margin of 30
 
         this.rightBoat = new LittleBoat(100, top_x, TOTALHEIGHT / 5,
-            this.TOTALWIDTH / 40, this.TOTALHEIGHT / 4, Assets.bootjeMonkey);
-        this.leftBoat = new LittleBoat(100, top_x, TOTALHEIGHT / 5 * 3,
             this.TOTALWIDTH / 40, this.TOTALHEIGHT / 4, Assets.bootjeRaccoon);
+        this.leftBoat = new LittleBoat(100, top_x, TOTALHEIGHT / 5 * 3,
+            this.TOTALWIDTH / 40, this.TOTALHEIGHT / 4, Assets.bootjeMonkey);
 
         this.addActor(floor);
         this.addActor(line);
