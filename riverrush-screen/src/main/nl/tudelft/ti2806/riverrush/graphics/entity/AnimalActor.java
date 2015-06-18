@@ -86,6 +86,10 @@ public class AnimalActor extends Group {
         this.setWidth(width / (1920 / ANIMAL_WIDTH));
         this.setHeight(height / (1080 / ANIMAL_HEIGHT));
         this.shadow.rezize(width, height);
+        Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
+        this.localToStageCoordinates(v);
+
+        this.bounds = new Circle(v.x, v.y, ((float) (this.getHeight() * HITBOX_MULTIPLIER)));
     }
 
     private class ShadowActor extends Actor {

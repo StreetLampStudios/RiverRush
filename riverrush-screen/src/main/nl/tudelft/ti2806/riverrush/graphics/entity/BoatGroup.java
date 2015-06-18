@@ -241,5 +241,8 @@ public class BoatGroup extends Group {
 
             i++;
         }
+        Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
+        v = this.localToStageCoordinates(v);
+        this.bounds.setPosition(v.x, v.y);
     }
 }
