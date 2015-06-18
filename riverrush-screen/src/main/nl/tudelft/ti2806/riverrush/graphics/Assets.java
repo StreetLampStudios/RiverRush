@@ -71,12 +71,6 @@ public final class Assets {
         icebergTexture = new Texture(Gdx.files.internal(dir + "iceberg.png"));
         iceberg = getFullRegion(icebergTexture);
 
-        winTexture = new Texture(Gdx.files.internal(dir + "win.png"));
-        win = getFullRegion(winTexture);
-
-        loseTexture = new Texture(Gdx.files.internal(dir + "lose.png"));
-        lose = getFullRegion(loseTexture);
-
         bootjeMonkeyTexture = new Texture(Gdx.files.internal(dir + "bootje4_monkey.png"));
         bootjeMonkey = getFullRegion(bootjeMonkeyTexture);
 
