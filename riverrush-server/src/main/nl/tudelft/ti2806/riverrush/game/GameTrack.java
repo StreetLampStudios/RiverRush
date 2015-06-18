@@ -286,7 +286,7 @@ public class GameTrack {
     public void sweepAnimals(final Direction rockDirection, final Integer teamID) {
         Team tm = this.teams.get(teamID);
         for (AbstractAnimal anim : tm.getAnimals()) {
-            if (anim.getVoteDirection().equals(rockDirection)
+            if (!anim.getVoteDirection().equals(rockDirection)
                 || anim.getVoteDirection().equals(Direction.NEUTRAL)) {
                 anim.fall();
             }
