@@ -147,6 +147,7 @@ public class PlayingGameState extends AbstractGameState {
                 event.setTeam(team.getId());
                 event.setDirection(graphic.getDirection());
                 this.dispatcher.dispatch(event);
+                graphic.getDestroyed();
             }
             if(graphic.getWidth() < 0) {
             	graphic.remove();

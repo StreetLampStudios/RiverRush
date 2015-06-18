@@ -1,12 +1,15 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+import nl.tudelft.ti2806.riverrush.graphics.Assets;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import nl.tudelft.ti2806.riverrush.domain.event.Direction;
-import nl.tudelft.ti2806.riverrush.graphics.Assets;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 
 public class RockGraphic extends AbstractObstacle {
 
@@ -40,6 +43,19 @@ public class RockGraphic extends AbstractObstacle {
         } else {
             this.offset = 0.5f;
         }
+    }
+    
+    public void getDestroyed() {
+    	ScaleToAction scale = new ScaleToAction();
+    	scale.setScale(0.2f);
+    	scale.setDuration(1f);
+    	
+    	AlphaAction fade = new AlphaAction();
+    	fade.setAlpha(0f);
+    	fade.setDuration(1f);
+    	
+    	this.addAction(scale);
+    	this.addAction(fade);
     }
 
     /**

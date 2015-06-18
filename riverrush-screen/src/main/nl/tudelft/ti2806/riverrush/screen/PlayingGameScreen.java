@@ -20,8 +20,7 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
  */
 public class PlayingGameScreen implements Screen {
 
-    private static final double BANK_SIZE = 0.025;
-    private static final double RIVER_SIZE = 0.45;
+    private static final double RIVER_SIZE = 0.475;
     private static final double MID_SIZE = 0.05;
 
     private SideStage riverLeft;
@@ -51,9 +50,6 @@ public class PlayingGameScreen implements Screen {
         this.betweenRivers = new CenterStage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.riverRight = new SideStage();
 
-        this.banksLeft = this.createRiverBank();
-        this.banksRight = this.createRiverBank();
-
         this.height = Gdx.graphics.getHeight();
         this.width = Gdx.graphics.getWidth();
     }
@@ -78,9 +74,6 @@ public class PlayingGameScreen implements Screen {
 
         double startPosition = 0.0;
 
-        this.drawStage(this.banksLeft, startPosition, BANK_SIZE);
-        startPosition += BANK_SIZE;
-
         this.drawStage(this.riverLeft, startPosition, RIVER_SIZE);
         startPosition += RIVER_SIZE;
 
@@ -89,8 +82,6 @@ public class PlayingGameScreen implements Screen {
 
         this.drawStage(this.riverRight, startPosition, RIVER_SIZE);
         startPosition += RIVER_SIZE;
-
-        this.drawStage(this.banksRight, startPosition, BANK_SIZE);
 
         this.onTick.handle();
     }
