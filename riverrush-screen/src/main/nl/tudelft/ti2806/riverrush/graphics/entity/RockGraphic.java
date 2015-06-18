@@ -4,6 +4,8 @@ import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
@@ -86,10 +88,16 @@ public class RockGraphic extends AbstractObstacle {
         this.localToStageCoordinates(v);
 
         this.getBounds().setPosition(v.x, v.y);
+        
+        Color color = this.getColor();
+        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
         batch.draw(Assets.iceberg, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
                 this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
                 this.getRotation());
+        
+
+        batch.setColor(Color.WHITE);
     }
 
     /**
