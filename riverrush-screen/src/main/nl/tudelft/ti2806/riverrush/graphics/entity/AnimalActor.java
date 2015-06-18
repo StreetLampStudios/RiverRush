@@ -37,7 +37,7 @@ public class AnimalActor extends Group {
     private static final float ANIMAL_HEIGHT = 90; // 81
 
     private TextureRegion animalTexture;
-    private static final float JUMP_HEIGHT = 10;
+    private static final float JUMP_HEIGHT = 20;
     private static final int FALL_DISTANCEX = -520;
     private static final int FALL_DISTANCEY = 200;
     private static final float FALL_VELOCITY = 0.5f;
@@ -46,8 +46,8 @@ public class AnimalActor extends Group {
     private static final float DELAY_DURATION = 5f;
     private static final double HITBOX_MULTIPLIER = 0.3;
     private static final float FLAG_OFFSET = 0.8f;
+    private static final float JUMP_SCALING = 1.5f;
 
-    private static final float ROLL_DURATION = 0.7f;
 
     private float origX;
     private float origY;
@@ -119,7 +119,7 @@ public class AnimalActor extends Group {
 
         private void update() {
             ScaleToAction scaleUp = new ScaleToAction();
-            scaleUp.setScale(1.2f);
+            scaleUp.setScale(JUMP_SCALING);
             scaleUp.setDuration(JUMP_UP_DURATION);
 
             ScaleToAction scaleDown = new ScaleToAction();
@@ -262,7 +262,7 @@ public class AnimalActor extends Group {
         jumpUp.setDuration(JUMP_UP_DURATION);
 
         ScaleToAction scaleUp = new ScaleToAction();
-        scaleUp.setScale(1.2f);
+        scaleUp.setScale(JUMP_SCALING);
         scaleUp.setDuration(JUMP_UP_DURATION);
 
         MoveToAction drop = new MoveToAction();
