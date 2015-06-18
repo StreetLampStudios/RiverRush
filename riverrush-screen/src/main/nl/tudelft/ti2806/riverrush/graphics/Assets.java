@@ -155,8 +155,8 @@ public final class Assets {
         monkeyMap.add(monkeyBrown);
         monkeyMap.add(monkeyBlack);
         monkeyMap.add(monkeyBlue);
-        monkeyMap.add(monkeyOrange);
         monkeyMap.add(monkeyGreen);
+        monkeyMap.add(monkeyOrange);
         monkeyMap.add(monkeyPink);
         monkeyMap.add(monkeyPurple);
         monkeyMap.add(monkeyRed);
@@ -166,8 +166,8 @@ public final class Assets {
         raccoonMap.add(raccoonBrown);
         raccoonMap.add(raccoonBlack);
         raccoonMap.add(raccoonBlue);
-        raccoonMap.add(raccoonOrange);
         raccoonMap.add(raccoonGreen);
+        raccoonMap.add(raccoonOrange);
         raccoonMap.add(raccoonPink);
         raccoonMap.add(raccoonPurple);
         raccoonMap.add(raccoonRed);
