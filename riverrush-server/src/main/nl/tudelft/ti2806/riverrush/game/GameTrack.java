@@ -150,12 +150,13 @@ public class GameTrack {
             return;
         }
 
-        Double next = this.levelMap.lowerKey(currentDistance);
-        while (next != null && !next.equals(this.nextEvents.get(team))) {
+        Double next = this.levelMap.higherKey(this.nextEvents.get(team));
+        while (next != null && next <= currentDistance) {
             AbstractTeamEvent event = this.levelMap.get(next);
             event.setTeam(team.getId());
             this.dispatcher.dispatch(event);
             this.nextEvents.put(team, next);
+            next = this.levelMap.higherKey(next);
         }
     }
 
