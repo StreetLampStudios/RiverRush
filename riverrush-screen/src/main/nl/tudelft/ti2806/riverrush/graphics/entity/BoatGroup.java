@@ -89,7 +89,7 @@ public class BoatGroup extends Group {
             // float secPosY = 50f + ((20f + sec.getHeight()) * i);
             sec.setPosition(secPosX, secPosY);
             this.sectors.add(sec);
-            this.addActor(sec);
+            this.addActorAt(1, sec);
         }
 
         this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);

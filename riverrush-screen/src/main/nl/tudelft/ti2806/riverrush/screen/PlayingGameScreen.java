@@ -26,8 +26,6 @@ public class PlayingGameScreen implements Screen {
     private SideStage riverLeft;
     private SideStage riverRight;
     private CenterStage betweenRivers;
-    private Stage banksLeft;
-    private Stage banksRight;
 
     private TickHandler onTick;
     private int height;
