@@ -176,8 +176,12 @@ public class BoatGroup extends Group {
      * @param sector The sector to add the animal in
      */
     public void addAnimal(final AnimalActor actor, final Sector sector) {
+
         BoatSector sec = this.sectors.get(sector.getIndex());
+        if(sec.contains(actor))
+            return;
         sec.addAnimal(actor);
+
         this.totalNumAnimals++;
         this.updateBoatPosition();
     }
