@@ -67,6 +67,7 @@ public class RockGraphic extends AbstractObstacle {
         this.setWidth(SIZE * 0.45f); // 0.45 is the percentage of the screen of his stage.
         this.setHeight(SIZE);
         this.setPosition(DESKTOP_WIDTH, (DESKTOP_HEIGHT * this.offset) - SIZE / 2); // 1080
+        this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
 
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         this.localToStageCoordinates(v);
