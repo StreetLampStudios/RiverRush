@@ -43,7 +43,7 @@ public class AnimalActor extends Group {
     private static final float FALL_VELOCITY = 0.5f;
     private static final float JUMP_UP_DURATION = 0.3f;
     private static final float JUMP_DOWN_DURATION = 0.15f;
-    private static final float DELAY_DURATION = 1f;
+    private static final float DELAY_DURATION = 1.5f;
     private static final double HITBOX_MULTIPLIER = 0.3;
     private static final float FLAG_OFFSET = 0.8f;
     private static final float JUMP_SCALING = 1.5f;
@@ -102,7 +102,7 @@ public class AnimalActor extends Group {
             this.setHeight(72);
             this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
         }
-        
+
         public void rezize(int width, int height) {
         	this.setWidth(width / (1920 / 40));
         	this.setHeight(height / (1080 / 72));

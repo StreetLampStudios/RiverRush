@@ -21,7 +21,7 @@ public class CannonBallGraphic extends AbstractObstacle {
     private static final float HEIGHT = Gdx.graphics.getHeight();
     private static final float WIDTH = Gdx.graphics.getWidth();
     private static final float INIT_POS = (HEIGHT / 2) - (SIZE / 2);
-    private static final float OFFSET_POS = 160f;
+    private static final float OFFSET_POS = 80f;
     private static final int NEGATIVE_MULTIPLIER = -2;
     private final double offset;
 
@@ -32,7 +32,6 @@ public class CannonBallGraphic extends AbstractObstacle {
      */
     public CannonBallGraphic(final double off) {
         this.offset = off;
-
     }
 
     /**
@@ -45,11 +44,9 @@ public class CannonBallGraphic extends AbstractObstacle {
 
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         this.localToStageCoordinates(v);
-
         this.setBounds(new Circle(v.x, v.y, this.getHeight() / 2));
 
         MoveToAction moveDown = new MoveToAction();
-        // moveDown.setX(NEGATIVE_MULTIPLIER * SIZE);
         moveDown.setPosition(NEGATIVE_MULTIPLIER * SIZE, (float) ((INIT_POS + OFFSET_POS
                 * this.offset) - SIZE / 2));
         moveDown.setDuration(VELOCITY);
@@ -64,9 +61,12 @@ public class CannonBallGraphic extends AbstractObstacle {
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         this.localToStageCoordinates(v);
 
-        this.getBounds().setPosition(v.x, v.y);
 
-        batch.draw(Assets.cannonball, this.getX(), this.getY(), this.getOriginX(),
+        Vector2 v2 = new Vector2(0, (float) ((INIT_POS + OFFSET_POS * this.offset) - SIZE / 2));
+        this.getBounds().setPosition(v.x, v2.y);
+        v2 = this.getParent().stageToLocalCoordinates(v2);
+
+        batch.draw(Assets.cannonball, this.getX(), v2.y, this.getOriginX(),
                 this.getOriginY(), this.getWidth(), this.getHeight(), this.getScaleX(),
                 this.getScaleY(), this.getRotation());
     }
