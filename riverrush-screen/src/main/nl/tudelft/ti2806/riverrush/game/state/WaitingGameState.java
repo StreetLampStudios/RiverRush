@@ -18,9 +18,8 @@ import nl.tudelft.ti2806.riverrush.screen.WaitingScreen;
 public class WaitingGameState extends AbstractGameState {
 
     private final WaitingScreen screen;
-    private static final int DELAY = 5;
 
-    private final HandlerLambda<GameAboutToStartEvent> timerHandler = (e) -> this.startTimer();
+    private final HandlerLambda<GameAboutToStartEvent> timerHandler = (e) -> this.startTimer(e.getSeconds());
     private final HandlerLambda<AnimalAddedEvent> addAnimalHandler = this::addAnimalHandler;
     private final HandlerLambda<AnimalRemovedEvent> removeAnimalHandler = this::removeAnimalHandler;
 
@@ -49,9 +48,10 @@ public class WaitingGameState extends AbstractGameState {
 
     /**
      * Starts the timer of 5 seconds.
+     * @param seconds - amount of seconds that we need to wait until the game will start
      */
-    private void startTimer() {
-        this.screen.startTimer(DELAY);
+    private void startTimer(int seconds) {
+        this.screen.startTimer(seconds);
     }
 
     @Override
