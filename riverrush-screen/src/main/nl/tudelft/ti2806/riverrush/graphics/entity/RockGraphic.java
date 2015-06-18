@@ -50,11 +50,11 @@ public class RockGraphic extends AbstractObstacle {
     public void getDestroyed() {
     	ScaleToAction scale = new ScaleToAction();
     	scale.setScale(0.2f);
-    	scale.setDuration(1f);
+    	scale.setDuration(0.5f);
     	
     	AlphaAction fade = new AlphaAction();
     	fade.setAlpha(0f);
-    	fade.setDuration(1f);
+    	fade.setDuration(0.5f);
     	
     	this.addAction(scale);
     	this.addAction(fade);
