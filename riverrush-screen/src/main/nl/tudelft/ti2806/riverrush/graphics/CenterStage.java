@@ -36,9 +36,9 @@ public class CenterStage extends Stage {
         float top_x = width - 200 - this.TOTALWIDTH / 40; // At max the boat should be at the
         // topMinus a margin of 30
 
-        this.leftBoat = new LittleBoat(100, top_x, TOTALHEIGHT / 5,
+        this.rightBoat = new LittleBoat(100, top_x, TOTALHEIGHT / 5,
             this.TOTALWIDTH / 40, this.TOTALHEIGHT / 4, Assets.bootjeMonkey);
-        this.rightBoat = new LittleBoat(100, top_x, TOTALHEIGHT / 5 * 3,
+        this.leftBoat = new LittleBoat(100, top_x, TOTALHEIGHT / 5 * 3,
             this.TOTALWIDTH / 40, this.TOTALHEIGHT / 4, Assets.bootjeRaccoon);
 
         this.addActor(floor);
