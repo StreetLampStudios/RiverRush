@@ -14,6 +14,7 @@ import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
+import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -143,8 +144,6 @@ public class WaitingScreen implements Screen {
                 WaitingScreen.this.time--;
                 WaitingScreen.this.timer
                     .setText("Time till game start: " + WaitingScreen.this.time);
-                // WaitingScreen.this.addConnection();
-
             }
         }, SECOND, SECOND);
     }
@@ -153,7 +152,8 @@ public class WaitingScreen implements Screen {
     public void resize(final int width, final int height) {
         this.timer.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
         this.counter.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
-        this.image.setSize(width, height);
+        //this.image.setSize(width, height);
+        this.image.setScale((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 1920, (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 1080);
     }
 
     @Override

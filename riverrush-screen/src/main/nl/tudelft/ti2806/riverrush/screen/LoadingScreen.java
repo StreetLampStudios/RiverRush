@@ -9,6 +9,8 @@ import nl.tudelft.ti2806.riverrush.domain.event.AssetsLoadedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
+import java.awt.*;
+
 /**
  * Creates the graphical representation of the loading game screen. The loading game screen simply
  * shows an image to indicate that the game is loading.
@@ -58,7 +60,8 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void resize(final int width, final int height) {
-        this.loadingImage.setSize(width, height);
+        //this.loadingImage.setSize(width, height);
+        this.loadingImage.setScale((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 1920, (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 1080);
     }
 
     @Override

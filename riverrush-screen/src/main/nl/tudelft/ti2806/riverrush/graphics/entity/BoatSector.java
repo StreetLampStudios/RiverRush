@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
+import java.awt.*;
+
 /**
  * Boat sector class.
  */
@@ -103,8 +105,8 @@ public class BoatSector extends Group {
     }
 
     public void resize(int width, int height) {
-        this.setWidth(this.colCount * (float) (width / (1920 / 50))); // Monkey width
-        this.setHeight(this.rowCount * (float) (height / (1080 / 90))); // Monkey height
+        this.setWidth(this.colCount * (float) (width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 50))); // Monkey width
+        this.setHeight(this.rowCount * (float) (height / ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 90))); // Monkey height
 
         for (AnimalActor actor : animals) {
             if (actor == null) {

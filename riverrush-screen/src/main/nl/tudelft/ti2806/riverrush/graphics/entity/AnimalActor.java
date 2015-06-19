@@ -22,6 +22,8 @@ import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
+import java.awt.*;
+
 /**
  * Game object representing a monkey.
  */
@@ -83,8 +85,8 @@ public class AnimalActor extends Group {
     }
 
     public void resize(int width, int height) {
-        this.setWidth(width / (1920 / ANIMAL_WIDTH));
-        this.setHeight(height / (1080 / ANIMAL_HEIGHT));
+        this.setWidth(width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / ANIMAL_WIDTH));
+        this.setHeight(height / ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / ANIMAL_HEIGHT));
         this.shadow.rezize(width, height);
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         this.localToStageCoordinates(v);
@@ -104,8 +106,8 @@ public class AnimalActor extends Group {
         }
 
         public void rezize(int width, int height) {
-        	this.setWidth(width / (1920 / 40));
-        	this.setHeight(height / (1080 / 72));
+        	this.setWidth(width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 40));
+        	this.setHeight(height / ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 72));
         }
 
         @Override

@@ -14,6 +14,7 @@ import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
 import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -224,7 +225,7 @@ public class BoatGroup extends Group {
         this.setWidth((int) (width / 2.4));
         this.setHeight((int) (height / 1.8));
         this.setX(width * 0.02f);
-        this.setY((float) (1080 * 0.45) - (this.getHeight() / 2));
+        this.setY((float) ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 0.45) - (this.getHeight() / 2));
 
         int i = 0;
         for (BoatSector sec : this.sectors) {
@@ -232,13 +233,13 @@ public class BoatGroup extends Group {
 
             float extra = 0f;
             if (i == 2) {
-                extra = (float) width / (1920 / 10);
+                extra = (float) width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 10);
             }
             if (i > 2) {
-                extra = (float) width / (1920 / -12);
+                extra = (float) width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / -12);
             }
 
-            float secPosX = (width / (1920 / SECTOR_INIT_POS)) + (((width / (1920 / SECTOR_DIVIDING_DISTANCE)) + sec.getWidth()) * i) + extra;
+            float secPosX = (width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / SECTOR_INIT_POS)) + (((width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / SECTOR_DIVIDING_DISTANCE)) + sec.getWidth()) * i) + extra;
             float secPosY = (this.getHeight() / 2) - (sec.getHeight() / 2);
 
             sec.setPosition(secPosX, secPosY);
