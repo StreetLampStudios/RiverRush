@@ -3,15 +3,12 @@ package nl.tudelft.ti2806.riverrush.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.Inject;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.Assets;
 import nl.tudelft.ti2806.riverrush.sound.Sound;
 
@@ -25,9 +22,9 @@ import java.util.TimerTask;
 public class WaitingScreen implements Screen {
 
     private static final int SECOND = 1000;
-    private static final float TIMER_LABEL_WIDTH_MULTIPLIER = 0.8f;
+    private static final float TIMER_LABEL_WIDTH_MULTIPLIER = 0.6f;
     private static final float TIMER_LABEL_HEIGHT_MULTIPLIER = 0.8f;
-    private static final float COUNTER_LABEL_WIDTH_MULTIPLIER = 0.8f;
+    private static final float COUNTER_LABEL_WIDTH_MULTIPLIER = 0.6f;
     private static final float COUNTER_LABEL_HEIGHT_MULTIPLIER = 0.75f;
     private static final int DESKTOP_HEIGHT = 1920;
     private static final int DESKTOP_WIDTH = 1080;
@@ -44,7 +41,6 @@ public class WaitingScreen implements Screen {
 
     // Label for amount of people connected
     private Label counter;
-    private int count;
     private Image image;
 
     private Sound sound;
@@ -72,7 +68,7 @@ public class WaitingScreen implements Screen {
 
         Image qr = new Image(Assets.qr);
         qr.setPosition(DESKTOP_HEIGHT / HEIGHT_DIVISION, (DESKTOP_WIDTH
-            / WIDTH_DIVISION) - (qr.getWidth() / 2));
+                / WIDTH_DIVISION) - (qr.getWidth() / 2));
         qr.setSize(SIZE, SIZE);
         this.stage.addActor(qr);
 
@@ -89,7 +85,7 @@ public class WaitingScreen implements Screen {
     private void createTimerLabel() {
         this.timer = new Label("Time till game start: ", this.skin);
         this.timer.setPosition(Gdx.graphics.getWidth() * TIMER_LABEL_WIDTH_MULTIPLIER,
-            Gdx.graphics.getHeight() * TIMER_LABEL_HEIGHT_MULTIPLIER); // 1200, 540
+                Gdx.graphics.getHeight() * TIMER_LABEL_HEIGHT_MULTIPLIER); // 1200, 540
         this.stage.addActor(this.timer);
     }
 
@@ -97,9 +93,9 @@ public class WaitingScreen implements Screen {
      * Creates the counter label.
      */
     private void createCounterLabel() {
-        this.counter = new Label("Connected: 0", this.skin);
+        this.counter = new Label("Waiting until both teams have at least one player", this.skin);
         this.counter.setPosition(Gdx.graphics.getWidth() * COUNTER_LABEL_WIDTH_MULTIPLIER,
-            Gdx.graphics.getHeight() * COUNTER_LABEL_HEIGHT_MULTIPLIER); // 1200, 500
+                Gdx.graphics.getHeight() * COUNTER_LABEL_HEIGHT_MULTIPLIER); // 1200, 500
         this.stage.addActor(this.counter);
     }
 
@@ -110,25 +106,6 @@ public class WaitingScreen implements Screen {
 
         this.stage.act();
         this.stage.draw();
-    }
-
-    /**
-     * Tell the waiting screen that someone has connected.
-     */
-    public void addConnection() {
-        this.count++;
-
-        if (this.counter != null) {
-            this.counter.setText("Connected: " + this.count);
-        }
-    }
-
-    /**
-     * Tell the waiting screen that someone has connected.
-     */
-    public void removeConnection() {
-        this.count--;
-        this.counter.setText("Connected: " + this.count);
     }
 
     /**
@@ -144,7 +121,7 @@ public class WaitingScreen implements Screen {
             public void run() {
                 WaitingScreen.this.time--;
                 WaitingScreen.this.timer
-                    .setText("Time till game start: " + WaitingScreen.this.time);
+                        .setText("Time till game start: " + WaitingScreen.this.time);
             }
         }, SECOND, SECOND);
     }
@@ -177,5 +154,12 @@ public class WaitingScreen implements Screen {
             this.tmr.cancel();
         }
         this.sound.stop();
+    }
+
+    /**
+     * Switch the label to the ready state.
+     */
+    public void setLabelToReady() {
+        this.counter.setText("Enough players have joined the game. The game will start soon");
     }
 }

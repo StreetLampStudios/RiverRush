@@ -21,7 +21,6 @@ public class WaitingGameState extends AbstractGameState {
 
     private final HandlerLambda<GameAboutToStartEvent> timerHandler = (e) -> this.startTimer(e.getSeconds());
     private final HandlerLambda<AnimalAddedEvent> addAnimalHandler = this::addAnimalHandler;
-    private final HandlerLambda<AnimalRemovedEvent> removeAnimalHandler = this::removeAnimalHandler;
 
 
     /**
@@ -38,7 +37,6 @@ public class WaitingGameState extends AbstractGameState {
 
         this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandler);
         this.dispatcher.attach(GameAboutToStartEvent.class, this.timerHandler);
-        this.dispatcher.attach(AnimalRemovedEvent.class, this.removeAnimalHandler);
         this.screen = new WaitingScreen();
 
         Gdx.app.postRunnable(
@@ -52,13 +50,13 @@ public class WaitingGameState extends AbstractGameState {
      */
     private void startTimer(final int seconds) {
         this.screen.startTimer(seconds);
+        this.screen.setLabelToReady();
     }
 
     @Override
     public void dispose() {
         this.dispatcher.detach(GameAboutToStartEvent.class, this.timerHandler);
         this.dispatcher.detach(AnimalAddedEvent.class, this.addAnimalHandler);
-        this.dispatcher.detach(AnimalRemovedEvent.class, this.removeAnimalHandler);
         this.screen.dispose();
     }
 
@@ -95,7 +93,6 @@ public class WaitingGameState extends AbstractGameState {
      * @param event The add event
      */
     public void addAnimalHandler(final AnimalAddedEvent event) {
-
         Integer tm = event.getTeam();
         Team tim = this.game.getTeam(tm);
         if (tim == null) {
@@ -103,16 +100,5 @@ public class WaitingGameState extends AbstractGameState {
         }
         Integer variation = event.getVariation();
         tim.addAnimal(new Animal(this.dispatcher, event.getAnimal(), tm, variation, event.getSector()));
-
-        this.screen.addConnection();
-    }
-
-    /**
-     * Is called when an animal is removed.
-     *
-     * @param animalRemovedEvent - The event
-     */
-    private void removeAnimalHandler(final AnimalRemovedEvent animalRemovedEvent) {
-        this.screen.removeConnection();
     }
 }
