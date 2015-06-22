@@ -1,12 +1,14 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
+/**
+ * This flag belongs to an animal and indicates the given animal's voting position.
+ */
 public class DirectionFlag extends Actor {
     private static final float FLAG_WIDTH = 24;
     private static final float FLAG_HEIGHT = 48;

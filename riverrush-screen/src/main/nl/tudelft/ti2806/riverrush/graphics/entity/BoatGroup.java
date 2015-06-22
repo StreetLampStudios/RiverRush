@@ -23,8 +23,8 @@ import java.util.HashMap;
  */
 public class BoatGroup extends Group {
 
-    private final int BOAT_HEIGHT = 600;
-    private final int BOAT_WIDTH = 800;
+    private static final int BOAT_HEIGHT = 600;
+    private static final int BOAT_WIDTH = 800;
 
     private final ArrayList<BoatSector> sectors;
 
@@ -39,6 +39,13 @@ public class BoatGroup extends Group {
     private static final int ROW_COUNT = 5;
 
     private final HashMap<AbstractAnimal, Integer> directionVotes;
+    private static final float SECOND_SECTOR_OFFSET = 10f;
+    private static final float LASTHALF_SECTOR_OFFSET = -12f;
+    private static final float BOAT_MOVE_DURATION = 0.5f;
+    private static final float INIT_WIDTH_OFFSET = 0.02f;
+    private static final double STAGE_PARTITION = 0.45;
+    private static final int SECTOR_WIDTH_PARTITION = 10;
+    private static final int SECTOR_HEIGHT_PARTITION = -12;
     private int votingSum = 0;
     private float totalNumAnimals = 0;
     private Circle bounds;
@@ -77,10 +84,10 @@ public class BoatGroup extends Group {
         for (int i = Sector.countSectors() - 1; i >= 0; i--) {
             float extra = 0f;
             if (i == 2) {
-                extra = 10f;
+                extra = SECOND_SECTOR_OFFSET;
             }
             if (i > 2) {
-                extra = -12f;
+                extra = LASTHALF_SECTOR_OFFSET;
             }
             BoatSector sec = new BoatSector(ROW_COUNT, COL_COUNT);
             float secPosX = SECTOR_INIT_POS + ((SECTOR_DIVIDING_DISTANCE + sec.getWidth()) * i)
@@ -166,7 +173,7 @@ public class BoatGroup extends Group {
         this.move = new MoveToAction();
         this.move.setPosition(this.getX(), newY);
 
-        this.move.setDuration(0.5f);
+        this.move.setDuration(BOAT_MOVE_DURATION);
         this.addAction(this.move);
     }
 
@@ -179,8 +186,9 @@ public class BoatGroup extends Group {
     public void addAnimal(final AnimalActor actor, final Sector sector) {
 
         BoatSector sec = this.sectors.get(sector.getIndex());
-        if(sec.contains(actor))
+        if (sec.contains(actor)) {
             return;
+        }
         sec.addAnimal(actor);
 
         this.totalNumAnimals++;
@@ -206,10 +214,20 @@ public class BoatGroup extends Group {
         this.updateBoatPosition();
     }
 
+    /**
+     * Determines whether the boat collides with a given object.
+     * @param obstacle refers to the rock for which collision has to be detected.
+     * @return true if the collision occurs, else false.
+     */
     public boolean isColliding(final Circle obstacle) {
         return Intersector.overlaps(obstacle, this.bounds);
     }
 
+    /**
+     * Return the child which collides with the given object.
+     * @param collider refers to the object for which collision has to be detected.
+     * @return the animal for which collision occurs.
+     */
     public AnimalActor getCollidingChild(final Circle collider) {
         AnimalActor result = null;
         for (BoatSector sector : this.sectors) {
@@ -221,11 +239,18 @@ public class BoatGroup extends Group {
         return result;
     }
 
-    public void resize(int width, int height) {
-        this.setWidth((int) (width / 2.4));
-        this.setHeight((int) (height / 1.8));
-        this.setX(width * 0.02f);
-        this.setY((float) ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 0.45) - (this.getHeight() / 2));
+    /**
+     * Resize the boat based on the given screen resolution.
+     * @param width refers to the new base width.
+     * @param height refers to the new base height.
+     */
+    public void resize(final int width, final int height) {
+        this.setWidth((int) (width / (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / BOAT_WIDTH)));
+        this.setHeight((int) (height
+            / (Toolkit.getDefaultToolkit().getScreenSize().getHeight() / BOAT_HEIGHT)));
+        this.setX(width * INIT_WIDTH_OFFSET);
+        this.setY((float) ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()
+            * STAGE_PARTITION) - (this.getHeight() / 2));
 
         int i = 0;
         for (BoatSector sec : this.sectors) {
@@ -233,13 +258,17 @@ public class BoatGroup extends Group {
 
             float extra = 0f;
             if (i == 2) {
-                extra = (float) width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 10);
+                extra = (float) width
+                    / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / SECTOR_WIDTH_PARTITION);
             }
             if (i > 2) {
-                extra = (float) width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / -12);
+                extra = (float) width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()
+                    / SECTOR_HEIGHT_PARTITION);
             }
 
-            float secPosX = (width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / SECTOR_INIT_POS)) + (((width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / SECTOR_DIVIDING_DISTANCE)) + sec.getWidth()) * i) + extra;
+            float secPosX = (width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()
+                / SECTOR_INIT_POS)) + (((width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()
+                / SECTOR_DIVIDING_DISTANCE)) + sec.getWidth()) * i) + extra;
             float secPosY = (this.getHeight() / 2) - (sec.getHeight() / 2);
 
             sec.setPosition(secPosX, secPosY);

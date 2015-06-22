@@ -24,6 +24,7 @@ public class CannonBallGraphic extends AbstractObstacle {
     private static final float OFFSET_POS = 80f;
     private static final int NEGATIVE_MULTIPLIER = -2;
     private final double offset;
+    private static final float STAGE_PARTITION = 0.45f;
     private float origY;
 
     /**
@@ -39,7 +40,7 @@ public class CannonBallGraphic extends AbstractObstacle {
      * Actually adds the obstacle to the screen.
      */
     public void init() {
-        this.setWidth(SIZE * 0.45f); // 0.45 is the percentage of the screen of his stage.
+        this.setWidth(SIZE * STAGE_PARTITION); // 0.45 is the percentage of the screen of his stage.
         this.setHeight(SIZE);
         float xpos = (float) ((INIT_POS + OFFSET_POS * this.offset) - SIZE / 2);
         this.origY = xpos;
@@ -65,7 +66,7 @@ public class CannonBallGraphic extends AbstractObstacle {
 
         Vector2 v = new Vector2(this.getWidth() / 2, origY + this.getHeight() / 2);
         v = this.localToStageCoordinates(v);
-        
+
         Vector2 v2 = new Vector2(0, (float) ((INIT_POS + OFFSET_POS * this.offset) - SIZE / 2));
         this.getBounds().setPosition(v.x, v2.y);
         v2 = this.getParent().stageToLocalCoordinates(v2);

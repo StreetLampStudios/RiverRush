@@ -37,6 +37,8 @@ public class AnimalActor extends Group {
      * Specifies the animal's height.
      */
     private static final float ANIMAL_HEIGHT = 90; // 81
+    private static final float FLAG_ROTATION = 30f;
+    private static final float FLAG_UPDATE_DURATION = 0.3f;
 
     private TextureRegion animalTexture;
     private static final float JUMP_HEIGHT = 20;
@@ -84,9 +86,15 @@ public class AnimalActor extends Group {
         this.shadow = shad;
     }
 
-    public void resize(int width, int height) {
+    /**
+     * Change the size of the animal actor to scale with the given resolution of the screen.
+     * @param width the new base width.
+     * @param height the new base height.
+     */
+    public void resize(final int width, final int height) {
         this.setWidth(width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / ANIMAL_WIDTH));
-        this.setHeight(height / ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / ANIMAL_HEIGHT));
+        this.setHeight(height
+            / ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / ANIMAL_HEIGHT));
         this.shadow.rezize(width, height);
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         this.localToStageCoordinates(v);
@@ -94,20 +102,34 @@ public class AnimalActor extends Group {
         this.bounds = new Circle(v.x, v.y, ((float) (this.getHeight() * HITBOX_MULTIPLIER)));
     }
 
+    /**
+     * This class displays a shadow for the animal actor to indicate position of the animal on the z-axis.
+     */
     private class ShadowActor extends Actor {
 
-        protected float origX;
-        protected float origY;
+        private float origX;
+        private float origY;
+        private static final float WIDTH = 40;
+        private static final float HEIGHT = 72;
 
+        /**
+         * Constructs an shadow for the given animal based on the animal's height and width.
+         */
         public ShadowActor() {
-            this.setWidth(40);
-            this.setHeight(72);
+            this.setWidth(WIDTH);
+            this.setHeight(HEIGHT);
             this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
         }
 
-        public void rezize(int width, int height) {
-        	this.setWidth(width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 40));
-        	this.setHeight(height / ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 72));
+        /**
+         * Resize the shadow based on the given screen size.
+         * @param width the new base width the shadow should be scaled to.
+         * @param height the new base height the shadow should be scaled to.
+         */
+        public void rezize(final int width, final int height) {
+        	this.setWidth(width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / WIDTH));
+        	this.setHeight(height
+                / ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / HEIGHT));
         }
 
         @Override
@@ -123,6 +145,9 @@ public class AnimalActor extends Group {
             super.act(delta);
         }
 
+        /**
+         * Update the shadow based on the animal's jump.
+         */
         private void update() {
             ScaleToAction scaleUp = new ScaleToAction();
             scaleUp.setScale(JUMP_SCALING);
@@ -245,23 +270,26 @@ public class AnimalActor extends Group {
         this.directionFlag.setVisible(true);
         if (direction == Direction.LEFT) {
             this.directionFlag.setPosition(this.getWidth() / 2, this.getHeight() * FLAG_OFFSET);
-            this.directionFlag.setRotation(30f);
+            this.directionFlag.setRotation(FLAG_ROTATION);
             this.directionFlag.setScale(1f, 1f);
             this.directionFlag.setColor(Color.GREEN);
         } else {
             this.directionFlag.setPosition(this.getWidth() / 2, this.getHeight()
                     * (1 - FLAG_OFFSET));
-            this.directionFlag.setRotation(-30f);
+            this.directionFlag.setRotation(-1 * FLAG_ROTATION);
             this.directionFlag.setScale(1, -1);
             this.directionFlag.setColor(Color.RED);
         }
 
         RotateToAction rot = new RotateToAction();
         rot.setRotation(0f);
-        rot.setDuration(0.3f);
+        rot.setDuration(FLAG_UPDATE_DURATION);
         this.directionFlag.addAction(rot);
     }
 
+    /**
+     * Adds an action to the animal which displays itself as a jump.
+     */
     public void jumpAction() {
         MoveToAction jumpUp = new MoveToAction();
         jumpUp.setPosition(this.getX(), this.getY() + JUMP_HEIGHT);
@@ -313,14 +341,19 @@ public class AnimalActor extends Group {
         return this.bounds;
     }
 
-    public void setAnimal(final Animal animal) {
-        this.animal = animal;
+    public void setAnimal(final Animal anim) {
+        this.animal = anim;
     }
 
     public Animal getAnimal() {
         return this.animal;
     }
 
+    /**
+     * Determines whether the animal collides with an object.
+     * @param obstacle the given obstacle for which the collision has to be determined.
+     * @return true when collision occurs, else false.
+     */
     public boolean isColliding(final Circle obstacle) {
         return Intersector.overlaps(obstacle, this.bounds);
     }
