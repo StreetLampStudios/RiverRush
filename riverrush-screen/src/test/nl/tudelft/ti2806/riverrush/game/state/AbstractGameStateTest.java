@@ -32,8 +32,7 @@ public abstract class AbstractGameStateTest {
     public void setUp() throws Exception {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = "RiverRush";
-        config.allowSoftwareMode =true;
-        config.audioDeviceBufferCount = 0;
+        config.disableAudio = true;
 
         game = mock(Game.class);
         when(game.getScreen()).thenCallRealMethod();
