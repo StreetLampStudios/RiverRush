@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import nl.tudelft.ti2806.riverrush.sound.Sound;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +17,14 @@ import java.util.List;
 public final class Assets {
 
     private static Texture riverBanksTexture, monkeyShipTexture, raccoonShipTexture, riverTexture,
-        raccoonBrownTexture, raccoonBlackTexture, raccoonBlueTexture,
-        raccoonOrangeTexture, raccoonGreenTexture, raccoonPinkTexture, raccoonPurpleTexture,
-        raccoonRedTexture, raccoonWhiteTexture, raccoonYellowTexture, monkeyBrownTexture,
-        monkeyBlackTexture, monkeyBlueTexture, monkeyOrangeTexture, monkeyGreenTexture,
-        monkeyPinkTexture, monkeyPurpleTexture, monkeyRedTexture, monkeyWhiteTexture,
-        monkeyYellowTexture, flagTexture, endGameTexture, grassTexture, cannonballTexture,
-        icebergTexture, woodFloorTexture, lineTexture, qrTexture,
-        shadowTexture, bootjeMonkeyTexture, bootjeRaccoonTexture;
+            raccoonBrownTexture, raccoonBlackTexture, raccoonBlueTexture,
+            raccoonOrangeTexture, raccoonGreenTexture, raccoonPinkTexture, raccoonPurpleTexture,
+            raccoonRedTexture, raccoonWhiteTexture, raccoonYellowTexture, monkeyBrownTexture,
+            monkeyBlackTexture, monkeyBlueTexture, monkeyOrangeTexture, monkeyGreenTexture,
+            monkeyPinkTexture, monkeyPurpleTexture, monkeyRedTexture, monkeyWhiteTexture,
+            monkeyYellowTexture, flagTexture, endGameTexture, grassTexture, cannonballTexture,
+            icebergTexture, woodFloorTexture, lineTexture, qrTexture, monkeyPartyTexture, raccoonPartyTexture,
+            shadowTexture, bootjeMonkeyTexture, bootjeRaccoonTexture, arkTexture;
 
     /**
      * These are the texture regions extracted from the set textures.
@@ -31,11 +32,11 @@ public final class Assets {
      * methods due to the amount of necessary textures.
      */
     public static TextureRegion riverBank, river, monkeyShip, raccoonShip, qr,
-        monkeyBrown, monkeyBlack, monkeyBlue, monkeyOrange, monkeyGreen, monkeyPink,
-        monkeyPurple, monkeyRed, monkeyWhite, monkeyYellow, raccoonBrown, raccoonBlack,
-        raccoonBlue, raccoonOrange, raccoonGreen, raccoonPink, raccoonPurple, raccoonRed,
-        raccoonWhite, raccoonYellow, flag, endGame, grass, cannonball, iceberg,
-        bootjeMonkey, bootjeRaccoon, woodFloor, line, shadow;
+            monkeyBrown, monkeyBlack, monkeyBlue, monkeyOrange, monkeyGreen, monkeyPink,
+            monkeyPurple, monkeyRed, monkeyWhite, monkeyYellow, raccoonBrown, raccoonBlack,
+            raccoonBlue, raccoonOrange, raccoonGreen, raccoonPink, raccoonPurple, raccoonRed,
+            raccoonWhite, raccoonYellow, flag, endGame, grass, cannonball, iceberg,
+            bootjeMonkey, bootjeRaccoon, woodFloor, line, shadow, ark, monkeyParty, raccoonParty;
 
     /**
      * These are the lists of varying raccoon and monkey sprites.
@@ -68,10 +69,12 @@ public final class Assets {
 
     /**
      * Load all assets, creating each TextureRegion in the game.
+     *
+     * @throws IOException - Thrown when the assets cannot be loaded
      */
     public static void load() throws IOException {
-        raccoonMap = new ArrayList<TextureRegion>();
-        monkeyMap = new ArrayList<TextureRegion>();
+        raccoonMap = new ArrayList<>();
+        monkeyMap = new ArrayList<>();
 
         riverBanksTexture = new Texture(Gdx.files.internal(DIRECTORY + "field.jpg"));
         riverBank = getFullRegion(riverBanksTexture);
@@ -178,6 +181,15 @@ public final class Assets {
         qrTexture = new Texture(Gdx.files.internal(DIRECTORY + "qr.jpg"));
         qr = getFullRegion(qrTexture);
 
+        arkTexture = new Texture(Gdx.files.internal(DIRECTORY + "ark.jpg"));
+        ark = getFullRegion(arkTexture);
+
+        monkeyPartyTexture = new Texture(Gdx.files.internal(DIRECTORY + "monkeyparty.jpg"));
+        monkeyParty = getFullRegion(monkeyPartyTexture);
+
+        raccoonPartyTexture = new Texture(Gdx.files.internal(DIRECTORY + "raccoonparty.jpg"));
+        raccoonParty = getFullRegion(raccoonPartyTexture);
+
         monkeyMap.add(monkeyBrown);
         monkeyMap.add(monkeyBlack);
         monkeyMap.add(monkeyBlue);
@@ -228,6 +240,7 @@ public final class Assets {
 
     /**
      * Return the full texture as a texture region.
+     *
      * @param tx refers to the texture which a texture region needs to be extracted from.
      * @return the full texture region.
      */

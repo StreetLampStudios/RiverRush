@@ -54,17 +54,25 @@ public class FinishedGameScreen implements Screen {
     public void show() {
         this.stage = new Stage();
 
-        Texture texture = new Texture(Gdx.files.internal("data/end.jpg"));
-        TextureRegion region = new TextureRegion(texture, 0, 0,
-            Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.sound = Assets.cheeringSound;
+        this.sound.play();
+    }
 
-        this.image = new Image(region);
+    /**
+     * Create image for the winning team.
+     *
+     * @param winningID The id of the team that won
+     */
+    private void createImage(final int winningID) {
+        if (winningID % 2 == 0) {
+            this.image = new Image(Assets.monkeyParty);
+        } else {
+            this.image = new Image(Assets.raccoonParty);
+        }
+
         this.image.setPosition(0, 0);
         this.image.setFillParent(true);
         this.stage.addActor(image);
-
-        this.sound = Assets.cheeringSound;
-        this.sound.play();
     }
 
     @Override
@@ -87,7 +95,9 @@ public class FinishedGameScreen implements Screen {
                 / width, Gdx.graphics.getHeight() / height);
         }
 
-        this.image.setSize(width, height);
+        if (this.image != null) {
+            this.image.setSize(width, height);
+        }
     }
 
     @Override
@@ -165,6 +175,9 @@ public class FinishedGameScreen implements Screen {
         teamWonLabel.setFontScale(2f);
         teamWonLabel.setPosition(Gdx.graphics.getWidth() * WINNING_LABEL_WIDTH_MULTIPLIER,
                 Gdx.graphics.getHeight() * WINNING_LABEL_HEIGHT_MULTIPLIER); // 1200, 540
+
+        this.createImage(winningID);
+
         stage.addActor(teamWonLabel);
     }
 }
