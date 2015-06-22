@@ -64,7 +64,7 @@ public class BoatGroup extends Group {
     @Inject
     public BoatGroup(final float xpos, final float ypos, final int teamID) {
         this.setX(xpos);
-        this.setY(ypos - this.BOAT_HEIGHT / 2);
+        this.setY(ypos - this.BOAT_HEIGHT / 2f);
         this.setWidth(this.BOAT_WIDTH);
         this.setHeight(this.BOAT_HEIGHT);
 

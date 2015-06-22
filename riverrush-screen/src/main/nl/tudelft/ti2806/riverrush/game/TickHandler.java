@@ -5,6 +5,9 @@ package nl.tudelft.ti2806.riverrush.game;
  */
 public interface TickHandler {
 
-    public void handle();
+    /**
+     * Handles ticks.
+     */
+    void handle();
 
 }

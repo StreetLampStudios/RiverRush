@@ -11,8 +11,6 @@ import nl.tudelft.ti2806.riverrush.screen.StoppedScreen;
  */
 public class StoppedGameState extends AbstractGameState {
 
-    private final StoppedScreen screen;
-
     /**
      * The state of the game that indicates that the game has stopped. In this state the game has
      * ended and cannot be restarted.
@@ -24,9 +22,8 @@ public class StoppedGameState extends AbstractGameState {
     public StoppedGameState(final EventDispatcher eventDispatcher,
                             final Game gm) {
         super(eventDispatcher, gm);
-        this.screen = new StoppedScreen();
         Gdx.app.postRunnable(() -> StoppedGameState.this.game
-            .setScreen(StoppedGameState.this.screen));
+            .setScreen(new StoppedScreen()));
     }
 
     @Override
@@ -45,7 +42,7 @@ public class StoppedGameState extends AbstractGameState {
     }
 
     @Override
-    public GameState finish(Integer team) {
+    public GameState finish(final Integer team) {
         return this;
     }
 

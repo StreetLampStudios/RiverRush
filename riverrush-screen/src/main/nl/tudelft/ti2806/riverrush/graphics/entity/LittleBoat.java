@@ -11,10 +11,10 @@ import com.google.inject.Inject;
  */
 public class LittleBoat extends Actor {
     private final TextureRegion image;
-    private static final int PROGRESS_DIVISION = 100;
+    private static final float PROGRESS_DIVISION = 100f;
     private static final float PROGRESS_MOVE_DURATION = 0.5f;
-    private float xpos;
-    private float topXPosition;
+    private final float xpos;
+    private final float topXPosition;
 
     private double progress;
 
@@ -36,7 +36,6 @@ public class LittleBoat extends Actor {
         this.setPosition(x, ypos);
         this.setWidth(width);
         this.setHeight(height);
-        this.progress = 0;
         this.image = boat;
     }
 
@@ -52,11 +51,11 @@ public class LittleBoat extends Actor {
     }
 
     /**
-     * @param progres - Sets progress to this value
+     * @param pro - Sets progress to this value
      */
-    public void setProgress(final double progres) {
-        this.progress = progres;
-        float newY = new Double(progres / PROGRESS_DIVISION).floatValue();
+    public void setProgress(final double pro) {
+        this.progress = pro;
+        float newY = (float) progress / PROGRESS_DIVISION;
         MoveToAction action = new MoveToAction();
         action.setPosition(this.xpos + newY * (this.topXPosition), this.getY());
         action.setDuration(PROGRESS_MOVE_DURATION);

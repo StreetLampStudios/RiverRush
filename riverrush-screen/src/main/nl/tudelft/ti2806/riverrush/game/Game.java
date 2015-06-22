@@ -17,6 +17,7 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Graphics game.
@@ -29,7 +30,7 @@ public class Game extends GdxGame {
     private final HandlerLambda<AnimalRemovedEvent> removeAnimalHandlerLambda;
     private GameState currentGameState;
 
-    private HashMap<Integer, Team> teams;
+    private final Map<Integer, Team> teams;
 
     /**
      * Creates a game class.

@@ -14,8 +14,6 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
 public class SideStage extends Stage {
 
     private final RiverActor river;
-    private CannonBallGraphic obstacle;
-    private RockGraphic rock;
 
     private BoatGroup boat;
 
@@ -35,8 +33,7 @@ public class SideStage extends Stage {
      */
     public void spawnObstacle(final CannonBallGraphic graphic) {
         graphic.init();
-        this.obstacle = graphic;
-        this.boat.addActorAt(0, this.obstacle);
+        this.boat.addActorAt(0, graphic);
     }
 
     /**
@@ -46,8 +43,7 @@ public class SideStage extends Stage {
      */
     public void spawnRock(final RockGraphic graphic) {
         graphic.init();
-        this.rock = graphic;
-        this.getRoot().addActorBefore(this.boat, this.rock);
+        this.getRoot().addActorBefore(this.boat, graphic);
     }
 
     @Override
@@ -62,13 +58,22 @@ public class SideStage extends Stage {
         return this.river;
     }
 
-    public void resize(int width, int height) {
+    /**
+     * Resize the stage based on the resolution of the screen.
+     * @param width the new base width.
+     * @param height the new base height.
+     */
+    public void resize(final int width, final int height) {
         if (this.boat != null) {
             this.boat.resize(width, height);
         }
     }
 
-    public void setBoat(BoatGroup newBoat) {
+    /**
+     * Set the boat corresponding to the given stage.
+     * @param newBoat refers to the boat that needs to be added to this stage.
+     */
+    public void setBoat(final BoatGroup newBoat) {
         this.boat = newBoat;
         this.getRoot().addActorAt(1, newBoat);
     }

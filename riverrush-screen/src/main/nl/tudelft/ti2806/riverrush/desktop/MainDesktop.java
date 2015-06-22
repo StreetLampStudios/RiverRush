@@ -8,7 +8,6 @@ import com.google.inject.Injector;
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
 
@@ -21,7 +20,6 @@ import java.net.URISyntaxException;
  */
 public class MainDesktop extends CoreModule {
     private Injector injector;
-    private EventDispatcher eventDispatcher;
 
     /**
      * Calls the main desktop constructor that starts the game.
@@ -93,7 +91,6 @@ public class MainDesktop extends CoreModule {
      */
     private void init(final String url, final boolean fullscreen) throws URISyntaxException {
         this.injector = Guice.createInjector(this);
-        this.eventDispatcher = this.injector.getInstance(EventDispatcher.class);
 
         this.setupGraphics(fullscreen);
 

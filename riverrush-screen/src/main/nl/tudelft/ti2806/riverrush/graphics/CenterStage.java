@@ -27,10 +27,8 @@ public class CenterStage extends Stage {
     private static final int TOTAL_HEIGHT_OFFSET_PERCENTAGE = 5;
     private static final int TOTAL_HEIGHT_OFFSET_MULTIPLIER = 3;
     private static final int TOTALHEIGHT_DIVISION_FACTOR = 4;
-    private LittleBoat leftBoat;
-    private LittleBoat rightBoat;
-    private final float totalHeight;
-    private final float totalWidth;
+    private final LittleBoat leftBoat;
+    private final LittleBoat rightBoat;
 
     /**
      * The constructor of the center stage class.
@@ -39,9 +37,6 @@ public class CenterStage extends Stage {
      * @param height - specifies the height
      */
     public CenterStage(final float width, final float height) {
-        this.totalHeight = height;
-        this.totalWidth = width;
-
         RiverBanksActor background = new RiverBanksActor(0, 0, width, height);
         this.addActor(background);
 
@@ -49,16 +44,16 @@ public class CenterStage extends Stage {
             width - WIDTH_OFFSET, height - HEIGHT_OFFSET);
         DividingLine line = new DividingLine(DIV_X_POS, DIV_Y_POS, height, width / 2);
 
-        float topX = width - TOP_WIDTH_OFFSET - this.totalWidth
+        float topX = width - TOP_WIDTH_OFFSET - width
             / TOP_WIDTH_OFFSET_PERCENTAGE; // At max the boat should be at the
         // topMinus a margin of 30
 
-        this.rightBoat = new LittleBoat(BOAT_X_POS, topX, totalHeight / TOTAL_HEIGHT_OFFSET_PERCENTAGE,
-            this.totalWidth / TOP_WIDTH_OFFSET_PERCENTAGE, this.totalHeight
+        this.rightBoat = new LittleBoat(BOAT_X_POS, topX, height / TOTAL_HEIGHT_OFFSET_PERCENTAGE,
+            width / TOP_WIDTH_OFFSET_PERCENTAGE, height
             / TOTALHEIGHT_DIVISION_FACTOR, Assets.bootjeRaccoon);
-        this.leftBoat = new LittleBoat(BOAT_X_POS, topX, totalHeight
-            / TOTAL_HEIGHT_OFFSET_PERCENTAGE * TOTAL_HEIGHT_OFFSET_MULTIPLIER, this.totalWidth
-            / TOP_WIDTH_OFFSET_PERCENTAGE, this.totalHeight
+        this.leftBoat = new LittleBoat(BOAT_X_POS, topX, height
+            / TOTAL_HEIGHT_OFFSET_PERCENTAGE * TOTAL_HEIGHT_OFFSET_MULTIPLIER, width
+            / TOP_WIDTH_OFFSET_PERCENTAGE, height
             / TOTALHEIGHT_DIVISION_FACTOR, Assets.bootjeMonkey);
 
         this.addActor(floor);

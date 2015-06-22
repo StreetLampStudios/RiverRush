@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Centralizes loading and creating of Textures and TextureRegions.
@@ -37,7 +38,7 @@ public final class Assets {
     /**
      * These are the lists of varying raccoon and monkey sprites.
      */
-    public static ArrayList<TextureRegion> raccoonMap, monkeyMap;
+    public static List<TextureRegion> raccoonMap, monkeyMap;
 
     private static final String DIRECTORY = "data/";
 
@@ -202,7 +203,7 @@ public final class Assets {
      * Get rid of all resources.
      */
     public static void dispose() {
-
+        //Has to remain empty.
     }
 
     /**

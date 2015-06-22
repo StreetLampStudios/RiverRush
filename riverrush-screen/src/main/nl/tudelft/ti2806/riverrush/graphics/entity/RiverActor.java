@@ -21,8 +21,8 @@ public class RiverActor extends Actor {
     private final float mid;
     private final float originalPosition;
 
-    private MoveToAction flow;
-    private MoveToAction reset;
+    private final MoveToAction flow;
+    private final MoveToAction reset;
 
     /**
      * Creates an river object with a given graphical representation.

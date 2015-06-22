@@ -3,32 +3,15 @@ package nl.tudelft.ti2806.riverrush.game.state;
 import com.badlogic.gdx.Gdx;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
-import nl.tudelft.ti2806.riverrush.domain.event.AddObstacleEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AddRockEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalDroppedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalReturnedToBoatEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.BoatCollidedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.Direction;
-import nl.tudelft.ti2806.riverrush.domain.event.Event;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
-import nl.tudelft.ti2806.riverrush.domain.event.TeamProgressEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.game.TickHandler;
-import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
-import nl.tudelft.ti2806.riverrush.graphics.entity.AnimalActor;
-import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
-import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
-import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
-import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
+import nl.tudelft.ti2806.riverrush.graphics.entity.*;
 import nl.tudelft.ti2806.riverrush.screen.PlayingGameScreen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * State for a game that is playing.
@@ -49,8 +32,8 @@ public class PlayingGameState extends AbstractGameState {
 
     private final TickHandler onTick = this::tick;
 
-    private final HashMap<Integer, ArrayList<RockGraphic>> rocks;
-    private final HashMap<Integer, ArrayList<CannonBallGraphic>> obstacles;
+    private final Map<Integer, ArrayList<RockGraphic>> rocks;
+    private final Map<Integer, ArrayList<CannonBallGraphic>> obstacles;
 
     /**
      * The state of the game that indicates that the game is currently playable.
@@ -200,7 +183,7 @@ public class PlayingGameState extends AbstractGameState {
      * @param animal The team
      */
     private void addAnimal(final Team team, final Animal animal) {
-        AnimalActor actor = new AnimalActor(this.dispatcher, team.getId());
+        AnimalActor actor = new AnimalActor();
         animal.setActor(actor);
         actor.setAnimal(animal);
 
