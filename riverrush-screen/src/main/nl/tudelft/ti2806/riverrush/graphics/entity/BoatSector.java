@@ -1,6 +1,5 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Circle;
@@ -8,9 +7,8 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
-import java.util.ArrayList;
+import java.awt.*;
 
 /**
  * Boat sector class.
@@ -22,11 +20,12 @@ public class BoatSector extends Group {
     private final int rowCount;
     private final int colCount;
     private int currentAnimalPosition;
-    private ArrayList<AnimalActor> animals;
+    private AnimalActor[] animals;
     private final Rectangle bounds;
 
     /**
      * Constructor.
+     *
      * @param rows - number of rows
      * @param cols - number of columns
      */
@@ -41,9 +40,9 @@ public class BoatSector extends Group {
         this.bounds = new Rectangle(v.x, v.y, this.getWidth(), this.getHeight());
 
         this.currentAnimalPosition = START_POSITION;
-        this.animals = new ArrayList<>();
+        this.animals = new AnimalActor[10];
         for (int i = 0; i < (this.colCount * this.rowCount); i++) {
-            this.animals.add(null);
+            this.animals[i] = null;
         }
     }
 
@@ -66,17 +65,18 @@ public class BoatSector extends Group {
 
     /**
      * Adds an animal to this sector.
+     *
      * @param actor - the animal you want to add
      */
     public void addAnimal(final AnimalActor actor) {
-        this.animals.set(this.currentAnimalPosition, actor);
+        this.animals[this.currentAnimalPosition] = actor;
         float xPos = ((this.currentAnimalPosition % this.colCount) * actor.getWidth());
         float yPos = ((this.currentAnimalPosition / this.colCount) * actor.getHeight());
         actor.setPosition(xPos, yPos);
         this.currentAnimalPosition = (this.currentAnimalPosition + 2)
                 % (this.rowCount * this.colCount);
 
-        if (this.animals.get(this.currentAnimalPosition) != null) {
+        if (this.animals[this.currentAnimalPosition] != null) {
             this.currentAnimalPosition--;
         }
         this.addActor(actor);
@@ -87,7 +87,7 @@ public class BoatSector extends Group {
      *
      * @return the animals
      */
-    public ArrayList<AnimalActor> getAnimals() {
+    public AnimalActor[] getAnimals() {
         return this.animals;
     }
 
@@ -96,12 +96,45 @@ public class BoatSector extends Group {
     }
 
     public AnimalActor getCollidingChild(final Circle collider) {
-        AnimalActor result = null;
         for (AnimalActor actor : this.animals) {
             if (actor != null && actor.isColliding(collider)) {
                 return actor;
             }
         }
-        return result;
+        return null;
+    }
+
+    public void resize(int width, int height) {
+        this.setWidth(this.colCount * (float) (width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 50))); // Monkey width
+        this.setHeight(this.rowCount * (float) (height / ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 90))); // Monkey height
+
+        for (AnimalActor actor : animals) {
+            if (actor == null) {
+                continue;
+            }
+
+            actor.resize(width, height);
+            float xPos = ((this.currentAnimalPosition % this.colCount) * actor.getWidth());
+            float yPos = ((this.currentAnimalPosition / this.colCount) * actor.getHeight());
+            actor.setPosition(xPos, yPos);
+        }
+    }
+
+    public boolean contains(AnimalActor actor) {
+        for (AnimalActor s : animals) {
+            if (s == actor) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void remove(AnimalActor actor) {
+        for (int i = 0; i < animals.length; i++) {
+            if (animals[i] == actor) {
+                animals[i] = null;
+                return;
+            }
+        }
     }
 }

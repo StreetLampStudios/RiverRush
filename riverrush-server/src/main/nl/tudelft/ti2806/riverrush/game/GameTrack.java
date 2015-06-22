@@ -43,8 +43,8 @@ public class GameTrack {
     private final HashMap<Integer, Team> teams;
 
     private final HashMap<Team, Double> teamDistances;
-    private final TreeMap<Double, AbstractTeamEvent> levelMap;
-    private final HashMap<Team, Double> nextEvents;
+    private TreeMap<Double, AbstractTeamEvent> levelMap;
+    private HashMap<Team, Double> nextEvents;
     private final Provider<Game> gameProvider;
 
 
@@ -150,12 +150,13 @@ public class GameTrack {
             return;
         }
 
-        Double next = this.levelMap.lowerKey(currentDistance);
-        while (next != null && !next.equals(this.nextEvents.get(team))) {
+        Double next = this.levelMap.higherKey(this.nextEvents.get(team));
+        while (next != null && next <= currentDistance) {
             AbstractTeamEvent event = this.levelMap.get(next);
             event.setTeam(team.getId());
             this.dispatcher.dispatch(event);
             this.nextEvents.put(team, next);
+            next = this.levelMap.higherKey(next);
         }
     }
 
@@ -186,6 +187,7 @@ public class GameTrack {
     public void reset() {
         for (Team team : this.teamDistances.keySet()) {
             this.teamDistances.put(team, 0.0);
+            this.nextEvents.put(team, -1.0);
         }
     }
 
@@ -286,7 +288,7 @@ public class GameTrack {
     public void sweepAnimals(final Direction rockDirection, final Integer teamID) {
         Team tm = this.teams.get(teamID);
         for (AbstractAnimal anim : tm.getAnimals()) {
-            if (anim.getVoteDirection().equals(rockDirection)
+            if (!anim.getVoteDirection().equals(rockDirection)
                 || anim.getVoteDirection().equals(Direction.NEUTRAL)) {
                 anim.fall();
             }

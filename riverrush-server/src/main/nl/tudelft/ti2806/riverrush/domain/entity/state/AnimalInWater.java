@@ -15,7 +15,7 @@ public class AnimalInWater extends AbstractAnimalState {
 
     private Animal animal;
 
-    private static final int RESPAWN_DELAY = 2000;
+    private static final int RESPAWN_DELAY = 5000;
 
     /**
      * Constructor.

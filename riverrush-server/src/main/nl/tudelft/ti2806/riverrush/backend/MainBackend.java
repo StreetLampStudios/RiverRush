@@ -92,7 +92,7 @@ public final class MainBackend extends CoreModule {
      *
      * @return The level map
      */
-    private TreeMap<Double, AbstractTeamEvent> configureLevelMap() {
+    public static TreeMap<Double, AbstractTeamEvent> configureLevelMap() {
         try {
             return LevelMapParser.readFromFile("/simpletrack.txt");
         } catch (IOException e) {

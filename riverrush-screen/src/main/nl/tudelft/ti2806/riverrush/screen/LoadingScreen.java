@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import nl.tudelft.ti2806.riverrush.domain.event.AssetsLoadedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.Assets;
@@ -16,6 +17,7 @@ public class LoadingScreen implements Screen {
 
     private final EventDispatcher dispatcher;
     private Stage stage;
+    private Image loadingImage;
 
     /**
      * Creates the graphical representation of the loading game screen. The loading game screen
@@ -36,8 +38,10 @@ public class LoadingScreen implements Screen {
     public void show() {
         this.stage = new Stage();
 
-        this.stage.addActor(Assets.getLoadingImage());
-
+        this.loadingImage = Assets.getLoadingImage();
+        this.loadingImage.setPosition(0, 0);
+        this.loadingImage.setFillParent(true);
+        this.stage.addActor(this.loadingImage);
     }
 
     @Override
@@ -54,7 +58,7 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void resize(final int width, final int height) {
-        // Does not need to do anything yet
+        this.loadingImage.setSize(width, height);
     }
 
     @Override

@@ -14,7 +14,7 @@ import java.util.TimerTask;
  */
 public class AnimalInAir extends AbstractAnimalState {
 
-    private static final int DROP_DELAY = 500;
+    private static final int DROP_DELAY = 1500;
     private Animal animal;
     private final Timer tmr;
 

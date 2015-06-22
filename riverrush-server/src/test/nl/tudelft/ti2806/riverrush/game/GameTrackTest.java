@@ -111,7 +111,7 @@ public class GameTrackTest extends AbstractModule{
         this.team.addAnimal(animal);
         this.track.updateProgress();
         assertEquals(1.0, this.track.getDistanceTeam(this.team.getId()), DELTA);
-        Mockito.verify(this.dispatcher, Mockito.times(1)).dispatch(
+        Mockito.verify(this.dispatcher, Mockito.times(2)).dispatch(
             Mockito.any(TeamProgressEvent.class));
 
     }
@@ -182,7 +182,7 @@ public class GameTrackTest extends AbstractModule{
 
         this.track.fireGameTrackEvents(this.team, 10.1);
 
-        Mockito.verify(this.dispatcher, Mockito.times(1)).dispatch(
+        Mockito.verify(this.dispatcher, Mockito.times(11)).dispatch(
             Mockito.isA(AbstractTeamEvent.class));
     }
 

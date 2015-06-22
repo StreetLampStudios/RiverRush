@@ -23,10 +23,10 @@ import java.util.TimerTask;
 public class WaitingScreen implements Screen {
 
     private static final int SECOND = 1000;
-    private static final float TIMER_LABEL_WIDTH_MULTIPLIER = 0.625f;
-    private static final float TIMER_LABEL_HEIGHT_MULTIPLIER = 0.5f;
-    private static final float COUNTER_LABEL_WIDTH_MULTIPLIER = 0.625f;
-    private static final float COUNTER_LABEL_HEIGHT_MULTIPLIER = 0.45f;
+    private static final float TIMER_LABEL_WIDTH_MULTIPLIER = 0.8f;
+    private static final float TIMER_LABEL_HEIGHT_MULTIPLIER = 0.8f;
+    private static final float COUNTER_LABEL_WIDTH_MULTIPLIER = 0.8f;
+    private static final float COUNTER_LABEL_HEIGHT_MULTIPLIER = 0.75f;
     private Stage stage;
 
     private TextureAtlas atlas;
@@ -40,6 +40,8 @@ public class WaitingScreen implements Screen {
     // Label for amount of people connected
     private Label counter;
     private int count;
+    private Image image;
+    private Image qr;
 
     /**
      * Creates the graphical representation of the waiting game screen. This screen displays an
@@ -59,17 +61,23 @@ public class WaitingScreen implements Screen {
         this.skin = new Skin(Gdx.files.internal("uiskin.json"), this.atlas);
         this.stage = new Stage();
 
-        Texture texture = new Texture(Gdx.files.internal("data/loading.jpeg"));
+        Texture texture = new Texture(Gdx.files.internal("data/ark.jpg"));
         TextureRegion region = new TextureRegion(texture, 0, 0, Gdx.graphics.getWidth(),
             Gdx.graphics.getHeight());
 
-        Image image = new Image(region);
-        image.setFillParent(true);
-        this.stage.addActor(image);
+        this.image = new Image(region);
+        this.image.setPosition(0, 0);
+        this.image.setFillParent(true);
+        this.stage.addActor(this.image);
+
+        Texture qr_texture = new Texture(Gdx.files.internal("data/qr.jpg"));
+        this.qr = new Image(qr_texture);
+        this.qr.setPosition(1920 / 5, (1080 / 2) - (qr_texture.getWidth() / 2));
+        this.qr.setSize(300, 300);
+        this.stage.addActor(this.qr);
 
         this.createTimerLabel();
         this.createCounterLabel();
-
     }
 
     /**
@@ -86,7 +94,7 @@ public class WaitingScreen implements Screen {
      * Creates the counter label.
      */
     private void createCounterLabel() {
-        this.counter = new Label("Connected: ", this.skin);
+        this.counter = new Label("Connected: 0", this.skin);
         this.counter.setPosition(Gdx.graphics.getWidth() * COUNTER_LABEL_WIDTH_MULTIPLIER,
             Gdx.graphics.getHeight() * COUNTER_LABEL_HEIGHT_MULTIPLIER); // 1200, 500
         this.stage.addActor(this.counter);
@@ -99,7 +107,6 @@ public class WaitingScreen implements Screen {
 
         this.stage.act();
         this.stage.draw();
-
     }
 
     /**
@@ -135,15 +142,15 @@ public class WaitingScreen implements Screen {
                 WaitingScreen.this.time--;
                 WaitingScreen.this.timer
                     .setText("Time till game start: " + WaitingScreen.this.time);
-                // WaitingScreen.this.addConnection();
-
             }
         }, SECOND, SECOND);
     }
 
     @Override
     public void resize(final int width, final int height) {
-        // Does not need to do anything yet
+        this.timer.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
+        this.counter.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
+        this.image.setSize(width, height);
     }
 
     @Override
@@ -167,5 +174,4 @@ public class WaitingScreen implements Screen {
             this.tmr.cancel();
         }
     }
-
 }

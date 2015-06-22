@@ -1,12 +1,17 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+import nl.tudelft.ti2806.riverrush.graphics.Assets;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import nl.tudelft.ti2806.riverrush.domain.event.Direction;
-import nl.tudelft.ti2806.riverrush.graphics.Assets;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 
 public class RockGraphic extends AbstractObstacle {
 
@@ -41,6 +46,19 @@ public class RockGraphic extends AbstractObstacle {
             this.offset = 0.5f;
         }
     }
+    
+    public void getDestroyed() {
+    	ScaleToAction scale = new ScaleToAction();
+    	scale.setScale(0.2f);
+    	scale.setDuration(0.5f);
+    	
+    	AlphaAction fade = new AlphaAction();
+    	fade.setAlpha(0f);
+    	fade.setDuration(0.5f);
+    	
+    	this.addAction(scale);
+    	this.addAction(fade);
+    }
 
     /**
      * Actually adds the obstacle to the screen.
@@ -49,6 +67,7 @@ public class RockGraphic extends AbstractObstacle {
         this.setWidth(SIZE * 0.45f); // 0.45 is the percentage of the screen of his stage.
         this.setHeight(SIZE);
         this.setPosition(DESKTOP_WIDTH, (DESKTOP_HEIGHT * this.offset) - SIZE / 2); // 1080
+        this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
 
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         this.localToStageCoordinates(v);
@@ -70,10 +89,16 @@ public class RockGraphic extends AbstractObstacle {
         this.localToStageCoordinates(v);
 
         this.getBounds().setPosition(v.x, v.y);
+        
+        Color color = this.getColor();
+        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
         batch.draw(Assets.iceberg, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(),
                 this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(),
                 this.getRotation());
+        
+
+        batch.setColor(Color.WHITE);
     }
 
     /**

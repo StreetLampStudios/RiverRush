@@ -22,7 +22,7 @@ public class WaitingGameState implements GameState {
     /**
      * Game about to start timer delay.
      */
-    public static final int DELAY = 5;
+    public static final int DELAY = 15;
     private boolean readyToPlay = false;
 
     private final EventDispatcher dispatcher;

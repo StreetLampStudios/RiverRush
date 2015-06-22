@@ -1,11 +1,5 @@
 package nl.tudelft.ti2806.riverrush.graphics.entity;
 
-import java.util.HashMap;
-
-import nl.tudelft.ti2806.riverrush.domain.event.Direction;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.graphics.Assets;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -24,6 +18,11 @@ import com.badlogic.gdx.scenes.scene2d.actions.RotateToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.inject.Inject;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.graphics.Assets;
+
+import java.awt.*;
 
 /**
  * Game object representing a monkey.
@@ -40,17 +39,17 @@ public class AnimalActor extends Group {
     private static final float ANIMAL_HEIGHT = 90; // 81
 
     private TextureRegion animalTexture;
-    private static final float JUMP_HEIGHT = 10;
+    private static final float JUMP_HEIGHT = 20;
     private static final int FALL_DISTANCEX = -520;
     private static final int FALL_DISTANCEY = 200;
     private static final float FALL_VELOCITY = 0.5f;
     private static final float JUMP_UP_DURATION = 0.3f;
     private static final float JUMP_DOWN_DURATION = 0.15f;
-    private static final float DELAY_DURATION = 5f;
+    private static final float DELAY_DURATION = 1.5f;
     private static final double HITBOX_MULTIPLIER = 0.3;
     private static final float FLAG_OFFSET = 0.8f;
+    private static final float JUMP_SCALING = 1.5f;
 
-    private static final float ROLL_DURATION = 0.7f;
 
     private float origX;
     private float origY;
@@ -64,7 +63,7 @@ public class AnimalActor extends Group {
      * Creates a monkey object that represents player characters.
      *
      * @param dispatcher Event dispatcher for dispatching events
-     * @param teamID - The id of the team which this monkey belongs
+     * @param teamID     - The id of the team which this monkey belongs
      */
     @Inject
     public AnimalActor(final EventDispatcher dispatcher, final int teamID) {
@@ -85,6 +84,16 @@ public class AnimalActor extends Group {
         this.shadow = shad;
     }
 
+    public void resize(int width, int height) {
+        this.setWidth(width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / ANIMAL_WIDTH));
+        this.setHeight(height / ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / ANIMAL_HEIGHT));
+        this.shadow.rezize(width, height);
+        Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
+        this.localToStageCoordinates(v);
+
+        this.bounds = new Circle(v.x, v.y, ((float) (this.getHeight() * HITBOX_MULTIPLIER)));
+    }
+
     private class ShadowActor extends Actor {
 
         protected float origX;
@@ -94,6 +103,11 @@ public class AnimalActor extends Group {
             this.setWidth(40);
             this.setHeight(72);
             this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
+        }
+
+        public void rezize(int width, int height) {
+        	this.setWidth(width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 40));
+        	this.setHeight(height / ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 72));
         }
 
         @Override
@@ -111,7 +125,7 @@ public class AnimalActor extends Group {
 
         private void update() {
             ScaleToAction scaleUp = new ScaleToAction();
-            scaleUp.setScale(1.2f);
+            scaleUp.setScale(JUMP_SCALING);
             scaleUp.setDuration(JUMP_UP_DURATION);
 
             ScaleToAction scaleDown = new ScaleToAction();
@@ -123,7 +137,6 @@ public class AnimalActor extends Group {
 
             this.addAction(jump);
         }
-
     }
 
     /**
@@ -230,7 +243,7 @@ public class AnimalActor extends Group {
      */
     public void updateFlag(final Direction direction) {
         this.directionFlag.setVisible(true);
-        if (direction == Direction.RIGHT) {
+        if (direction == Direction.LEFT) {
             this.directionFlag.setPosition(this.getWidth() / 2, this.getHeight() * FLAG_OFFSET);
             this.directionFlag.setRotation(30f);
             this.directionFlag.setScale(1f, 1f);
@@ -255,7 +268,7 @@ public class AnimalActor extends Group {
         jumpUp.setDuration(JUMP_UP_DURATION);
 
         ScaleToAction scaleUp = new ScaleToAction();
-        scaleUp.setScale(1.2f);
+        scaleUp.setScale(JUMP_SCALING);
         scaleUp.setDuration(JUMP_UP_DURATION);
 
         MoveToAction drop = new MoveToAction();

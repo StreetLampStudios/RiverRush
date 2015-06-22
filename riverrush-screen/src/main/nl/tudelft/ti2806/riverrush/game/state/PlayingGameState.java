@@ -128,6 +128,9 @@ public class PlayingGameState extends AbstractGameState {
                     hitByCollision.getAnimal().collide();
                 }
             }
+            if(graphic.getWidth() < 0) {
+            	graphic.remove();
+            }
         }
     }
 
@@ -144,6 +147,10 @@ public class PlayingGameState extends AbstractGameState {
                 event.setTeam(team.getId());
                 event.setDirection(graphic.getDirection());
                 this.dispatcher.dispatch(event);
+                graphic.getDestroyed();
+            }
+            if(graphic.getWidth() < 0) {
+            	graphic.remove();
             }
         }
     }
@@ -249,9 +256,9 @@ public class PlayingGameState extends AbstractGameState {
         animal.voteOneDirection(direction);
 
         if (direction == Direction.LEFT) {
-            team.getBoat().voteForDirection(animal, 1);
-        } else if (direction == Direction.RIGHT) {
             team.getBoat().voteForDirection(animal, -1);
+        } else if (direction == Direction.RIGHT) {
+            team.getBoat().voteForDirection(animal, 1);
         }
     }
 

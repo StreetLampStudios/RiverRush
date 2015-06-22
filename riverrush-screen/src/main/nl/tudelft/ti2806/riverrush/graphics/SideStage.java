@@ -1,6 +1,8 @@
 package nl.tudelft.ti2806.riverrush.graphics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
 import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.RiverActor;
 import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
@@ -15,16 +17,15 @@ public class SideStage extends Stage {
     private CannonBallGraphic obstacle;
     private RockGraphic rock;
 
-    private static final int RIVER_WIDTH = 1920;
-    private static final int RIVER_HEIGHT = 1080;
+    private BoatGroup boat;
 
     /**
      * Creates a stage that holds the river, boats, and any player characters that reside on it, as
      * well as the obstacles that pass through it.
      */
     public SideStage() {
-        this.river = new RiverActor(0, RIVER_WIDTH, RIVER_HEIGHT);
-        this.addActor(this.river);
+        this.river = new RiverActor(0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.getRoot().addActorAt(0, this.river);
     }
 
     /**
@@ -33,12 +34,9 @@ public class SideStage extends Stage {
      * @param graphic - The obstacle that you want to add.
      */
     public void spawnObstacle(final CannonBallGraphic graphic) {
-        if (this.obstacle != null) {
-            this.obstacle.remove();
-        }
         graphic.init();
         this.obstacle = graphic;
-        this.addActor(this.obstacle);
+        this.boat.addActorAt(0, this.obstacle);
     }
 
     /**
@@ -47,12 +45,9 @@ public class SideStage extends Stage {
      * @param graphic - The obstacle that you want to add.
      */
     public void spawnRock(final RockGraphic graphic) {
-        if (this.rock != null) {
-            this.rock.remove();
-        }
         graphic.init();
         this.rock = graphic;
-        this.addActor(this.rock);
+        this.getRoot().addActorBefore(this.boat, this.rock);
     }
 
     @Override
@@ -65,5 +60,16 @@ public class SideStage extends Stage {
      */
     public RiverActor getRiver() {
         return this.river;
+    }
+
+    public void resize(int width, int height) {
+        if (this.boat != null) {
+            this.boat.resize(width, height);
+        }
+    }
+
+    public void setBoat(BoatGroup newBoat) {
+        this.boat = newBoat;
+        this.getRoot().addActorAt(1, newBoat);
     }
 }

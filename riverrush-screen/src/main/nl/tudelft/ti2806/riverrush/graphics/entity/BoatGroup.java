@@ -14,6 +14,7 @@ import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
 import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -49,8 +50,8 @@ public class BoatGroup extends Group {
     /**
      * Creates an boat object with a given graphical representation.
      *
-     * @param xpos represents the position of the boat on the x axis
-     * @param ypos represents the position of the boat on the y axis
+     * @param xpos   represents the position of the boat on the x axis
+     * @param ypos   represents the position of the boat on the y axis
      * @param teamID - The id of the boat that this team will represent
      */
     @Inject
@@ -89,7 +90,7 @@ public class BoatGroup extends Group {
             // float secPosY = 50f + ((20f + sec.getHeight()) * i);
             sec.setPosition(secPosX, secPosY);
             this.sectors.add(sec);
-            this.addActor(sec);
+            this.addActorAt(1, sec);
         }
 
         this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
@@ -108,7 +109,6 @@ public class BoatGroup extends Group {
 
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
-
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         v = this.localToStageCoordinates(v);
         this.bounds.setPosition(v.x, v.y);
@@ -127,7 +127,6 @@ public class BoatGroup extends Group {
 
         super.draw(batch, parentAlpha);
         batch.disableBlending();
-
     }
 
     @Override
@@ -138,7 +137,7 @@ public class BoatGroup extends Group {
     /**
      * Vote for a direction to move the boat there.
      *
-     * @param animal The animal that has voted
+     * @param animal    The animal that has voted
      * @param direction The direction the animal voted in
      */
     public void voteForDirection(final AbstractAnimal animal, final int direction) {
@@ -174,12 +173,16 @@ public class BoatGroup extends Group {
     /**
      * Add an animal to teh boat.
      *
-     * @param actor The actor of the animal
+     * @param actor  The actor of the animal
      * @param sector The sector to add the animal in
      */
     public void addAnimal(final AnimalActor actor, final Sector sector) {
+
         BoatSector sec = this.sectors.get(sector.getIndex());
+        if(sec.contains(actor))
+            return;
         sec.addAnimal(actor);
+
         this.totalNumAnimals++;
         this.updateBoatPosition();
     }
@@ -193,9 +196,9 @@ public class BoatGroup extends Group {
         Animal anim = (Animal) aAnimal;
         AnimalActor actor = anim.getActor();
         for (BoatSector sec : this.sectors) {
-            if (sec.getAnimals().contains(actor)) {
+            if (sec.contains(actor)) {
                 sec.removeActor(actor);
-                sec.getAnimals().remove(actor);
+                sec.remove(actor);
             }
         }
         this.totalNumAnimals--;
@@ -216,5 +219,35 @@ public class BoatGroup extends Group {
         }
 
         return result;
+    }
+
+    public void resize(int width, int height) {
+        this.setWidth((int) (width / 2.4));
+        this.setHeight((int) (height / 1.8));
+        this.setX(width * 0.02f);
+        this.setY((float) ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 0.45) - (this.getHeight() / 2));
+
+        int i = 0;
+        for (BoatSector sec : this.sectors) {
+            sec.resize(width, height);
+
+            float extra = 0f;
+            if (i == 2) {
+                extra = (float) width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 10);
+            }
+            if (i > 2) {
+                extra = (float) width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / -12);
+            }
+
+            float secPosX = (width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / SECTOR_INIT_POS)) + (((width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / SECTOR_DIVIDING_DISTANCE)) + sec.getWidth()) * i) + extra;
+            float secPosY = (this.getHeight() / 2) - (sec.getHeight() / 2);
+
+            sec.setPosition(secPosX, secPosY);
+
+            i++;
+        }
+        Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
+        v = this.localToStageCoordinates(v);
+        this.bounds.setPosition(v.x, v.y);
     }
 }
