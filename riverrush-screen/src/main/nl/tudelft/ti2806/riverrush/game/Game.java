@@ -2,10 +2,7 @@ package nl.tudelft.ti2806.riverrush.game;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
+import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.LoadingGameState;
 import nl.tudelft.ti2806.riverrush.game.state.WaitingGameState;
@@ -113,8 +110,9 @@ public class Game extends GdxGame {
         Integer animalId = event.getAnimal();
         Team team = this.getTeam(teamId);
         Animal animal = (Animal) team.getAnimal(animalId);
+        animal.setVoteDirection(Direction.NEUTRAL);
         BoatGroup boat = team.getBoat();
-
+        boat.voteForDirection(animal, 0);
         if (boat != null) {
             boat.removeAnimal(animal);
         }
