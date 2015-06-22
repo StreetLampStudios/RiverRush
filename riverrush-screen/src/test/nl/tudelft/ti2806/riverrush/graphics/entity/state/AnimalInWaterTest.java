@@ -8,8 +8,7 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.AnimalActor;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Test for {@link AnimalInWater}
@@ -30,5 +29,11 @@ public class AnimalInWaterTest extends AnimalStateTest{
     @Test
     public void testReturnToBoat() throws Exception {
         assertEquals(AnimalOnBoat.class.getName(), getAnimalState().returnToBoat().getClass().getName());
+    }
+
+    @Test
+    public void testCollide() throws Exception {
+        verifyZeroInteractions(dispatcher);
+        getAnimalState().collide();
     }
 }

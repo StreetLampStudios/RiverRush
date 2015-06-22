@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -31,4 +32,12 @@ public class AnimalInAirTest extends AnimalStateTest {
     public void testDrop() throws Exception {
         assertEquals(AnimalOnBoat.class.getName(), getAnimalState().drop().getClass().getName());
     }
+
+    @Test
+    public void testCollide() throws Exception {
+        verifyZeroInteractions(dispatcher);
+        getAnimalState().collide();
+    }
+
+
 }

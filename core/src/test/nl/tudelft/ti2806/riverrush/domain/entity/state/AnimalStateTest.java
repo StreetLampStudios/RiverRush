@@ -38,9 +38,4 @@ public abstract class AnimalStateTest {
     public void testReturnToBoat() throws Exception {
         assertEquals(state.getClass().getName(), state.returnToBoat().getClass().getName());
     }
-
-    @Test
-    public void testCollide() throws Exception {
-        //assertEquals(state.getClass().getName(), state.collide().getClass().getName());
-    }
 }
