@@ -18,7 +18,7 @@ public class AddRockEvent extends AbstractTeamEvent {
         stringBuilder.append(super.serialize(protocol));
         stringBuilder.append(protocol.getPairSeperator());
         stringBuilder.append("location").append(protocol.getKeyValueSeperator())
-            .append(this.location.toString());
+                .append(this.location.toString());
         return stringBuilder.toString();
     }
 
@@ -44,7 +44,7 @@ public class AddRockEvent extends AbstractTeamEvent {
     @Override
     public String toString() {
         return "AddRockEvent{"
-            + "location=" + location
-            + "} " + super.toString();
+                + "location=" + location
+                + "} " + super.toString();
     }
 }
