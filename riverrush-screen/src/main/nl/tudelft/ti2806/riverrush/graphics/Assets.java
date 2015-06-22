@@ -44,6 +44,9 @@ public final class Assets {
 
     public static Sound backgroundMusic;
 
+    public static Sound cheeringSound;
+
+    public static Sound waitingMusic;
 
     private static final String DIRECTORY = "data/";
 
@@ -189,7 +192,8 @@ public final class Assets {
         raccoonMap.add(raccoonYellow);
 
         backgroundMusic = new Sound(DIRECTORY + "backgroundMusic.wav");
-
+        cheeringSound = new Sound(DIRECTORY + "cheering.wav");
+        waitingMusic = new Sound(DIRECTORY + "waitingMusic.wav");
     }
 
     /**

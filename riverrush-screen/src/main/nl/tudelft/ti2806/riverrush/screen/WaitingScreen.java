@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.graphics.Assets;
+import nl.tudelft.ti2806.riverrush.sound.Sound;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -44,6 +46,8 @@ public class WaitingScreen implements Screen {
     private Label counter;
     private int count;
     private Image image;
+
+    private Sound sound;
 
     /**
      * Creates the graphical representation of the waiting game screen. This screen displays an
@@ -79,6 +83,9 @@ public class WaitingScreen implements Screen {
 
         this.createTimerLabel();
         this.createCounterLabel();
+
+        this.sound = Assets.waitingMusic;
+        this.sound.loop();
     }
 
     /**
@@ -174,5 +181,6 @@ public class WaitingScreen implements Screen {
         if (this.tmr != null) {
             this.tmr.cancel();
         }
+        this.sound.stop();
     }
 }

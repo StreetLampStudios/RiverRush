@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 /**
- * Creates a Sound object from a sound filename that you can call play and stop on
+ * Creates a Sound object from a sound filename that you can call play and stop on.
  */
 public class Sound {
 

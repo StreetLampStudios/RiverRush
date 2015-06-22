@@ -135,7 +135,6 @@ public class PlayingGameScreen implements Screen {
 
     @Override
     public void dispose() {
-        // Does not need to do anything
         this.sound.stop();
     }
 
