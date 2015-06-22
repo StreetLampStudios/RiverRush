@@ -15,17 +15,12 @@ import static org.mockito.Mockito.*;
  * Test for {@link PlayingGameState}
  */
 public class PlayingGameStateTest extends AbstractGameStateTest {
-    private PlayingGameState pstate;
-    private PlayingGameScreen screen;
 
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        pstate = (PlayingGameState) state;
     }
-
-
 
     @Override
     public AbstractGameState getState() {
@@ -42,23 +37,4 @@ public class PlayingGameStateTest extends AbstractGameStateTest {
         assertEquals(FinishedGameState.class.getName(), state.finish(2).getClass().getName());
     }
 
-    @Test
-    public void testAddAnimalHandler() throws Exception {
-
-    }
-
-    @Test
-    public void testAnimalJumpHandler() throws Exception {
-
-    }
-
-    @Test
-    public void testAnimalMoveHandler() throws Exception {
-
-    }
-
-    @Test
-    public void testAnimalDropHandler() throws Exception {
-
-    }
 }

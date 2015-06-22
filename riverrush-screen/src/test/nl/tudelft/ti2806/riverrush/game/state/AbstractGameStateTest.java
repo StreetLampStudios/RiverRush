@@ -10,14 +10,13 @@ import nl.tudelft.ti2806.riverrush.game.Game;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.awt.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by Martijn on 22-6-2015.
@@ -31,15 +30,13 @@ public abstract class AbstractGameStateTest {
     @Before
     public void setUp() throws Exception {
         game = mock(Game.class);
-        when(game.getScreen()).thenCallRealMethod();
-        doCallRealMethod().when(game).setScreen(any(Screen.class));
 
         dispatcher = mock(EventDispatcher.class);
-        Gdx.app = mock(Application.class);
+        Application app = mock(Application.class);
+        doNothing().when(app).postRunnable(Mockito.any());
+        Gdx.app = app;
 
         state = getState();
-
-
     }
 
     @Test

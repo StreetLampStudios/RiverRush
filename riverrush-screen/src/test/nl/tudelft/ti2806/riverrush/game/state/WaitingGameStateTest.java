@@ -1,13 +1,20 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 /**
- * Created by Martijn on 22-6-2015.
+ * Test for {@link WaitingGameState}
  */
 public class WaitingGameStateTest extends AbstractGameStateTest {
+
+    @Override
+    @Before
+    public void setUp() throws Exception {
+        super.setUp();
+    }
 
     @Test
     public void testStart() throws Exception {
