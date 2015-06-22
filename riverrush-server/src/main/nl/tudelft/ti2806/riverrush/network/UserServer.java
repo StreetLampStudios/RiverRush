@@ -19,8 +19,8 @@ import org.java_websocket.handshake.ClientHandshake;
 @Singleton
 public class UserServer extends AbstractServer {
 
-    private static final Logger log = LogManager.getLogger(UserServer.class);
-    public static final int MAX_CLIENTS = 100;
+    private static final Logger LOGGER = LogManager.getLogger(UserServer.class);
+    private static final int MAX_CLIENTS = 100;
 
     /**
      * Create the user server.
@@ -35,15 +35,15 @@ public class UserServer extends AbstractServer {
     }
 
     @Override
-    public void onOpen(WebSocket conn, ClientHandshake handshake) {
+    public void onOpen(final WebSocket conn, final ClientHandshake handshake) {
         FailIf.isNull(conn);
-        log.info("Connection opened");
+        LOGGER.info("Connection opened");
 
         if (this.getSockets().size() < MAX_CLIENTS) {
             this.createController(conn);
         } else {
             conn.close(CloseFrame.REFUSE, "Maximum number of clients reached");
-            log.info("Connection rejected");
+            LOGGER.info("Connection rejected");
         }
     }
 }

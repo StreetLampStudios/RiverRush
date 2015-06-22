@@ -3,7 +3,6 @@ package nl.tudelft.ti2806.riverrush.game;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.TypeLiteral;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Team;
@@ -15,14 +14,11 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
 
-import static com.google.inject.name.Names.named;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -30,9 +26,14 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
- * Test fot the game track.
+ * Test for the game track.
  */
-public class GameTrackTest extends AbstractModule{
+public class GameTrackTest extends AbstractModule {
+
+    private static final double DISTANCE_2 = 0.5;
+    private static final int DISTANCE_1 = 1;
+    private static final double CURRENT_DISTANCE = 10.1;
+    private static final int WANTED_NUMBER_OF_INVOCATIONS = 11;
 
     /**
      * The game track to test.
@@ -112,7 +113,7 @@ public class GameTrackTest extends AbstractModule{
         this.track.updateProgress();
         assertEquals(1.0, this.track.getDistanceTeam(this.team.getId()), DELTA);
         Mockito.verify(this.dispatcher, Mockito.times(2)).dispatch(
-            Mockito.any(TeamProgressEvent.class));
+                Mockito.any(TeamProgressEvent.class));
 
     }
 
@@ -162,10 +163,10 @@ public class GameTrackTest extends AbstractModule{
         animal2.fall();
 
         this.track.updateProgress();
-        assertEquals("Distance of team 1 is not equal", GameTrack.TRACK_LENGTH + 1,
-            this.track.getDistanceTeam(this.team.getId()), DELTA);
-        assertEquals("Distance of team 2 is not equal", GameTrack.TRACK_LENGTH + 0.5,
-            this.track.getDistanceTeam(team2.getId()), DELTA);
+        assertEquals("Distance of team 1 is not equal", GameTrack.TRACK_LENGTH + DISTANCE_1,
+                this.track.getDistanceTeam(this.team.getId()), DELTA);
+        assertEquals("Distance of team 2 is not equal", GameTrack.TRACK_LENGTH + DISTANCE_2,
+                this.track.getDistanceTeam(team2.getId()), DELTA);
 
         ArrayList<Team> list = new ArrayList<>();
         list.add(this.team);
@@ -180,10 +181,10 @@ public class GameTrackTest extends AbstractModule{
         Animal animal = new Animal(this.dispatcher);
         this.team.addAnimal(animal);
 
-        this.track.fireGameTrackEvents(this.team, 10.1);
+        this.track.fireGameTrackEvents(this.team, CURRENT_DISTANCE);
 
-        Mockito.verify(this.dispatcher, Mockito.times(11)).dispatch(
-            Mockito.isA(AbstractTeamEvent.class));
+        Mockito.verify(this.dispatcher, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).dispatch(
+                Mockito.isA(AbstractTeamEvent.class));
     }
 
     @Test
