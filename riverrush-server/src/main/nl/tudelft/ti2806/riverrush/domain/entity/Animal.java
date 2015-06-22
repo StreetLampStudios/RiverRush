@@ -29,9 +29,13 @@ public class Animal extends AbstractAnimal {
         this.setState(this.getState().drop());
     }
 
+    /**
+     * Check if the animal is on the boat.
+     *
+     * @return true if the animal is on the boat
+     */
     public boolean isOnBoat() {
-        return !(this.getState() instanceof AnimalInWater);
-        // TODO Can we fix this?
+        return this.getState().isOnBoat();
     }
 
     @Override

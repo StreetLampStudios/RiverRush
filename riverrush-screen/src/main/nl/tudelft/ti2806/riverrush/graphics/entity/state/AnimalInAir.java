@@ -61,4 +61,9 @@ public class AnimalInAir implements AnimalState {
     public void collide() {
         // Does nothing because the animal is jumping over the obstacle.
     }
+
+    @Override
+    public boolean isOnBoat() {
+        return true;
+    }
 }

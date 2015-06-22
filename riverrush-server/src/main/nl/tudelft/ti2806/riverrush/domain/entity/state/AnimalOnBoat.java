@@ -57,4 +57,9 @@ public class AnimalOnBoat extends AbstractAnimalState {
         this.animal.setVoteDirection(direction);
         return this;
     }
+
+    @Override
+    public boolean isOnBoat() {
+        return true;
+    }
 }

@@ -65,4 +65,9 @@ public class AnimalInWater extends AbstractAnimalState {
     public AnimalState voteDirection(final Direction direction) {
         return this;
     }
+
+    @Override
+    public boolean isOnBoat() {
+        return false;
+    }
 }

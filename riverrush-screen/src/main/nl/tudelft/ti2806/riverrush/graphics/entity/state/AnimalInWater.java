@@ -66,4 +66,9 @@ public class AnimalInWater implements AnimalState {
         // Does nothing because it is already in the water.
     }
 
+    @Override
+    public boolean isOnBoat() {
+        return false;
+    }
+
 }
