@@ -32,7 +32,6 @@ public class AnimalTest {
         assertEquals(animal.getState().getClass().getName(), AnimalOnBoat.class.getName());
     }
 
-
     @Test
     public void testSetState() throws Exception {
         AnimalInAir state = new AnimalInAir(animal, dispatcher);

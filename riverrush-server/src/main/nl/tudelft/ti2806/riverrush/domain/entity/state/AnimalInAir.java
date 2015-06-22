@@ -22,6 +22,7 @@ public class AnimalInAir extends AbstractAnimalState {
      * Constructor.
      *
      * @param eventDispatcher - The event dispatcher of this event
+     * @param anim            - The animal to which the state belongs
      */
     public AnimalInAir(final Animal anim, final EventDispatcher eventDispatcher) {
         super(eventDispatcher);
@@ -61,7 +62,7 @@ public class AnimalInAir extends AbstractAnimalState {
     }
 
     @Override
-    public AnimalState voteDirection(Direction direction) {
+    public AnimalState voteDirection(final Direction direction) {
         return this;
     }
 

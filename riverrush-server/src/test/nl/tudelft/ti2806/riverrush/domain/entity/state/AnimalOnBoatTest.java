@@ -18,39 +18,38 @@ import static org.mockito.Mockito.*;
  * Tests for the AnimalOnBoat class.
  */
 public class AnimalOnBoatTest extends TestCase {
-    private EventDispatcher dispatcher;
+
     private AnimalOnBoat animalState;
 
-    private ArgumentCaptor<Event> argument;
+    /**
+     * The main event dispatcher.
+     */
+    @Mock
+    private EventDispatcher dispatcher;
 
     /**
      * Used to verify calls from the server.
      */
     @Mock
-    protected Animal animalMock;
+    private Animal animalMock;
 
     @Before
     public void setUp() throws Exception {
-        dispatcher = mock(EventDispatcher.class);
+        MockitoAnnotations.initMocks(this);
 
-        animalMock = mock(Animal.class);
+        when(this.animalMock.getId()).thenReturn(1);
+        when(this.animalMock.getTeamId()).thenReturn(1);
 
-        when(this.animalMock.getId())
-            .thenReturn(1);
-
-        when(this.animalMock.getTeamId())
-            .thenReturn(1);
-
-        animalState = spy(new AnimalOnBoat(animalMock, dispatcher));
-
-        argument = ArgumentCaptor.forClass(Event.class);
+        this.animalState = new AnimalOnBoat(animalMock, dispatcher);
     }
 
     @Test
     public void testJump() throws Exception {
         AnimalState newState = animalState.jump();
+        ArgumentCaptor<AnimalJumpedEvent> argument = ArgumentCaptor.forClass(AnimalJumpedEvent.class);
         verify(dispatcher).dispatch(argument.capture());
-        assertEquals(AnimalJumpedEvent.class.getName(), argument.getValue().getClass().getName());
+        assertEquals(new Integer(1), argument.getValue().getAnimal());
+        assertEquals(new Integer(1), argument.getValue().getTeam());
         assertTrue(newState instanceof AnimalInAir);
     }
 
@@ -64,8 +63,10 @@ public class AnimalOnBoatTest extends TestCase {
     @Test
     public void testFall() throws Exception {
         AnimalState newState = animalState.fall();
+        ArgumentCaptor<AnimalFellOffEvent> argument = ArgumentCaptor.forClass(AnimalFellOffEvent.class);
         verify(dispatcher).dispatch(argument.capture());
-        assertEquals(AnimalFellOffEvent.class.getName(), argument.getValue().getClass().getName());
+        assertEquals(new Integer(1), argument.getValue().getAnimal());
+        assertEquals(new Integer(1), argument.getValue().getTeam());
         assertTrue(newState instanceof AnimalInWater);
     }
 
