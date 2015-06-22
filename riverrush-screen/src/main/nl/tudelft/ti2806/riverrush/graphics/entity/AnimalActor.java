@@ -222,8 +222,6 @@ public class AnimalActor extends Group {
         this.shadow.origY = this.shadow.getY();
         this.shadow.addAction(Actions.moveTo(this.shadow.getX() + FALL_DISTANCEX,
                 this.shadow.getY() + FALL_DISTANCEY, FALL_VELOCITY));
-
-//        return Actions.parallel(fade, fall);
     }
 
     /**
