@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import nl.tudelft.ti2806.riverrush.sound.Sound;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +42,21 @@ public final class Assets {
      */
     public static List<TextureRegion> raccoonMap, monkeyMap;
 
+    /**
+     * The PlayingGameState background music.
+     */
+    public static Sound backgroundMusic;
+
+    /**
+     * A cheering sound that will be played when a team won.
+     */
+    public static Sound cheeringSound;
+
+    /**
+     * Your typical elevator music. Will be played when waiting for the game to start.
+     */
+    public static Sound waitingMusic;
+
     private static final String DIRECTORY = "data/";
 
     /**
@@ -52,7 +69,7 @@ public final class Assets {
     /**
      * Load all assets, creating each TextureRegion in the game.
      */
-    public static void load() {
+    public static void load() throws IOException {
         raccoonMap = new ArrayList<TextureRegion>();
         monkeyMap = new ArrayList<TextureRegion>();
 
@@ -183,6 +200,9 @@ public final class Assets {
         raccoonMap.add(raccoonWhite);
         raccoonMap.add(raccoonYellow);
 
+        backgroundMusic = new Sound(DIRECTORY + "backgroundMusic.wav");
+        cheeringSound = new Sound(DIRECTORY + "cheering.wav");
+        waitingMusic = new Sound(DIRECTORY + "waitingMusic.wav");
     }
 
     /**

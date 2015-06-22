@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.graphics.Assets;
+import nl.tudelft.ti2806.riverrush.sound.Sound;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,6 +34,8 @@ public class FinishedGameScreen implements Screen {
     private int countdown;
     private Image image;
     private Label teamWonLabel;
+
+    private Sound sound;
 
 
     /**
@@ -58,6 +62,9 @@ public class FinishedGameScreen implements Screen {
         this.image.setPosition(0, 0);
         this.image.setFillParent(true);
         this.stage.addActor(image);
+
+        this.sound = Assets.cheeringSound;
+        this.sound.play();
     }
 
     @Override
@@ -100,7 +107,7 @@ public class FinishedGameScreen implements Screen {
 
     @Override
     public void dispose() {
-        // Does not need to do anything yet
+        this.sound.stop();
     }
 
     /**

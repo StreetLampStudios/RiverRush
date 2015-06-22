@@ -9,6 +9,8 @@ import nl.tudelft.ti2806.riverrush.domain.event.AssetsLoadedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
+import java.io.IOException;
+
 /**
  * Creates the graphical representation of the loading game screen. The loading game screen simply
  * shows an image to indicate that the game is loading.
@@ -52,7 +54,11 @@ public class LoadingScreen implements Screen {
         this.stage.act();
         this.stage.draw();
 
-        Assets.load();
+        try {
+            Assets.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.dispatcher.dispatch(new AssetsLoadedEvent());
     }
 
