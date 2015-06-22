@@ -10,6 +10,15 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.state.AnimalOnBoat;
  */
 public class Animal extends AbstractAnimal {
 
+    private AnimalActor actor;
+
+    /**
+     * @return this animal's graphical component: MonkeyActor.
+     */
+    public AnimalActor getActor() {
+        return this.actor;
+    }
+
     /**
      * Create an animal.
      *
@@ -28,15 +37,6 @@ public class Animal extends AbstractAnimal {
         this.setTeamId(team);
         this.setVariation(variation);
         this.setSectorOnBoat(boatSector);
-    }
-
-    private AnimalActor actor;
-
-    /**
-     * @return this animal's graphical component: MonkeyActor.
-     */
-    public AnimalActor getActor() {
-        return this.actor;
     }
 
     /**

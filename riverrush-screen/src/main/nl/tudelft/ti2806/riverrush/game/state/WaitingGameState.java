@@ -39,7 +39,7 @@ public class WaitingGameState extends AbstractGameState {
         this.dispatcher.attach(AnimalAddedEvent.class, this.addAnimalHandler);
         this.dispatcher.attach(GameAboutToStartEvent.class, this.timerHandler);
         this.dispatcher.attach(AnimalRemovedEvent.class, this.removeAnimalHandler);
-        this.screen = new WaitingScreen(eventDispatcher);
+        this.screen = new WaitingScreen();
 
         Gdx.app.postRunnable(
             () -> WaitingGameState.this.game.setScreen(WaitingGameState.this.screen)
@@ -50,7 +50,7 @@ public class WaitingGameState extends AbstractGameState {
      * Starts the timer of 5 seconds.
      * @param seconds - amount of seconds that we need to wait until the game will start
      */
-    private void startTimer(int seconds) {
+    private void startTimer(final int seconds) {
         this.screen.startTimer(seconds);
     }
 

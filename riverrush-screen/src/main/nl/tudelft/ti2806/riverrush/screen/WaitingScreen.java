@@ -27,9 +27,12 @@ public class WaitingScreen implements Screen {
     private static final float TIMER_LABEL_HEIGHT_MULTIPLIER = 0.8f;
     private static final float COUNTER_LABEL_WIDTH_MULTIPLIER = 0.8f;
     private static final float COUNTER_LABEL_HEIGHT_MULTIPLIER = 0.75f;
+    private static final int DESKTOP_HEIGHT = 1920;
+    private static final int DESKTOP_WIDTH = 1080;
+    private static final int HEIGHT_DIVISION = 5;
+    private static final int WIDTH_DIVISION = 2;
+    private static final int SIZE = 300;
     private Stage stage;
-
-    private TextureAtlas atlas;
     private Skin skin;
 
     // Label for time left till game start
@@ -41,24 +44,21 @@ public class WaitingScreen implements Screen {
     private Label counter;
     private int count;
     private Image image;
-    private Image qr;
 
     /**
      * Creates the graphical representation of the waiting game screen. This screen displays an
      * image to indicate the waiting screen, a timer for the time that remains before the game can
      * start, and a counter for the amount of currently connected players.
-     *
-     * @param eventDispatcher is the dispatcher that handles all relevant events.
      */
     @Inject
-    public WaitingScreen(final EventDispatcher eventDispatcher) {
+    public WaitingScreen() {
         this.time = Integer.MAX_VALUE;
     }
 
     @Override
     public void show() {
-        this.atlas = new TextureAtlas("uiskin.atlas");
-        this.skin = new Skin(Gdx.files.internal("uiskin.json"), this.atlas);
+        TextureAtlas atlas = new TextureAtlas("uiskin.atlas");
+        this.skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
         this.stage = new Stage();
 
         Texture texture = new Texture(Gdx.files.internal("data/ark.jpg"));
@@ -70,11 +70,12 @@ public class WaitingScreen implements Screen {
         this.image.setFillParent(true);
         this.stage.addActor(this.image);
 
-        Texture qr_texture = new Texture(Gdx.files.internal("data/qr.jpg"));
-        this.qr = new Image(qr_texture);
-        this.qr.setPosition(1920 / 5, (1080 / 2) - (qr_texture.getWidth() / 2));
-        this.qr.setSize(300, 300);
-        this.stage.addActor(this.qr);
+        Texture qrTexture = new Texture(Gdx.files.internal("data/qr.jpg"));
+        Image qr = new Image(qrTexture);
+        qr.setPosition(DESKTOP_HEIGHT / HEIGHT_DIVISION, (DESKTOP_WIDTH
+            / WIDTH_DIVISION) - (qrTexture.getWidth() / 2));
+        qr.setSize(SIZE, SIZE);
+        this.stage.addActor(qr);
 
         this.createTimerLabel();
         this.createCounterLabel();

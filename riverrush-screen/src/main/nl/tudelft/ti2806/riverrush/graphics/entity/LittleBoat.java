@@ -11,30 +11,32 @@ import com.google.inject.Inject;
  */
 public class LittleBoat extends Actor {
     private final TextureRegion image;
-    private float xpos;
-    private float top_xpos;
+    private static final float PROGRESS_DIVISION = 100f;
+    private static final float PROGRESS_MOVE_DURATION = 0.5f;
+    private final float xpos;
+    private final float topXPosition;
 
     private double progress;
 
     /**
      * Creates an river banks object with a given graphical representation.
      *
-     * @param xpos   - represents the position of the little boat on the x axis
+     * @param x   - represents the position of the little boat on the x axis
      * @param ypos   - represents the position of the little boat on the y axis
      * @param width  - represents the width of the little boat object
      * @param height - represents the height of the little boat object
-     * @param boot   - the texture that represents the boat
+     * @param boat   - the texture that represents the boat
+     * @param topXPos - the position of the top of the boat.
      */
     @Inject
-    public LittleBoat(final float xpos, final float top_x_position, final float ypos,
-                      final float width, final float height, TextureRegion boot) {
-        this.xpos = xpos;
-        this.top_xpos = top_x_position;
-        this.setPosition(xpos, ypos);
+    public LittleBoat(final float x, final float topXPos, final float ypos,
+                      final float width, final float height, final TextureRegion boat) {
+        this.xpos = x;
+        this.topXPosition = topXPos;
+        this.setPosition(x, ypos);
         this.setWidth(width);
         this.setHeight(height);
-        this.progress = 0;
-        this.image = boot;
+        this.image = boat;
     }
 
     @Override
@@ -49,14 +51,14 @@ public class LittleBoat extends Actor {
     }
 
     /**
-     * @param progres - Sets progress to this value
+     * @param pro - Sets progress to this value
      */
-    public void setProgress(final double progres) {
-        this.progress = progres;
-        float newY = new Double(progres / 100).floatValue();
+    public void setProgress(final double pro) {
+        this.progress = pro;
+        float newY = (float) progress / PROGRESS_DIVISION;
         MoveToAction action = new MoveToAction();
-        action.setPosition(this.xpos + newY * (this.top_xpos), this.getY());
-        action.setDuration(0.5f);
+        action.setPosition(this.xpos + newY * (this.topXPosition), this.getY());
+        action.setDuration(PROGRESS_MOVE_DURATION);
         this.addAction(action);
     }
 }

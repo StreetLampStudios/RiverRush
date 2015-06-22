@@ -2,8 +2,10 @@ package nl.tudelft.ti2806.riverrush.game;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
+import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.game.state.GameState;
 import nl.tudelft.ti2806.riverrush.game.state.LoadingGameState;
 import nl.tudelft.ti2806.riverrush.game.state.WaitingGameState;
@@ -15,6 +17,7 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Graphics game.
@@ -27,7 +30,7 @@ public class Game extends GdxGame {
     private final HandlerLambda<AnimalRemovedEvent> removeAnimalHandlerLambda;
     private GameState currentGameState;
 
-    private HashMap<Integer, Team> teams;
+    private final Map<Integer, Team> teams;
 
     /**
      * Creates a game class.
@@ -40,7 +43,8 @@ public class Game extends GdxGame {
         this.dispatcher = eventDispatcher;
         this.teams = new HashMap<>();
 
-        this.animalFellOffEventHandlerLambda = (e) -> this.getTeam(e.getTeam()).getAnimal(e.getAnimal()).fall();
+        this.animalFellOffEventHandlerLambda =
+            (e) -> this.getTeam(e.getTeam()).getAnimal(e.getAnimal()).fall();
 
         this.removeAnimalHandlerLambda = this::removeAnimalHandler;
 
@@ -111,7 +115,6 @@ public class Game extends GdxGame {
         Animal animal = (Animal) team.getAnimal(animalId);
         BoatGroup boat = team.getBoat();
 
-        //TODO: put this in de game states
         if (boat != null) {
             boat.removeAnimal(animal);
         }

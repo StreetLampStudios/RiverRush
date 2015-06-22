@@ -21,8 +21,8 @@ public class RiverActor extends Actor {
     private final float mid;
     private final float originalPosition;
 
-    private MoveToAction flow;
-    private MoveToAction reset;
+    private final MoveToAction flow;
+    private final MoveToAction reset;
 
     /**
      * Creates an river object with a given graphical representation.
@@ -73,7 +73,7 @@ public class RiverActor extends Actor {
         return this.mid;
     }
 
-    public void updateFlow(double speed) {
+    public void updateFlow(final double speed) {
         float speedMultiplier = (float) speed;
         float currentFlow = Math.min(MAX_FLOW_DURATION, BASE_FLOW_DURATION / speedMultiplier);
         // speed <= 0.2 ? 15f : BASE_FLOW_DURATION / speedMultiplier;

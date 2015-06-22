@@ -25,9 +25,7 @@ public abstract class AbstractGameState implements GameState {
     }
 
     @Override
-    public void dispose() {
-        // Has to be empty
-    }
+    public abstract void dispose();
 
     @Override
     public GameState start() {

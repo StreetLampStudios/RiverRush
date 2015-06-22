@@ -11,11 +11,24 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.WoodenBackground;
  */
 public class CenterStage extends Stage {
 
+    /**
+     * The size of the given boat on this stage.
+     */
     public static final int BOAT_HEIGHT = 30;
-    private LittleBoat leftBoat;
-    private LittleBoat rightBoat;
-    private final float TOTALHEIGHT;
-    private final float TOTALWIDTH;
+    private static final int BG_X_POS = 100;
+    private static final int BG_Y_POS = 50;
+    private static final int WIDTH_OFFSET = 200;
+    private static final int HEIGHT_OFFSET = 100;
+    private static final int DIV_X_POS = 300;
+    private static final int DIV_Y_POS = 30;
+    private static final int TOP_WIDTH_OFFSET = 200;
+    private static final int TOP_WIDTH_OFFSET_PERCENTAGE = 40;
+    private static final int BOAT_X_POS = 100;
+    private static final int TOTAL_HEIGHT_OFFSET_PERCENTAGE = 5;
+    private static final int TOTAL_HEIGHT_OFFSET_MULTIPLIER = 3;
+    private static final int TOTALHEIGHT_DIVISION_FACTOR = 4;
+    private final LittleBoat leftBoat;
+    private final LittleBoat rightBoat;
 
     /**
      * The constructor of the center stage class.
@@ -24,22 +37,24 @@ public class CenterStage extends Stage {
      * @param height - specifies the height
      */
     public CenterStage(final float width, final float height) {
-        this.TOTALHEIGHT = height;
-        this.TOTALWIDTH = width;
-
         RiverBanksActor background = new RiverBanksActor(0, 0, width, height);
         this.addActor(background);
 
-        WoodenBackground floor = new WoodenBackground(100, 50, width - 200, height - 100);
-        DividingLine line = new DividingLine(300, 30, height, width / 2);
+        WoodenBackground floor = new WoodenBackground(BG_X_POS, BG_Y_POS,
+            width - WIDTH_OFFSET, height - HEIGHT_OFFSET);
+        DividingLine line = new DividingLine(DIV_X_POS, DIV_Y_POS, height, width / 2);
 
-        float top_x = width - 200 - this.TOTALWIDTH / 40; // At max the boat should be at the
+        float topX = width - TOP_WIDTH_OFFSET - width
+            / TOP_WIDTH_OFFSET_PERCENTAGE; // At max the boat should be at the
         // topMinus a margin of 30
 
-        this.rightBoat = new LittleBoat(100, top_x, TOTALHEIGHT / 5,
-            this.TOTALWIDTH / 40, this.TOTALHEIGHT / 4, Assets.bootjeRaccoon);
-        this.leftBoat = new LittleBoat(100, top_x, TOTALHEIGHT / 5 * 3,
-            this.TOTALWIDTH / 40, this.TOTALHEIGHT / 4, Assets.bootjeMonkey);
+        this.rightBoat = new LittleBoat(BOAT_X_POS, topX, height / TOTAL_HEIGHT_OFFSET_PERCENTAGE,
+            width / TOP_WIDTH_OFFSET_PERCENTAGE, height
+            / TOTALHEIGHT_DIVISION_FACTOR, Assets.bootjeRaccoon);
+        this.leftBoat = new LittleBoat(BOAT_X_POS, topX, height
+            / TOTAL_HEIGHT_OFFSET_PERCENTAGE * TOTAL_HEIGHT_OFFSET_MULTIPLIER, width
+            / TOP_WIDTH_OFFSET_PERCENTAGE, height
+            / TOTALHEIGHT_DIVISION_FACTOR, Assets.bootjeMonkey);
 
         this.addActor(floor);
         this.addActor(line);
@@ -48,7 +63,12 @@ public class CenterStage extends Stage {
 
     }
 
-    public void updateProgress(int teamID, double progress) {
+    /**
+     * Update the progress bar.
+     * @param teamID refers to the team ID for which the progress must be updated.
+     * @param progress refers to the progress made by the given team.
+     */
+    public void updateProgress(final int teamID, final double progress) {
         if (teamID == 0) {
             this.leftBoat.setProgress(progress);
         } else {

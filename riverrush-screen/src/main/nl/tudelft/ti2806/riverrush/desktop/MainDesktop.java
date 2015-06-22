@@ -8,7 +8,6 @@ import com.google.inject.Injector;
 import nl.tudelft.ti2806.riverrush.CoreModule;
 import nl.tudelft.ti2806.riverrush.controller.Controller;
 import nl.tudelft.ti2806.riverrush.controller.RenderController;
-import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.network.Client;
 
@@ -21,7 +20,6 @@ import java.net.URISyntaxException;
  */
 public class MainDesktop extends CoreModule {
     private Injector injector;
-    private EventDispatcher eventDispatcher;
 
     /**
      * Calls the main desktop constructor that starts the game.
@@ -62,7 +60,7 @@ public class MainDesktop extends CoreModule {
      * @throws URISyntaxException   handles the situation where the URI has the wrong syntax.
      * @throws InterruptedException handles the situation where it interrupts.
      */
-    public MainDesktop(boolean fullscreen) throws URISyntaxException, InterruptedException {
+    public MainDesktop(final boolean fullscreen) throws URISyntaxException, InterruptedException {
         super();
 
         this.init("localhost", fullscreen);
@@ -76,7 +74,8 @@ public class MainDesktop extends CoreModule {
      * @throws URISyntaxException   handles the situation where the URI has the wrong syntax.
      * @throws InterruptedException handles the situation where it interrupts.
      */
-    public MainDesktop(String url, boolean fullscreen) throws URISyntaxException, InterruptedException {
+    public MainDesktop(final String url, final boolean fullscreen)
+        throws URISyntaxException, InterruptedException {
         super();
 
         this.init(url, fullscreen);
@@ -90,9 +89,8 @@ public class MainDesktop extends CoreModule {
      * @throws URISyntaxException   handles the situation where the URI has the wrong syntax.
      * @throws InterruptedException handles the situation where it interrupts.
      */
-    private void init(String url, boolean fullscreen) throws URISyntaxException {
+    private void init(final String url, final boolean fullscreen) throws URISyntaxException {
         this.injector = Guice.createInjector(this);
-        this.eventDispatcher = this.injector.getInstance(EventDispatcher.class);
 
         this.setupGraphics(fullscreen);
 
@@ -110,7 +108,7 @@ public class MainDesktop extends CoreModule {
      *
      * @param fullscreen If the game should be fullscreen
      */
-    private void setupGraphics(boolean fullscreen) {
+    private void setupGraphics(final boolean fullscreen) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = "RiverRush";
         config.width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
