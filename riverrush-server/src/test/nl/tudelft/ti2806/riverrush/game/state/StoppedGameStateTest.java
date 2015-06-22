@@ -30,7 +30,10 @@ public class StoppedGameStateTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         this.gamestate = new StoppedGameState(this.dispatcher, this.game);
+    }
 
+    @Test
+    public void verifyGameStopped() {
         verify(this.dispatcher, times(1)).dispatch(isA(GameStoppedEvent.class));
     }
 
