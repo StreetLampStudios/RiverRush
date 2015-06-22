@@ -31,7 +31,10 @@ public class PlayingGameStateTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         this.gamestate = new PlayingGameState(this.dispatcher, this.game);
+    }
 
+    @Test
+    public void verifyGameStartedEvent() {
         verify(this.dispatcher, times(1)).dispatch(isA(GameStartedEvent.class));
     }
 
