@@ -32,7 +32,10 @@ public class FinishedGameStateTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         this.gamestate = new FinishedGameState(this.dispatcher, this.game);
+    }
 
+    @Test
+    public void verifyGameAboutToWait() {
         ArgumentCaptor<GameAboutToWaitEvent> argument = ArgumentCaptor.forClass(GameAboutToWaitEvent.class);
         verify(this.dispatcher, times(1)).dispatch(argument.capture());
         assertEquals(TIME_TO_WAIT, argument.getValue().getTimeTillWait());

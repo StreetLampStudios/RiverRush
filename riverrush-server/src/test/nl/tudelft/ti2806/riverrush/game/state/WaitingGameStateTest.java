@@ -30,7 +30,10 @@ public class WaitingGameStateTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         this.gamestate = new WaitingGameState(this.dispatcher, this.game);
+    }
 
+    @Test
+    public void verifyGameWaitingEvent() {
         verify(this.dispatcher, times(1)).dispatch(isA(GameWaitingEvent.class));
     }
 
