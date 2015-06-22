@@ -13,7 +13,7 @@ import java.util.TimerTask;
  */
 public class AnimalInWater extends AbstractAnimalState {
 
-    private Animal animal;
+    private final Animal animal;
 
     private static final int RESPAWN_DELAY = 5000;
 
@@ -64,5 +64,10 @@ public class AnimalInWater extends AbstractAnimalState {
     @Override
     public AnimalState voteDirection(final Direction direction) {
         return this;
+    }
+
+    @Override
+    public boolean isOnBoat() {
+        return false;
     }
 }

@@ -19,6 +19,7 @@ import static org.mockito.Mockito.verify;
  */
 public class FinishedGameStateTest {
 
+    public static final int TIME_TO_WAIT = 5000;
     @Mock
     private EventDispatcher dispatcher;
 
@@ -34,7 +35,7 @@ public class FinishedGameStateTest {
 
         ArgumentCaptor<GameAboutToWaitEvent> argument = ArgumentCaptor.forClass(GameAboutToWaitEvent.class);
         verify(this.dispatcher, times(1)).dispatch(argument.capture());
-        assertEquals(5000, argument.getValue().getTimeTillWait());
+        assertEquals(TIME_TO_WAIT, argument.getValue().getTimeTillWait());
     }
 
     @Test

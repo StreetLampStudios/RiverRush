@@ -13,7 +13,13 @@ import java.util.TreeMap;
 /**
  * Parser used to create a level map.
  */
-public class LevelMapParser {
+public final class LevelMapParser {
+
+    /**
+     * This is a utility class.
+     */
+    private LevelMapParser() {
+    }
 
     /**
      * Read the game track from a file.
@@ -35,7 +41,7 @@ public class LevelMapParser {
      * @return The event
      */
     public static TreeMap<Double, AbstractTeamEvent> parseLevel(final InputStream inputStream) {
-        return parseLevel(new Scanner(inputStream));
+        return parseLevel(new Scanner(inputStream, "utf-8"));
     }
 
     /**
@@ -48,7 +54,7 @@ public class LevelMapParser {
         TreeMap<Double, AbstractTeamEvent> levelMap = new TreeMap<>();
 
         String currentLine;
-        while(level.hasNextLine()) {
+        while (level.hasNextLine()) {
             currentLine = level.nextLine();
             String[] lineContent = currentLine.split(",");
             double spawnTime = Double.parseDouble(lineContent[0]);

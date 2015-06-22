@@ -31,15 +31,15 @@ import java.util.Map;
  */
 public abstract class AbstractServer extends WebSocketServer {
 
-    private static final Logger log = LogManager.getLogger(AbstractServer.class);
+    private static final Logger LOGGER = LogManager.getLogger(AbstractServer.class);
     /**
      * Maps a remote address to a handler for player actions.
      */
-    protected final Map<WebSocket, Controller> controllers;
+    private final Map<WebSocket, Controller> controllers;
     /**
      * Maps a websocket to a controller.
      */
-    protected final Map<Controller, WebSocket> sockets;
+    private final Map<Controller, WebSocket> sockets;
 
     /**
      * The protocol used to serialize/deserialize network messages.
@@ -78,7 +78,7 @@ public abstract class AbstractServer extends WebSocketServer {
     @Override
     public void onClose(final WebSocket conn, final int code, final String reason, final boolean remote) {
         FailIf.isNull(conn);
-        log.info("Connection closed.");
+        LOGGER.info("Connection closed.");
 
         if (code != CloseFrame.REFUSE) {
             this.controllers.get(conn).dispose();
@@ -103,7 +103,7 @@ public abstract class AbstractServer extends WebSocketServer {
      * @param conn - The websocket to create a controller for
      */
     protected void createController(final WebSocket conn) {
-        log.info("Creating controller via " + this.controllerProvider.getClass());
+        LOGGER.info("Creating controller via " + this.controllerProvider.getClass());
         Controller controller = this.controllerProvider.get();
         controllers.put(conn, controller);
         sockets.put(controller, conn);
@@ -124,8 +124,8 @@ public abstract class AbstractServer extends WebSocketServer {
     @Override
     public void onError(final WebSocket conn, final Exception ex) {
         FailIf.isNull(ex);
-        log.error("Error in socket layer: ");
-        log.error(ex);
+        LOGGER.error("Error in socket layer: ");
+        LOGGER.error(ex);
     }
 
     /**
@@ -137,8 +137,16 @@ public abstract class AbstractServer extends WebSocketServer {
     public void sendEvent(final Event event, final Controller controller) {
         WebSocket sock = sockets.get(controller);
         String serialize = protocol.serialize(event);
-        log.info("Sending event over socket: " + event.getClass());
+        LOGGER.info("Sending event over socket: " + event.getClass());
         sock.send(serialize);
+    }
+
+    public Map<WebSocket, Controller> getControllers() {
+        return this.controllers;
+    }
+
+    public Map<Controller, WebSocket> getSockets() {
+        return this.sockets;
     }
 
     /**

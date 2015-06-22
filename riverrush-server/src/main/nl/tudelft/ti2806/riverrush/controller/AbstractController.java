@@ -16,7 +16,8 @@ public abstract class AbstractController implements Controller {
     /**
      * The event dispatcher of this class.
      */
-    protected final EventDispatcher dispatcher;
+    private final EventDispatcher dispatcher;
+
     /**
      * A list of handlers and their assigned action.
      */
@@ -55,6 +56,10 @@ public abstract class AbstractController implements Controller {
     @SuppressWarnings("unchecked")
     public void dispose() {
         this.handlers.forEach((pair) -> this.dispatcher.detach(pair.l, pair.r));
+    }
+
+    public EventDispatcher getDispatcher() {
+        return this.dispatcher;
     }
 
     /**

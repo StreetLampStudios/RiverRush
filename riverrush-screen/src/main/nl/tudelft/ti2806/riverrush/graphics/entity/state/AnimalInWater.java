@@ -15,6 +15,7 @@ public class AnimalInWater implements AnimalState {
      * The animal.
      */
     private final Animal animal;
+
     /**
      * The dispatcher of this class.
      */
@@ -64,6 +65,11 @@ public class AnimalInWater implements AnimalState {
     @Override
     public void collide() {
         // Does nothing because it is already in the water.
+    }
+
+    @Override
+    public boolean isOnBoat() {
+        return false;
     }
 
 }

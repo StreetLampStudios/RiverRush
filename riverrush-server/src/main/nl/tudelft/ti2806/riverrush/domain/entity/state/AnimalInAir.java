@@ -15,13 +15,14 @@ import java.util.TimerTask;
 public class AnimalInAir extends AbstractAnimalState {
 
     private static final int DROP_DELAY = 1000;
-    private Animal animal;
+    private final Animal animal;
     private final Timer tmr;
 
     /**
      * Constructor.
      *
      * @param eventDispatcher - The event dispatcher of this event
+     * @param anim            - The animal to which the state belongs
      */
     public AnimalInAir(final Animal anim, final EventDispatcher eventDispatcher) {
         super(eventDispatcher);
@@ -61,7 +62,12 @@ public class AnimalInAir extends AbstractAnimalState {
     }
 
     @Override
-    public AnimalState voteDirection(Direction direction) {
+    public AnimalState voteDirection(final Direction direction) {
         return this;
+    }
+
+    @Override
+    public boolean isOnBoat() {
+        return true;
     }
 }
