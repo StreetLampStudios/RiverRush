@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class BasicProtocol implements Protocol {
 
-    private static final Logger log = LogManager.getLogger(BasicProtocol.class);
+    private static final Logger LOGGER = LogManager.getLogger(BasicProtocol.class);
 
     /**
      * We seperate key-value pairs with this character. E.g.:
@@ -79,7 +79,7 @@ public final class BasicProtocol implements Protocol {
             String[] keyValue = pair.split(this.getKeyValueSeperator());
 
             if (keyValue.length != 2) {
-                log.error("Invalid protocol syntax in message: " + message);
+                LOGGER.error("Invalid protocol syntax in message: " + message);
                 throw new InvalidProtocolException("Invalid protocol syntax");
             }
 
@@ -90,14 +90,14 @@ public final class BasicProtocol implements Protocol {
             }
         }
         if (action == null) {
-            log.error("Protocol field not found: " + this.getEventTypeFieldKey());
+            LOGGER.error("Protocol field not found: " + this.getEventTypeFieldKey());
             throw new InvalidProtocolException(this.getEventTypeFieldKey()
                 + " field not found but required.");
         }
 
         EventInstantiator eventInstatiator = this.eventMapping.get(action);
         if (eventInstatiator == null) {
-            log.error("Protocol message not registered: " + action);
+            LOGGER.error("Protocol message not registered: " + action);
             throw new InvalidActionException("Protocol message not registered");
         }
         Event result = eventInstatiator.instantiate();

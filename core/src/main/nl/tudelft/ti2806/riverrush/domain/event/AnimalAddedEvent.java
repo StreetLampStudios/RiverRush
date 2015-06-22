@@ -35,8 +35,8 @@ public class AnimalAddedEvent extends AbstractTeamAnimalEvent {
         return this;
     }
 
-    public void setVariation(final Integer variation) {
-        this.variation = variation;
+    public void setVariation(final Integer newVariation) {
+        this.variation = newVariation;
     }
 
     public Integer getVariation() {
