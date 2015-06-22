@@ -112,8 +112,8 @@ public class Game extends GdxGame {
         Animal animal = (Animal) team.getAnimal(animalId);
         animal.setVoteDirection(Direction.NEUTRAL);
         BoatGroup boat = team.getBoat();
-        boat.voteForDirection(animal, 0);
         if (boat != null) {
+            boat.voteForDirection(animal, 0);
             boat.removeAnimal(animal);
         }
 
