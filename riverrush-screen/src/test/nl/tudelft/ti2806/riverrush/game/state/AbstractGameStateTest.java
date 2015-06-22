@@ -30,15 +30,12 @@ public abstract class AbstractGameStateTest {
 
     @Before
     public void setUp() throws Exception {
-        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.title = "RiverRush";
-
         game = mock(Game.class);
         when(game.getScreen()).thenCallRealMethod();
         doCallRealMethod().when(game).setScreen(any(Screen.class));
 
         dispatcher = mock(EventDispatcher.class);
-        new LwjglApplication(game, config);
+        Gdx.app = mock(Application.class);
 
         state = getState();
 
