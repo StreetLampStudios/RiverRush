@@ -12,7 +12,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 /**
- * Created by Martijn on 22-6-2015.
+ * Test for {@link PlayingGameState}
  */
 public class PlayingGameStateTest extends AbstractGameStateTest {
     private PlayingGameState pstate;
@@ -23,10 +23,6 @@ public class PlayingGameStateTest extends AbstractGameStateTest {
     public void setUp() throws Exception {
         super.setUp();
         pstate = (PlayingGameState) state;
-        when(game.getScreen()).thenCallRealMethod();
-        doCallRealMethod().when(game).setScreen(any(Screen.class));
-        game.setScreen(screen);
-        screen = mock(PlayingGameScreen.class);
     }
 
 
@@ -44,14 +40,6 @@ public class PlayingGameStateTest extends AbstractGameStateTest {
     @Test
     public void testFinish() throws Exception {
         assertEquals(FinishedGameState.class.getName(), state.finish(2).getClass().getName());
-    }
-
-    @Test
-    public void testAddBoat() throws Exception {
-        Team t = mock(Team.class);
-        pstate.addBoat(t);
-        verify(screen).addBoat(t);
-
     }
 
     @Test

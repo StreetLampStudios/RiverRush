@@ -14,7 +14,10 @@ import org.junit.Test;
 import java.awt.*;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by Martijn on 22-6-2015.
@@ -30,11 +33,15 @@ public abstract class AbstractGameStateTest {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = "RiverRush";
 
+        game = mock(Game.class);
+        when(game.getScreen()).thenCallRealMethod();
+        doCallRealMethod().when(game).setScreen(any(Screen.class));
+
+        dispatcher = mock(EventDispatcher.class);
         new LwjglApplication(game, config);
 
-        game = mock(Game.class);
-        dispatcher = mock(EventDispatcher.class);
         state = getState();
+
 
     }
 
