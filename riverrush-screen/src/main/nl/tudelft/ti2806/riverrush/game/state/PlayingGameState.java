@@ -324,12 +324,14 @@ public class PlayingGameState extends AbstractGameState {
     @Override
     public GameState stop() {
         this.screen.dispose();
+        this.dispose();
         return new StoppedGameState(this.dispatcher, this.game);
     }
 
     @Override
     public GameState finish(final Integer team) {
         this.screen.dispose();
+        this.dispose();
         return new FinishedGameState(this.dispatcher, this.game, team);
     }
 
