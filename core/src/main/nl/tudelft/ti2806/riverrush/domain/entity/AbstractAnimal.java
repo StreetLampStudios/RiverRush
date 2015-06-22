@@ -76,6 +76,7 @@ public abstract class AbstractAnimal {
 
     /**
      * Sets the color of an animal to a random color from an array.
+     *
      * @return new random variation Integer.
      */
     public Integer getRandomVariation() {
