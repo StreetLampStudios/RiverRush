@@ -1,23 +1,16 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
-import com.badlogic.gdx.*;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.badlogic.gdx.utils.Clipboard;
-import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.game.Game;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
-import java.awt.*;
-
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doCallRealMethod;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by Martijn on 22-6-2015.
@@ -31,12 +24,13 @@ public abstract class AbstractGameStateTest {
     @Before
     public void setUp() throws Exception {
         game = mock(Game.class);
-        when(game.getScreen()).thenCallRealMethod();
-        doCallRealMethod().when(game).setScreen(any(Screen.class));
+
+        dispatcher = mock(EventDispatcher.class);
+        Application app = mock(Application.class);
+        doNothing().when(app).postRunnable(Mockito.any());
+        Gdx.app = app;
 
         state = getState();
-
-
     }
 
     @Test
