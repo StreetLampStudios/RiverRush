@@ -44,6 +44,7 @@ public class Sound {
     }
 
     public void loop() {
+        this.myClip.setFramePosition(0);
         this.myClip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
