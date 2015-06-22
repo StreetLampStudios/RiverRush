@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Abstract test for every class that implements {@link Event}
@@ -32,15 +33,14 @@ public abstract class EventTest {
         event = getInstance();
 
         Event returnEvent = event.deserialize(getTestMap());
-        assertEquals(returnEvent.getAnimal(), new Integer(getAnimalId()));
+        assertEquals(new Integer(getAnimalId()), returnEvent.getAnimal());
     }
 
     @Test
-    public void testDeserializeMissingParameters()
-    {
-        for(String s : uglyList) {
+    public void testDeserializeMissingParameters() {
+        for (String s : uglyList) {
             try {
-                Map<String,String> testMap = getTestMap();
+                Map<String, String> testMap = getTestMap();
                 testMap.remove(s);
                 event = getInstance();
                 event.deserialize(testMap);
@@ -55,11 +55,11 @@ public abstract class EventTest {
         event.setAnimal(getAnimalId());
     }
 
-    public Event getInstance(){
+    public Event getInstance() {
         return event;
     }
 
-    public Map<String,String> getTestMap() {
+    public Map<String, String> getTestMap() {
         Map<String, String> testMap = new HashMap<>();
         testMap.put("animal", Integer.toString(getAnimalId()));
         return testMap;

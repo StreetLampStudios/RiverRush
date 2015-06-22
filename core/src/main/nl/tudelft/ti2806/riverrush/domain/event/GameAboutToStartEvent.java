@@ -10,7 +10,6 @@ import java.util.Map;
  */
 public class GameAboutToStartEvent extends AbstractAnimalEvent {
 
-    //TODO: Make not hardcoded.
     private static final int FIVE_SECONDS = 5;
     private Integer seconds;
 
@@ -24,7 +23,8 @@ public class GameAboutToStartEvent extends AbstractAnimalEvent {
     @Override
     public String serialize(final Protocol protocol) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("seconds").append(protocol.getKeyValueSeperator()).append(this.seconds.toString());
+        stringBuilder.append("seconds").append(protocol.getKeyValueSeperator())
+                .append(this.seconds.toString());
         return stringBuilder.toString();
     }
 
@@ -50,9 +50,9 @@ public class GameAboutToStartEvent extends AbstractAnimalEvent {
     /**
      * Set seconds to start.
      *
-     * @param seconds Number of seconds
+     * @param newSeconds Number of seconds
      */
-    public void setSeconds(int seconds) {
-        this.seconds = seconds;
+    public void setSeconds(final int newSeconds) {
+        this.seconds = newSeconds;
     }
 }

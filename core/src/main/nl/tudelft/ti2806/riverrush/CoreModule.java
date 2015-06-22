@@ -97,5 +97,4 @@ public abstract class CoreModule extends AbstractModule {
 
         return protocol;
     }
-
 }

@@ -17,7 +17,8 @@ public class AddRockEvent extends AbstractTeamEvent {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(super.serialize(protocol));
         stringBuilder.append(protocol.getPairSeperator());
-        stringBuilder.append("location").append(protocol.getKeyValueSeperator()).append(this.location.toString());
+        stringBuilder.append("location").append(protocol.getKeyValueSeperator())
+                .append(this.location.toString());
         return stringBuilder.toString();
     }
 
@@ -36,14 +37,14 @@ public class AddRockEvent extends AbstractTeamEvent {
         return this.location;
     }
 
-    public void setLocation(Direction aLocation) {
+    public void setLocation(final Direction aLocation) {
         this.location = aLocation;
     }
 
     @Override
     public String toString() {
-        return "AddRockEvent{" +
-            "location=" + location +
-            "} " + super.toString();
+        return "AddRockEvent{"
+                + "location=" + location
+                + "} " + super.toString();
     }
 }

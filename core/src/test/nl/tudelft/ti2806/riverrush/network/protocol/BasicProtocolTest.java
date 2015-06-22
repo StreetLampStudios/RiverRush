@@ -53,10 +53,10 @@ public class BasicProtocolTest {
         this.protocol = new BasicProtocol(0);
         this.eventStub = new StubEvent();
         this.stubEventSerialized = this.protocol.getEventTypeFieldKey()
-            + this.protocol.getKeyValueSeperator() + this.eventStub.getClass().getSimpleName();
+                + this.protocol.getKeyValueSeperator() + this.eventStub.getClass().getSimpleName();
 
         this.unknownEventSerialized = this.protocol.getEventTypeFieldKey()
-            + this.protocol.getKeyValueSeperator() + "SomeUnknownEventClass";
+                + this.protocol.getKeyValueSeperator() + "SomeUnknownEventClass";
     }
 
     /**
@@ -104,7 +104,7 @@ public class BasicProtocolTest {
         this.protocol.registerNetworkMessage(StubEvent.class, StubEvent::new);
 
         final String expectedField = "field" + this.protocol.getKeyValueSeperator() + "HelloWorld"
-            + this.protocol.getPairSeperator();
+                + this.protocol.getPairSeperator();
         Event networkMessage = this.protocol.deserialize(expectedField + this.stubEventSerialized);
         assertTrue(networkMessage instanceof StubEvent);
         assertEquals("HelloWorld", ((StubEvent) networkMessage).getField());
@@ -119,7 +119,7 @@ public class BasicProtocolTest {
         event.setField("HelloWorld");
 
         final String expectedField = "field" + this.protocol.getKeyValueSeperator() + "HelloWorld"
-            + this.protocol.getPairSeperator();
+                + this.protocol.getPairSeperator();
 
         final String actualField = this.protocol.serialize(event);
 
@@ -135,7 +135,7 @@ public class BasicProtocolTest {
      */
     @Test(expected = InvalidProtocolException.class)
     public void testDeserializeInvalidProtocol() throws InvalidProtocolException,
-        InvalidActionException {
+            InvalidActionException {
         this.protocol.deserialize("key=a=value");
     }
 
@@ -147,7 +147,7 @@ public class BasicProtocolTest {
      */
     @Test(expected = InvalidActionException.class)
     public void testDeserializeInvalidAction() throws InvalidProtocolException,
-        InvalidActionException {
+            InvalidActionException {
         this.protocol.deserialize(this.unknownEventSerialized);
     }
 

@@ -1,6 +1,5 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -8,7 +7,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test created for {@link AnimalMovedEvent}
@@ -28,7 +27,7 @@ public class AnimalMovedEventTest extends AbstractTeamAnimalEventTest {
     }
 
     @Override
-    public AbstractTeamAnimalEvent  getInstance() {
+    public AbstractTeamAnimalEvent getInstance() {
         AnimalMovedEvent retEvent = new AnimalMovedEvent();
         event = retEvent;
         retEvent.setDirection(dir);
@@ -37,7 +36,7 @@ public class AnimalMovedEventTest extends AbstractTeamAnimalEventTest {
     }
 
     @Override
-    public Map<String,String> getTestMap() {
+    public Map<String, String> getTestMap() {
         Map<String, String> testMap = new HashMap<>();
         testMap.putAll(super.getTestMap());
         testMap.put("direction", dir.toString());

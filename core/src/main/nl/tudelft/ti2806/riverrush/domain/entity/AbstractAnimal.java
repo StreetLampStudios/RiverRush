@@ -25,7 +25,7 @@ public abstract class AbstractAnimal {
     private Sector sectorOnBoat;
     private Integer variation;
 
-    private EventDispatcher dispatcher;
+    private final EventDispatcher dispatcher;
 
     /**
      * Create an animal with an unique id.
@@ -76,9 +76,11 @@ public abstract class AbstractAnimal {
 
     /**
      * Sets the color of an animal to a random color from an array.
+     *
+     * @return new random variation Integer.
      */
     public Integer getRandomVariation() {
-        int[] variations = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        int[] variations = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         int idx = new Random().nextInt(variations.length);
         return (variations[idx]);
     }

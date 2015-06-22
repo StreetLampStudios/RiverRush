@@ -17,7 +17,8 @@ public class AddObstacleEvent extends AbstractTeamEvent {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(super.serialize(protocol));
         stringBuilder.append(protocol.getPairSeperator());
-        stringBuilder.append("location").append(protocol.getKeyValueSeperator()).append(this.location.toString());
+        stringBuilder.append("location").append(protocol.getKeyValueSeperator())
+                .append(this.location.toString());
         return stringBuilder.toString();
     }
 
@@ -36,14 +37,14 @@ public class AddObstacleEvent extends AbstractTeamEvent {
         return this.location;
     }
 
-    public void setLocation(Double aLocation) {
+    public void setLocation(final Double aLocation) {
         this.location = aLocation;
     }
 
     @Override
     public String toString() {
-        return "AddObstacleEvent{" +
-            "location=" + location +
-            "} " + super.toString();
+        return "AddObstacleEvent{"
+                + "location=" + location
+                + "} " + super.toString();
     }
 }

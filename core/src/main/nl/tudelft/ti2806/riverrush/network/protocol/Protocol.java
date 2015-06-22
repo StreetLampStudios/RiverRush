@@ -33,7 +33,7 @@ public interface Protocol {
      * @throws InvalidActionException   when the type of event was not registered.
      */
     Event deserialize(String event) throws InvalidProtocolException,
-        InvalidActionException;
+            InvalidActionException;
 
     /**
      * Translate a {@link Event} instance to it's string representation

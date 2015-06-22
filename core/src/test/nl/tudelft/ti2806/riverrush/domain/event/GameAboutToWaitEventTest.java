@@ -7,7 +7,8 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Martijn on 12-6-2015.
@@ -19,7 +20,7 @@ public class GameAboutToWaitEventTest extends AbstractAnimalEventTest {
     public final int time = 50;
 
     @Test
-    public void testSerialize() throws Exception{
+    public void testSerialize() throws Exception {
         event = (GameAboutToWaitEvent) getInstance();
         event.setAnimal(getAnimalId());
 
@@ -46,7 +47,7 @@ public class GameAboutToWaitEventTest extends AbstractAnimalEventTest {
     }
 
     @Override
-    public Map<String,String> getTestMap() {
+    public Map<String, String> getTestMap() {
         Map<String, String> testMap = new HashMap<>();
         testMap.putAll(super.getTestMap());
         testMap.put("time", Integer.toString(time));

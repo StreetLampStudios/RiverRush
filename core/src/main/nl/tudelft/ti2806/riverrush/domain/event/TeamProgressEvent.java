@@ -19,10 +19,10 @@ public class TeamProgressEvent extends AbstractTeamEvent {
         stringBuilder.append(super.serialize(protocol));
         stringBuilder.append(protocol.getPairSeperator());
         stringBuilder.append("progress").append(protocol.getKeyValueSeperator())
-            .append(this.progress.toString());
+                .append(this.progress.toString());
         stringBuilder.append(protocol.getPairSeperator());
         stringBuilder.append("speed").append(protocol.getKeyValueSeperator())
-            .append(this.speed.toString());
+                .append(this.speed.toString());
 
         return stringBuilder.toString();
     }
@@ -54,8 +54,8 @@ public class TeamProgressEvent extends AbstractTeamEvent {
         return this.speed;
     }
 
-    public void setSpeed(final Double speed) {
-        this.speed = speed;
+    public void setSpeed(final Double newSpeed) {
+        this.speed = newSpeed;
     }
 
 }

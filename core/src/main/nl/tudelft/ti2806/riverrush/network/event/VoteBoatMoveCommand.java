@@ -20,7 +20,7 @@ public class VoteBoatMoveCommand implements Event {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(protocol.getPairSeperator());
         stringBuilder.append("direction").append(protocol.getKeyValueSeperator())
-            .append(this.direction.toString());
+                .append(this.direction.toString());
         return stringBuilder.toString();
     }
 

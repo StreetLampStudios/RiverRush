@@ -48,4 +48,10 @@ public interface AnimalState {
      */
     void collide();
 
+    /**
+     * Check if the animal is on the boat.
+     *
+     * @return true if the animal is on the boat
+     */
+    boolean isOnBoat();
 }

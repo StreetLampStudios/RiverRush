@@ -49,8 +49,7 @@ public abstract class AbstractTeamEvent implements Event {
 
     @Override
     public String toString() {
-        return "AbstractTeamEvent{" +
-            "teamId=" + teamId +
-            '}';
+        return "AbstractTeamEvent{"
+                + "teamId=" + teamId + '}';
     }
 }

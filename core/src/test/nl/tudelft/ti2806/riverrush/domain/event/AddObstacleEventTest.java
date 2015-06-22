@@ -9,7 +9,6 @@ import java.util.Map;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 /**
  * Test for {@link AddObstacleEvent}
@@ -33,7 +32,7 @@ public class AddObstacleEventTest extends AbstractTeamEventTest {
 
     @Override
     @Test
-    public void testSerialize() throws Exception{
+    public void testSerialize() throws Exception {
         event = (AddObstacleEvent) getInstance();
         event.setAnimal(getAnimalId());
 
@@ -41,7 +40,6 @@ public class AddObstacleEventTest extends AbstractTeamEventTest {
         assertTrue(s.contains("location" + protocol.getKeyValueSeperator() + location));
         super.testSerialize();
     }
-
 
 
     @Override

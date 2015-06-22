@@ -7,7 +7,8 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test for {@link AbstractTeamEvent}
@@ -33,7 +34,7 @@ public abstract class AbstractTeamEventTest extends EventTest {
     }
 
     @Override
-    public Map<String,String> getTestMap() {
+    public Map<String, String> getTestMap() {
         Map<String, String> testMap = new HashMap<>();
         testMap.putAll(super.getTestMap());
         testMap.put("team", Integer.toString(teamId));
@@ -41,7 +42,7 @@ public abstract class AbstractTeamEventTest extends EventTest {
     }
 
     @Test
-    public void testSerialize() throws Exception{
+    public void testSerialize() throws Exception {
         event = getInstance();
         event.setAnimal(getAnimalId());
 
@@ -50,7 +51,7 @@ public abstract class AbstractTeamEventTest extends EventTest {
     }
 
     @Override
-    public AbstractTeamEvent getInstance(){
+    public AbstractTeamEvent getInstance() {
         addVariables(event);
         return event;
     }

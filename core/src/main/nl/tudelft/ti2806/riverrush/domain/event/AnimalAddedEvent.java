@@ -18,9 +18,9 @@ public class AnimalAddedEvent extends AbstractTeamAnimalEvent {
     public String serialize(final Protocol protocol) {
         String msg = super.serialize(protocol);
         return msg + protocol.getPairSeperator()
-            + "variation" + protocol.getKeyValueSeperator() + this.variation.toString()
-            + protocol.getPairSeperator()
-            + "sector" + protocol.getKeyValueSeperator() + this.sector;
+                + "variation" + protocol.getKeyValueSeperator() + this.variation.toString()
+                + protocol.getPairSeperator()
+                + "sector" + protocol.getKeyValueSeperator() + this.sector;
     }
 
     @Override
@@ -35,8 +35,8 @@ public class AnimalAddedEvent extends AbstractTeamAnimalEvent {
         return this;
     }
 
-    public void setVariation(final Integer variation) {
-        this.variation = variation;
+    public void setVariation(final Integer newVariation) {
+        this.variation = newVariation;
     }
 
     public Integer getVariation() {
