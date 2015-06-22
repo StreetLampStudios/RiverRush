@@ -11,7 +11,7 @@ import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
  */
 public class AnimalOnBoat extends AbstractAnimalState {
 
-    private Animal animal;
+    private final Animal animal;
 
     /**
      * Constructor.
@@ -56,5 +56,10 @@ public class AnimalOnBoat extends AbstractAnimalState {
     public AnimalState voteDirection(final Direction direction) {
         this.animal.setVoteDirection(direction);
         return this;
+    }
+
+    @Override
+    public boolean isOnBoat() {
+        return true;
     }
 }

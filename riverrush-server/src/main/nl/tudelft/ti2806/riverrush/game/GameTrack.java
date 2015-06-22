@@ -92,6 +92,8 @@ public class GameTrack {
 
     /**
      * This method will update the progress of the game track.
+     *
+     * @return If the loop should stop
      */
     protected boolean updateProgress() {
         this.game = this.gameProvider.get();
@@ -116,7 +118,7 @@ public class GameTrack {
             this.fireTeamProgressEvent(speed, newDistance, team.getId());
         }
 
-        if (finishedTeams.size() > 0) {
+        if (!finishedTeams.isEmpty()) {
             Team winner = this.determineWinningTeam(finishedTeams);
             this.game.finish(winner.getId());
         }
@@ -237,7 +239,7 @@ public class GameTrack {
      * @throws TeamFullException   - if team is full
      */
     public Integer addAnimal(final Integer teamID, final AbstractAnimal animal)
-        throws NoSuchTeamException, TeamFullException {
+            throws NoSuchTeamException, TeamFullException {
         if (!this.teams.containsKey(teamID)) {
             throw new NoSuchTeamException();
         }
@@ -248,7 +250,6 @@ public class GameTrack {
             return teamID;
         }
 
-        // TODO: Find a better way to get this
         int otherTeam = Math.abs(teamID - 1);
 
         if (this.getTeam(otherTeam).size() < TEAM_SIZE) {
@@ -289,7 +290,7 @@ public class GameTrack {
         Team tm = this.teams.get(teamID);
         for (AbstractAnimal anim : tm.getAnimals()) {
             if (!anim.getVoteDirection().equals(rockDirection)
-                || anim.getVoteDirection().equals(Direction.NEUTRAL)) {
+                    || anim.getVoteDirection().equals(Direction.NEUTRAL)) {
                 anim.fall();
             }
         }

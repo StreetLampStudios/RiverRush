@@ -11,13 +11,14 @@ import nl.tudelft.ti2806.riverrush.network.event.JoinTeamCommand;
 import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
 import nl.tudelft.ti2806.riverrush.network.event.VoteBoatMoveCommand;
 
+import java.util.Objects;
+
 /**
  * Controller for the individual players.
  */
 public class UserController extends AbstractController {
 
     private final AbstractAnimal animal;
-    private final EventDispatcher dispatcher;
     private final AbstractServer server;
     private final Game game;
     private boolean isJoined;
@@ -34,7 +35,6 @@ public class UserController extends AbstractController {
                           @Named("playerServer") final AbstractServer aServer, final Game aGame) {
         super(aDispatcher);
         this.animal = new Animal(aDispatcher);
-        this.dispatcher = aDispatcher;
         this.server = aServer;
         this.game = aGame;
         this.isJoined = false;
@@ -45,23 +45,23 @@ public class UserController extends AbstractController {
         final HandlerLambda<JoinTeamCommand> joinTeamHandler = this::joinTeamHandler;
         final HandlerLambda<Event> sendOverNetworkLambda = (e) -> {
             Integer animalId = e.getAnimal();
-            if (animalId == this.animal.getId() || animalId == -1) {
+            if (animalId.equals(this.animal.getId()) || animalId == -1) {
                 this.server.sendEvent(e, this);
             }
         };
         final HandlerLambda<AbstractTeamEvent> sendTeamEventOverNetworkLambda = (e) -> {
-            if (e.getTeam() == this.animal.getTeamId()) {
+            if (e.getTeam().equals(this.animal.getTeamId())) {
                 this.server.sendEvent(e, this);
             }
         };
         final HandlerLambda<JumpCommand> jumpCommandHandlerLambda = (e) -> {
-            if (e.getAnimal() == this.animal.getId()) {
+            if (e.getAnimal().equals(this.animal.getId())) {
                 this.animal.jump();
             }
         };
 
         final HandlerLambda<VoteBoatMoveCommand> voteCommandHandlerLambda = (e) -> {
-            if (e.getAnimal() == this.animal.getId()) {
+            if (e.getAnimal().equals(this.animal.getId())) {
                 this.animal.voteOneDirection(e.getDirection());
             }
         };
@@ -94,7 +94,7 @@ public class UserController extends AbstractController {
      * @param e The event
      */
     private void joinTeamHandler(final JoinTeamCommand e) {
-        if (e.getAnimal() == this.animal.getId() && !this.isJoined) {
+        if (Objects.equals(e.getAnimal(), this.animal.getId()) && !this.isJoined) {
             this.game.addPlayerToTeam(this.animal, e.getTeam());
             this.isJoined = true;
         }
@@ -103,7 +103,7 @@ public class UserController extends AbstractController {
     @Override
     public void onSocketMessage(final Event event) {
         event.setAnimal(this.animal.getId());
-        this.dispatcher.dispatch(event);
+        this.getDispatcher().dispatch(event);
     }
 
     @Override
@@ -112,6 +112,6 @@ public class UserController extends AbstractController {
         AnimalRemovedEvent event = new AnimalRemovedEvent();
         event.setAnimal(this.animal.getId());
         event.setTeam(this.animal.getTeamId());
-        this.dispatcher.dispatch(event);
+        this.getDispatcher().dispatch(event);
     }
 }

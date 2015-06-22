@@ -69,4 +69,9 @@ public class AnimalOnBoat implements AnimalState {
         event.setTeam(this.animal.getTeamId());
         this.dispatcher.dispatch(event);
     }
+
+    @Override
+    public boolean isOnBoat() {
+        return true;
+    }
 }

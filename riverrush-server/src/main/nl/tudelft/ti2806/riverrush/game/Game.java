@@ -42,7 +42,6 @@ public class Game {
         HandlerLambda<AnimalRemovedEvent> removeAnimal = this::removeAnimalHandler;
         this.dispatcher.attach(AnimalRemovedEvent.class, removeAnimal);
 
-        //TODO: do not hardcode it.
         this.gameTrack.addTeam(new Team());
         this.gameTrack.addTeam(new Team());
     }

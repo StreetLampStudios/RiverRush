@@ -7,7 +7,6 @@ import nl.tudelft.ti2806.riverrush.domain.event.GameFinishedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.GameStartedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.HandlerLambda;
 import nl.tudelft.ti2806.riverrush.game.Game;
-import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
 
 /**
  * State when the game is ongoing.
@@ -21,8 +20,8 @@ public class PlayingGameState implements GameState {
     /**
      * The game transitions to this state when the game starts.
      *
-     * @param eventDispatcher The dispatcher used to listen to {@link JumpCommand}.
-     * @param aGame The main game
+     * @param eventDispatcher The dispatcher used to listen to jump event
+     * @param aGame           The main game
      */
     public PlayingGameState(final EventDispatcher eventDispatcher, final Game aGame) {
         this.dispatcher = eventDispatcher;

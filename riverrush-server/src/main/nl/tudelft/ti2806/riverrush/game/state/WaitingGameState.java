@@ -23,11 +23,13 @@ public class WaitingGameState implements GameState {
      * Game about to start timer delay.
      */
     public static final int DELAY = 15;
+    private static final int SLEEP_DELAY = 100;
     private boolean readyToPlay = false;
 
     private final EventDispatcher dispatcher;
     private final Game game;
-    private final HandlerLambda<AnimalAddedEvent> animalAddedEventHandlerLambda = (e) -> checkForEnoughPlayers();
+    private final HandlerLambda<AnimalAddedEvent> animalAddedEventHandlerLambda =
+            (e) -> checkForEnoughPlayers();
 
     /**
      * Create the waiting game state.
@@ -45,7 +47,7 @@ public class WaitingGameState implements GameState {
 
         // When restarting the game this has to be done to give the renderer time to switch the states.
         try {
-            Thread.sleep(100);
+            Thread.sleep(SLEEP_DELAY);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -72,7 +74,7 @@ public class WaitingGameState implements GameState {
      */
     public boolean hasEnoughAnimals() {
         Collection<Team> teams = game.getTeams();
-        if (teams.size() == 0) {
+        if (teams.isEmpty()) {
             return false;
         }
         for (Team t : teams) {

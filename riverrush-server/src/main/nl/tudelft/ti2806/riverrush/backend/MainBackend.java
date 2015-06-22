@@ -29,7 +29,7 @@ import static com.google.inject.name.Names.named;
  */
 public final class MainBackend extends CoreModule {
 
-    private HandlerLambda<GameWaitingEvent> handler;
+    private final HandlerLambda<GameWaitingEvent> handler;
     private final AbstractServer clientServer;
 
     /**
@@ -51,8 +51,13 @@ public final class MainBackend extends CoreModule {
         dispatcher.attach(GameWaitingEvent.class, handler);
     }
 
-    private void startClientServer(final EventDispatcher d) {
-        d.detach(GameWaitingEvent.class, handler);
+    /**
+     * Start the client server.
+     *
+     * @param dispatcher - The main event dispatcher
+     */
+    private void startClientServer(final EventDispatcher dispatcher) {
+        dispatcher.detach(GameWaitingEvent.class, handler);
         clientServer.start();
     }
 
@@ -68,19 +73,21 @@ public final class MainBackend extends CoreModule {
     @Override
     protected void configure() {
         super.configure();
-        this.bind(new TypeLiteral<TreeMap<Double, AbstractTeamEvent>>() {}).annotatedWith(named("levelMap")).toInstance(this.configureLevelMap());
+        this.bind(new TypeLiteral<TreeMap<Double, AbstractTeamEvent>>() {
+        }).annotatedWith(named("levelMap"))
+                .toInstance(this.configureLevelMap());
 
         this.bind(Controller.class).annotatedWith(named("clientController"))
-            .to(UserController.class);
+                .to(UserController.class);
 
         this.bind(Controller.class).annotatedWith(named("renderController"))
-            .to(RenderController.class);
+                .to(RenderController.class);
 
         this.bind(Protocol.class).annotatedWith(named("clientProtocol"))
-            .toInstance(this.configureClientProtocol());
+                .toInstance(this.configureClientProtocol());
 
         this.bind(Protocol.class).annotatedWith(named("renderProtocol"))
-            .toInstance(this.configureRendererProtocol());
+                .toInstance(this.configureRendererProtocol());
 
         this.bind(AbstractServer.class).annotatedWith(named("playerServer")).to(UserServer.class);
 
@@ -92,7 +99,7 @@ public final class MainBackend extends CoreModule {
      *
      * @return The level map
      */
-    public static TreeMap<Double, AbstractTeamEvent> configureLevelMap() {
+    public TreeMap<Double, AbstractTeamEvent> configureLevelMap() {
         try {
             return LevelMapParser.readFromFile("/simpletrack.txt");
         } catch (IOException e) {
