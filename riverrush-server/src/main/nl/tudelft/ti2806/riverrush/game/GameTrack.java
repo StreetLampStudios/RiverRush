@@ -43,8 +43,8 @@ public class GameTrack {
     private final HashMap<Integer, Team> teams;
 
     private final HashMap<Team, Double> teamDistances;
-    private final TreeMap<Double, AbstractTeamEvent> levelMap;
-    private final HashMap<Team, Double> nextEvents;
+    private TreeMap<Double, AbstractTeamEvent> levelMap;
+    private HashMap<Team, Double> nextEvents;
     private final Provider<Game> gameProvider;
 
 
@@ -187,6 +187,7 @@ public class GameTrack {
     public void reset() {
         for (Team team : this.teamDistances.keySet()) {
             this.teamDistances.put(team, 0.0);
+            this.nextEvents.put(team, -1.0);
         }
     }
 

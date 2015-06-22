@@ -12,9 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
-import nl.tudelft.ti2806.riverrush.graphics.Assets;
 
-import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -152,8 +150,7 @@ public class WaitingScreen implements Screen {
     public void resize(final int width, final int height) {
         this.timer.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
         this.counter.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
-        //this.image.setSize(width, height);
-        this.image.setScale((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 1920, (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 1080);
+        this.image.setSize(width, height);
     }
 
     @Override
