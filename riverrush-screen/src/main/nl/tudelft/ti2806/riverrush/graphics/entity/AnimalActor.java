@@ -206,7 +206,7 @@ public class AnimalActor extends Group {
      *
      * @return an action that can be added to the actor
      */
-    public Action collideAction() {
+    public void collideAction() {
         MoveToAction fall = new MoveToAction();
         fall.setPosition(this.getX() + FALL_DISTANCEX, this.getY() + FALL_DISTANCEY);
         fall.setDuration(FALL_VELOCITY);
@@ -215,12 +215,15 @@ public class AnimalActor extends Group {
         fade.setAlpha(0f);
         fade.setDuration(FALL_VELOCITY);
 
+        this.addAction(fall);
+        this.addAction(fade);
+
         this.shadow.origX = this.shadow.getX();
         this.shadow.origY = this.shadow.getY();
         this.shadow.addAction(Actions.moveTo(this.shadow.getX() + FALL_DISTANCEX,
                 this.shadow.getY() + FALL_DISTANCEY, FALL_VELOCITY));
 
-        return Actions.parallel(fade, fall);
+//        return Actions.parallel(fade, fall);
     }
 
     /**
