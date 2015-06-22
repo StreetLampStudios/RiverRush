@@ -51,7 +51,8 @@ public class FinishedGameScreen implements Screen {
         this.stage = new Stage();
 
         Texture texture = new Texture(Gdx.files.internal("data/end.jpg"));
-        TextureRegion region = new TextureRegion(texture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        TextureRegion region = new TextureRegion(texture, 0, 0,
+            Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         this.image = new Image(region);
         this.image.setPosition(0, 0);
@@ -75,7 +76,8 @@ public class FinishedGameScreen implements Screen {
         }
 
         if (this.teamWonLabel != null) {
-            this.teamWonLabel.setFontScale(Gdx.graphics.getWidth() / width, Gdx.graphics.getHeight() / height);
+            this.teamWonLabel.setFontScale(Gdx.graphics.getWidth()
+                / width, Gdx.graphics.getHeight() / height);
         }
 
         this.image.setSize(width, height);
@@ -139,9 +141,18 @@ public class FinishedGameScreen implements Screen {
         }, 0, TIMER_TICK);
     }
 
-    public void drawWinningLabel(int winningID) {
+    /**
+     * Show the winning team on the finished game screen.
+     * @param winningID the ID of the winning team.
+     */
+    public void drawWinningLabel(final int winningID) {
 
-        String winningTeamName = winningID % 2 == 0 ? "Monkey" : "Raccoon";
+        String winningTeamName;
+        if (winningID % 2 == 0) {
+            winningTeamName = "Monkey";
+        } else {
+            winningTeamName = "Raccoon";
+        }
 
         teamWonLabel = new Label("Team " + winningTeamName + " won! Congratulations!", skin);
         teamWonLabel.setFontScale(2f);

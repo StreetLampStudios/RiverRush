@@ -73,7 +73,7 @@ public class RiverActor extends Actor {
         return this.mid;
     }
 
-    public void updateFlow(double speed) {
+    public void updateFlow(final double speed) {
         float speedMultiplier = (float) speed;
         float currentFlow = Math.min(MAX_FLOW_DURATION, BASE_FLOW_DURATION / speedMultiplier);
         // speed <= 0.2 ? 15f : BASE_FLOW_DURATION / speedMultiplier;

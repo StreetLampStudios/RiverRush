@@ -20,11 +20,20 @@ public class FinishedGameState extends AbstractGameState {
     private final FinishedGameScreen screen;
     private final HandlerLambda<GameAboutToWaitEvent> gameAboutToWaitHandlerLambda = this::startCountDown;
     private final HandlerLambda<GameWaitingEvent> gameWaitHandlerLambda = this::startWaiting;
+    private static final int TIME_OFFSET = 100;
 
-    private void startWaiting(GameWaitingEvent gameWaitingEvent) {
+    /**
+     * Signal the game to start waiting.
+     * @param gameWaitingEvent is the event that triggers the game to start waiting.
+     */
+    private void startWaiting(final GameWaitingEvent gameWaitingEvent) {
         game.waitForPlayers();
     }
 
+    /**
+     * Start the countdown to indicate the time before the new game starts.
+     * @param gameAboutToWaitEvent refers to the event that triggers this method.
+     */
     private void startCountDown(final GameAboutToWaitEvent gameAboutToWaitEvent) {
         screen.startCountdown(gameAboutToWaitEvent.getTimeTillWait());
         Timer tmr = new Timer();
@@ -33,7 +42,7 @@ public class FinishedGameState extends AbstractGameState {
             public void run() {
                 Gdx.app.postRunnable(() -> game.reset());
             }
-        }, gameAboutToWaitEvent.getTimeTillWait() - 100);
+        }, gameAboutToWaitEvent.getTimeTillWait() - TIME_OFFSET);
     }
 
 
@@ -43,6 +52,7 @@ public class FinishedGameState extends AbstractGameState {
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game in this
      *                        state.
      * @param gm              refers to the game that this state belongs to.
+     * @param winningID refers to the ID of the winning team.
      */
     public FinishedGameState(final EventDispatcher eventDispatcher,
                              final Game gm, final int winningID) {
@@ -76,7 +86,7 @@ public class FinishedGameState extends AbstractGameState {
     }
 
     @Override
-    public GameState finish(Integer team) {
+    public GameState finish(final Integer team) {
         return this;
     }
 

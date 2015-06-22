@@ -8,8 +8,8 @@ import nl.tudelft.ti2806.riverrush.game.Game;
  */
 public abstract class AbstractGameState implements GameState {
 
-    private final EventDispatcher dispatcher;
-    private final Game game;
+    protected final EventDispatcher dispatcher;
+    protected final Game game;
 
     /**
      * Constructor.

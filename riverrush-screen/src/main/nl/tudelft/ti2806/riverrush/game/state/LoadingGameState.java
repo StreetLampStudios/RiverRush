@@ -46,7 +46,7 @@ public class LoadingGameState extends AbstractGameState {
     }
 
     @Override
-    public GameState finish(Integer team) {
+    public GameState finish(final Integer team) {
         return this;
     }
 

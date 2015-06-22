@@ -70,8 +70,9 @@ public class RenderController implements Controller {
 
     /**
      * Handles the game finished event through sending a command to the game.
+     * @param event refers to the event that triggers this method.
      */
-    private void onGameEnded(GameFinishedEvent event) {
+    private void onGameEnded(final GameFinishedEvent event) {
         this.game.finish(event.getTeam());
     }
 
@@ -89,7 +90,7 @@ public class RenderController implements Controller {
         this.dispatcher.detach(BoatCollidedEvent.class, this.sendOverNetworkLambda);
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClient(final Client newClient) {
+        this.client = newClient;
     }
 }

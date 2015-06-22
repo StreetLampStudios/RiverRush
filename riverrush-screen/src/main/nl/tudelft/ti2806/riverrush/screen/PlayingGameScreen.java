@@ -22,6 +22,7 @@ public class PlayingGameScreen implements Screen {
 
     private static final double RIVER_SIZE = 0.475;
     private static final double MID_SIZE = 0.05;
+    private static final float BOAT_X_OFFSET = 0.02f;
 
     private SideStage riverLeft;
     private SideStage riverRight;
@@ -95,8 +96,8 @@ public class PlayingGameScreen implements Screen {
                            final double heightPercentage) {
 
         int yPos = (int) ((double) this.height * positionPercentage);
-        int height = (int) ((double) this.height * heightPercentage);
-        Gdx.gl.glViewport(0, yPos, this.width, height);
+        int viewPortHeight = (int) ((double) this.height * heightPercentage);
+        Gdx.gl.glViewport(0, yPos, this.width, viewPortHeight);
 
         toDraw.act(Gdx.graphics.getDeltaTime());
         toDraw.draw();
@@ -165,7 +166,7 @@ public class PlayingGameScreen implements Screen {
      * @param team The team to add the boat to.
      */
     public void addBoat(final Team team) {
-        BoatGroup boat = new BoatGroup(Gdx.graphics.getWidth() * 0.02f,
+        BoatGroup boat = new BoatGroup(Gdx.graphics.getWidth() * BOAT_X_OFFSET,
                 (Gdx.graphics.getHeight() * (float) RIVER_SIZE), team.getId());
         boat.init();
 
