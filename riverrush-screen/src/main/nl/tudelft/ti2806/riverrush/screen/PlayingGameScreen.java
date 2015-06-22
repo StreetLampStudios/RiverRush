@@ -13,6 +13,7 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
 import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
 import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
+import nl.tudelft.ti2806.riverrush.sound.Sound;
 
 /**
  * The playing game screen constructs and displays all the visuals that are required during game
@@ -31,6 +32,8 @@ public class PlayingGameScreen implements Screen {
     private final TickHandler onTick;
     private int height;
     private int width;
+
+    private Sound sound;
 
     /**
      * Creates the graphical representation of the playing game screen. The playing game screen
@@ -51,6 +54,9 @@ public class PlayingGameScreen implements Screen {
 
         this.height = Gdx.graphics.getHeight();
         this.width = Gdx.graphics.getWidth();
+
+        this.sound = Assets.backgroundMusic;
+        this.sound.loop();
     }
 
     /**
@@ -130,6 +136,7 @@ public class PlayingGameScreen implements Screen {
     @Override
     public void dispose() {
         // Does not need to do anything
+        this.sound.stop();
     }
 
     /**

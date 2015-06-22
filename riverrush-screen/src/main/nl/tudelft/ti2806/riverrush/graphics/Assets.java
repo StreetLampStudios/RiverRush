@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import nl.tudelft.ti2806.riverrush.sound.Sound;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +42,9 @@ public final class Assets {
      */
     public static List<TextureRegion> raccoonMap, monkeyMap;
 
+    public static Sound backgroundMusic;
+
+
     private static final String DIRECTORY = "data/";
 
     /**
@@ -52,7 +57,7 @@ public final class Assets {
     /**
      * Load all assets, creating each TextureRegion in the game.
      */
-    public static void load() {
+    public static void load() throws IOException {
         raccoonMap = new ArrayList<TextureRegion>();
         monkeyMap = new ArrayList<TextureRegion>();
 
@@ -182,6 +187,8 @@ public final class Assets {
         raccoonMap.add(raccoonRed);
         raccoonMap.add(raccoonWhite);
         raccoonMap.add(raccoonYellow);
+
+        backgroundMusic = new Sound(DIRECTORY + "backgroundMusic.wav");
 
     }
 
