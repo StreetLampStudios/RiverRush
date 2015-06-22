@@ -42,10 +42,19 @@ public final class Assets {
      */
     public static List<TextureRegion> raccoonMap, monkeyMap;
 
+    /**
+     * The PlayingGameState background music.
+     */
     public static Sound backgroundMusic;
 
+    /**
+     * A cheering sound that will be played when a team won.
+     */
     public static Sound cheeringSound;
 
+    /**
+     * Your typical elevator music. Will be played when waiting for the game to start.
+     */
     public static Sound waitingMusic;
 
     private static final String DIRECTORY = "data/";

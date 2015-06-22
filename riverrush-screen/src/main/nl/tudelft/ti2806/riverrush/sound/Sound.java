@@ -16,6 +16,10 @@ public class Sound {
 
     private Clip myClip;
 
+    /**
+     * Creates a Sound object from a file name that can be played, looped and stopped.
+     * @param fileName The file name to create a sound object from
+     */
     public Sound(final String fileName) {
         try {
             File file = new File(fileName);
@@ -37,17 +41,26 @@ public class Sound {
         }
     }
 
+    /**
+     * Plays the sound from the beginning.
+     */
     public void play() {
         this.myClip.setFramePosition(0);  // Must always rewind!
         this.myClip.loop(0);
         this.myClip.start();
     }
 
+    /**
+     * Plays the sound from the beginning and keeps looping the sound if it ends.
+     */
     public void loop() {
         this.myClip.setFramePosition(0);
         this.myClip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
+    /**
+     * Stops playing the sound.
+     */
     public void stop() {
         this.myClip.stop();
     }
