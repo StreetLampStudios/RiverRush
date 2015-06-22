@@ -27,7 +27,7 @@ public class LoadingGameState extends AbstractGameState {
                             final Game gm) {
         super(eventDispatcher, gm);
 
-        screen = new LoadingScreen(eventDispatcher);
+        this.screen = new LoadingScreen(eventDispatcher);
         Gdx.app.postRunnable(() -> {
             this.game.setScreen(this.screen);
         });
@@ -49,7 +49,7 @@ public class LoadingGameState extends AbstractGameState {
     }
 
     @Override
-    public GameState finish(Integer team) {
+    public GameState finish(final Integer team) {
         return this;
     }
 
