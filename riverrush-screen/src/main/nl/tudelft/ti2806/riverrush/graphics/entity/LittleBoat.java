@@ -21,11 +21,11 @@ public class LittleBoat extends Actor {
     /**
      * Creates an river banks object with a given graphical representation.
      *
-     * @param x   - represents the position of the little boat on the x axis
-     * @param ypos   - represents the position of the little boat on the y axis
-     * @param width  - represents the width of the little boat object
-     * @param height - represents the height of the little boat object
-     * @param boat   - the texture that represents the boat
+     * @param x       - represents the position of the little boat on the x axis
+     * @param ypos    - represents the position of the little boat on the y axis
+     * @param width   - represents the width of the little boat object
+     * @param height  - represents the height of the little boat object
+     * @param boat    - the texture that represents the boat
      * @param topXPos - the position of the top of the boat.
      */
     @Inject

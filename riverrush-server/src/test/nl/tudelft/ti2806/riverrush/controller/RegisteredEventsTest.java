@@ -44,11 +44,11 @@ public abstract class RegisteredEventsTest {
         registeredHandlers = new ArrayList<>();
 
         Mockito.doAnswer(
-            invocation -> {
-                Class<?> eventClass = (Class<?>) invocation.getArguments()[0];
-                registeredHandlers.add(eventClass);
-                return null;
-            }).when(dispatcherMock).attach(any(), any());
+                invocation -> {
+                    Class<?> eventClass = (Class<?>) invocation.getArguments()[0];
+                    registeredHandlers.add(eventClass);
+                    return null;
+                }).when(dispatcherMock).attach(any(), any());
     }
 
     /**

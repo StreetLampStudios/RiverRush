@@ -18,6 +18,7 @@ public class Sound {
 
     /**
      * Creates a Sound object from a file name that can be played, looped and stopped.
+     *
      * @param fileName The file name to create a sound object from
      */
     public Sound(final String fileName) {

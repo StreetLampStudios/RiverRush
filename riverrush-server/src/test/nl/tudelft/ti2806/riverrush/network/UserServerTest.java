@@ -21,12 +21,12 @@ public class UserServerTest extends ServerTest {
         this.bind(EventDispatcher.class).toInstance(dispatcherMock);
 
         this.bind(Controller.class)
-            .annotatedWith(named("clientController"))
-            .toProvider(this.controllerProviderMock);
+                .annotatedWith(named("clientController"))
+                .toProvider(this.controllerProviderMock);
 
         this.bind(Protocol.class)
-            .annotatedWith(named("clientProtocol"))
-            .toInstance(this.protocolMock);
+                .annotatedWith(named("clientProtocol"))
+                .toInstance(this.protocolMock);
 
         this.bind(AbstractServer.class).to(UserServer.class);
     }

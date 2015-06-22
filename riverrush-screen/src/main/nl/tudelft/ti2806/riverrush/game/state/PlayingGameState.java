@@ -1,13 +1,17 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import nl.tudelft.ti2806.riverrush.domain.entity.AbstractAnimal;
 import nl.tudelft.ti2806.riverrush.domain.entity.Sector;
 import nl.tudelft.ti2806.riverrush.domain.event.*;
 import nl.tudelft.ti2806.riverrush.game.Game;
 import nl.tudelft.ti2806.riverrush.game.TickHandler;
-import nl.tudelft.ti2806.riverrush.graphics.entity.*;
+import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
+import nl.tudelft.ti2806.riverrush.graphics.entity.AnimalActor;
+import nl.tudelft.ti2806.riverrush.graphics.entity.BoatGroup;
+import nl.tudelft.ti2806.riverrush.graphics.entity.CannonBallGraphic;
+import nl.tudelft.ti2806.riverrush.graphics.entity.RockGraphic;
+import nl.tudelft.ti2806.riverrush.graphics.entity.Team;
 import nl.tudelft.ti2806.riverrush.screen.PlayingGameScreen;
 
 import java.util.ArrayList;
@@ -28,7 +32,7 @@ public class PlayingGameState extends AbstractGameState {
     private final HandlerLambda<AnimalJumpedEvent> animalJumpedEventHandlerLambda = this::animalJumpHandler;
     private final HandlerLambda<AnimalMovedEvent> animalMovedHandlerLambda = this::animalMoveHandler;
     private final HandlerLambda<AnimalReturnedToBoatEvent>
-        animalReturnedToBoatEventHandlerLambda = this::animalReturnedToBoat;
+            animalReturnedToBoatEventHandlerLambda = this::animalReturnedToBoat;
     private final HandlerLambda<TeamProgressEvent> teamProgressEventHandlerLambda = this::teamProgress;
 
     private final TickHandler onTick = this::tick;
@@ -40,8 +44,8 @@ public class PlayingGameState extends AbstractGameState {
      * The state of the game that indicates that the game is currently playable.
      *
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game
-     *            in this state.
-     * @param game refers to the game that this state belongs to.
+     *                        in this state.
+     * @param game            refers to the game that this state belongs to.
      */
     public PlayingGameState(final EventDispatcher eventDispatcher, final Game game) {
         super(eventDispatcher, game);
@@ -84,7 +88,7 @@ public class PlayingGameState extends AbstractGameState {
         this.dispatcher.detach(AnimalJumpedEvent.class, this.animalJumpedEventHandlerLambda);
         this.dispatcher.detach(AnimalMovedEvent.class, this.animalMovedHandlerLambda);
         this.dispatcher.detach(AnimalReturnedToBoatEvent.class,
-            this.animalReturnedToBoatEventHandlerLambda);
+                this.animalReturnedToBoatEventHandlerLambda);
         this.dispatcher.detach(TeamProgressEvent.class, this.teamProgressEventHandlerLambda);
         this.screen.dispose();
     }
@@ -102,11 +106,12 @@ public class PlayingGameState extends AbstractGameState {
 
     /**
      * Update the current obstacle collisions.
+     *
      * @param obstacleList refers to the obstacle that could collide.
-     * @param team refers to the team for which collisions need to be detected.
+     * @param team         refers to the team for which collisions need to be detected.
      */
     private synchronized void updateObstacleCollision(final ArrayList<CannonBallGraphic> obstacleList,
-            final Team team) {
+                                                      final Team team) {
         if (obstacleList == null) {
             return;
         }
@@ -119,18 +124,19 @@ public class PlayingGameState extends AbstractGameState {
                 }
             }
             if (graphic.getWidth() < 0) {
-            	graphic.remove();
+                graphic.remove();
             }
         }
     }
 
     /**
      * Update the current rock collisions.
+     *
      * @param rockList refers to the rock that could collide.
-     * @param team refers to the team for which collisions need to be detected.
+     * @param team     refers to the team for which collisions need to be detected.
      */
     private synchronized void updateRockCollision(final ArrayList<RockGraphic> rockList,
-            final Team team) {
+                                                  final Team team) {
         if (rockList == null) {
             return;
         }
@@ -145,7 +151,7 @@ public class PlayingGameState extends AbstractGameState {
                 graphic.getDestroyed();
             }
             if (graphic.getWidth() < 0) {
-            	graphic.remove();
+                graphic.remove();
             }
         }
     }
@@ -180,7 +186,7 @@ public class PlayingGameState extends AbstractGameState {
     /**
      * Adds an animal to a team.
      *
-     * @param team The animal
+     * @param team   The animal
      * @param animal The team
      */
     private void addAnimal(final Team team, final Animal animal) {

@@ -41,20 +41,20 @@ public class CenterStage extends Stage {
         this.addActor(background);
 
         WoodenBackground floor = new WoodenBackground(BG_X_POS, BG_Y_POS,
-            width - WIDTH_OFFSET, height - HEIGHT_OFFSET);
+                width - WIDTH_OFFSET, height - HEIGHT_OFFSET);
         DividingLine line = new DividingLine(DIV_X_POS, DIV_Y_POS, height, width / 2);
 
         float topX = width - TOP_WIDTH_OFFSET - width
-            / TOP_WIDTH_OFFSET_PERCENTAGE; // At max the boat should be at the
+                / TOP_WIDTH_OFFSET_PERCENTAGE; // At max the boat should be at the
         // topMinus a margin of 30
 
         this.rightBoat = new LittleBoat(BOAT_X_POS, topX, height / TOTAL_HEIGHT_OFFSET_PERCENTAGE,
-            width / TOP_WIDTH_OFFSET_PERCENTAGE, height
-            / TOTALHEIGHT_DIVISION_FACTOR, Assets.bootjeRaccoon);
+                width / TOP_WIDTH_OFFSET_PERCENTAGE, height
+                / TOTALHEIGHT_DIVISION_FACTOR, Assets.bootjeRaccoon);
         this.leftBoat = new LittleBoat(BOAT_X_POS, topX, height
-            / TOTAL_HEIGHT_OFFSET_PERCENTAGE * TOTAL_HEIGHT_OFFSET_MULTIPLIER, width
-            / TOP_WIDTH_OFFSET_PERCENTAGE, height
-            / TOTALHEIGHT_DIVISION_FACTOR, Assets.bootjeMonkey);
+                / TOTAL_HEIGHT_OFFSET_PERCENTAGE * TOTAL_HEIGHT_OFFSET_MULTIPLIER, width
+                / TOP_WIDTH_OFFSET_PERCENTAGE, height
+                / TOTALHEIGHT_DIVISION_FACTOR, Assets.bootjeMonkey);
 
         this.addActor(floor);
         this.addActor(line);
@@ -65,7 +65,8 @@ public class CenterStage extends Stage {
 
     /**
      * Update the progress bar.
-     * @param teamID refers to the team ID for which the progress must be updated.
+     *
+     * @param teamID   refers to the team ID for which the progress must be updated.
      * @param progress refers to the progress made by the given team.
      */
     public void updateProgress(final int teamID, final double progress) {

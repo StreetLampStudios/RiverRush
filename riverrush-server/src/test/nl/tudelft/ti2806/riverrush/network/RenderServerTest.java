@@ -21,12 +21,12 @@ public class RenderServerTest extends ServerTest {
         this.bind(EventDispatcher.class).toInstance(dispatcherMock);
 
         this.bind(Controller.class)
-            .annotatedWith(named("renderController"))
-            .toProvider(this.controllerProviderMock);
+                .annotatedWith(named("renderController"))
+                .toProvider(this.controllerProviderMock);
 
         this.bind(Protocol.class)
-            .annotatedWith(named("renderProtocol"))
-            .toInstance(this.protocolMock);
+                .annotatedWith(named("renderProtocol"))
+                .toInstance(this.protocolMock);
 
         this.bind(AbstractServer.class).to(RenderServer.class);
     }

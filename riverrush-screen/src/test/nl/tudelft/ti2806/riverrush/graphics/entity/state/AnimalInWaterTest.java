@@ -7,13 +7,15 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.Animal;
 import nl.tudelft.ti2806.riverrush.graphics.entity.AnimalActor;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 /**
  * Test for {@link AnimalInWater}
  */
-public class AnimalInWaterTest extends AnimalStateTest{
+public class AnimalInWaterTest extends AnimalStateTest {
 
     private EventDispatcher dispatcher;
     private Animal animal;

@@ -23,7 +23,7 @@ public class MainDesktop extends CoreModule {
 
     /**
      * Calls the main desktop constructor that starts the game.
-     *
+     * <p>
      * [url] [fullscreen (true/false)]
      * [fullscreen (true/false)]
      *
@@ -75,7 +75,7 @@ public class MainDesktop extends CoreModule {
      * @throws InterruptedException handles the situation where it interrupts.
      */
     public MainDesktop(final String url, final boolean fullscreen)
-        throws URISyntaxException, InterruptedException {
+            throws URISyntaxException, InterruptedException {
         super();
 
         this.init(url, fullscreen);

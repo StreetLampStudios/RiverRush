@@ -11,6 +11,7 @@ public class Team extends AbstractTeam {
 
     /**
      * Construct a team with a given ID.
+     *
      * @param id the given ID.
      */
     public Team(final int id) {

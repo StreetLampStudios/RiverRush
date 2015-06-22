@@ -7,7 +7,8 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test for {@link GameAboutToStartEvent}
@@ -30,7 +31,7 @@ public class GameAboutToStartEventTest extends AbstractAnimalEventTest {
 
     @Override
     @Test
-    public void testSerialize() throws Exception{
+    public void testSerialize() throws Exception {
         event = (GameAboutToStartEvent) getInstance();
         event.setAnimal(getAnimalId());
 

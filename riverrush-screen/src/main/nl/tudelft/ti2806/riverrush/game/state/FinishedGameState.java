@@ -24,6 +24,7 @@ public class FinishedGameState extends AbstractGameState {
 
     /**
      * Signal the game to start waiting.
+     *
      * @param gameWaitingEvent is the event that triggers the game to start waiting.
      */
     private void startWaiting(final GameWaitingEvent gameWaitingEvent) {
@@ -32,6 +33,7 @@ public class FinishedGameState extends AbstractGameState {
 
     /**
      * Start the countdown to indicate the time before the new game starts.
+     *
      * @param gameAboutToWaitEvent refers to the event that triggers this method.
      */
     private void startCountDown(final GameAboutToWaitEvent gameAboutToWaitEvent) {
@@ -52,17 +54,17 @@ public class FinishedGameState extends AbstractGameState {
      * @param eventDispatcher the dispatcher that is used to handle any relevant events for the game in this
      *                        state.
      * @param gm              refers to the game that this state belongs to.
-     * @param winningID refers to the ID of the winning team.
+     * @param winningID       refers to the ID of the winning team.
      */
     public FinishedGameState(final EventDispatcher eventDispatcher,
                              final Game gm, final int winningID) {
         super(eventDispatcher, gm);
         this.screen = new FinishedGameScreen(eventDispatcher);
         Gdx.app.postRunnable(() -> {
-                FinishedGameState.this.game
-                    .setScreen(FinishedGameState.this.screen);
-                screen.drawWinningLabel(winningID);
-            }
+                    FinishedGameState.this.game
+                            .setScreen(FinishedGameState.this.screen);
+                    screen.drawWinningLabel(winningID);
+                }
         );
 
         eventDispatcher.attach(GameAboutToWaitEvent.class, gameAboutToWaitHandlerLambda);

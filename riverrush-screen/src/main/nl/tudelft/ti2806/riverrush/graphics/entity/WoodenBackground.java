@@ -13,10 +13,10 @@ public class WoodenBackground extends Actor {
     /**
      * Creates an river banks object with a given graphical representation.
      *
-     * @param xpos         represents the position of the wooden background on the x axis
-     * @param ypos         represents the position of the wooden background on the y axis
-     * @param width        represents the width of the wooden background object
-     * @param height       represents the height of the wooden background object
+     * @param xpos   represents the position of the wooden background on the x axis
+     * @param ypos   represents the position of the wooden background on the y axis
+     * @param width  represents the width of the wooden background object
+     * @param height represents the height of the wooden background object
      */
     @Inject
     public WoodenBackground(final float xpos, final float ypos,

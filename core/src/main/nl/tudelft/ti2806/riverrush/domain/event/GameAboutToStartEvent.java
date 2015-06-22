@@ -24,7 +24,7 @@ public class GameAboutToStartEvent extends AbstractAnimalEvent {
     public String serialize(final Protocol protocol) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("seconds").append(protocol.getKeyValueSeperator())
-            .append(this.seconds.toString());
+                .append(this.seconds.toString());
         return stringBuilder.toString();
     }
 

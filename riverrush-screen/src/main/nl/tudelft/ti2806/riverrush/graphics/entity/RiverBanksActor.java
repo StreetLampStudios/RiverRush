@@ -12,17 +12,17 @@ public class RiverBanksActor extends Actor {
     /**
      * Creates an river banks object with a given graphical representation.
      *
-     * @param xpos         represents the position of the river banks on the x axis
-     * @param ypos         represents the position of the river banks on the y axis
-     * @param width        represents the width of the river banks object
-     * @param height       represents the height of the river banks object
+     * @param xpos   represents the position of the river banks on the x axis
+     * @param ypos   represents the position of the river banks on the y axis
+     * @param width  represents the width of the river banks object
+     * @param height represents the height of the river banks object
      */
     @Inject
     public RiverBanksActor(
-        final float xpos,
-        final float ypos,
-        final float width,
-        final float height
+            final float xpos,
+            final float ypos,
+            final float width,
+            final float height
     ) {
         this.setPosition(xpos, ypos);
         this.setWidth(width);

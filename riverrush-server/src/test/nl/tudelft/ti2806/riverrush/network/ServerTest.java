@@ -64,20 +64,20 @@ public abstract class ServerTest extends AbstractModule {
         this.controllerMocks = new ArrayList<>();
 
         when(this.protocolMock.deserialize("hello"))
-            .thenReturn(mock(Event.class));
+                .thenReturn(mock(Event.class));
 
         when(this.protocolMock.serialize(any(Event.class)))
-            .then(invocation -> {
-                Event argument = (Event) invocation.getArguments()[0];
-                return argument.serialize((Protocol) invocation.getMock());
-            });
+                .then(invocation -> {
+                    Event argument = (Event) invocation.getArguments()[0];
+                    return argument.serialize((Protocol) invocation.getMock());
+                });
 
         when(this.controllerProviderMock.get())
-            .then(invocation -> {
-                Controller c = mock(Controller.class);
-                this.controllerMocks.add(c);
-                return c;
-            });
+                .then(invocation -> {
+                    Controller c = mock(Controller.class);
+                    this.controllerMocks.add(c);
+                    return c;
+                });
 
         Injector injector = Guice.createInjector(this);
         this.server = injector.getInstance(AbstractServer.class);
@@ -142,7 +142,7 @@ public abstract class ServerTest extends AbstractModule {
 
         Event eventMock = mock(Event.class);
         when(eventMock.serialize(any()))
-            .thenReturn("serialized-event");
+                .thenReturn("serialized-event");
 
         this.server.sendEvent(eventMock, this.controllerMocks.get(0));
         verify(this.webSocketMock).send("serialized-event");

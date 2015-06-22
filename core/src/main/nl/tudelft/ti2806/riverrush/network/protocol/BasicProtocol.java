@@ -68,7 +68,7 @@ public final class BasicProtocol implements Protocol {
 
     @Override
     public Event deserialize(final String message)
-        throws InvalidProtocolException, InvalidActionException {
+            throws InvalidProtocolException, InvalidActionException {
         FailIf.isNull(message);
 
         String action = null;
@@ -92,7 +92,7 @@ public final class BasicProtocol implements Protocol {
         if (action == null) {
             LOGGER.error("Protocol field not found: " + this.getEventTypeFieldKey());
             throw new InvalidProtocolException(this.getEventTypeFieldKey()
-                + " field not found but required.");
+                    + " field not found but required.");
         }
 
         EventInstantiator eventInstatiator = this.eventMapping.get(action);
@@ -113,10 +113,10 @@ public final class BasicProtocol implements Protocol {
             builder.append(this.getPairSeperator());
         }
         return builder
-            .append(this.getEventTypeFieldKey())
-            .append(this.getKeyValueSeperator())
-            .append(event.getClass().getSimpleName())
-            .toString();
+                .append(this.getEventTypeFieldKey())
+                .append(this.getKeyValueSeperator())
+                .append(event.getClass().getSimpleName())
+                .toString();
     }
 
     @Override

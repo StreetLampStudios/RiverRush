@@ -10,7 +10,7 @@ import nl.tudelft.ti2806.riverrush.graphics.entity.AnimalActor;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

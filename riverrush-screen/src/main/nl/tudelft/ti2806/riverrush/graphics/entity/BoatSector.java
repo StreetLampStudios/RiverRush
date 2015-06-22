@@ -95,6 +95,7 @@ public class BoatSector extends Group {
 
     /**
      * Determines whether the sector collides with a given object.
+     *
      * @param obstacle refers to the obstacle for which collision has to be detected.
      * @return true if the collision occurs, else false.
      */
@@ -104,6 +105,7 @@ public class BoatSector extends Group {
 
     /**
      * Return the child which collides with the given object.
+     *
      * @param collider refers to the object for which collision has to be detected.
      * @return the animal for which collision occurs.
      */
@@ -118,14 +120,15 @@ public class BoatSector extends Group {
 
     /**
      * Resize the sector based on the given screen resolution.
-     * @param width refers to the new base width.
+     *
+     * @param width  refers to the new base width.
      * @param height refers to the new base height.
      */
     public void resize(final int width, final int height) {
         this.setWidth(this.colCount * (float) (width
-            / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / MONKEY_WIDTH)));
+                / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / MONKEY_WIDTH)));
         this.setHeight(this.rowCount * (float) (height
-            / ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / MONKEY_HEIGHT)));
+                / ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / MONKEY_HEIGHT)));
 
         for (AnimalActor actor : animals) {
             if (actor == null) {
@@ -141,6 +144,7 @@ public class BoatSector extends Group {
 
     /**
      * Determines whether this sector contains a given actor.
+     *
      * @param actor refers to the actor which needs to be found.
      * @return true if the sector contains it, else false.
      */
@@ -155,6 +159,7 @@ public class BoatSector extends Group {
 
     /**
      * Removes the given actor from the sector.
+     *
      * @param actor refers to the actor that needs to be removed.
      */
     public void remove(final AnimalActor actor) {

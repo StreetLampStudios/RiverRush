@@ -2,17 +2,21 @@ package nl.tudelft.ti2806.riverrush.domain.entity.state;
 
 import junit.framework.TestCase;
 import nl.tudelft.ti2806.riverrush.domain.entity.Animal;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
-import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalFellOffEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalJumpedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests for the AnimalOnBoat class.

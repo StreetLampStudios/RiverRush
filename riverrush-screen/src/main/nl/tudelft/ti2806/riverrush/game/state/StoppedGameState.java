@@ -23,7 +23,7 @@ public class StoppedGameState extends AbstractGameState {
                             final Game gm) {
         super(eventDispatcher, gm);
         Gdx.app.postRunnable(() -> StoppedGameState.this.game
-            .setScreen(new StoppedScreen()));
+                .setScreen(new StoppedScreen()));
     }
 
     @Override

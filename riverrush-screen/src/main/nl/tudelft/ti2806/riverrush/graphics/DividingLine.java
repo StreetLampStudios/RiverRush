@@ -12,17 +12,17 @@ public class DividingLine extends Actor {
     /**
      * Creates an river banks object with a given graphical representation.
      *
-     * @param xpos         represents the position of the line on the x axis
-     * @param ypos         represents the position of the line on the y axis
-     * @param width        represents the width of the line object
-     * @param height       represents the height of the line object
+     * @param xpos   represents the position of the line on the x axis
+     * @param ypos   represents the position of the line on the y axis
+     * @param width  represents the width of the line object
+     * @param height represents the height of the line object
      */
     @Inject
     public DividingLine(
-        final float xpos,
-        final float ypos,
-        final float width,
-        final float height
+            final float xpos,
+            final float ypos,
+            final float width,
+            final float height
     ) {
         this.setPosition(xpos, ypos);
         this.setWidth(width);

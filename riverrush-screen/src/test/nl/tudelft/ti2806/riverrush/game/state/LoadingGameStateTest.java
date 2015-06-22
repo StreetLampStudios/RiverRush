@@ -2,7 +2,7 @@ package nl.tudelft.ti2806.riverrush.game.state;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test for {@link LoadingGameState}

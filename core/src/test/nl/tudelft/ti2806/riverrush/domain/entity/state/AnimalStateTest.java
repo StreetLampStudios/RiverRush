@@ -3,7 +3,7 @@ package nl.tudelft.ti2806.riverrush.domain.entity.state;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Abstract test class to be extended. Belongs to {@link AnimalState}

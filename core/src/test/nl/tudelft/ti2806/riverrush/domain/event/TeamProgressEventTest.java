@@ -7,12 +7,13 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Martijn on 12-6-2015.
  */
-public class TeamProgressEventTest extends AbstractTeamEventTest{
+public class TeamProgressEventTest extends AbstractTeamEventTest {
 
     protected TeamProgressEvent event;
 
@@ -34,7 +35,7 @@ public class TeamProgressEventTest extends AbstractTeamEventTest{
 
     @Override
     @Test
-    public void testSerialize() throws Exception{
+    public void testSerialize() throws Exception {
         event = (TeamProgressEvent) getInstance();
         event.setAnimal(getAnimalId());
 

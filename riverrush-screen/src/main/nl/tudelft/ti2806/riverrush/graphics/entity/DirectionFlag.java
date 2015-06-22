@@ -15,7 +15,6 @@ public class DirectionFlag extends Actor {
 
     /**
      * Creates a monkey object that represents player characters.
-     *
      */
     @Inject
     public DirectionFlag() {

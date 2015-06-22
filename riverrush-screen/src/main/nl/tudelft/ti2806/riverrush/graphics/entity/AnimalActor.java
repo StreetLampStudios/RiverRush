@@ -10,7 +10,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.actions.*;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RotateToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.inject.Inject;
 import nl.tudelft.ti2806.riverrush.domain.event.Direction;
 import nl.tudelft.ti2806.riverrush.graphics.Assets;
@@ -78,13 +84,14 @@ public class AnimalActor extends Group {
 
     /**
      * Change the size of the animal actor to scale with the given resolution of the screen.
-     * @param width the new base width.
+     *
+     * @param width  the new base width.
      * @param height the new base height.
      */
     public void resize(final int width, final int height) {
         this.setWidth(width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / ANIMAL_WIDTH));
         this.setHeight(height
-            / ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / ANIMAL_HEIGHT));
+                / ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / ANIMAL_HEIGHT));
         this.shadow.rezize(width, height);
         Vector2 v = new Vector2(this.getWidth() / 2, this.getHeight() / 2);
         this.localToStageCoordinates(v);
@@ -113,13 +120,14 @@ public class AnimalActor extends Group {
 
         /**
          * Resize the shadow based on the given screen size.
-         * @param width the new base width the shadow should be scaled to.
+         *
+         * @param width  the new base width the shadow should be scaled to.
          * @param height the new base height the shadow should be scaled to.
          */
         public void rezize(final int width, final int height) {
-        	this.setWidth(width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / WIDTH));
-        	this.setHeight(height
-                / ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / HEIGHT));
+            this.setWidth(width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / WIDTH));
+            this.setHeight(height
+                    / ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / HEIGHT));
         }
 
         @Override
@@ -342,6 +350,7 @@ public class AnimalActor extends Group {
 
     /**
      * Determines whether the animal collides with an object.
+     *
      * @param obstacle the given obstacle for which the collision has to be determined.
      * @return true when collision occurs, else false.
      */

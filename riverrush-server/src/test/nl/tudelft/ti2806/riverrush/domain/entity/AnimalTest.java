@@ -3,7 +3,10 @@ package nl.tudelft.ti2806.riverrush.domain.entity;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalInAir;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalInWater;
 import nl.tudelft.ti2806.riverrush.domain.entity.state.AnimalOnBoat;
-import nl.tudelft.ti2806.riverrush.domain.event.*;
+import nl.tudelft.ti2806.riverrush.domain.event.AnimalMovedEvent;
+import nl.tudelft.ti2806.riverrush.domain.event.Direction;
+import nl.tudelft.ti2806.riverrush.domain.event.Event;
+import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -60,7 +63,7 @@ public class AnimalTest {
     }
 
     @Test
-     public void testReturnToBoat() throws Exception {
+    public void testReturnToBoat() throws Exception {
         animal.fall();
         animal.returnToBoat();
         assertEquals(animal.getState().getClass().getName(), AnimalOnBoat.class.getName());

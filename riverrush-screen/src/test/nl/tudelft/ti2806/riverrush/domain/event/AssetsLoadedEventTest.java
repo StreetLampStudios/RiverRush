@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
-import nl.tudelft.ti2806.riverrush.domain.event.AbstractAnimalEventTest;
 
 /**
  * A test for {@link AssetsLoadedEvent}

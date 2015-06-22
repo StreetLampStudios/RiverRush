@@ -60,7 +60,8 @@ public class SideStage extends Stage {
 
     /**
      * Resize the stage based on the resolution of the screen.
-     * @param width the new base width.
+     *
+     * @param width  the new base width.
      * @param height the new base height.
      */
     public void resize(final int width, final int height) {
@@ -71,6 +72,7 @@ public class SideStage extends Stage {
 
     /**
      * Set the boat corresponding to the given stage.
+     *
      * @param newBoat refers to the boat that needs to be added to this stage.
      */
     public void setBoat(final BoatGroup newBoat) {

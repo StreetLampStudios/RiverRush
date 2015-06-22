@@ -216,6 +216,7 @@ public class BoatGroup extends Group {
 
     /**
      * Determines whether the boat collides with a given object.
+     *
      * @param obstacle refers to the rock for which collision has to be detected.
      * @return true if the collision occurs, else false.
      */
@@ -225,6 +226,7 @@ public class BoatGroup extends Group {
 
     /**
      * Return the child which collides with the given object.
+     *
      * @param collider refers to the object for which collision has to be detected.
      * @return the animal for which collision occurs.
      */
@@ -241,16 +243,17 @@ public class BoatGroup extends Group {
 
     /**
      * Resize the boat based on the given screen resolution.
-     * @param width refers to the new base width.
+     *
+     * @param width  refers to the new base width.
      * @param height refers to the new base height.
      */
     public void resize(final int width, final int height) {
         this.setWidth((int) (width / (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / BOAT_WIDTH)));
         this.setHeight((int) (height
-            / (Toolkit.getDefaultToolkit().getScreenSize().getHeight() / BOAT_HEIGHT)));
+                / (Toolkit.getDefaultToolkit().getScreenSize().getHeight() / BOAT_HEIGHT)));
         this.setX(width * INIT_WIDTH_OFFSET);
         this.setY((float) ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()
-            * STAGE_PARTITION) - (this.getHeight() / 2));
+                * STAGE_PARTITION) - (this.getHeight() / 2));
 
         int i = 0;
         for (BoatSector sec : this.sectors) {
@@ -259,16 +262,16 @@ public class BoatGroup extends Group {
             float extra = 0f;
             if (i == 2) {
                 extra = (float) width
-                    / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / SECTOR_WIDTH_PARTITION);
+                        / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / SECTOR_WIDTH_PARTITION);
             }
             if (i > 2) {
                 extra = (float) width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()
-                    / SECTOR_HEIGHT_PARTITION);
+                        / SECTOR_HEIGHT_PARTITION);
             }
 
             float secPosX = (width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()
-                / SECTOR_INIT_POS)) + (((width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()
-                / SECTOR_DIVIDING_DISTANCE)) + sec.getWidth()) * i) + extra;
+                    / SECTOR_INIT_POS)) + (((width / ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()
+                    / SECTOR_DIVIDING_DISTANCE)) + sec.getWidth()) * i) + extra;
             float secPosY = (this.getHeight() / 2) - (sec.getHeight() / 2);
 
             sec.setPosition(secPosX, secPosY);

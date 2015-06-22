@@ -70,6 +70,7 @@ public class RenderController implements Controller {
 
     /**
      * Handles the game finished event through sending a command to the game.
+     *
      * @param event refers to the event that triggers this method.
      */
     private void onGameEnded(final GameFinishedEvent event) {

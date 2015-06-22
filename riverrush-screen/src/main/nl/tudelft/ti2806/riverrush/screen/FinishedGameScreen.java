@@ -3,9 +3,7 @@ package nl.tudelft.ti2806.riverrush.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -92,7 +90,7 @@ public class FinishedGameScreen implements Screen {
 
         if (this.teamWonLabel != null) {
             this.teamWonLabel.setFontScale(Gdx.graphics.getWidth()
-                / width, Gdx.graphics.getHeight() / height);
+                    / width, Gdx.graphics.getHeight() / height);
         }
 
         if (this.image != null) {
@@ -160,6 +158,7 @@ public class FinishedGameScreen implements Screen {
 
     /**
      * Show the winning team on the finished game screen.
+     *
      * @param winningID the ID of the winning team.
      */
     public void drawWinningLabel(final int winningID) {

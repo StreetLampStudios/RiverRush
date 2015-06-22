@@ -18,7 +18,7 @@ public abstract class AbstractTeamAnimalEvent implements Event {
     public String serialize(final Protocol protocol) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("animal")
-            .append(protocol.getKeyValueSeperator()).append(this.animalId.toString());
+                .append(protocol.getKeyValueSeperator()).append(this.animalId.toString());
         stringBuilder.append(protocol.getPairSeperator());
         stringBuilder.append("team").append(protocol.getKeyValueSeperator()).append(this.teamId.toString());
         return stringBuilder.toString();

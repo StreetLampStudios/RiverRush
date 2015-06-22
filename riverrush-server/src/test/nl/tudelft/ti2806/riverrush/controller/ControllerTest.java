@@ -54,18 +54,18 @@ public abstract class ControllerTest {
         unRemovedHandlers = new ArrayList<>();
 
         Mockito.doAnswer(
-            invocation -> {
-                Class<?> eventClass = (Class<?>) invocation.getArguments()[0];
-                unRemovedHandlers.add(eventClass);
-                return null;
-            }).when(dispatcherMock).attach(any(), any());
+                invocation -> {
+                    Class<?> eventClass = (Class<?>) invocation.getArguments()[0];
+                    unRemovedHandlers.add(eventClass);
+                    return null;
+                }).when(dispatcherMock).attach(any(), any());
 
         Mockito.doAnswer(
-            invocation -> {
-                Class<?> eventClass = (Class<?>) invocation.getArguments()[0];
-                unRemovedHandlers.remove(eventClass);
-                return null;
-            }).when(dispatcherMock).detach(any(), any());
+                invocation -> {
+                    Class<?> eventClass = (Class<?>) invocation.getArguments()[0];
+                    unRemovedHandlers.remove(eventClass);
+                    return null;
+                }).when(dispatcherMock).detach(any(), any());
     }
 
     /**

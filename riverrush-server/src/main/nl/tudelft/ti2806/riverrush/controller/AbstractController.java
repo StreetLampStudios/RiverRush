@@ -42,8 +42,8 @@ public abstract class AbstractController implements Controller {
      * @param <T>        Event
      */
     protected <T extends Event> void listenTo(
-        final Class<T> eventClass,
-        final HandlerLambda<? super T> handler
+            final Class<T> eventClass,
+            final HandlerLambda<? super T> handler
     ) {
         this.handlers.add(new Pair<>(eventClass, handler));
         this.dispatcher.attach(eventClass, handler);

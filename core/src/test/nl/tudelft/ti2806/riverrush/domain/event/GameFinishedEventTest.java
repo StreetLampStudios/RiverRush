@@ -1,7 +1,5 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
-import static org.junit.Assert.*;
-
 /**
  * Test for {@link GameFinishedEvent}
  */

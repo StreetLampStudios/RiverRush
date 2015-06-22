@@ -1,14 +1,8 @@
 package nl.tudelft.ti2806.riverrush.game.state;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import nl.tudelft.ti2806.riverrush.desktop.MainDesktop;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test for {@link FinishedGameState}

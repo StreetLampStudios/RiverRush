@@ -59,16 +59,16 @@ public class RockGraphic extends AbstractObstacle {
      * Adds an action that shows the rock being destroyed.
      */
     public void getDestroyed() {
-    	ScaleToAction scale = new ScaleToAction();
-    	scale.setScale(ROCK_DESTROYED_SCALE);
-    	scale.setDuration(DESTROY_ROCK_DURATION);
+        ScaleToAction scale = new ScaleToAction();
+        scale.setScale(ROCK_DESTROYED_SCALE);
+        scale.setDuration(DESTROY_ROCK_DURATION);
 
-    	AlphaAction fade = new AlphaAction();
-    	fade.setAlpha(0f);
-    	fade.setDuration(DESTROY_ROCK_DURATION);
+        AlphaAction fade = new AlphaAction();
+        fade.setAlpha(0f);
+        fade.setDuration(DESTROY_ROCK_DURATION);
 
-    	this.addAction(scale);
-    	this.addAction(fade);
+        this.addAction(scale);
+        this.addAction(fade);
     }
 
     /**

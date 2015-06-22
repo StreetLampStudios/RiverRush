@@ -2,7 +2,6 @@ package nl.tudelft.ti2806.riverrush.game.state;
 
 import com.badlogic.gdx.Gdx;
 import nl.tudelft.ti2806.riverrush.domain.event.AnimalAddedEvent;
-import nl.tudelft.ti2806.riverrush.domain.event.AnimalRemovedEvent;
 import nl.tudelft.ti2806.riverrush.domain.event.Event;
 import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
 import nl.tudelft.ti2806.riverrush.domain.event.GameAboutToStartEvent;
@@ -40,12 +39,13 @@ public class WaitingGameState extends AbstractGameState {
         this.screen = new WaitingScreen();
 
         Gdx.app.postRunnable(
-            () -> WaitingGameState.this.game.setScreen(WaitingGameState.this.screen)
+                () -> WaitingGameState.this.game.setScreen(WaitingGameState.this.screen)
         );
     }
 
     /**
      * Starts the timer of 5 seconds.
+     *
      * @param seconds - amount of seconds that we need to wait until the game will start
      */
     private void startTimer(final int seconds) {

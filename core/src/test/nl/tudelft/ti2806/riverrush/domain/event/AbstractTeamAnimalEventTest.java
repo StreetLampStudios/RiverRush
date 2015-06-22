@@ -1,25 +1,19 @@
 package nl.tudelft.ti2806.riverrush.domain.event;
 
-import nl.tudelft.ti2806.riverrush.domain.entity.AbstractTeam;
-import nl.tudelft.ti2806.riverrush.network.protocol.BasicProtocol;
-import nl.tudelft.ti2806.riverrush.network.protocol.InvalidProtocolException;
-import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.internal.runners.statements.Fail;
-import org.junit.rules.ExpectedException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Basic test for every class that implements {@link AbstractTeamAnimalEvent}
  */
-public abstract class AbstractTeamAnimalEventTest extends EventTest{
+public abstract class AbstractTeamAnimalEventTest extends EventTest {
 
     protected AbstractTeamAnimalEvent event;
 
@@ -42,7 +36,7 @@ public abstract class AbstractTeamAnimalEventTest extends EventTest{
     }
 
     @Override
-    public Map<String,String> getTestMap() {
+    public Map<String, String> getTestMap() {
         Map<String, String> testMap = new HashMap<>();
         testMap.putAll(super.getTestMap());
         testMap.put("team", Integer.toString(teamId));
@@ -50,7 +44,7 @@ public abstract class AbstractTeamAnimalEventTest extends EventTest{
     }
 
     @Test
-    public void testSerialize() throws Exception{
+    public void testSerialize() throws Exception {
         event = getInstance();
         event.setAnimal(getAnimalId());
 
@@ -60,7 +54,7 @@ public abstract class AbstractTeamAnimalEventTest extends EventTest{
     }
 
     @Override
-    public AbstractTeamAnimalEvent getInstance(){
+    public AbstractTeamAnimalEvent getInstance() {
         return event;
     }
 
