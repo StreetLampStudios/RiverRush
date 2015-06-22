@@ -47,7 +47,7 @@ public class AnimalActor extends Group {
     private static final float FALL_VELOCITY = 0.5f;
     private static final float JUMP_UP_DURATION = 0.3f;
     private static final float JUMP_DOWN_DURATION = 0.15f;
-    private static final float DELAY_DURATION = 1.5f;
+    private static final float DELAY_DURATION = 1f;
     private static final double HITBOX_MULTIPLIER = 0.3;
     private static final float FLAG_OFFSET = 0.8f;
     private static final float JUMP_SCALING = 1.5f;
@@ -57,18 +57,15 @@ public class AnimalActor extends Group {
     private float origY;
     private Circle bounds;
 
-    private DirectionFlag directionFlag;
+    private final DirectionFlag directionFlag;
     private Animal animal;
-    private ShadowActor shadow;
+    private final ShadowActor shadow;
 
     /**
      * Creates a monkey object that represents player characters.
-     *
-     * @param dispatcher Event dispatcher for dispatching events
-     * @param teamID     - The id of the team which this monkey belongs
      */
     @Inject
-    public AnimalActor(final EventDispatcher dispatcher, final int teamID) {
+    public AnimalActor() {
         this.setWidth(ANIMAL_WIDTH);
         this.setHeight(ANIMAL_HEIGHT);
 
