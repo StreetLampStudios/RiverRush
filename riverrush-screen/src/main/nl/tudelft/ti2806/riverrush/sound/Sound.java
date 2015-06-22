@@ -1,23 +1,28 @@
 package nl.tudelft.ti2806.riverrush.sound;
-import sun.audio.*;
 
-import javax.sound.sampled.*;
-import java.io.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 /**
  * Creates a Sound object from a sound filename that you can call play and stop on
  */
 public class Sound {
+
     private Clip myClip;
 
-    public Sound(String fileName) {
+    public Sound(final String fileName) {
         try {
             File file = new File(fileName);
             if (file.exists()) {
-                Clip myClip = AudioSystem.getClip();
+                this.myClip = AudioSystem.getClip();
                 AudioInputStream ais = AudioSystem.getAudioInputStream(file.toURI().toURL());
-                myClip.open(ais);
+                this.myClip.open(ais);
             } else {
                 throw new RuntimeException("Sound: file not found: " + fileName);
             }
@@ -33,16 +38,16 @@ public class Sound {
     }
 
     public void play() {
-        myClip.setFramePosition(0);  // Must always rewind!
-        myClip.loop(0);
-        myClip.start();
+        this.myClip.setFramePosition(0);  // Must always rewind!
+        this.myClip.loop(0);
+        this.myClip.start();
     }
 
     public void loop() {
-        myClip.loop(Clip.LOOP_CONTINUOUSLY);
+        this.myClip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     public void stop() {
-        myClip.stop();
+        this.myClip.stop();
     }
 }
