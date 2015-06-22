@@ -33,6 +33,7 @@ public abstract class AbstractGameStateTest {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = "RiverRush";
         config.disableAudio = true;
+        config.vSyncEnabled =false;
 
         game = mock(Game.class);
         when(game.getScreen()).thenCallRealMethod();
