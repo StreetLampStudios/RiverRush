@@ -39,7 +39,7 @@ public class UserServer extends AbstractServer {
         FailIf.isNull(conn);
         log.info("Connection opened");
 
-        if (this.sockets.size() < MAX_CLIENTS) {
+        if (this.getSockets().size() < MAX_CLIENTS) {
             this.createController(conn);
         } else {
             conn.close(CloseFrame.REFUSE, "Maximum number of clients reached");

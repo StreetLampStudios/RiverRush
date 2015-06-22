@@ -17,7 +17,6 @@ import nl.tudelft.ti2806.riverrush.network.event.VoteBoatMoveCommand;
 public class UserController extends AbstractController {
 
     private final AbstractAnimal animal;
-    private final EventDispatcher dispatcher;
     private final AbstractServer server;
     private final Game game;
     private boolean isJoined;
@@ -34,7 +33,6 @@ public class UserController extends AbstractController {
                           @Named("playerServer") final AbstractServer aServer, final Game aGame) {
         super(aDispatcher);
         this.animal = new Animal(aDispatcher);
-        this.dispatcher = aDispatcher;
         this.server = aServer;
         this.game = aGame;
         this.isJoined = false;
@@ -103,7 +101,7 @@ public class UserController extends AbstractController {
     @Override
     public void onSocketMessage(final Event event) {
         event.setAnimal(this.animal.getId());
-        this.dispatcher.dispatch(event);
+        this.getDispatcher().dispatch(event);
     }
 
     @Override
@@ -112,6 +110,6 @@ public class UserController extends AbstractController {
         AnimalRemovedEvent event = new AnimalRemovedEvent();
         event.setAnimal(this.animal.getId());
         event.setTeam(this.animal.getTeamId());
-        this.dispatcher.dispatch(event);
+        this.getDispatcher().dispatch(event);
     }
 }

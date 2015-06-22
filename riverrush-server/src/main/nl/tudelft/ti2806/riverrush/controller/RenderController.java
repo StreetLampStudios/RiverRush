@@ -68,6 +68,6 @@ public class RenderController extends AbstractController {
 
     @Override
     public void onSocketMessage(final Event event) {
-        this.dispatcher.dispatch(event);
+        this.getDispatcher().dispatch(event);
     }
 }
