@@ -11,6 +11,8 @@ import nl.tudelft.ti2806.riverrush.network.event.JoinTeamCommand;
 import nl.tudelft.ti2806.riverrush.network.event.JumpCommand;
 import nl.tudelft.ti2806.riverrush.network.event.VoteBoatMoveCommand;
 
+import java.util.Objects;
+
 /**
  * Controller for the individual players.
  */
@@ -43,23 +45,23 @@ public class UserController extends AbstractController {
         final HandlerLambda<JoinTeamCommand> joinTeamHandler = this::joinTeamHandler;
         final HandlerLambda<Event> sendOverNetworkLambda = (e) -> {
             Integer animalId = e.getAnimal();
-            if (animalId == this.animal.getId() || animalId == -1) {
+            if (animalId.equals(this.animal.getId()) || animalId == -1) {
                 this.server.sendEvent(e, this);
             }
         };
         final HandlerLambda<AbstractTeamEvent> sendTeamEventOverNetworkLambda = (e) -> {
-            if (e.getTeam() == this.animal.getTeamId()) {
+            if (e.getTeam().equals(this.animal.getTeamId())) {
                 this.server.sendEvent(e, this);
             }
         };
         final HandlerLambda<JumpCommand> jumpCommandHandlerLambda = (e) -> {
-            if (e.getAnimal() == this.animal.getId()) {
+            if (e.getAnimal().equals(this.animal.getId())) {
                 this.animal.jump();
             }
         };
 
         final HandlerLambda<VoteBoatMoveCommand> voteCommandHandlerLambda = (e) -> {
-            if (e.getAnimal() == this.animal.getId()) {
+            if (e.getAnimal().equals(this.animal.getId())) {
                 this.animal.voteOneDirection(e.getDirection());
             }
         };
@@ -92,7 +94,7 @@ public class UserController extends AbstractController {
      * @param e The event
      */
     private void joinTeamHandler(final JoinTeamCommand e) {
-        if (e.getAnimal() == this.animal.getId() && !this.isJoined) {
+        if (Objects.equals(e.getAnimal(), this.animal.getId()) && !this.isJoined) {
             this.game.addPlayerToTeam(this.animal, e.getTeam());
             this.isJoined = true;
         }

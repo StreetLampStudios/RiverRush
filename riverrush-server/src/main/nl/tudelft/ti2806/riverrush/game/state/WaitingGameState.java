@@ -74,7 +74,7 @@ public class WaitingGameState implements GameState {
      */
     public boolean hasEnoughAnimals() {
         Collection<Team> teams = game.getTeams();
-        if (teams.size() == 0) {
+        if (teams.isEmpty()) {
             return false;
         }
         for (Team t : teams) {

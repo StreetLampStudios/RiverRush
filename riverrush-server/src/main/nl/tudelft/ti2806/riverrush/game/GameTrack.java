@@ -118,7 +118,7 @@ public class GameTrack {
             this.fireTeamProgressEvent(speed, newDistance, team.getId());
         }
 
-        if (finishedTeams.size() > 0) {
+        if (!finishedTeams.isEmpty()) {
             Team winner = this.determineWinningTeam(finishedTeams);
             this.game.finish(winner.getId());
         }

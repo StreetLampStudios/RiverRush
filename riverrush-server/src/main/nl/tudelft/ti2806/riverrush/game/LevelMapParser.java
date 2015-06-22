@@ -41,7 +41,7 @@ public final class LevelMapParser {
      * @return The event
      */
     public static TreeMap<Double, AbstractTeamEvent> parseLevel(final InputStream inputStream) {
-        return parseLevel(new Scanner(inputStream));
+        return parseLevel(new Scanner(inputStream, "utf-8"));
     }
 
     /**

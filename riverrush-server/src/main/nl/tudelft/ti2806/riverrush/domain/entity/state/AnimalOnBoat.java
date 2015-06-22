@@ -11,7 +11,7 @@ import nl.tudelft.ti2806.riverrush.domain.event.EventDispatcher;
  */
 public class AnimalOnBoat extends AbstractAnimalState {
 
-    private Animal animal;
+    private final Animal animal;
 
     /**
      * Constructor.

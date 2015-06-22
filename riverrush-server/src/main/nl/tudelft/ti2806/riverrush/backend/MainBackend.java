@@ -29,7 +29,7 @@ import static com.google.inject.name.Names.named;
  */
 public final class MainBackend extends CoreModule {
 
-    private HandlerLambda<GameWaitingEvent> handler;
+    private final HandlerLambda<GameWaitingEvent> handler;
     private final AbstractServer clientServer;
 
     /**
