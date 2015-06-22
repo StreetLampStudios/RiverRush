@@ -59,19 +59,6 @@ public class PlayingGameScreen implements Screen {
         this.sound.loop();
     }
 
-    /**
-     * Creates the river banks.
-     *
-     * @return A fresh river bank Stage.
-     */
-    private Stage createRiverBank() {
-        Stage bank = new Stage();
-        Image rightImg = new Image(Assets.riverBank);
-        rightImg.setFillParent(true);
-        bank.addActor(rightImg);
-        return bank;
-    }
-
     @Override
     public void render(final float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -86,7 +73,6 @@ public class PlayingGameScreen implements Screen {
         startPosition += MID_SIZE;
 
         this.drawStage(this.riverRight, startPosition, RIVER_SIZE);
-        startPosition += RIVER_SIZE;
 
         this.onTick.handle();
     }

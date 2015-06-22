@@ -65,19 +65,14 @@ public class WaitingScreen implements Screen {
         this.skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
         this.stage = new Stage();
 
-        Texture texture = new Texture(Gdx.files.internal("data/ark.jpg"));
-        TextureRegion region = new TextureRegion(texture, 0, 0, Gdx.graphics.getWidth(),
-            Gdx.graphics.getHeight());
-
-        this.image = new Image(region);
+        this.image = new Image(Assets.ark);
         this.image.setPosition(0, 0);
         this.image.setFillParent(true);
         this.stage.addActor(this.image);
 
-        Texture qrTexture = new Texture(Gdx.files.internal("data/qr.jpg"));
-        Image qr = new Image(qrTexture);
+        Image qr = new Image(Assets.qr);
         qr.setPosition(DESKTOP_HEIGHT / HEIGHT_DIVISION, (DESKTOP_WIDTH
-            / WIDTH_DIVISION) - (qrTexture.getWidth() / 2));
+            / WIDTH_DIVISION) - (qr.getWidth() / 2));
         qr.setSize(SIZE, SIZE);
         this.stage.addActor(qr);
 
