@@ -71,8 +71,8 @@ public class Client extends WebSocketClient {
         ex.printStackTrace();
     }
 
-    public void setController(Controller controller) {
-        this.controller = controller;
+    public void setController(final Controller newController) {
+        this.controller = newController;
     }
 
 }

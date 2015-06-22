@@ -17,7 +17,7 @@ import java.util.Map;
 @Singleton
 public class BasicEventDispatcher implements EventDispatcher {
 
-    static final Logger log = LogManager.getLogger(BasicEventDispatcher.class);
+    static final Logger LOGGER = LogManager.getLogger(BasicEventDispatcher.class);
     /**
      * Maps event types to a list of listeners.
      */
@@ -35,7 +35,7 @@ public class BasicEventDispatcher implements EventDispatcher {
 
         handlers.add(handler);
         this.registeredLambdas.put(eventType, handlers);
-        log.debug("Attached handler: " + handler.getClass().getSimpleName() + " for: "
+        LOGGER.debug("Attached handler: " + handler.getClass().getSimpleName() + " for: "
             + eventType.getSimpleName());
     }
 
@@ -46,10 +46,10 @@ public class BasicEventDispatcher implements EventDispatcher {
 
         if (handlers != null) {
             handlers.remove(handlerLambda);
-            log.debug("Detached handler: " + handlerLambda.getClass().getSimpleName() + " for: "
+            LOGGER.debug("Detached handler: " + handlerLambda.getClass().getSimpleName() + " for: "
                 + eventType.getSimpleName());
         } else {
-            log.warn("Could not detach unregistered handler for: " + eventType.getSimpleName());
+            LOGGER.warn("Could not detach unregistered handler for: " + eventType.getSimpleName());
         }
     }
 
@@ -69,7 +69,7 @@ public class BasicEventDispatcher implements EventDispatcher {
         List<HandlerLambda> handlers = this.registeredLambdas.get(event.getClass());
         if (handlers != null) {
             handlers.forEach((f) -> {
-                log.debug("Dispatching event: " + event.getClass().getSimpleName()
+                LOGGER.debug("Dispatching event: " + event.getClass().getSimpleName()
                     + " to handler: " + f.getClass().getSimpleName());
                 f.handle(event);
             });

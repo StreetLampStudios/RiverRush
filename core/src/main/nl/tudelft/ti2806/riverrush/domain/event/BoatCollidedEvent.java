@@ -5,6 +5,9 @@ import nl.tudelft.ti2806.riverrush.network.protocol.Protocol;
 
 import java.util.Map;
 
+/**
+ * An event that indicates a given boat having collided with a certain object.
+ */
 public class BoatCollidedEvent extends AbstractTeamEvent {
 
     private Direction direction;
@@ -14,7 +17,8 @@ public class BoatCollidedEvent extends AbstractTeamEvent {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(super.serialize(protocol));
         stringBuilder.append(protocol.getPairSeperator());
-        stringBuilder.append("direction").append(protocol.getKeyValueSeperator()).append(this.direction.toString());
+        stringBuilder.append("direction").append(protocol.getKeyValueSeperator())
+            .append(this.direction.toString());
         return stringBuilder.toString();
     }
 
@@ -33,7 +37,7 @@ public class BoatCollidedEvent extends AbstractTeamEvent {
         return this.direction;
     }
 
-    public void setDirection(final Direction direction) {
-        this.direction = direction;
+    public void setDirection(final Direction newDirection) {
+        this.direction = newDirection;
     }
 }

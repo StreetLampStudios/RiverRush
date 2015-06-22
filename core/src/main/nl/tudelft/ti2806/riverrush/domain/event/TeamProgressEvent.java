@@ -54,8 +54,8 @@ public class TeamProgressEvent extends AbstractTeamEvent {
         return this.speed;
     }
 
-    public void setSpeed(final Double speed) {
-        this.speed = speed;
+    public void setSpeed(final Double newSpeed) {
+        this.speed = newSpeed;
     }
 
 }
