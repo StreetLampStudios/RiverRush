@@ -51,19 +51,19 @@ The following design goals will be maintained throughout the project:
 The game server will have to serve requests from  potentially a couple hundred players at any given moment. To minimize the amount of lag introduced by latency of networks, we have to design the system in such a way that the game experience seems fluent to the users. For this reason we will use non-blocking sockets to handle all requests in parallel and use an event-driven architecture.
 
 \item
-\textbf{Modularity} \\
-As explained later, the game will involve three modules that work together. Two of these modules have several sub-components that must act independently when something happens to the game. To support modularity, we will use the event-driven architecture to let the players update game state and also to let sub-components communicate.
-
-\item
 \textbf{Code reuse}\\
 Dividing the different types of logic into modules is good for maintainability, but we will only get this advantage if logic that is similar for both components can be reused. To support this, we have divided the project into three sub-projects: \emph{Riverrush-Server}, \emph{Riverrush-Screen} and \emph{Core}. The \emph{Core} project contains all code shared between modules to maximize the possibility of reusing code. The modules with \emph{Riverrush-} in front of them are modules that can be run as applications.
+
+\item
+\textbf{Modularity} \\
+As explained later, the game will involve three modules that work together. The modules are designed so they don't crash when one module fails. To support modularity, we will use the event-driven architecture to let the players update game state and also to let sub-components communicate.
 
 \end{itemize}
 
 \newpage
 
 \section{Software architecture views}
-This chapter is about architecture of the system. First the different parts of the system are explained and the relations between them. In the second paragraph the link between the software and the hardware are discussed. The third paragraph illustrates the data management of the system.
+This chapter is about architecture of the system. In the first paragraph the different parts of the system are explained and the relations between them. In the second paragraph the link between the software and the hardware are discussed. The third paragraph illustrates the data management of the system.
 
 \subsection{Subsystem decomposition (sub-systems and dependencies between them)}
 The system is broken down into 3 subsystems with a shared library to enable modularity. This way, all modules can be maintained separately while still being able to reuse shared code.\\
@@ -73,8 +73,6 @@ The system uses a MVC pattern spread out over the modules. The Model and control
 \begin{itemize}
 \item \textbf{Screen} \\
 The screen code is located in the \emph{Riverrush-Screen} module. The screen connects to the server via a specialized protocol. Its role is to display the model changes on the screen. For this purpose the screen uses libGDX's graphical capabilities. The screen receives events about the current game state (a.k.a. Domain events) over the protocol from the server. These events are then processed and put into action on the screen.\\
-\\
-The screen has its own game model. This is because the screen can determine a lot of things on its own, which makes it much faster then waiting on the server to give these pieces of information. To avoid giving the screen to much control over the state of the game, we let the screen predict what is going to happen and use the server as the reliable source to check it against. This happens every time information arrives at the screen.
 
 \item \textbf{Client} \\
 The client is a static HTML/JS website that is separate from the rest of the project. It is used to control the game from a smart phone or computer. It sends commands to the server over WebSockets when the user moves his/her phone. It also receives domain events back from the server to update the user screen accordingly with suitable information.\\
@@ -82,7 +80,7 @@ The client is a static HTML/JS website that is separate from the rest of the pro
 The client uses an accelerometer to detect the user commands. If the accelerometer is not supported on the device the client falls back to swipe gestures.
 
 \item \textbf{Server} \\
-The server code is located in the \emph{Riverrush-Server} module. The server runs the game engine and holds the model of the game in memory. Domain events are used to notify the connecting clients if there is any relevant change to the state of the game. The server hosts separate servers to serve users and to connect the screen. This creates opportunity for socket-level optimization between the server and the screen because these modules are not required to use WebSockets for communication. We have chosen for this set-up because the connection between the server and the screen is likely to become a performance bottleneck. It also leaves the possibility to run the server in a cloud environment, which would cut the hardware costs of the game dramatically.\\
+The server code is located in the \emph{Riverrush-Server} module. The server runs the game engine and holds the model of the game in memory. Domain events are used to notify the connecting clients if there is any relevant change to the state of the game. The server hosts separate endpoints to serve users and to connect the screen. This creates opportunity for socket-level optimization between the server and the screen because these modules are not required to use WebSockets for communication. We have chosen for this set-up because the connection between the server and the screen is likely to become a performance bottleneck. It also leaves the possibility to run the server in a cloud environment, which would cut the hardware costs of the game dramatically.\\
 \\
 The server is setup in a way that allows for great adaptability. When a client sends a join event to the server it creates a virtual user in the game engine that is coupled to an entity in the game. This virtual user is coupled to the specific web socket of that client. Through this setup the virtual user can be easily swapped out for a virtual user controlled by an AI (Artificial Intelligence) or some sort of hardware input system, like keyboard controls.\\
 \\
