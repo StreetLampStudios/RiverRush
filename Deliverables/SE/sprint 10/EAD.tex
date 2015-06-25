@@ -1,6 +1,6 @@
 \documentclass[11pt,a4paper]{article}
 
-\usepackage{titling, palatino, booktabs}
+\usepackage{titling, palatino, booktabs, graphicx}
 \usepackage[margin=2cm]{geometry}
 \usepackage[none]{hyphenat}
 \usepackage{listings}
@@ -72,7 +72,7 @@ The system uses a MVC pattern spread out over the modules. The Model and control
 
 \begin{itemize}
 \item \textbf{Screen} \\
-The screen code is located in the \emph{Riverrush-Screen} module. The screen connects to the server via a specialized protocol. Its role is to display the model changes on the screen. For this purpose the screen uses libGDX's graphical capabilities. The screen receives events about the current game state (a.k.a. Domain events) over the protocol from the server. These events are then processed and put into action on the screen.\\
+The screen code is located in the \emph{Riverrush-Screen} module. The screen connects to the server via a specialized protocol on top of WebSockets. Its role is to display the model changes on the screen. For this purpose the screen uses libGDX's graphical capabilities. The screen receives events about the current game state (a.k.a. Domain events) over the protocol from the server. These events are then processed and put into action on the screen.\\
 
 \item \textbf{Client} \\
 The client is a static HTML/JS website that is separate from the rest of the project. It is used to control the game from a smart phone or computer. It sends commands to the server over WebSockets when the user moves his/her phone. It also receives domain events back from the server to update the user screen accordingly with suitable information.\\
@@ -112,5 +112,11 @@ Another set-up is to run the screen and the server on different machines. This a
 A third option is to run the server in a cloud environment and offer a subscription-fee to auditoriums. This reduces upfront costs and eliminates the requirement of high-end hardware inside the auditorium itself.\\
 \\
 The client HTML/JS application runs on all smart phone browsers that support WebSockets. 
+\\
+\newpage
+
+This is an overview of all the components:\\
+\\
+\includegraphics[scale=0.6]{arch.png}
 
 \end{document}
